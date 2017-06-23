@@ -8,7 +8,9 @@
 
     tools:context="com.caloriesdiary.caloriesdiary.MainActivity">
 
-<<<<<<< HEAD
+    < android:id="@+id/" />
+
+    <<<<<< HEAD
 </android.support.constraint.ConstraintLayout>
 =======
     <Button
