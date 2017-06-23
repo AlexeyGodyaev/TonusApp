@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:text="Password"
+        android:text="Password "
         android:layout_marginTop="21dp"
         android:layout_below="@+id/editLogin"
         android:layout_alignParentLeft="true"
