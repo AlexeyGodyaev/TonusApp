@@ -19,5 +19,12 @@ class Calc extends CI_Controller {
 	public function index()
 	{
 		echo "Введи чё-нить!";
+		$this->load->database();
+		$query = $this->db->query('SELECT * FROM "Activities";');
+
+		foreach ($query->result() as $row) {
+			echo $row->name;
+		}
+
 	}
 }
