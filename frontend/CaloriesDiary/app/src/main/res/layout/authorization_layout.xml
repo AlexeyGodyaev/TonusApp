@@ -9,10 +9,10 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:text="Password "
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="23dp"
         android:layout_below="@+id/editLogin"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignLeft="@+id/loginLable"
+        android:layout_alignStart="@+id/loginLable" />
 
     <EditText
         android:id="@+id/editLogin"
@@ -54,22 +54,40 @@
         android:layout_marginStart="14dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="Вход"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/editPassword"
         android:layout_alignRight="@+id/editPassword"
         android:layout_alignEnd="@+id/editPassword" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/registrationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        android:layout_alignBaseline="@+id/button2"
-        android:layout_alignBottom="@+id/button2"
-        android:layout_alignLeft="@+id/loginLable"
-        android:layout_alignStart="@+id/loginLable" />
+        android:text="Регистрация"
+        android:layout_alignBaseline="@+id/guestButton"
+        android:layout_alignBottom="@+id/guestButton"
+        android:layout_alignLeft="@+id/passwordLable"
+        android:layout_alignStart="@+id/passwordLable" />
+
+    <Button
+        android:id="@+id/googleAccountButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registrationButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:text="Войти используя Google аккаунт" />
+
+    <Button
+        android:id="@+id/guestButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Я гость"
+        android:layout_alignBaseline="@+id/loginButton"
+        android:layout_alignBottom="@+id/loginButton"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
