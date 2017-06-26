@@ -36,7 +36,11 @@ public class Post extends AsyncTask<String, Void, String> {
                         postDataParams.put("username", arg0[1]);//далее по массиву
                         postDataParams.put("password", arg0[2]);
                         break;
-                   // case
+                    case "http://192.168.1.205/users/register":
+                        postDataParams.put("username", arg0[1]);//далее по массиву
+                        postDataParams.put("password", arg0[2]);
+                        postDataParams.put("email", arg0[3]);
+                        break;
                 }
 
 

@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.concurrent.ExecutionException;
+
 public class RegistrationActivity extends Activity {
 
     TextView error;
@@ -27,11 +29,20 @@ public class RegistrationActivity extends Activity {
         mail = (EditText) findViewById(R.id.editMail);
     }
 
-    public void regClc(View view){
-        if(pass.getText().toString()==passAgain.getText().toString()){
+    public void regClc(View view) throws  InterruptedException, ExecutionException{
+        if(pass.getText().toString().equals(passAgain.getText().toString())){
+        String args[] = new String[4];
+            args[0]="http://192.168.1.205/users/register";
+            args[1]=name.getText().toString();
+            args[2]=pass.getText().toString();
+            args[3]=mail.getText().toString();
 
+            Post sendReg = new Post();
+            sendReg.execute(args);
+
+            error.setText(sendReg.get().toString());
         }
-        else error.setText("Введенные вами пароли должны быть эдентичны");
+        else error.setText("введенные вами пароли должны быть эквивалентны");
 
     }
 }
