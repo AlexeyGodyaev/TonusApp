@@ -18,7 +18,18 @@ class Users extends CI_Controller {
 
         $response['status'] = $status;
     	echo json_encode($response, TRUE);
+	}
 
+	public function register()
+	{
+		$username = $this->input->post('username');
+		$email = $this->input->post('email');
+        $password = $this->input->post('password');
+
+        $status = $this->User->reg($username, $email, $password);
+
+        $response['status'] = $status;
+    	echo json_encode($response, TRUE);
 	}
 
 }
