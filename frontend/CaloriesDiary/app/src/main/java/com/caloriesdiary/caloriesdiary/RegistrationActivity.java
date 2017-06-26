@@ -42,7 +42,7 @@ public class RegistrationActivity extends Activity {
 
             error.setText(sendReg.get().toString());
         }
-        else error.setText("введенные вами пароли должны быть эквивалентны");
+        else error.setText("Введенные вами пароли должны быть эквивалентны");
 
     }
 }

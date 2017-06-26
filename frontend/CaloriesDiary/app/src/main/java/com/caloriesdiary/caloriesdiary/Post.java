@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -20,11 +22,16 @@ import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import static android.R.attr.data;
+
 public class Post extends AsyncTask<String, Void, String> {
 
         protected void onPreExecute(){}
 
         protected String doInBackground(String... arg0) {
+
+            byte[] data = null;
+            InputStream is = null;
 
             try {
 
@@ -64,11 +71,25 @@ public class Post extends AsyncTask<String, Void, String> {
 
                 int responseCode=conn.getResponseCode();
 
-                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+//-----------------------------------------------------------------------------------------------------------
+                    is = conn.getInputStream();  //тестовый кусок начало
+
+                    byte[] buffer = new byte[8192];
+
+                    int bytesRead;
+                    while ((bytesRead = is.read(buffer)) != -1) {
+                        baos.write(buffer, 0, bytesRead);
+                    }
+                    data = baos.toByteArray();
+
+                    String resultString = new String(data, "UTF-8");//тестовый кусок конец
+//----------------------------------------------------------------------------------------------------------
                     BufferedReader in=new BufferedReader(
                             new InputStreamReader(
-                                    conn.getInputStream()));
+                                    conn.getInputStream(), "UTF-8"));
                     StringBuffer sb = new StringBuffer("");
                     String line="";
 
@@ -79,7 +100,8 @@ public class Post extends AsyncTask<String, Void, String> {
                     }
 
                     in.close();
-                    return sb.toString();
+                    //return sb.toString();
+                    return resultString;
 
                 }
                 else {
