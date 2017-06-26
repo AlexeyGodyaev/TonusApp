@@ -3,6 +3,7 @@ package com.caloriesdiary.caloriesdiary;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Switch;
 
 
 import org.json.JSONObject;
@@ -28,11 +29,17 @@ public class Post extends AsyncTask<String, Void, String> {
             try {
 
                 URL url = new URL(arg0[0]); // первый аргумент из массива который передан при вызове
-
-
                 JSONObject postDataParams = new JSONObject();
-                postDataParams.put("username", arg0[1]);//далее по массиву
-                postDataParams.put("password", arg0[2]);
+
+                switch (arg0[0]) {
+                    case "http://192.168.1.205/users/auth":
+                        postDataParams.put("username", arg0[1]);//далее по массиву
+                        postDataParams.put("password", arg0[2]);
+                        break;
+                   // case
+                }
+
+
                 Log.e("params",postDataParams.toString());
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
