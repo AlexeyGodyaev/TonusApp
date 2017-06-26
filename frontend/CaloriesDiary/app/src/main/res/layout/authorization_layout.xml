@@ -68,6 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Регистрация"
+        android:onClick="registrationClc"
         android:layout_alignBaseline="@+id/guestButton"
         android:layout_alignBottom="@+id/guestButton"
         android:layout_alignLeft="@+id/passwordLable"
@@ -95,11 +96,12 @@
         android:layout_toStartOf="@+id/loginButton" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/testRequestText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/googleAccountButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="27dp"
         android:text="TextView" />
+
 </RelativeLayout>

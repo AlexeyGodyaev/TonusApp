@@ -19,9 +19,7 @@ import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class Post {
-
-    public class SendPostRequest extends AsyncTask<String, Void, String> {
+public class Post extends AsyncTask<String, Void, String> {
 
         protected void onPreExecute(){}
 
@@ -29,11 +27,12 @@ public class Post {
 
             try {
 
-                URL url = new URL(""); // here is your URL path
+               // URL url = new URL(arg0[0]); // here is your URL path
+                URL url = new URL("http://api.docteka.ru/grugs/search"); // here is your URL path
 
                 JSONObject postDataParams = new JSONObject();
-                postDataParams.put("", "");
-                postDataParams.put("", "");
+                //postDataParams.put("username", arg0[1]);
+                postDataParams.put("query", "аспирин");
                 Log.e("params",postDataParams.toString());
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -84,6 +83,7 @@ public class Post {
 
         @Override
         protected void onPostExecute(String result) {
+
     }
 
     public String getPostDataString(JSONObject params) throws Exception {
@@ -109,7 +109,6 @@ public class Post {
 
         }
         return result.toString();
-      }
     }
 }
 
