@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/name_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Имя"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="30dp"/>
+    <EditText
+        android:id="@+id/age_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Возраст"
+        android:layout_below="@id/name_edit"
+        android:layout_marginLeft="30dp"/>
+    <TextView
+        android:id="@+id/gender_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Пол"
+        android:textSize="20dp"
+        android:layout_alignLeft="@+id/age_edit"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_below="@id/age_edit"/>
+    <RadioGroup
+        android:id="@+id/gender_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/age_edit"
+        android:layout_toRightOf="@id/gender_text"
+        android:layout_marginLeft="30dp">
+        <RadioButton
+            android:id="@+id/gender_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="М"
+            android:textSize="20dp"/>
+        <RadioButton
+            android:id="@+id/gender_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ж"
+            android:textSize="20dp"/>
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/height_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Рост (в см)"
+        android:layout_below="@+id/gender_edit"
+        android:layout_marginLeft="30dp"/>
+    <EditText
+        android:id="@+id/weight_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Вес (в кг)"
+        android:layout_below="@+id/height_edit"
+        android:layout_marginLeft="30dp"/>
+    <TextView
+        android:id="@+id/activity_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Образ жизни"
+        android:textSize="20dp"
+        android:layout_alignLeft="@+id/weight_edit"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_below="@id/weight_edit"/>
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activity_text"
+
+        >
+
+    </Spinner>
+</RelativeLayout>
