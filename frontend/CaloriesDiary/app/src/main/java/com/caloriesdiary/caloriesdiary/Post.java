@@ -100,7 +100,7 @@ public class Post extends AsyncTask<String, Void, String> {
                     }
 
                     in.close();
-                    //return sb.toString();
+                    //return new String(sb.toString().getBytes("UTF-8"),"windows-1251");
                     return resultString;
 
                 }
