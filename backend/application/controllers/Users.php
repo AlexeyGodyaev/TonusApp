@@ -16,9 +16,19 @@ class Users extends CI_Controller {
 
         $status = $this->User->check($username, $password);
 
-        $response['status'] = $status;
+        if(is_string($status))
+        {
+        	$response['msg'] = $status;
+        	$response['status'] = 0;
+        }
+        else
+        {
+			$response['status'] = 1;
+        }
+        
     	echo json_encode($response, TRUE);
 	}
+
 
 	public function register()
 	{
@@ -28,8 +38,59 @@ class Users extends CI_Controller {
 
         $status = $this->User->reg($username, $email, $password);
 
-        $response['status'] = $status;
+        if(is_string($status))
+        {
+        	$response['msg'] = $status;
+        	$response['status'] = 0;
+        }
+        else
+        {
+        	$response['status'] = 1;
+        }
+        
     	echo json_encode($response, TRUE);
 	}
+
+    public function change_password()
+    {
+       $username = $this->input->post('username');
+       $oldpassword = $this->input->post('oldpassword');
+       $newpassword = $this->input->post('newpassword');
+
+       $status = $this->User->changePassword($username, $oldpassword, $newpassword);
+
+       if(is_string($status))
+        {
+            $response['msg'] = $status;
+            $response['status'] = 0;
+        }
+        else
+        {
+            $response['status'] = 1;
+        }
+        
+        echo json_encode($response, TRUE);
+
+
+    }
+
+    public function delete()
+    {
+        $username = $this->input->post('username');
+        $status = $this->User->del($username);
+
+        if(is_string($status))
+        {
+            $response['msg'] = $status;
+            $response['status'] = 0;
+        }
+        else
+        {
+            $response['status'] = 1;
+        }
+        
+        echo json_encode($response, TRUE);
+
+    }
 
 }
