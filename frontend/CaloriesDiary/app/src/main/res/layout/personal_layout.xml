@@ -6,22 +6,23 @@
         android:id="@+id/name_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Имя"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="25dp"
-        android:layout_marginLeft="30dp"/>
+        android:hint="Имя" />
     <EditText
         android:id="@+id/age_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Возраст"
         android:layout_below="@id/name_edit"
-        android:layout_marginLeft="30dp"/>
+        android:layout_marginLeft="30dp"
+        android:inputType="number"/>
     <TextView
         android:id="@+id/gender_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Пол"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:layout_alignLeft="@+id/age_edit"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
@@ -54,30 +55,45 @@
         android:layout_height="wrap_content"
         android:hint="Рост (в см)"
         android:layout_below="@+id/gender_edit"
-        android:layout_marginLeft="30dp"/>
+        android:layout_marginLeft="30dp"
+        android:inputType="number"/>
     <EditText
         android:id="@+id/weight_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Вес (в кг)"
         android:layout_below="@+id/height_edit"
-        android:layout_marginLeft="30dp"/>
+        android:layout_marginLeft="30dp"
+        android:inputType="number"/>
     <TextView
         android:id="@+id/activity_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Образ жизни"
-        android:textSize="20dp"
+        android:text="Уровень физ. нагрузки"
+        android:textSize="18dp"
         android:layout_alignLeft="@+id/weight_edit"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_below="@id/weight_edit"/>
     <Spinner
+        android:id="@+id/activity_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/activity_text"
-
+        android:layout_alignLeft="@+id/activity_text"
+        android:entries="@array/activitylist"
         >
 
+
     </Spinner>
+    <Button
+        android:id="@+id/ok_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ок"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:onClick="onClick"/>
 </RelativeLayout>

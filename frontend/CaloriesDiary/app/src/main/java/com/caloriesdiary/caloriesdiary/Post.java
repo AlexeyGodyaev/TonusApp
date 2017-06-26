@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Iterator;
 
@@ -93,9 +94,10 @@ public class Post extends AsyncTask<String, Void, String> {
                     StringBuffer sb = new StringBuffer("");
                     String line="";
 
-                    while((line = in.readLine()) != null) {
 
-                        sb.append(line);
+                    while((line = in.readLine()) != null) {
+                        JSONObject js = new JSONObject(line);
+                        sb.append(js.getString("msg"));
                         break;
                     }
 
