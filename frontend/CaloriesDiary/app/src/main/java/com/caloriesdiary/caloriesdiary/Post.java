@@ -31,9 +31,6 @@ public class Post extends AsyncTask<String, Void, String> {
 
         protected String doInBackground(String... arg0) {
 
-            byte[] data = null;
-            InputStream is = null;
-
             try {
 
                 URL url = new URL(arg0[0]); // первый аргумент из массива который передан при вызове
@@ -72,22 +69,7 @@ public class Post extends AsyncTask<String, Void, String> {
 
                 int responseCode=conn.getResponseCode();
 
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
-//-----------------------------------------------------------------------------------------------------------
-                    is = conn.getInputStream();  //тестовый кусок начало
-
-                    byte[] buffer = new byte[8192];
-
-                    int bytesRead;
-                    while ((bytesRead = is.read(buffer)) != -1) {
-                        baos.write(buffer, 0, bytesRead);
-                    }
-                    data = baos.toByteArray();
-
-                    String resultString = new String(data, "UTF-8");//тестовый кусок конец
-//----------------------------------------------------------------------------------------------------------
                     BufferedReader in=new BufferedReader(
                             new InputStreamReader(
                                     conn.getInputStream(), "UTF-8"));
@@ -102,8 +84,7 @@ public class Post extends AsyncTask<String, Void, String> {
                     }
 
                     in.close();
-                    //return new String(sb.toString().getBytes("UTF-8"),"windows-1251");
-                    return resultString;
+                    return sb.toString();
 
                 }
                 else {
