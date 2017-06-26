@@ -10,7 +10,7 @@
         android:text="Введите логин" />
 
     <EditText
-        android:id="@+id/editLogin"
+        android:id="@+id/editRegLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -37,7 +37,7 @@
         android:text="Введите пароль" />
 
     <EditText
-        android:id="@+id/editPassword"
+        android:id="@+id/editRegPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"

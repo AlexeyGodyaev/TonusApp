@@ -21,8 +21,8 @@ public class RegistrationActivity extends Activity {
 
         error = (TextView) findViewById(R.id.registrationErrorView);
         regBtn = (Button) findViewById(R.id.registrationButton);
-        name = (EditText) findViewById(R.id.editLogin);
-        pass = (EditText) findViewById(R.id.editPassword);
+        name = (EditText) findViewById(R.id.editRegLogin);
+        pass = (EditText) findViewById(R.id.editRegPassword);
         passAgain = (EditText) findViewById(R.id.editPasswordAgain);
         mail = (EditText) findViewById(R.id.editMail);
     }
