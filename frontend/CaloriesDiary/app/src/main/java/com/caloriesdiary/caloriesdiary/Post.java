@@ -27,12 +27,12 @@ public class Post extends AsyncTask<String, Void, String> {
 
             try {
 
-               // URL url = new URL(arg0[0]); // here is your URL path
-                URL url = new URL("http://api.docteka.ru/grugs/search"); // here is your URL path
+                URL url = new URL(arg0[0]); // первый аргумент из массива который передан при вызове
+
 
                 JSONObject postDataParams = new JSONObject();
-                //postDataParams.put("username", arg0[1]);
-                postDataParams.put("query", "аспирин");
+                postDataParams.put("username", arg0[1]);//далее по массиву
+                postDataParams.put("password", arg0[2]);
                 Log.e("params",postDataParams.toString());
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -45,7 +45,7 @@ public class Post extends AsyncTask<String, Void, String> {
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(
                         new OutputStreamWriter(os, "UTF-8"));
-                writer.write(getPostDataString(postDataParams));
+                writer.write(getPostDataString(postDataParams)); // преобразуем json объект в строку параметров запроса
 
                 writer.flush();
                 writer.close();

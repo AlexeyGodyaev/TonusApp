@@ -100,8 +100,22 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-manifest">
+            <state />
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="authorization_layout.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/authorization_layout.xml">
+<<<<<<< HEAD
 <<<<<<< HEAD
           <provider editor-type-id="android-designer2">
             <state />
@@ -128,6 +142,15 @@
 <<<<<<< HEAD
 =======
           <provider selected="true" editor-type-id="android-designer2">
+=======
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="151">
+              <caret line="60" column="34" selection-start-line="60" selection-start-column="34" selection-end-line="60" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer2">
+>>>>>>> Alex's-branch
             <state />
           </provider>
 >>>>>>> Alex's-branch
@@ -146,9 +169,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AuthorizationActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AuthorizationActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/caloriesdiary/caloriesdiary/AuthorizationActivity.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
 <<<<<<< HEAD
             <state relative-caret-position="250">
 =======
@@ -162,6 +186,10 @@
             <state relative-caret-position="430">
               <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
 >>>>>>> Alex's-branch
+=======
+            <state relative-caret-position="355">
+              <caret line="44" column="45" selection-start-line="44" selection-start-column="45" selection-end-line="44" selection-end-column="45" />
+>>>>>>> Alex's-branch
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -169,11 +197,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Post.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Post.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/caloriesdiary/caloriesdiary/Post.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1082">
-              <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+            <state relative-caret-position="-251">
+              <caret line="70" column="41" selection-start-line="70" selection-start-column="41" selection-end-line="70" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -2028,10 +2056,10 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/new_layout2.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/caloriesdiary/caloriesdiary/MainActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/authorization_layout.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/registration_layout.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/caloriesdiary/caloriesdiary/RegistrationActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/authorization_layout.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/caloriesdiary/caloriesdiary/Post.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/caloriesdiary/caloriesdiary/AuthorizationActivity.java" />
       </list>
@@ -3083,6 +3111,7 @@
     </entry>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/caloriesdiary/caloriesdiary/AuthorizationActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
@@ -3128,20 +3157,23 @@
       <provider editor-type-id="android-manifest">
 =======
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="56" selection-start-line="12" selection-start-column="56" selection-end-line="12" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-manifest">
-        <state />
-      </provider>
-    </entry>
+=======
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/registration_layout.xml">
+>>>>>>> Alex's-branch
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="39">
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/authorization_layout.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="151">
+          <caret line="60" column="34" selection-start-line="60" selection-start-column="34" selection-end-line="60" selection-end-column="34" />
           <folding />
         </state>
       </provider>
@@ -3166,31 +3198,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/authorization_layout.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="104" column="34" selection-start-line="104" selection-start-column="34" selection-end-line="104" selection-end-column="34" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
           <folding />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="android-designer2">
+      <provider editor-type-id="android-manifest">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/caloriesdiary/caloriesdiary/AuthorizationActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/caloriesdiary/caloriesdiary/Post.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+        <state relative-caret-position="-251">
+          <caret line="70" column="41" selection-start-line="70" selection-start-column="41" selection-end-line="70" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/caloriesdiary/caloriesdiary/Post.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/caloriesdiary/caloriesdiary/AuthorizationActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1082">
-          <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+        <state relative-caret-position="355">
+          <caret line="44" column="45" selection-start-line="44" selection-start-column="45" selection-end-line="44" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

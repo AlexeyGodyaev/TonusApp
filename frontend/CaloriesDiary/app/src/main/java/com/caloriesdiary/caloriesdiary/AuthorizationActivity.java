@@ -41,11 +41,11 @@ public class AuthorizationActivity extends Activity {
 
         String args [] = new String[3];
 
-        args[0] = "192.168.1.205/users/auth";
+        args[0] = "http://192.168.1.205/users/auth";  //аргументы для пост запроса
         args[1] = login.getText().toString();
         args[2] = pass.getText().toString();
 
-        log.execute(args);
+        log.execute(args); // вызываем запрос
 
         err.setText(log.get().toString());
 
