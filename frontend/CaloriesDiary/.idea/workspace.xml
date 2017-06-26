@@ -117,6 +117,17 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/authorization_layout.xml">
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="151">
+              <caret line="60" column="34" selection-start-line="60" selection-start-column="34" selection-end-line="60" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer2">
+=======
+>>>>>>> Alex's-branch
+<<<<<<< HEAD
           <provider editor-type-id="android-designer2">
             <state />
           </provider>
@@ -142,6 +153,7 @@
 <<<<<<< HEAD
 =======
           <provider selected="true" editor-type-id="android-designer2">
+<<<<<<< HEAD
 =======
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="151">
@@ -150,6 +162,9 @@
             </state>
           </provider>
           <provider editor-type-id="android-designer2">
+>>>>>>> Alex's-branch
+=======
+>>>>>>> Emil's-branch
 >>>>>>> Alex's-branch
             <state />
           </provider>
@@ -174,6 +189,12 @@
           <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+            <state relative-caret-position="355">
+              <caret line="44" column="45" selection-start-line="44" selection-start-column="45" selection-end-line="44" selection-end-column="45" />
+=======
+>>>>>>> Alex's-branch
+<<<<<<< HEAD
             <state relative-caret-position="250">
 =======
             <state relative-caret-position="170">
@@ -186,9 +207,13 @@
             <state relative-caret-position="430">
               <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
 >>>>>>> Alex's-branch
+<<<<<<< HEAD
 =======
             <state relative-caret-position="355">
               <caret line="44" column="45" selection-start-line="44" selection-start-column="45" selection-end-line="44" selection-end-column="45" />
+>>>>>>> Alex's-branch
+=======
+>>>>>>> Emil's-branch
 >>>>>>> Alex's-branch
               <folding>
                 <element signature="imports" expanded="true" />
@@ -3111,6 +3136,11 @@
     </entry>
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/registration_layout.xml">
+=======
+>>>>>>> Alex's-branch
+<<<<<<< HEAD
 <<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/caloriesdiary/caloriesdiary/AuthorizationActivity.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -3157,8 +3187,12 @@
       <provider editor-type-id="android-manifest">
 =======
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+<<<<<<< HEAD
 =======
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/registration_layout.xml">
+>>>>>>> Alex's-branch
+=======
+>>>>>>> Emil's-branch
 >>>>>>> Alex's-branch
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="39">
