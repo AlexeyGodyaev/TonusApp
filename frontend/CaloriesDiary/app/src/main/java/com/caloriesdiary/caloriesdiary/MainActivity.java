@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         return true;
     }
+    
 public void onClc(View view){
     Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
 
