@@ -3,14 +3,19 @@ package com.caloriesdiary.caloriesdiary;
 
 public class FoodItem {
     String name;
-    int b, j, u, categoryId, calories;
-    FoodItem(String name, int b, int j, int u, int categoryId, int calories){
+    Float b, j, u, calories;
+    int categoryId;
+
+    FoodItem(String name, Float b, Float j, Float u, int categoryId, Float calories){
         this.name = name;
         this.b = b;
         this.j = j;
         this.u = u;
         this.categoryId =categoryId;
         this.calories = calories;
+    }
+
+    FoodItem(){
     }
 
     public String getName() {
@@ -21,27 +26,27 @@ public class FoodItem {
         this.name = name;
     }
 
-    public int getB() {
+    public Float getB() {
         return b;
     }
 
-    public void setB(int b) {
+    public void setB(Float b) {
         this.b = b;
     }
 
-    public int getJ() {
+    public Float getJ() {
         return j;
     }
 
-    public void setJ(int j) {
+    public void setJ(Float j) {
         this.j = j;
     }
 
-    public int getU() {
+    public Float getU() {
         return u;
     }
 
-    public void setU(int u) {
+    public void setU(Float u) {
         this.u = u;
     }
 
@@ -53,11 +58,11 @@ public class FoodItem {
         this.categoryId = categoryId;
     }
 
-    public int getCalories() {
+    public Float getCalories() {
         return calories;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(Float calories) {
         this.calories = calories;
     }
 }
