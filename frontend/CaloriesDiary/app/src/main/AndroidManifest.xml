@@ -19,7 +19,7 @@
 
         <activity android:name=".AuthorizationActivity"/>
         <activity android:name=".RegistrationActivity"/>
-        
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

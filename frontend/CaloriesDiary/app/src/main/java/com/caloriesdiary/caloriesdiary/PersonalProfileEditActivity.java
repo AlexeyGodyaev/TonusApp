@@ -87,6 +87,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         editor.putString("IS_PROFILE_CREATED","TRUE");
         editor.commit();
         Intent intent = new Intent(getApplicationContext(),PersonalProfileActivity.class);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 
