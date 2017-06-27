@@ -12,27 +12,23 @@ class Food extends CI_Controller {
 	public function get_food_names()
 	{
 		$food_names_q = $this->Product->get_food_names();
-		$data['foodNames'] = $food_names_q;
 
 		$response = array();
     	$foodNames = array();
 
-    	foreach ($food_names_q as $f) 
-        { 
-            $response['foodNames'] = array(
-                $f->name
-            );
-        } 
+    	$i = 0;
+        foreach ($food_names_q as $f) {
+            $foodNames[$i] = $f->name;
+            $i++;
+        }
 
-        //$response['status'] = $status;
+        $response['foodNames'] = $foodNames;
     	echo json_encode($response, TRUE);
-
 	}
 
 	public function get_food()
 	{
 		$food_q = $this->Product->get_food();
-		$data['food'] = $food_q;
 
 		$response = array();
     	$food = array();

@@ -10,13 +10,14 @@ class Product extends CI_Model {
 
     public function get_food_names()
     {
-        $query = $this->db->query('SELECT name FROM "Food";');
+        $this->db->select('name');
+        $query = $this->db->get('Food');
         return $query->result();
     }
 
      public function get_food()
     {
-        $query = $this->db->query('SELECT * FROM "Food";');
+        $query = $this->db->get('Food');
         return $query->result();
     }
 

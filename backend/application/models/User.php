@@ -38,7 +38,7 @@ class User extends CI_Model {
 
         if($query->num_rows() > 0)
         {
-            return 'This username already exists';
+            return 'Имя пользователя уже занято';
         }
         else
         {
@@ -46,7 +46,7 @@ class User extends CI_Model {
 
             if($query->num_rows() > 0)
             {
-                return 'This email is already taken';
+                return 'Адрес электронной почты занят';
             }
             else
             {
@@ -67,18 +67,27 @@ class User extends CI_Model {
         }
     }
 
-    public function del($username)
+    public function del($username, $password)
     {
         $query = $this->db->get_where('Users', array('username' => $username));
 
         if($query->num_rows() > 0)
         {
-            $this->db->delete('Users', array('username' => $username));
-            return 1;
+            $query = $this->db->get_where('Users', array('password' => $username));
+
+            if($query->num_rows() > 0)
+            {
+                $this->db->delete('Users', array('username' => $username));
+                return 1;
+            }
+            else
+            {
+                return 'Неправильный пароль';
+            }
         }
         else
         {
-            return 'Неверный логин';
+            return 'Имя пользователя не найдено';
         }
        
     }
@@ -104,7 +113,7 @@ class User extends CI_Model {
         }
         else
         {
-                return 'Unexpected error';
+                return 'Имя пользователя не найдено';
         }
     }
 

@@ -23,6 +23,7 @@ class Users extends CI_Controller {
         }
         else
         {
+            $response['msg'] = "ОК";
 			$response['status'] = 1;
         }
         
@@ -45,6 +46,7 @@ class Users extends CI_Controller {
         }
         else
         {
+            $response['msg'] = "ОК";
         	$response['status'] = 1;
         }
         
@@ -66,6 +68,7 @@ class Users extends CI_Controller {
         }
         else
         {
+            $response['msg'] = "ОК";
             $response['status'] = 1;
         }
         
@@ -77,7 +80,8 @@ class Users extends CI_Controller {
     public function delete()
     {
         $username = $this->input->post('username');
-        $status = $this->User->del($username);
+        $password = $this->input->post('password');
+        $status = $this->User->del($username, $password);
 
         if(is_string($status))
         {
@@ -86,6 +90,7 @@ class Users extends CI_Controller {
         }
         else
         {
+            $response['msg'] = "ОК";
             $response['status'] = 1;
         }
         

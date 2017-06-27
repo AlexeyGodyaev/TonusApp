@@ -10,13 +10,14 @@ class Action extends CI_Model {
 
     public function get_act_names()
     {
-        $query = $this->db->query('SELECT name FROM "Activities";');
+        $this->db->select('name');
+        $query = $this->db->get('Activities');
         return $query->result();
     }
 
      public function get_activities()
     {
-        $query = $this->db->query('SELECT * FROM "Activities";');
+        $query = $this->db->get('Activities');
         return $query->result();
     }
 

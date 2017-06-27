@@ -12,19 +12,16 @@ class Activities extends CI_Controller {
 	public function get_act_names()
 	{
 		$act_names_q = $this->Action->get_act_names();
-		$data['actNames'] = $act_names_q;
 
 		$response = array();
-    	$actNames = array();
+    	
+        $i = 0;
+        foreach ($act_names_q as $act) {
+            $actNames[$i] = $act->name;
+            $i++;
+        }
 
-    	foreach ($act_names_q as $a) 
-    	{ 
-        	$response['actNames'] = array(
-            	$a->name
-        	);
-    	} 
-
-        //$response['status'] = $status;
+        $response['actNames'] = $actNames;
     	echo json_encode($response, TRUE);
 
 	}
@@ -32,7 +29,6 @@ class Activities extends CI_Controller {
 	public function get_activities()
 	{
 		$activities_q = $this->Action->get_activities();
-		$data['activities'] = $activities_q;
 
 		$response = array();
     	$activities = array();

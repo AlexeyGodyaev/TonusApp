@@ -53,6 +53,7 @@ $route['default_controller'] = 'welcome';
 $route['food']['get'] = 'food';
 $route['activities']['get'] = 'activities';
 $route['users']['post'] = 'users';
+$route['parser']['get'] = 'parser';
 $route['calories']['post'] = 'calories';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

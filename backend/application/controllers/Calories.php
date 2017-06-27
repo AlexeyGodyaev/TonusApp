@@ -19,7 +19,7 @@ class Calories extends CI_Controller {
 
         $result = $this->CaloriesCalc->caloriesPerday($weight, $height, $sex, $activityType, $age);
 
-        $response  = array('caloriesPerDay' => $result );
+        $response = array('caloriesPerDay' => $result, 'status' => 1);
 
         echo json_encode($response, TRUE);
 
