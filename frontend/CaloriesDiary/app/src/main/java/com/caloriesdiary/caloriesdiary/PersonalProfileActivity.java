@@ -1,9 +1,7 @@
 package com.caloriesdiary.caloriesdiary;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +9,6 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import java.util.concurrent.ExecutionException;
 
@@ -25,7 +22,7 @@ public class PersonalProfileActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.personal_layout);
+        setContentView(R.layout.personal_edit_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         ok_btn = (Button) findViewById(R.id.ok_btn);
