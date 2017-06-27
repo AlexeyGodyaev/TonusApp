@@ -39,6 +39,15 @@ public void onClc(View view){
 
     startActivity(intent);
 }
+
+    public void onFoodCatalogClc(View view){
+        Intent intent = new Intent(getApplicationContext(),FoodCatalogActivity.class);
+
+        startActivity(intent);
+    }
+
+
+
     public void onProfileClick(View view){
         Intent intent = new Intent(getApplicationContext(),PersonalProfileActivity.class);
 
