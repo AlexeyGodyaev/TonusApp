@@ -2,10 +2,8 @@ package com.caloriesdiary.caloriesdiary;
 
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +20,12 @@ public class FoodCatalogActivity extends Activity{
 
         listView = (ListView) findViewById(R.id.foodList);
 
-
-
         FoodAdapter adapter = new FoodAdapter(this, initData());
         listView.setAdapter(adapter);
     }
 
     public  String getFood() throws InterruptedException, ExecutionException{
-        Get get = new Get();
+        GetFood get = new GetFood();
         get.execute("http://192.168.1.205/food/get_food");
 
         return get.get().toString();

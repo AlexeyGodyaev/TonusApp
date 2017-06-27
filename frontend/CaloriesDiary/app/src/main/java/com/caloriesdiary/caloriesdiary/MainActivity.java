@@ -46,6 +46,12 @@ public void onClc(View view){
         startActivity(intent);
     }
 
+    public void onActionsCatalogClc(View view){
+        Intent intent = new Intent(getApplicationContext(),ActionsCatalogActivity.class);
+
+        startActivity(intent);
+    }
+
 
 
     public void onProfileClick(View view){

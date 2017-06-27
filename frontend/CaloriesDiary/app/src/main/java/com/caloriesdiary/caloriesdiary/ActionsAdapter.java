@@ -1,5 +1,6 @@
 package com.caloriesdiary.caloriesdiary;
 
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class FoodAdapter extends BaseAdapter{
+public class ActionsAdapter extends BaseAdapter {
 
-    private List<FoodItem> list;
+    private List<ActionItem> list;
     private LayoutInflater layoutInflater;
 
-    public  FoodAdapter(Context context, List<FoodItem> list){
+    public  ActionsAdapter(Context context, List<ActionItem> list){
         this.list = list;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -43,25 +44,22 @@ public class FoodAdapter extends BaseAdapter{
             view = layoutInflater.inflate(R.layout.list_item, viewGroup, false);
         }
 
-        FoodItem foodItem = getFoodItem(i);
+        ActionItem actionItem = getActionItem(i);
 
         TextView productName, bJU, calories;
         Button addProduct;
         productName = (TextView) view.findViewById(R.id.productName);
-        productName.setText(foodItem.getName());
-
-        bJU = (TextView) view.findViewById(R.id.bJU);
-        bJU.setText(foodItem.getB().toString()+"/"+foodItem.getJ().toString()+"/"+foodItem.getU().toString());
+        productName.setText(actionItem.getName());
 
         calories = (TextView) view.findViewById(R.id.productCalories);
-        calories.setText(foodItem.getCalories().toString());
+        calories.setText(actionItem.getCalories().toString());
 
         addProduct = (Button) view.findViewById(R.id.addProductButton);
 
         return view;
     }
 
-    private FoodItem getFoodItem(int position){
-        return (FoodItem) getItem(position);
+    private ActionItem getActionItem(int position){
+        return (ActionItem) getItem(position);
     }
 }
