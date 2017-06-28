@@ -18,7 +18,12 @@ class User extends CI_Model {
 
             if($query->num_rows() > 0)
             {
-                return 1;
+                
+                foreach ($query->result() as $row) 
+                {
+                    return $row->user_id;                
+                }
+                
             }
             else
             {
@@ -116,5 +121,6 @@ class User extends CI_Model {
                 return 'Имя пользователя не найдено';
         }
     }
+
 
 }

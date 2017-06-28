@@ -7,6 +7,7 @@ class Calories extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('CaloriesCalc');
+
 	}
 
     public function get_calories_per_day()
@@ -19,7 +20,7 @@ class Calories extends CI_Controller {
 
         $result = $this->CaloriesCalc->caloriesPerday($weight, $height, $sex, $activityType, $age);
 
-        $response = array('caloriesPerDay' => $result, 'status' => 1);
+        $response = array('loseWeight' => $result-800,'maintainWeight' => $result, 'gainWeight' => $result+800, 'status' => 1);
 
         echo json_encode($response, TRUE);
 

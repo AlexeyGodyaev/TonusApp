@@ -28,7 +28,8 @@ class Food extends CI_Controller {
 
 	public function get_food()
 	{
-		$food_q = $this->Product->get_food();
+        $offset = $this->input->post('offset');
+		$food_q = $this->Product->get_food($offset);
 
 		$response = array();
     	$food = array();

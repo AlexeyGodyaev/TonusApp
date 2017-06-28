@@ -15,9 +15,9 @@ class Product extends CI_Model {
         return $query->result();
     }
 
-     public function get_food()
+     public function get_food($offset)
     {
-        $query = $this->db->get('Food');
+        $query = $this->db->get('Food', 500, $offset);
         return $query->result();
     }
 

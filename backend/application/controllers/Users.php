@@ -7,6 +7,7 @@ class Users extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('User');
+        $this->load->model('CaloriesCalc');
 	}
 
 	public function auth()
@@ -25,6 +26,7 @@ class Users extends CI_Controller {
         {
             $response['msg'] = "ОК";
 			$response['status'] = 1;
+            $response['user_id'] = $status;
         }
         
     	echo json_encode($response, TRUE);
@@ -96,6 +98,32 @@ class Users extends CI_Controller {
         
         echo json_encode($response, TRUE);
 
+    }
+
+
+    public function save_user_chars()
+    {
+        $id = $this->input->post('id');
+        $weight = $this->input->post('weight');
+        $height = $this->input->post('height');
+        $sex = $this->input->post('sex');
+        $age = $this->input->post('age');
+        $activityType = $this->input->post('activityType');
+
+        $status = $this->CaloriesCalc->saveUserChars($id, $weight, $height, $sex, $activityType, $age);
+
+         if(is_string($status))
+        {
+            $response['msg'] = $status;
+            $response['status'] = 0;
+        }
+        else
+        {
+            $response['msg'] = "ОК";
+            $response['status'] = 1;
+        }
+        
+        echo json_encode($response, TRUE);
     }
 
 }
