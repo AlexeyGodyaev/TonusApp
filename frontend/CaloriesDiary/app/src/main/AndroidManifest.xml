@@ -13,6 +13,7 @@
         <activity android:name=".PersonalProfileActivity"/>
         <activity android:name=".FoodCatalogActivity"/>
         <activity android:name=".ActionsCatalogActivity"/>
+
         <activity android:name=".PersonalProfileEditActivity"/>
         <activity android:name=".AuthorizationActivity"/>
         <activity android:name=".RegistrationActivity"/>
