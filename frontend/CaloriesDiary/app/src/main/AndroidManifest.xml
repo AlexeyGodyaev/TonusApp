@@ -16,7 +16,7 @@
         <activity android:name=".PersonalProfileActivity"/>
         <activity android:name=".FoodCatalogActivity"/>
         <activity android:name=".ActionsCatalogActivity"/>
-
+        <activity android:name=".GuestMainActivity"/>
         <activity android:name=".AuthorizationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

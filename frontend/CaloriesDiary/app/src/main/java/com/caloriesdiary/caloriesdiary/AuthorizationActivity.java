@@ -2,8 +2,10 @@ package com.caloriesdiary.caloriesdiary;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.Menu;
 
 import android.view.View;
@@ -12,6 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 
@@ -22,6 +27,8 @@ public class AuthorizationActivity extends Activity {
     Button logBtn;
     EditText login, pass;
     TextView err;
+    SharedPreferences sharedPref = null;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,9 @@ public class AuthorizationActivity extends Activity {
         login = (EditText) findViewById(R.id.editLogin);
         pass = (EditText) findViewById(R.id.editPassword);
         err = (TextView) findViewById(R.id.testRequestText);
+        sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
+        editor = sharedPref.edit();
+        InitPreference();
 
     }
 
@@ -44,25 +54,64 @@ public class AuthorizationActivity extends Activity {
     public void loginClc(View view) throws InterruptedException, ExecutionException {
         Post log = new Post();
 
-        String args [] = new String[3];
+        String args[] = new String[3];
 
         args[0] = "http://192.168.1.205/users/auth";  //аргументы для пост запроса
         args[1] = login.getText().toString();
         args[2] = pass.getText().toString();
 
         log.execute(args); // вызываем запрос
-        String ans = log.get().toString();
-        err.setText(ans);
-
-        if(ans.equals("ОК"))
+        int status = -1;
+        JSONObject JSans = log.get();
+        try
         {
-            Toast.makeText(getApplicationContext(), "ХОП ХЕЙ ЛАЛАЛЕЙ", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            err.setText("Status: " +JSans.getString("status"));
+            status =  JSans.getInt("status");
+
+            if(status == 1)
+            {
+                editor.putInt("PROFILE_ID",JSans.getInt("user_id"));
+                editor.commit();
+                Toast.makeText(getApplicationContext(), "Добро пожаловать, " + login.getText().toString() +" " + String.valueOf(sharedPref.getInt("PROFILE_ID",0)), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+            else if(status == 0)
+            {
+                err.setText("Неправильное имя пользователя или пароль");
+            }
+        }
+        catch (Exception e)
+        {
+            err.setText(e.toString());
+        }
+
+    }
+    public void guestClc(View view)
+    {
+        Intent intent = new Intent(getApplicationContext(),GuestMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+    public void InitPreference()
+    {
+
+        if(sharedPref.getBoolean("IS_FIRST_LAUNCH",true))
+        {
+            Toast.makeText(getApplicationContext(),"Вы в приложении в первый раз ",Toast.LENGTH_LONG).show();
+            editor.putBoolean("IS_FIRST_LAUNCH",false);
+            editor.putInt("PROFILE_ID",0);
+            editor.putBoolean("IS_PROFILE_CREATED",false);
         }
 
 
+        editor.commit();
+        Map<String, ?> allEntries = sharedPref.getAll();   //Увидеть все настройки
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+        }
     }
 }

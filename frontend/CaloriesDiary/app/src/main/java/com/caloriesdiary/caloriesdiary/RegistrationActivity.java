@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
@@ -41,14 +44,29 @@ public class RegistrationActivity extends Activity {
             Post sendReg = new Post();
             sendReg.execute(args);
             String ans = sendReg.get().toString();
-            error.setText(ans);
-            if(ans.equals("ОК"))
+
+            JSONObject js = sendReg.get();
+            try
             {
-                Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                js.getInt("status");
+                error.setText(ans);
+                if(js.getInt("status") == 0)
+                {
+                    Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),js.getString("msg"),Toast.LENGTH_LONG);
+                }
             }
+            catch (Exception e)
+            {
+
+            }
+
         }
         else error.setText("Введенные вами пароли должны быть эквивалентны");
 

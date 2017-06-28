@@ -42,7 +42,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
 
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
         editor = sharedPref.edit();
-        InitPreference();
+       // InitPreference();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -25,12 +25,12 @@ import javax.net.ssl.HttpsURLConnection;
 
 import static android.R.attr.data;
 
-public class Post extends AsyncTask<String, Void, String> {
+public class Post extends AsyncTask<String, Void, JSONObject> {
 
         protected void onPreExecute(){}
 
-        protected String doInBackground(String... arg0) {
-
+        protected JSONObject doInBackground(String... arg0) {
+            JSONObject js = new JSONObject();
             try {
 
                 URL url = new URL(arg0[0]); // первый аргумент из массива который передан при вызове
@@ -78,26 +78,29 @@ public class Post extends AsyncTask<String, Void, String> {
 
 
                     while((line = in.readLine()) != null) {
-                        JSONObject js = new JSONObject(line);
+                        js = new JSONObject(line);
                         sb.append(js.getString("msg"));
                         break;
                     }
 
                     in.close();
-                    return sb.toString();
+                    //return sb.toString();
+                    return js;
 
                 }
                 else {
-                    return new String("false : "+responseCode);
+                    //return new String("false : "+responseCode);
+                    return js;
                 }
             }
             catch(Exception e){
-                return new String("Exception: " + e.getMessage());
+                //return new String("Exception: " + e.getMessage());
+                return js;
             }
 
         }
 
-        @Override
+
         protected void onPostExecute(String result) {
 
     }
