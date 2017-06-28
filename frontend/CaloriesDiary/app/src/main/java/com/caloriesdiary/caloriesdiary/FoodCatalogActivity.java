@@ -1,11 +1,13 @@
 package com.caloriesdiary.caloriesdiary;
 
 
-import android.app.Activity;
+
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -13,17 +15,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class FoodCatalogActivity extends Activity{
-
+public class FoodCatalogActivity extends FragmentActivity {
+    boolean flag = true;
     ListView listView;
     EditText srch;
+    private FilterFragment filterFragment;
+
+    private FragmentManager manager;
+    private FragmentTransaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_catalog_layout);
 
-        srch = (EditText) findViewById(R.id.srch);
+        filterFragment = new FilterFragment();
+        manager = getSupportFragmentManager();
+
+        srch = (EditText) findViewById(R.id.srchFood);
         srch.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -39,6 +48,16 @@ public class FoodCatalogActivity extends Activity{
 
         FoodAdapter adapter = new FoodAdapter(this, initData());
         listView.setAdapter(adapter);
+    }
+
+    public void onClcFilterButton(View view){
+        transaction = manager.beginTransaction();
+
+        if(flag == true){
+        transaction.add(R.id.filterFragmentFood, filterFragment); flag = false;}
+        else {transaction.remove(filterFragment);  flag = true;}
+
+        transaction.commit();
     }
 
     public  String getFood() throws InterruptedException, ExecutionException{

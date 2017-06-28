@@ -1,7 +1,7 @@
 package com.caloriesdiary.caloriesdiary;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class ActionsCatalogActivity extends Activity {
+public class ActionsCatalogActivity extends FragmentActivity {
 
     EditText srch;
     ListView listView;
