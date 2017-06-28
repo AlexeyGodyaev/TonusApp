@@ -14,7 +14,7 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-
+        android:onClick="onTodayClc"
         android:text="Сегодня"/>
     <Button
         android:id="@+id/profile_btn"

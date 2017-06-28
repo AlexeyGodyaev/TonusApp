@@ -26,6 +26,6 @@
 
     <string-array name="sortActions">
         <item>Алфавиту</item>
-        <item>Кол-ву калорий</item>
+        <item>Затратам калорий</item>
     </string-array>
 </resources>

@@ -16,6 +16,7 @@
         <activity android:name=".PersonalProfileActivity"/>
         <activity android:name=".FoodCatalogActivity"/>
         <activity android:name=".ActionsCatalogActivity"/>
+        <activity android:name=".TodayActivity"/>
         <activity android:name=".AuthorizationActivity"/>
         <activity android:name=".RegistrationActivity"/>
 
