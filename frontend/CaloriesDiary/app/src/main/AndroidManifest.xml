@@ -10,6 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".PersonalProfileEditActivity"/>
+
         <activity android:name=".PersonalProfileActivity"/>
         <activity android:name=".FoodCatalogActivity"/>
         <activity android:name=".ActionsCatalogActivity"/>
@@ -17,6 +20,9 @@
         <activity android:name=".PersonalProfileEditActivity"/>
         <activity android:name=".AuthorizationActivity"/>
         <activity android:name=".RegistrationActivity"/>
+        <activity android:name=".AuthorizationActivity"/>
+        <activity android:name=".RegistrationActivity"/>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

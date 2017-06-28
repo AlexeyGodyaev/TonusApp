@@ -54,7 +54,7 @@ public class FoodAdapter extends BaseAdapter{
         bJU.setText(foodItem.getB().toString()+"/"+foodItem.getJ().toString()+"/"+foodItem.getU().toString());
 
         calories = (TextView) view.findViewById(R.id.productCalories);
-        calories.setText(foodItem.getCalories().toString());
+        calories.setText(foodItem.getCalories().toString() + " kcal");
 
         addProduct = (Button) view.findViewById(R.id.addProductButton);
 

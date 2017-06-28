@@ -52,7 +52,7 @@ public class ActionsAdapter extends BaseAdapter {
         productName.setText(actionItem.getName());
 
         calories = (TextView) view.findViewById(R.id.productCalories);
-        calories.setText(actionItem.getCalories().toString());
+        calories.setText(actionItem.getCalories().toString() +" kcal");
 
         addProduct = (Button) view.findViewById(R.id.addProductButton);
 
