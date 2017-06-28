@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="login"
+        android:text="noob"
         android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
         android:layout_alignBaseline="@+id/loginLable"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="pass"
+        android:text="1234"
         android:layout_alignBaseline="@+id/passwordLable"
         android:layout_alignBottom="@+id/passwordLable"
         android:layout_alignLeft="@+id/editLogin"
@@ -77,12 +77,13 @@
 
     <Button
         android:id="@+id/googleAccountButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/registrationButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="17dp"
-        android:text="Войти используя Google аккаунт" />
+        android:text="Google"
+        />
 
     <Button
         android:id="@+id/guestButton"

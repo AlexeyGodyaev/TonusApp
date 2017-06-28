@@ -69,6 +69,7 @@ public void onClc(View view){
     public void onProfileClick(View view){
         if(sharedPref.getString("IS_PROFILE_CREATED","ERROR").equals("FALSE")) {
             Intent intent = new Intent(getApplicationContext(), PersonalProfileEditActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         }
         else if(sharedPref.getString("IS_PROFILE_CREATED","ERROR").equals("TRUE"))

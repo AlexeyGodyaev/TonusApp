@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
 
@@ -50,8 +51,18 @@ public class AuthorizationActivity extends Activity {
         args[2] = pass.getText().toString();
 
         log.execute(args); // вызываем запрос
+        String ans = log.get().toString();
+        err.setText(ans);
 
-        err.setText(log.get().toString());
+        if(ans.equals("ОК"))
+        {
+            Toast.makeText(getApplicationContext(), "ХОП ХЕЙ ЛАЛАЛЕЙ", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+
 
     }
 }
