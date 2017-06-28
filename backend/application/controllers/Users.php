@@ -104,13 +104,16 @@ class Users extends CI_Controller {
     public function save_user_chars()
     {
         $id = $this->input->post('id');
+        $realName = $this->input->post('realName');
         $weight = $this->input->post('weight');
         $height = $this->input->post('height');
         $sex = $this->input->post('sex');
         $age = $this->input->post('age');
         $activityType = $this->input->post('activityType');
+        $avgdream = $this->input->post('avg_dream');
+        $wokeup = $this->input->post('wokeup_time');
 
-        $status = $this->CaloriesCalc->saveUserChars($id, $weight, $height, $sex, $activityType, $age);
+        $status = $this->CaloriesCalc->saveUserChars($id, $realName, $weight, $height, $sex, $activityType, $age, $avgdream, $wokeup);
 
          if(is_string($status))
         {
@@ -124,6 +127,32 @@ class Users extends CI_Controller {
         }
         
         echo json_encode($response, TRUE);
+    }
+
+    public function get_user_chars()
+    {
+        $id = $this->input->post('id');
+        $chars_q = $this->CaloriesCalc->getUserChars($id);  
+
+        $response = array();
+
+        foreach ($chars_q as $f) 
+        { 
+            $chars[] = array(
+                "realName" => $f->realName,
+                "weight"        =>  $f->weight,
+                "height"      =>  $f->height,
+                "sex"   =>  $f->sex,
+                "age"      =>  $f->age,
+                "activityType" => $f->activityType,
+                "avgdream"     =>  $f->avgdream,
+                "wokeup"  =>  $f->wokeup
+            );
+        } 
+
+        $response['userChars'] = $chars;
+        echo json_encode($response, TRUE);
+
     }
 
 }

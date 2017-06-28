@@ -8,8 +8,9 @@ class Product extends CI_Model {
         $this->load->database();
     }
 
-    public function get_food_names()
+    public function get_food_names($timestamp)
     {
+        //Вернуть массив, если время последнего обновления БД - время обновления (в секундах) > 0 
         $this->db->select('name');
         $query = $this->db->get('Food');
         return $query->result();

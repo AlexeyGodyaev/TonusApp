@@ -29,7 +29,7 @@ class CaloriesCalc extends CI_Model {
         return $maffin*$value;
     }
 
-    public function saveUserChars($id, $weight, $height, $sex, $activityType, $age)
+    public function saveUserChars($id, $realName, $weight, $height, $sex, $activityType, $age, $avgdream, $wokeup)
     {
          $query = $this->db->get_where('user_chars', array('id' => $id));
 
@@ -39,8 +39,8 @@ class CaloriesCalc extends CI_Model {
         }
         else
         {
-            $data = array("id" => $id, "weight" => $weight, "height" => $height, "sex" => $sex,
-            "activityType" => $activityType, "age"=> $age);
+            $data = array("id" => $id, "realName" => $realName,"weight" => $weight, "height" => $height, "sex" => $sex,
+            "activityType" => $activityType, "age"=> $age, "avgdream" => $avgdream, "wokeup" => $wokeup);
 
         $query = $this->db->insert("user_chars", $data);
 
@@ -48,12 +48,22 @@ class CaloriesCalc extends CI_Model {
         {
             return 1;
         }
-        else
-        {
+            else
+             {
             return 'Unexpected error';
-        }
+             }
         }
 
+    }
+
+    public function getUserChars($id)
+    {
+        $query = $this->db->get_where('user_chars', array('id' => $id));
+        if($query->num_rows() > 0)
+        {
+            return $query->result();
+        }
+        
     }
 
 }

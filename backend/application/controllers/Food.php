@@ -9,9 +9,9 @@ class Food extends CI_Controller {
 		$this->load->model('Product');
 	}
 
-	public function get_food_names()
+	public function get_food_names($timestamp)
 	{
-		$food_names_q = $this->Product->get_food_names();
+		$food_names_q = $this->Product->get_food_names($timestamp);
 
 		$response = array();
     	$foodNames = array();
@@ -48,5 +48,10 @@ class Food extends CI_Controller {
     	$response['food'] = $food;
     	echo json_encode($response, TRUE);
 	}
+
+    public function updateCategories()
+    {
+        $this->Product->updateCategories();
+    }
 
 }
