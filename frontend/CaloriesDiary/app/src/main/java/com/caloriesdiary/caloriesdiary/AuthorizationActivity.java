@@ -96,6 +96,11 @@ public class AuthorizationActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+    public void forgetpassClick(View view)
+    {
+        Intent intent = new Intent(getApplicationContext(),ForgetPassActivity.class);
+        startActivity(intent);
+    }
     public void InitPreference()
     {
 

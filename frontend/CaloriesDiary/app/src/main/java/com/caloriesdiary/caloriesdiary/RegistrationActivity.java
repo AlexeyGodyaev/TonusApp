@@ -50,7 +50,7 @@ public class RegistrationActivity extends Activity {
             {
                 js.getInt("status");
                 error.setText(ans);
-                if(js.getInt("status") == 0)
+                if(js.getInt("status") == 1)
                 {
                     Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

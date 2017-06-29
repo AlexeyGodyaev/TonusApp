@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<TextView
+    android:id="@+id/forget_pass_textview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Для восстановления пароля введите почтовый ящик, на который был зарегистрирован профиль"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="25dp"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="25dp"
+    android:textSize="15dp"/>
+    <EditText
+        android:id="@+id/mail_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Почтовый ящик"
+        android:layout_below="@id/forget_pass_textview"
+        android:layout_marginLeft="25dp"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mail_edit"
+        android:text="Отправить"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="25dp"
+        android:onClick="sendClick"/>
+</RelativeLayout>

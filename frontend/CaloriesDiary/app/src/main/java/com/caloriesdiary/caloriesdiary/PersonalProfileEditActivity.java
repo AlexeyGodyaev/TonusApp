@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 public class PersonalProfileEditActivity extends AppCompatActivity{
     Button ok_btn;
     Spinner spinner;
-    TextView name,age,height,weight;
+    TextView name,age,height,weight,sleep,awake;
     RadioButton male,female;
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
@@ -35,10 +36,12 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         spinner = (Spinner) findViewById(R.id.activity_spinner);
         male = (RadioButton) findViewById(R.id.gender_male);
         female = (RadioButton) findViewById(R.id.gender_female);
-        name = (TextView) findViewById(R.id.name_edit);
-        age = (TextView) findViewById(R.id.age_edit);
-        height = (TextView) findViewById(R.id.height_edit);
-        weight = (TextView) findViewById(R.id.weight_edit);
+        name = (EditText) findViewById(R.id.name_edit);
+        age = (EditText) findViewById(R.id.age_edit);
+        height = (EditText) findViewById(R.id.height_edit);
+        weight = (EditText) findViewById(R.id.weight_edit);
+        sleep = (EditText) findViewById(R.id.sleep_edit);
+        awake = (EditText) findViewById(R.id.awake_edit);
 
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
         editor = sharedPref.edit();
@@ -66,19 +69,23 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         }
         else
         {
-            selected_gender = "3";
+            selected_gender = "1";
         }
         Post log = new Post();
 
         String args [] = new String[7];
 
-        args[0] = "http://192.168.1.205/users/auth";  //аргументы для пост запроса
-        args[1] = name.getText().toString();
-        args[2] = age.getText().toString();
-        args[3] = selected_gender;
+        args[0] = "http://192.168.1.205/users/save_user_chars";  //аргументы для пост запроса
+        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+        args[2] = name.getText().toString();
+        args[3] = weight.getText().toString();
         args[4] = height.getText().toString();
-        args[5] = weight.getText().toString();
-        args[6] = selected_activity;
+        args[5] = selected_gender;
+        args[6] = age.getText().toString();
+        args[7] = selected_activity;
+        args[8] = sleep.getText().toString();
+        args[9] = awake.getText().toString();
+
 
         log.execute(args); // вызываем запрос
 

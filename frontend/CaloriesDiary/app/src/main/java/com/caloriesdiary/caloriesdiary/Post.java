@@ -46,6 +46,21 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("password", arg0[2]);
                         postDataParams.put("email", arg0[3]);
                         break;
+                    case "http://192.168.1.205/users/save_user_chars":
+                        postDataParams.put("id",arg0[1]);
+                        postDataParams.put("realName",arg0[2]);
+                        postDataParams.put("weight",arg0[3]);
+                        postDataParams.put("height",arg0[4]);
+                        postDataParams.put("sex",arg0[5]);
+                        postDataParams.put("age",arg0[6]);
+                        postDataParams.put("activityType",arg0[7]);
+                        postDataParams.put("avg_dream",arg0[8]);
+                        postDataParams.put("wokeup_time",arg0[9]);
+                        break;
+                    case "http://192.168.1.205/users/forgot_password":
+                        postDataParams.put("email",arg0[1]);
+                        break;
+
                 }
 
 

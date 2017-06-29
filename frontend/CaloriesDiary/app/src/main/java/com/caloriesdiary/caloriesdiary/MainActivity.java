@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         editor = sharedPref.edit();
 
 
-        id_text_view.setText(String.valueOf(sharedPref.getInt("PROFILE_ID",0)));
+        id_text_view.setText("ID = " + String.valueOf(sharedPref.getInt("PROFILE_ID",0)));
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -39,18 +39,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         return true;
     }
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch(id){
-            case R.id.login_menu :
-                Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
-                startActivity(intent);
-                return true;
 
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public  void onTodayClc(View view){
         Intent intent = new Intent(getApplicationContext(),TodayActivity.class);
