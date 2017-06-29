@@ -49,14 +49,9 @@
         android:layout_alignRight="@+id/text_relative">
     <Button
         android:id="@+id/addProductButton"
+        android:onClick="onAddProductClc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/productCalories"
-        android:layout_alignEnd="@+id/productCalories"
-        android:layout_alignLeft="@+id/productCalories"
-        android:layout_alignRight="@+id/productCalories"
-        android:layout_alignStart="@+id/productCalories"
-        android:layout_alignTop="@+id/productName"
         android:text="+"
         android:textSize="5dp" />
     </RelativeLayout>

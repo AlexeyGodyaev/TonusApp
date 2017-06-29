@@ -67,6 +67,11 @@ public class FoodCatalogActivity extends FragmentActivity {
         return get.get().toString();
     }
 
+    public  void onAddProductClc(View view){
+        CustomDialogFragment dialogFragment = new CustomDialogFragment();
+        dialogFragment.show(getSupportFragmentManager(), "custom");
+    }
+
     private List<FoodItem> initData() {
         List<FoodItem> list = new ArrayList<FoodItem>();
         String resp = null;
