@@ -1,7 +1,10 @@
 package com.caloriesdiary.caloriesdiary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import java.util.Calendar;
 
@@ -10,7 +13,7 @@ import java.util.Date;
 public class TodayActivity extends AppCompatActivity {
 
     TextView todayDate, dayOfTheWeek, countOfDays, targetText;
-
+    Button activityBtn, addFoodBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +21,8 @@ public class TodayActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
 
+        activityBtn = (Button) findViewById(R.id.todayActiveBtn);
+        addFoodBtn = (Button) findViewById(R.id.todayFoodBtn);
 
         todayDate = (TextView) findViewById(R.id.todayDate);
         dayOfTheWeek = (TextView) findViewById(R.id.todayDayOfTheWeek);
@@ -27,6 +32,16 @@ public class TodayActivity extends AppCompatActivity {
         targetText.setText("Твой цель: -");
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH))+"е "+getMonth(calendar.get(Calendar.MONTH)));
         dayOfTheWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
+    }
+
+    public void onTodayFoodBtnClc(View v){
+        Intent intent = new Intent(getApplicationContext(), FoodCatalogActivity.class);
+        startActivity(intent);
+    }
+
+    public void onTodayActivityBtnClc(View v){
+        Intent intent = new Intent(getApplicationContext(), ActionsCatalogActivity.class);
+        startActivity(intent);
     }
 
     private String getDayOfWeek(int i){

@@ -37,5 +37,23 @@
         android:layout_height="wrap_content"
         />
 
+    <Button
+        android:id="@+id/todayFoodBtn"
+        android:onClick="onTodayFoodBtnClc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="20dp"
+        android:text="Жрачка" />
 
+    <Button
+        android:id="@+id/todayActiveBtn"
+        android:onClick="onTodayActivityBtnClc"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Рукоделие(сидя)" />
+
+
+>!-- layout для итогов дня(вес и измеренная антропометрия), текст рекомендации
 </LinearLayout>
