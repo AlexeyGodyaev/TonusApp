@@ -50,5 +50,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Справочник активности"/>
-
+    <TextView
+    android:id="@+id/id_text_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="ID = "
+    android:layout_gravity="center"
+    android:layout_marginTop="50dp"/>
 </LinearLayout>
