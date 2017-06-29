@@ -19,7 +19,6 @@
         <activity android:name=".GuestMainActivity"/>
         <activity android:name=".AuthorizationActivity">
         <activity android:name=".TodayActivity"/>
-        <activity android:name=".AuthorizationActivity"/>
         <activity android:name=".RegistrationActivity"/>
 
 
@@ -30,9 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrationActivity"/>
-
-        <activity android:name=".MainActivity">
 
 
         </activity>
