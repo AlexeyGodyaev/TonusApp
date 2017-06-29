@@ -12,30 +12,21 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".PersonalProfileEditActivity"/>
-
         <activity android:name=".PersonalProfileActivity"/>
         <activity android:name=".FoodCatalogActivity"/>
         <activity android:name=".ActionsCatalogActivity"/>
         <activity android:name=".GuestMainActivity"/>
-        <activity android:name=".AuthorizationActivity">
-        <activity android:name=".TodayActivity"/>
         <activity android:name=".AuthorizationActivity"/>
+        <activity android:name=".TodayActivity"/>
         <activity android:name=".RegistrationActivity"/>
-
-
         <activity android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".RegistrationActivity"/>
 
-        <activity android:name=".MainActivity">
-
-
-        </activity>
     </application>
 
 </manifest>
