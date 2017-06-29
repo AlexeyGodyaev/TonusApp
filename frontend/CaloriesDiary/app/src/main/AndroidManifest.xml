@@ -18,6 +18,12 @@
         <activity android:name=".ActionsCatalogActivity"/>
         <activity android:name=".GuestMainActivity"/>
         <activity android:name=".AuthorizationActivity">
+        <activity android:name=".TodayActivity"/>
+        <activity android:name=".AuthorizationActivity"/>
+        <activity android:name=".RegistrationActivity"/>
+
+
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

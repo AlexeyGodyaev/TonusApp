@@ -8,4 +8,24 @@
         <item>Тяжелый (6-7 дней в неделю)</item>
         <item>Очень тяжелый (Тренировки по два раза в день)</item>
     </string-array>
+
+    <string-array name="categories">
+        <item></item>
+        <item>Легкий (2-3 дня в неделю)</item>
+        <item>Умеренный (3-5 дней в неделю) </item>
+        <item>Тяжелый (6-7 дней в неделю)</item>
+    </string-array>
+
+    <string-array name="sortList">
+        <item>Алфавиту</item>
+        <item>Кол-ву белков</item>
+        <item>Кол-ву жиров</item>
+        <item>Кол-ву углеводов</item>
+        <item>Кол-ву калорий</item>
+    </string-array>
+
+    <string-array name="sortActions">
+        <item>Алфавиту</item>
+        <item>Затратам калорий</item>
+    </string-array>
 </resources>

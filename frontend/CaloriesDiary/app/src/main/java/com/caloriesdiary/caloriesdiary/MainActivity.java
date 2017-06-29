@@ -51,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public  void onTodayClc(View view){
+        Intent intent = new Intent(getApplicationContext(),TodayActivity.class);
+
+        startActivity(intent);
+    }
 public void onClc(View view){
     Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
 
