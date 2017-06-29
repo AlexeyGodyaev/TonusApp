@@ -11,6 +11,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import org.json.JSONObject;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -67,9 +71,20 @@ public class FoodCatalogActivity extends FragmentActivity {
         return get.get().toString();
     }
 
-    public  void onAddProductClc(View view){
-        CustomDialogFragment dialogFragment = new CustomDialogFragment();
-        dialogFragment.show(getSupportFragmentManager(), "custom");
+    public void onAddProductClc(View view){
+//        CustomDialogFragment dialogFragment = new CustomDialogFragment();
+//        dialogFragment.show(getSupportFragmentManager(), "custom");
+        FileOutputStream fos = null;
+        JSONObject jsn = new JSONObject();
+
+       // jsn.put("name", listView.getItem)
+        try{
+            fos = openFileOutput("eated_food", MODE_PRIVATE);
+            //fos.write();
+        }
+        catch(IOException ex){
+
+        }
     }
 
     private List<FoodItem> initData() {
