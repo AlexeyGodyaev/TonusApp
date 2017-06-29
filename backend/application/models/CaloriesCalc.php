@@ -35,7 +35,28 @@ class CaloriesCalc extends CI_Model {
 
         if($query->num_rows() > 0)
         {
-            return 'Данные нельзя изменить';
+            $data = array("id" => $id, "realName" => $realName,"weight" => $weight, "height" => $height, "sex" => $sex,
+            "activityType" => $activityType, "age"=> $age, "avgdream" => $avgdream, "wokeup" => $wokeup);
+
+            if(count(array_filter($data)) == count($data)) 
+            {
+                $query = $this->db->update("user_chars", $data);
+
+                if($query)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 'Unexpected error';
+                }
+            } 
+            else
+            {
+                return 'Не все поля указаны';
+            }
+
+            
         }
         else
         {
@@ -48,10 +69,10 @@ class CaloriesCalc extends CI_Model {
         {
             return 1;
         }
-            else
-             {
+        else
+        {
             return 'Unexpected error';
-             }
+        }
         }
 
     }

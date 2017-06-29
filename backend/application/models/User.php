@@ -122,5 +122,22 @@ class User extends CI_Model {
         }
     }
 
+    public function forgot($email)
+    {
+        $query = $this->db->get_where('Users', array('email' => $email));
+        
+        if($query->num_rows() > 0)
+        {
+            $newpassword = '123456';
+            $data = array('password' => $newpassword);
+            $this->db->where('email',$email);
+            $this->db->update('Users',$data);
+        }
+        else
+        {
+            return 'Неверный адрес эл. почты';
+        }
+    }
+
 
 }

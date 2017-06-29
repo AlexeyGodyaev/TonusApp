@@ -155,4 +155,26 @@ class Users extends CI_Controller {
 
     }
 
+    public function forgot_password()
+    {
+        $email = $this->input->post('email');
+
+        $status = $this->User->forgot($email);
+
+
+        if(is_string($status))
+        {
+            $response['msg'] = $status;
+            $response['status'] = 0;
+        }
+        else
+        {
+            $response['msg'] = "ОК";
+            $response['status'] = 1;
+        }
+        
+        echo json_encode($response, TRUE);
+
+    }
+
 }
