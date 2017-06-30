@@ -1,11 +1,14 @@
 package com.caloriesdiary.caloriesdiary;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +61,26 @@ public class ActionsCatalogActivity extends FragmentActivity {
                 TextView txtName = (TextView) view.findViewById(R.id.productName);
                 TextView txtCalories = (TextView) view.findViewById(R.id.productCalories);
                 try {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ActionsCatalogActivity.this);
+                    builder.setTitle("Важное сообщение!")
+                            .setMessage("Покормите кота!")
+                            .setCancelable(false)
+                            .setNegativeButton("ОК, иду на кухню",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                    final EditText input = new EditText(ActionsCatalogActivity.this);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT);
+                    input.setLayoutParams(lp);
+                    builder.setView(input);
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
                     jsn.put("name",txtName.getText().toString());
                     jsn.put("calories",txtCalories.getText().toString());
                 } catch (JSONException e) {
