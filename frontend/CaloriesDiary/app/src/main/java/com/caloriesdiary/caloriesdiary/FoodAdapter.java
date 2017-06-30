@@ -61,6 +61,8 @@ public class FoodAdapter extends BaseAdapter{
         return view;
     }
 
+
+
     private FoodItem getFoodItem(int position){
         return (FoodItem) getItem(position);
     }
