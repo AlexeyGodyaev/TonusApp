@@ -33,6 +33,7 @@ class Food extends CI_Controller {
 
 		$response = array();
     	$food = array();
+
     	foreach ($food_q as $f) 
     	{ 
         	$food[] = array(
@@ -41,7 +42,8 @@ class Food extends CI_Controller {
             	"protein"   =>  $f->protein,
             	"fats"      =>  $f->fats,
             	"carbs"     =>  $f->carbs,
-            	"calories"  =>  $f->calories
+            	"calories"  =>  $f->calories,
+                "category"  =>  $f->category
         	);
     	} 
 

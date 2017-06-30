@@ -8,6 +8,20 @@ class User extends CI_Model {
         $this->load->database();
     }
 
+    public function generatePassword($length = 8)
+    {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $count = mb_strlen($chars);
+
+        for ($i = 0, $result = ''; $i < $length; $i++) 
+        {
+            $index = rand(0, $count - 1);
+            $result .= mb_substr($chars, $index, 1);
+        }
+
+        return $result;
+    }
+
     public function check($username, $password)
     {
         $query = $this->db->get_where('Users', array('username' => $username));
@@ -118,7 +132,7 @@ class User extends CI_Model {
         }
         else
         {
-                return 'Имя пользователя не найдено';
+            return 'Имя пользователя не найдено';
         }
     }
 
@@ -128,16 +142,15 @@ class User extends CI_Model {
         
         if($query->num_rows() > 0)
         {
-            $newpassword = '123456';
+            $newpassword = $this->generatePassword();
             $data = array('password' => $newpassword);
             $this->db->where('email',$email);
             $this->db->update('Users',$data);
+            return 'Ваш новый пароль: '. $newpassword;
         }
         else
         {
-            return 'Неверный адрес эл. почты';
+            return 0;
         }
     }
-
-
 }

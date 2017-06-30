@@ -1,4 +1,4 @@
-name, protein,fats,carbs,calories,categories
+﻿name,protein,fats,carbs,calories,category
 Пиво Carlsberg,0.0,0.0,3.9,45,21
 Пиво Efes Fusion,0.0,0.0,4.5,44,21
 Пиво Efes Pilsener,0.0,0.0,4.7,46,21
@@ -79,4 +79,3 @@ name, protein,fats,carbs,calories,categories
 Пиво светлое 2.8%,0.6,0.0,4.8,37,21
 Пиво светлое 4.5%,0.6,0.0,3.8,45,21
 Пиво светлое живое,0.0,0.0,3.7,3,21
-

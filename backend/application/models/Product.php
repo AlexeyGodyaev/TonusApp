@@ -18,7 +18,13 @@ class Product extends CI_Model {
 
      public function get_food($offset)
     {
-        $query = $this->db->get('Food', 500, $offset);
+        $this->db->select('name');
+        //$this->db->get('category');
+        //$this->db->select('*');
+        //$query =  $this->db->get('Food', 500, $offset);
+        $query = $this->db->query('SELECT * FROM "Food", "category"
+                                   WHERE category = "category".id
+                                   ');
         return $query->result();
     }
 

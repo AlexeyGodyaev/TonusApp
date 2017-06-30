@@ -6,6 +6,19 @@ class Users extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+
+         $config = Array(
+        'protocol' => 'smtp',
+        'smtp_host' => 'ssl://smtp.mail.ru',
+        'smtp_port' => 465,
+        'smtp_user' => 'ml-98@mail.ru', 
+        'smtp_pass' => 'ubuntu', 
+        'mailtype' => 'text',
+        'charset' => 'utf-8',
+        'wordwrap' => TRUE
+        );
+
+        $this->load->library('email', $config);
 		$this->load->model('User');
         $this->load->model('CaloriesCalc');
 	}
@@ -161,19 +174,27 @@ class Users extends CI_Controller {
 
         $status = $this->User->forgot($email);
 
+        $this->email->from('ml-98@mail.ru', 'noreply');
+        $this->email->to($email);
 
-        if(is_string($status))
+        $this->email->subject('Ваш новый пароль для аккаунта');
+       
+        if(!is_string($status))
         {
-            $response['msg'] = $status;
+            $response['msg'] = 'Нет такого e-mail';
             $response['status'] = 0;
+            echo json_encode($response, TRUE);
         }
         else
         {
             $response['msg'] = "ОК";
             $response['status'] = 1;
+            echo json_encode($response, TRUE);
+            $this->email->message($status);
+            $this->email->send();
         }
         
-        echo json_encode($response, TRUE);
+        
 
     }
 
