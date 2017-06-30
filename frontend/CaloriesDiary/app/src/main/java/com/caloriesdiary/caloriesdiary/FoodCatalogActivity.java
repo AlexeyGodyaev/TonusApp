@@ -8,13 +8,21 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileOutputStream;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -52,6 +60,45 @@ public class FoodCatalogActivity extends FragmentActivity {
 
         FoodAdapter adapter = new FoodAdapter(this, initData());
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                JSONObject jsn = new JSONObject();
+                TextView txtName = (TextView) view.findViewById(R.id.productName);
+                TextView txtBJU = (TextView) view.findViewById(R.id.bJU);
+                TextView txtCalories = (TextView) view.findViewById(R.id.productCalories);
+                try {
+                    jsn.put("name",txtName.getText().toString());
+                    jsn.put("bju",txtBJU.getText().toString());
+                    jsn.put("calories",txtCalories.getText().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                            openFileOutput("Food.txt",MODE_APPEND)));
+
+                    writer.write(jsn.toString());
+                    writer.close();
+
+                    FileInputStream fin = null;
+                    fin = openFileInput("Food.txt");
+                    byte[] bytes = new byte[fin.available()];
+                    fin.read(bytes);
+                    String text = new String (bytes);
+
+                    Toast.makeText(getApplicationContext(), text , Toast.LENGTH_LONG).show();
+                }
+                catch (FileNotFoundException fEx){
+
+                }
+                catch (IOException iEx){
+
+                }
+            }
+        });
     }
 
     public void onClcFilterButton(View view){
@@ -71,6 +118,10 @@ public class FoodCatalogActivity extends FragmentActivity {
         return get.get().toString();
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Alex's-branch
     private List<FoodItem> initData() {
         List<FoodItem> list = new ArrayList<FoodItem>();
         String resp = null;

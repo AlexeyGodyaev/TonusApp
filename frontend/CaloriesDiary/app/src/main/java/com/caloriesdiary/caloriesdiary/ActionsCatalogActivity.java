@@ -4,9 +4,23 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -37,6 +51,42 @@ public class ActionsCatalogActivity extends FragmentActivity {
 
         ActionsAdapter adapter = new ActionsAdapter(this, initData());
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                JSONObject jsn = new JSONObject();
+                TextView txtName = (TextView) view.findViewById(R.id.productName);
+                TextView txtCalories = (TextView) view.findViewById(R.id.productCalories);
+                try {
+                    jsn.put("name",txtName.getText().toString());
+                    jsn.put("calories",txtCalories.getText().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                            openFileOutput("Actions.txt",MODE_APPEND)));
+
+                    writer.write(jsn.toString());
+                    writer.close();
+
+                    FileInputStream fin = null;
+                    fin = openFileInput("Actions.txt");
+                    byte[] bytes = new byte[fin.available()];
+                    fin.read(bytes);
+                    String text = new String (bytes);
+
+                    Toast.makeText(getApplicationContext(), text , Toast.LENGTH_LONG).show();
+                }
+                catch (FileNotFoundException fEx){
+
+                }
+                catch (IOException iEx){
+
+                }
+            }
+        });
     }
 
     public  String getAction() throws InterruptedException, ExecutionException {
