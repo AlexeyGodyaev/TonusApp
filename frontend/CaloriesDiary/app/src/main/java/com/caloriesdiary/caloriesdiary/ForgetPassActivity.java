@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
 
 
@@ -32,6 +33,7 @@ public class ForgetPassActivity extends AppCompatActivity {
 
         log.execute(args); // вызываем запрос
         JSONObject JSans = log.get();
+        //Toast.makeText(getApplicationContext(), log.get().toString(),Toast.LENGTH_LONG).show();
         try
         {
 
@@ -45,7 +47,7 @@ public class ForgetPassActivity extends AppCompatActivity {
             }
             else
             {
-                Toast.makeText(getApplicationContext(),JSans.getString("msg"),Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(),JSans.getString("msg"),Toast.LENGTH_LONG).show();
             }
         }
         catch (Exception e)

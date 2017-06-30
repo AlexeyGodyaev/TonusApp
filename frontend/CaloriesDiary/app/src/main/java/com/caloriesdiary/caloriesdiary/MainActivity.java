@@ -1,5 +1,6 @@
 package com.caloriesdiary.caloriesdiary;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.view.MotionEventCompat;
@@ -14,6 +15,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -76,6 +82,47 @@ public void onClc(View view){
         {
             Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
             startActivity(intent);
+        }
+    }
+    public void onCurrentStatClick (View view)
+    {
+        //Toast.makeText(getApplicationContext(),getCacheDir().toString(),Toast.LENGTH_LONG).show();
+
+       // File file = new File("/data/user/0/com.caloriesdiary.caloriesdiary/cache/text.txt");
+        try
+        {
+            OutputStreamWriter writer = new OutputStreamWriter(getApplicationContext().openFileOutput("text.txt", getApplicationContext().MODE_APPEND));
+        writer.write("Hello");
+            writer.close();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+        }
+    }
+    public void onDiaryClick (View view)
+    {
+        try
+        {
+            InputStream inputStream = getApplicationContext().openFileInput("text.txt");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                Toast.makeText(getApplicationContext(),stringBuilder.toString(),Toast.LENGTH_LONG).show();
+            }
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
         }
     }
     @Override

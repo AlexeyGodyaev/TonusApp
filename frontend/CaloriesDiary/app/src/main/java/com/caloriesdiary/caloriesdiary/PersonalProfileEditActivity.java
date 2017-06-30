@@ -1,5 +1,7 @@
 package com.caloriesdiary.caloriesdiary;
 
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Map;
@@ -26,6 +29,9 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
 
+    int DIALOG_TIME = 1;
+    int myHour = 14;
+    int myMinute = 35;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +47,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         height = (EditText) findViewById(R.id.height_edit);
         weight = (EditText) findViewById(R.id.weight_edit);
         sleep = (EditText) findViewById(R.id.sleep_edit);
-        awake = (EditText) findViewById(R.id.awake_edit);
+        awake = (TextView) findViewById(R.id.awake_edit);
 
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
         editor = sharedPref.edit();
@@ -73,7 +79,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         }
         Post log = new Post();
 
-        String args [] = new String[7];
+        String args [] = new String[10];
 
         args[0] = "http://192.168.1.205/users/save_user_chars";  //аргументы для пост запроса
         args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
@@ -84,19 +90,40 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         args[6] = age.getText().toString();
         args[7] = selected_activity;
         args[8] = sleep.getText().toString();
-        args[9] = awake.getText().toString();
+        args[9] = String.valueOf(myHour)+":"+String.valueOf(myMinute) + ":00";
 
 
         log.execute(args); // вызываем запрос
 
         //log.get().toString()
         Toast.makeText(getApplicationContext(), log.get().toString() ,Toast.LENGTH_LONG ).show();
-        editor.putString("IS_PROFILE_CREATED","TRUE");
+        editor.putBoolean("IS_PROFILE_CREATED",true);
         editor.commit();
         Intent intent = new Intent(getApplicationContext(),PersonalProfileActivity.class);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
+    public void onAwakeTimeClick(View view)
+    {
+        showDialog(DIALOG_TIME);
+
+
+    }
+    protected Dialog onCreateDialog(int id) {
+        if (id == DIALOG_TIME) {
+            TimePickerDialog tpd = new TimePickerDialog(this, myCallBack, myHour, myMinute, true);
+            return tpd;
+        }
+        return super.onCreateDialog(id);
+    }
+
+    TimePickerDialog.OnTimeSetListener myCallBack = new TimePickerDialog.OnTimeSetListener() {
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            myHour = hourOfDay;
+            myMinute = minute;
+            awake.setText("Среднее время пробуждения: "+ String.valueOf(myHour)+":"+String.valueOf(myMinute));
+        }
+    };
 
     public void InitPreference()
     {
