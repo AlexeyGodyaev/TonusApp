@@ -15,8 +15,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -91,9 +96,12 @@ public void onClc(View view){
        // File file = new File("/data/user/0/com.caloriesdiary.caloriesdiary/cache/text.txt");
         try
         {
-            OutputStreamWriter writer = new OutputStreamWriter(getApplicationContext().openFileOutput("text.txt", getApplicationContext().MODE_APPEND));
-        writer.write("Hello");
-            writer.close();
+           // OutputStreamWriter writer = new OutputStreamWriter(getApplicationContext().openFileOutput("text.txt", getApplicationContext().MODE_APPEND));
+       // writer.write("Hello");
+         //   writer.close();
+         //Gson gson = new Gson();
+
+          //  Toast.makeText(getApplicationContext(),obj.toString(),Toast.LENGTH_LONG).show();
         }
         catch (Exception e)
         {
@@ -104,21 +112,23 @@ public void onClc(View view){
     {
         try
         {
-            InputStream inputStream = getApplicationContext().openFileInput("text.txt");
+//            InputStream inputStream = getApplicationContext().openFileInput("text.txt");
+//
+//            if ( inputStream != null ) {
+//                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+//                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+//                String receiveString = "";
+//                StringBuilder stringBuilder = new StringBuilder();
+//
+//                while ( (receiveString = bufferedReader.readLine()) != null ) {
+//                    stringBuilder.append(receiveString);
+//                }
+//
+//                inputStream.close();
+//                Toast.makeText(getApplicationContext(),stringBuilder.toString(),Toast.LENGTH_LONG).show();
 
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
+        //    }
 
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
-                }
-
-                inputStream.close();
-                Toast.makeText(getApplicationContext(),stringBuilder.toString(),Toast.LENGTH_LONG).show();
-            }
         }
         catch (Exception e)
         {

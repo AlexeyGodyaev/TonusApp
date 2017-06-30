@@ -26,10 +26,9 @@
         <activity android:name=".TodayActivity"/>
         <activity android:name=".RegistrationActivity"/>
         <activity android:name=".MainActivity"/>
-<<<<<<< HEAD
+
         <activity android:name=".ForgetPassActivity"/>
-=======
->>>>>>> Alex's-branch
+
 
 
     </application>

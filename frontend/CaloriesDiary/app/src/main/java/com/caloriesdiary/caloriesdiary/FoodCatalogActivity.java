@@ -71,22 +71,6 @@ public class FoodCatalogActivity extends FragmentActivity {
         return get.get().toString();
     }
 
-    public void onAddProductClc(View view){
-//        CustomDialogFragment dialogFragment = new CustomDialogFragment();
-//        dialogFragment.show(getSupportFragmentManager(), "custom");
-        FileOutputStream fos = null;
-        JSONObject jsn = new JSONObject();
-
-       // jsn.put("name", listView.getItem)
-        try{
-            fos = openFileOutput("eated_food", MODE_PRIVATE);
-            //fos.write();
-        }
-        catch(IOException ex){
-
-        }
-    }
-
     private List<FoodItem> initData() {
         List<FoodItem> list = new ArrayList<FoodItem>();
         String resp = null;
