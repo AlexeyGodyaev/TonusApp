@@ -7,7 +7,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -49,17 +53,26 @@ public class ActionsCatalogActivity extends FragmentActivity {
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                JSONObject jsn = new JSONObject();
+                TextView txtName = (TextView) view.findViewById(R.id.productName);
+                TextView txtCalories = (TextView) view.findViewById(R.id.productCalories);
+                try {
+                    jsn.put("name",txtName.getText().toString());
+                    jsn.put("calories",txtCalories.getText().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 try {
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                            openFileOutput("jkh.txt",MODE_APPEND)));
+                            openFileOutput("Actions.txt",MODE_APPEND)));
 
-                    writer.write("its works");
+                    writer.write(jsn.toString());
                     writer.close();
 
                     FileInputStream fin = null;
-                    fin = openFileInput("jkh.txt");
+                    fin = openFileInput("Actions.txt");
                     byte[] bytes = new byte[fin.available()];
                     fin.read(bytes);
                     String text = new String (bytes);
