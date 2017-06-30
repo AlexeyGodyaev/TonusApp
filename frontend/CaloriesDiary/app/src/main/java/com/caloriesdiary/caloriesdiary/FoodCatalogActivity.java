@@ -118,10 +118,6 @@ public class FoodCatalogActivity extends FragmentActivity {
         return get.get().toString();
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> Alex's-branch
     private List<FoodItem> initData() {
         List<FoodItem> list = new ArrayList<FoodItem>();
         String resp = null;
