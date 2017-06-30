@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -46,7 +47,6 @@ public class FoodAdapter extends BaseAdapter{
         FoodItem foodItem = getFoodItem(i);
 
         TextView productName, bJU, calories;
-        Button addProduct;
         productName = (TextView) view.findViewById(R.id.productName);
         productName.setText(foodItem.getName());
 
@@ -55,8 +55,6 @@ public class FoodAdapter extends BaseAdapter{
 
         calories = (TextView) view.findViewById(R.id.productCalories);
         calories.setText(foodItem.getCalories().toString() + " kcal");
-
-        addProduct = (Button) view.findViewById(R.id.addProductButton);
 
         return view;
     }

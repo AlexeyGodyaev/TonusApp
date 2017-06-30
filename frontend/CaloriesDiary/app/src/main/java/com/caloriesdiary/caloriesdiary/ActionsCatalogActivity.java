@@ -4,9 +4,19 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -37,6 +47,33 @@ public class ActionsCatalogActivity extends FragmentActivity {
 
         ActionsAdapter adapter = new ActionsAdapter(this, initData());
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                            openFileOutput("jkh.txt",MODE_APPEND)));
+
+                    writer.write("its works");
+                    writer.close();
+
+                    FileInputStream fin = null;
+                    fin = openFileInput("jkh.txt");
+                    byte[] bytes = new byte[fin.available()];
+                    fin.read(bytes);
+                    String text = new String (bytes);
+
+                    Toast.makeText(getApplicationContext(), text , Toast.LENGTH_LONG).show();
+                }
+                catch (FileNotFoundException fEx){
+
+                }
+                catch (IOException iEx){
+
+                }
+            }
+        });
     }
 
     public  String getAction() throws InterruptedException, ExecutionException {
