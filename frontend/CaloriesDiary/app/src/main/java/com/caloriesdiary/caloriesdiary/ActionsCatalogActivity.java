@@ -3,12 +3,14 @@ package com.caloriesdiary.caloriesdiary;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -37,6 +40,9 @@ public class ActionsCatalogActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actions_catalog_layout);
+
+        final LinearLayout lp = new LinearLayout(this);
+        lp.setOrientation(LinearLayout.VERTICAL);
 
         srch = (EditText) findViewById(R.id.srchAction);
         srch.setOnKeyListener(new View.OnKeyListener() {
@@ -67,23 +73,57 @@ public class ActionsCatalogActivity extends FragmentActivity {
                             .setNegativeButton("Отмена",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
+                                            if(((LinearLayout) lp).getChildCount() > 0)
+                                                ((LinearLayout) lp).removeAllViews();
+                                            ((ViewManager)lp.getParent()).removeView(lp);
+
                                             dialog.cancel();
+                                        }
+                                    })
+                            .setPositiveButton("ОК",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            if(((LinearLayout) lp).getChildCount() > 0)
+                                                ((LinearLayout) lp).removeAllViews();
+                                            ((ViewManager)lp.getParent()).removeView(lp);
+
                                         }
                                     });
 
-                    String str = txtCalories.getText().toString().substring(0,txtCalories.getText().toString().indexOf('.'));
-                    final int kcal = Integer.parseInt(str);
+                    String kcalstr = txtCalories.getText().toString().substring(0,txtCalories.getText().toString().indexOf('.'));
+                    final double kcal = Double.parseDouble(kcalstr);
 
                     final EditText input = new EditText(ActionsCatalogActivity.this);
+                        input.setHint("Введите время (в минутах)");
+                    final TextView kcaltextview = new TextView(ActionsCatalogActivity.this);
+                     kcaltextview.setText(kcalstr + " kcal");
                     input.setInputType(InputType.TYPE_CLASS_NUMBER);
                     input.addTextChangedListener(new TextWatcher()
                     {
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count)
                         {
+                            double newkcal = kcal;
+                            if(input.getText().length()>0)
+                            {
                                 int time = Integer.parseInt(input.getText().toString());
-                                int newkcal = kcal * time / 60;
-                                Toast.makeText(getApplicationContext(),String.valueOf(newkcal),Toast.LENGTH_LONG).show();
+                                if(time < 1440) {
+                                    newkcal = kcal * time / 60;
+                                    //Toast.makeText(getApplicationContext(),String.valueOf(newkcal),Toast.LENGTH_LONG).show();
+                                    kcaltextview.setText(newkcal + " kcal");
+                                }
+                                else
+                                {
+                                    Toast.makeText(getApplicationContext(),"Не пизди",Toast.LENGTH_LONG).show();
+                                    input.setText("0");
+                                }
+
+                            }
+                            else{
+                                kcaltextview.setText(newkcal + " kcal");
+
+                            }
+
                         }
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int aft )
@@ -96,10 +136,9 @@ public class ActionsCatalogActivity extends FragmentActivity {
 
                         }
                     });
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT);
-                    input.setLayoutParams(lp);                    builder.setView(input);
+                    lp.addView(kcaltextview, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    lp.addView(input, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    builder.setView(lp);
                     AlertDialog alert = builder.create();
                     alert.show();
 
@@ -122,7 +161,7 @@ public class ActionsCatalogActivity extends FragmentActivity {
                     fin.read(bytes);
                     String text = new String (bytes);
 
-                    Toast.makeText(getApplicationContext(), text , Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(), text , Toast.LENGTH_LONG).show();
                 }
                 catch (FileNotFoundException fEx){
 
