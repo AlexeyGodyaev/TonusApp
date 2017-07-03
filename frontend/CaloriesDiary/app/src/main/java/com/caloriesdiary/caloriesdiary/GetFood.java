@@ -59,7 +59,7 @@ public class GetFood extends AsyncTask<String, Void, JSONArray>{
                                 conn.getInputStream(), "UTF-8"));
                 StringBuffer sb = new StringBuffer("");
                 String line="";
-                
+
                 JSONObject js = null;
                 while((line = in.readLine()) != null) {
                     js = new JSONObject(line);

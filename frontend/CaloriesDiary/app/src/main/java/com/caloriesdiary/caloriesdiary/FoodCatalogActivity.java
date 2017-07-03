@@ -97,17 +97,10 @@ public class FoodCatalogActivity extends FragmentActivity {
 
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    JSONObject jsn = new JSONObject();
+                                    JSONObject jObject = new JSONObject();
                                     try {
-                                    jsn.put("name",txtName.getText().toString());
-                                    jsn.put("bju",dialogBJU.getText().toString());
-                                    jsn.put("calories",dialogCalories.getText().toString());
-                                    try {
-                                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                                                openFileOutput("Food.txt",MODE_APPEND)));
+                                        JSONArray jsonArray = new JSONArray();
 
-                                        writer.write(jsn.toString());
-                                        writer.close();
 
                                         FileInputStream fin = null;
                                         fin = openFileInput("Food.txt");
@@ -115,16 +108,39 @@ public class FoodCatalogActivity extends FragmentActivity {
                                         fin.read(bytes);
                                         String text = new String (bytes);
 
-                                        Toast.makeText(getApplicationContext(), text , Toast.LENGTH_LONG).show();
+                                        JSONObject jsn = new JSONObject(text);
+                                        jsonArray = jsn.getJSONArray("food");
+                                        jsn.remove("food");
+
+                                        jsn.put("name",txtName.getText().toString());
+                                        String s = dialogBJU.getText().toString();
+                                        jsn.put("protein",s.substring(0,s.indexOf('/')));
+                                        s=s.substring(s.indexOf('/')+1);
+                                        jsn.put("fats",s.substring(0,s.indexOf('/')));
+                                        s=s.substring(s.indexOf('/')+1);
+                                        jsn.put("carbs",s);
+                                        jsn.put("calories",dialogCalories.getText().toString());
+                                        jsonArray.put(jsn);
+                                        jObject.put("food", jsonArray);
+
+                                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                                                openFileOutput("Food.txt",MODE_PRIVATE)));
+
+                                        writer.write(jObject.toString());
+                                        writer.close();
+
+                                        //Toast.makeText(getApplicationContext(), jObject.toString() , Toast.LENGTH_LONG).show();
                                     }
                                     catch (FileNotFoundException fEx){
+                                        Toast.makeText(getApplicationContext(), fEx.toString() , Toast.LENGTH_LONG).show();
 
                                     }
                                     catch (IOException iEx){
+                                        Toast.makeText(getApplicationContext(), iEx.toString() , Toast.LENGTH_LONG).show();
 
                                     }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                                    catch (JSONException e) {
+                                        Toast.makeText(getApplicationContext(), e.toString() , Toast.LENGTH_LONG).show();
                                     }
                                     if (lp.getChildCount() > 0)
                                     lp.removeAllViews();
