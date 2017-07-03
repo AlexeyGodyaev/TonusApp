@@ -12,8 +12,6 @@ class Activities extends CI_Controller {
 	public function get_act_names()
 	{
 		$act_names_q = $this->Action->get_act_names();
-
-		$response = array();
     	
         $i = 0;
         foreach ($act_names_q as $act) {
@@ -29,19 +27,7 @@ class Activities extends CI_Controller {
 	public function get_activities()
 	{
 		$activities_q = $this->Action->get_activities();
-
-		$response = array();
-    	$activities = array();
-    	foreach ($activities_q as $a) 
-    	{ 
-        	$activities[] = array(
-            	"id"        =>  $a->id,
-            	"name"      =>  $a->name,
-            	"calories"  =>  $a->calories
-        	);
-    	} 
-
-    	$response['activities'] = $activities;
+    	$response['activities'] = $activities_q;
     	echo json_encode($response, TRUE);
 	}
 

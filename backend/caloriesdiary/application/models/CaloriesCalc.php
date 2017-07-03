@@ -12,7 +12,8 @@ class CaloriesCalc extends CI_Model {
     {
         $query = $this->db->get_where('ActivityTypes', array('id' => $activityType));
 
-        foreach ($query->result() as $row) {
+        foreach ($query->result() as $row)
+        {
             $value = $row->value;
         }
 
@@ -35,11 +36,12 @@ class CaloriesCalc extends CI_Model {
 
         if($query->num_rows() > 0)
         {
-            $data = array("id" => $id, "realName" => $realName,"weight" => $weight, "height" => $height, "sex" => $sex,
+            $data = array("realName" => $realName,"weight" => $weight, "height" => $height, "sex" => $sex,
             "activityType" => $activityType, "age"=> $age, "avgdream" => $avgdream, "wokeup" => $wokeup);
 
             if(count(array_filter($data)) == count($data)) 
             {
+                $this->db->get_where('user_chars', array('id' => $id));
                 $query = $this->db->update("user_chars", $data);
 
                 if($query)
@@ -55,7 +57,6 @@ class CaloriesCalc extends CI_Model {
             {
                 return 'Не все поля указаны';
             }
-
             
         }
         else
@@ -63,28 +64,23 @@ class CaloriesCalc extends CI_Model {
             $data = array("id" => $id, "realName" => $realName,"weight" => $weight, "height" => $height, "sex" => $sex,
             "activityType" => $activityType, "age"=> $age, "avgdream" => $avgdream, "wokeup" => $wokeup);
 
-        $query = $this->db->insert("user_chars", $data);
+            $query = $this->db->insert("user_chars", $data);
 
-        if($query)
-        {
-            return 1;
+            if($query)
+            {
+                return 1;
+            }
+            else
+            {
+                return 'Unexpected error';
+            }
         }
-        else
-        {
-            return 'Unexpected error';
-        }
-        }
-
     }
 
     public function getUserChars($id)
     {
         $query = $this->db->get_where('user_chars', array('id' => $id));
-        if($query->num_rows() > 0)
-        {
-            return $query->result();
-        }
-        
+        return $query->result();
     }
 
 }

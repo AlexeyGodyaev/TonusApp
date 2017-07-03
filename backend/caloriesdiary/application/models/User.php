@@ -24,31 +24,21 @@ class User extends CI_Model {
 
     public function check($username, $password)
     {
-        $query = $this->db->get_where('Users', array('username' => $username));
+        $query = $this->db->get_where('Users', array('username' => $username, 'password' => $password));
 
         if ($query->num_rows() > 0)
-        {
-            $query = $this->db->get_where('Users', array('password' => $password));
-
-            if($query->num_rows() > 0)
+        {  
+            foreach ($query->result() as $row) 
             {
-                
-                foreach ($query->result() as $row) 
-                {
-                    return $row->user_id;                
-                }
-                
+                return $row->user_id;                
             }
-            else
-            {
-                return 'Неверный логин или пароль';
-            }
+                
         }
         else
-        {   
+        {
             return 'Неверный логин или пароль';
         }
-
+      
     }
 
     public function reg($username, $email, $password)
@@ -86,53 +76,38 @@ class User extends CI_Model {
         }
     }
 
-    public function del($username, $password)
+    public function del($id, $password)
     {
-        $query = $this->db->get_where('Users', array('username' => $username));
+        $query = $this->db->get_where('Users', array('id' => $id, 'password' => $password));
 
         if($query->num_rows() > 0)
         {
-            $query = $this->db->get_where('Users', array('password' => $username));
-
-            if($query->num_rows() > 0)
-            {
-                $this->db->delete('Users', array('username' => $username));
-                return 1;
-            }
-            else
-            {
-                return 'Неправильный пароль';
-            }
+            $this->db->delete('Users', array('id' => $id, 'password' =>$password));
+            $this->db->delete('user_chars', array('id' => $id ));
+            return 1;
         }
         else
         {
-            return 'Имя пользователя не найдено';
+            return 'Неверное имя пользователя или пароль';
         }
+        
        
     }
 
     public function changePassword($username, $oldpassword, $newpassword)
     {
-        $query = $this->db->get_where('Users', array('username' => $username));
+        $query = $this->db->get_where('Users', array('username' => $username, 'password' => $oldpassword));
         
         if($query->num_rows() > 0)
         {
-            $query = $this->db->get_where('Users', array('password' => $oldpassword));
-            if($query->num_rows() > 0)
-            {
                 $data = array('password' => $newpassword);
                 $this->db->where('username',$username);
                 $this->db->update('Users',$data);
                 return 1;
-            }
-            else
-            {
-                return 'Unexpected error';
-            }
         }
         else
         {
-            return 'Имя пользователя не найдено';
+            return 'Неверное имя пользователя или пароль';
         }
     }
 
@@ -150,7 +125,7 @@ class User extends CI_Model {
         }
         else
         {
-            return 0;
+            return 'Нет пользователя с таким email';
         }
     }
 }

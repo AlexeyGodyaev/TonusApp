@@ -94,7 +94,7 @@ class Users extends CI_Controller {
 
     public function delete()
     {
-        $username = $this->input->post('username');
+        $username = $this->input->post('id');
         $password = $this->input->post('password');
         $status = $this->User->del($username, $password);
 
@@ -128,7 +128,7 @@ class Users extends CI_Controller {
 
         $status = $this->CaloriesCalc->saveUserChars($id, $realName, $weight, $height, $sex, $activityType, $age, $avgdream, $wokeup);
 
-         if(is_string($status))
+        if(is_string($status))
         {
             $response['msg'] = $status;
             $response['status'] = 0;
@@ -149,21 +149,32 @@ class Users extends CI_Controller {
 
         $response = array();
 
-        foreach ($chars_q as $f) 
-        { 
-            $chars[] = array(
-                "realName" => $f->realName,
-                "weight"        =>  $f->weight,
-                "height"      =>  $f->height,
-                "sex"   =>  $f->sex,
-                "age"      =>  $f->age,
-                "activityType" => $f->activityType,
-                "avgdream"     =>  $f->avgdream,
-                "wokeup"  =>  $f->wokeup
-            );
+        if(empty($chars_q))
+        {
+            $response['status'] = 0;
+            $response['userChars'] = '';
         } 
+        else
+        {
+            foreach ($chars_q as $f) 
+            { 
+                $chars[] = array(
+                    "realName"      =>  $f->realName,
+                    "weight"        =>  $f->weight,
+                    "height"        =>  $f->height,
+                    "sex"           =>  $f->sex,
+                    "age"           =>  $f->age,
+                    "activityType"  =>  $f->activityType,
+                    "avgdream"      =>  $f->avgdream,
+                    "wokeup"        =>  $f->wokeup
+                );
+            } 
 
-        $response['userChars'] = $chars;
+            $response['userChars'] = $chars;
+            $response['status'] = 1; 
+        }
+
+        
         echo json_encode($response, TRUE);
 
     }
@@ -183,19 +194,16 @@ class Users extends CI_Controller {
         {
             $response['msg'] = 'Нет такого e-mail';
             $response['status'] = 0;
-            echo json_encode($response, TRUE);
         }
         else
         {
             $response['msg'] = "ОК";
             $response['status'] = 1;
-            echo json_encode($response, TRUE);
             $this->email->message($status);
             $this->email->send();
         }
-        
-        
 
+        echo json_encode($response, TRUE);
     }
 
 }
