@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -44,6 +45,9 @@ public class FoodCatalogActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_catalog_layout);
+
+        final LinearLayout lp = new LinearLayout(this);
+        lp.setOrientation(LinearLayout.VERTICAL);
 
         filterFragment = new FilterFragment();
         manager = getSupportFragmentManager();
@@ -94,14 +98,10 @@ public class FoodCatalogActivity extends FragmentActivity {
                     final TextView dialogBJU = new TextView(FoodCatalogActivity.this);
                     dialogBJU.setText(txtBJU.getText().toString());
                     final EditText input = new EditText(FoodCatalogActivity.this);
-//                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-//                            LinearLayout.LayoutParams.MATCH_PARENT,
-//                            LinearLayout.LayoutParams.MATCH_PARENT);
-                    //dialogBJU.setLayoutParams(lp);
-                    //input.setLayoutParams(lp);
-                    LinearLayout linearLayout = new LinearLayout(FoodCatalogActivity.this);
-                    linearLayout.findViewById(R.id.layoutDlg);
-                    builder.setView(linearLayout);
+                    lp.addView(dialogBJU, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    lp.addView(input, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                    builder.setView(lp);
                     AlertDialog alert = builder.create();
                     alert.show();
 
