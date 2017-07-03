@@ -66,9 +66,8 @@ public class ActionsCatalogActivity extends FragmentActivity {
                 try {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(ActionsCatalogActivity.this);
                     builder.setTitle(txtName.getText().toString())
-                            .setMessage(txtCalories.getText().toString())
                             .setCancelable(false)
-                            .setNegativeButton("ОК, иду на кухню",
+                            .setNegativeButton("Отмена",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             dialog.cancel();
