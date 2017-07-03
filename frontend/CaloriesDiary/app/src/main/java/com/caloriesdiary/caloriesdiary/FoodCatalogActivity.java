@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -72,18 +73,21 @@ public class FoodCatalogActivity extends FragmentActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l) {
-                JSONObject jsn = new JSONObject();
-                TextView txtName = (TextView) view.findViewById(R.id.productName);
+                final TextView txtName = (TextView) view.findViewById(R.id.productName);
                 TextView txtBJU = (TextView) view.findViewById(R.id.bJU);
-                TextView txtCalories = (TextView) view.findViewById(R.id.productCalories);
+                final TextView txtCalories = (TextView) view.findViewById(R.id.productCalories);
+                final TextView dialogBJU = new TextView(FoodCatalogActivity.this);
+                final TextView dialogCalories = new TextView(FoodCatalogActivity.this);
 
-                try {
                     AlertDialog.Builder builder = new AlertDialog.Builder(FoodCatalogActivity.this);
                     builder.setTitle(txtName.getText())
                             .setCancelable(false)
                             .setNegativeButton("Отмена",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
+                                            if (lp.getChildCount() > 0)
+                                            lp.removeAllViews();
+                                            ((ViewManager) lp.getParent()).removeView(lp);
                                             dialog.cancel();
                                         }
                                     })
@@ -92,47 +96,98 @@ public class FoodCatalogActivity extends FragmentActivity {
 
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    JSONObject jsn = new JSONObject();
+                                    try {
+                                    jsn.put("name",txtName.getText().toString());
+                                    jsn.put("bju",dialogBJU.getText().toString());
+                                    jsn.put("calories",dialogCalories.getText().toString());
+                                    try {
+                                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                                                openFileOutput("Food.txt",MODE_APPEND)));
 
+                                        writer.write(jsn.toString());
+                                        writer.close();
+
+                                        FileInputStream fin = null;
+                                        fin = openFileInput("Food.txt");
+                                        byte[] bytes = new byte[fin.available()];
+                                        fin.read(bytes);
+                                        String text = new String (bytes);
+
+                                        Toast.makeText(getApplicationContext(), text , Toast.LENGTH_LONG).show();
+                                    }
+                                    catch (FileNotFoundException fEx){
+
+                                    }
+                                    catch (IOException iEx){
+
+                                    }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (lp.getChildCount() > 0)
+                                    lp.removeAllViews();
+                                    ((ViewManager) lp.getParent()).removeView(lp);
                                 }
                             });
-                    final TextView dialogBJU = new TextView(FoodCatalogActivity.this);
-                    dialogBJU.setText(txtBJU.getText().toString());
-                    final EditText input = new EditText(FoodCatalogActivity.this);
-                    lp.addView(dialogBJU, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    lp.addView(input, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
+
+                    final EditText input = new EditText(FoodCatalogActivity.this);
+
+
+                    dialogBJU.setText(txtBJU.getText().toString());
+                    dialogCalories.setText(txtCalories.getText().toString());
+
+                    lp.addView(dialogCalories, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT));
+                    lp.addView(dialogBJU, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT));
+                    lp.addView(input, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                    final double caloriesCount = Double.parseDouble(txtCalories.getText().toString().
+                            substring(0,dialogCalories.getText().toString().indexOf('.')));
+                    String parsBJU = txtBJU.getText().toString();
+                    final double dialogProtein = Double.parseDouble(parsBJU.
+                            substring(0, parsBJU.indexOf('/')));
+                    parsBJU = parsBJU.substring(parsBJU.indexOf('/')+1);
+                    final double dialogFats =  Double.parseDouble(parsBJU.
+                            substring(0,parsBJU.indexOf('/')));
+                    parsBJU = parsBJU.substring(parsBJU.indexOf('/')+1);
+                    final double dialogCarbs =  Double.parseDouble(parsBJU);
+
+                    input.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            double massCount = Double.parseDouble(input.getText().toString());
+
+                            double newCount =
+                            (massCount/100)*caloriesCount;
+                            dialogCalories.setText(Double.toString(newCount));
+
+                            double protein = (massCount/100)*dialogProtein;
+                            double fats = (massCount/100)*dialogFats;
+                            double carbs = (massCount/100)*dialogCarbs;
+
+                            dialogBJU.setText(Double.toString(protein)+"/"+Double.toString(fats)+"/"+Double.toString(carbs));
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+
+                        }
+                    });
                     builder.setView(lp);
                     AlertDialog alert = builder.create();
                     alert.show();
 
-                    jsn.put("name",txtName.getText().toString());
-                    jsn.put("bju",txtBJU.getText().toString());
-                    jsn.put("calories",txtCalories.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
-//                try {
-//                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-//                            openFileOutput("Food.txt",MODE_APPEND)));
-//
-//                    writer.write(jsn.toString());
-//                    writer.close();
-//
-//                    FileInputStream fin = null;
-//                    fin = openFileInput("Food.txt");
-//                    byte[] bytes = new byte[fin.available()];
-//                    fin.read(bytes);
-//                    String text = new String (bytes);
-//
-//                    Toast.makeText(getApplicationContext(), text , Toast.LENGTH_LONG).show();
-//                }
-//                catch (FileNotFoundException fEx){
-//
-//                }
-//                catch (IOException iEx){
-//
-//                }
             }
         });
     }
