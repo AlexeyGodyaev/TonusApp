@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,20 +19,19 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class TodayActivity extends FragmentActivity {
 
     TextView todayDate, dayOfTheWeek, countOfDays, targetText;
     Button activityBtn, todayFoodBtn, addFoodBtn;
-    ListView foodBasketList;
-    FoodAdapter adapter = new FoodAdapter(this, initData());
+    public ListView foodBasketList;
+    public FoodAdapter adapter = new FoodAdapter(getApplicationContext(), initData());
 
 
     private boolean flag = true;
-    private FragmentManager manager;
-    private FragmentTransaction transaction;
-    private FoodBasketFragment foodBasketFragment;
+    public FragmentManager manager;
+    public FragmentTransaction transaction;
+    public FoodBasketFragment foodBasketFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class TodayActivity extends FragmentActivity {
         manager = getSupportFragmentManager();
         foodBasketFragment = new FoodBasketFragment();
         foodBasketList = (ListView) findViewById(R.id.foodBasketList);
-        //foodBasketList.setAdapter(adapter);
+        foodBasketList.setAdapter(adapter);
 
         Calendar calendar = Calendar.getInstance();
 
@@ -81,67 +80,54 @@ public class TodayActivity extends FragmentActivity {
     }
 
 
-    private List<FoodItem> initData() {
-        List<FoodItem> list = new ArrayList<FoodItem>();
-        String resp = null;
-        String foodName;
-        Float b=new Float(0), j=new Float(0), u=new Float(0), calories=new Float(0);
-        Integer id=0;
+    public List<FoodItem> initData() {
+            List<FoodItem> list = new ArrayList<FoodItem>();
+            String resp = null;
+            String foodName = null;
+            Float b = new Float(0), j = new Float(0), u = new Float(0), calories = new Float(0);
+            Integer id = 0;
 
-        try {
-            FileInputStream fin = null;
-            fin = openFileInput("Food.txt");
-            byte[] bytes = new byte[fin.available()];
-            fin.read(bytes);
-            resp = new String(bytes);
-            Toast.makeText(getApplicationContext(), resp.substring(0,resp.indexOf('}')+1), Toast.LENGTH_SHORT).show();
-        } catch (Exception ex){
-            Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
-        }
+            try {
+                FileInputStream fin = null;
+                fin = openFileInput("Food.txt");
+                byte[] bytes = new byte[fin.available()];
+                fin.read(bytes);
+                resp = new String(bytes);
+            } catch (Exception ex) {
+                Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
+            }
 
-        if (resp != null)
-            while(resp.length()>10){
+            if (resp != null) {
                 try {
-                    JSONObject jOb = new JSONObject(resp.substring(0,resp.indexOf('}')+1));
+                    JSONObject jOb = new JSONObject(resp);
+                    JSONArray jArr = jOb.getJSONArray("food");
+                    for (int i = 0; i < jArr.length(); i++) {
+                        try {
+                            Integer i1 = new Integer(jArr.getJSONObject(i).getString("category_id"));
+                            id = i1;
+                            Float f1 = Float.parseFloat(jArr.getJSONObject(i).getString("protein"));
+                            b = f1;
+                            f1 = Float.parseFloat(jArr.getJSONObject(i).getString("fats"));
+                            j = f1;
+                            f1 = Float.parseFloat(jArr.getJSONObject(i).getString("carbs"));
+                            u = f1;
+                            f1 = Float.parseFloat(jArr.getJSONObject(i).getString("calories"));
+                            calories = f1;
 
-                    try {
-                        Integer f1 = new Integer(jOb.getString("id"));
-                        id=f1;
-                    } catch (NumberFormatException e) {
-                        System.err.println("Неверный формат строки!");
+                        } catch (NumberFormatException e) {
+                            System.err.println("Неверный формат строки!");
+                        }
+
+                        foodName = jArr.getJSONObject(i).getString("name");
+
+                        if (foodName != null)
+                            list.add(new FoodItem(foodName, b, j, u, id, calories));
                     }
-
-
-                    foodName = jOb.getString("name");
-
-
-                    String bJU = jOb.getString("bju");
-                    try {
-                        Float f1 = new Float(bJU.substring(0,bJU.indexOf('/')));
-                        b = f1;
-                        bJU=bJU.substring(bJU.indexOf('/')+1);
-                        f1 = new Float(resp.substring(0,resp.indexOf('/')));
-                        j=f1;
-                        bJU=bJU.substring(bJU.indexOf('/')+1);
-                        f1 = new Float(bJU);
-                        u=f1;
-                        f1 = new Float(jOb.getString("calories"));
-                        calories=f1;
-                    } catch (NumberFormatException e) {
-                        System.err.println("Неверный формат строки!");
-                    }
-
-                    resp=resp.substring(resp.indexOf('}')+1);
-
-                    if(b!=0||j!=0||u!=0||calories!=0)
-                        list.add(new FoodItem(foodName,b,j,u,id,calories));
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-
-        return list;
+            return list;
     }
 
     private String getDayOfWeek(int i){
