@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -202,17 +203,17 @@ public class FoodCatalogActivity extends FragmentActivity {
         transaction.commit();
     }
 
-    public  String getFood() throws InterruptedException, ExecutionException{
+    public  JSONArray getFood() throws InterruptedException, ExecutionException{
         GetFood get = new GetFood();
         get.execute("http://192.168.1.205/food/get_food");
 
-        return get.get().toString();
+        return get.get();
     }
 
     private List<FoodItem> initData() {
         List<FoodItem> list = new ArrayList<FoodItem>();
-        String resp = null;
-        String foodName;
+        JSONArray resp = null;
+        String foodName = null;
         Float b=new Float(0), j=new Float(0), u=new Float(0), calories=new Float(0);
         Integer id=0;
 
@@ -224,38 +225,24 @@ public class FoodCatalogActivity extends FragmentActivity {
             e.printStackTrace();
         }
         if (resp != null)
-            while(resp.length()>10){
+            for(int i = 0; i<resp.length(); i++){
             try {
-                Integer f1 = new Integer(resp.substring(0,resp.indexOf(',')));
-                id=f1;
-            } catch (NumberFormatException e) {
-                System.err.println("Неверный формат строки!");
-            }
-            resp=resp.substring(resp.indexOf(',')+1);
-
-            foodName = resp.substring(0,resp.indexOf(','));
-            resp=resp.substring(resp.indexOf(',')+1);
-
-
-
-            try {
-                Float f1 = new Float(resp.substring(0,resp.indexOf(',')));
+                Integer i1 = new Integer(resp.getJSONObject(i).getString("category_id"));
+                id=i1;
+                foodName = resp.getJSONObject(i).getString("name");
+                Float f1 = new Float(resp.getJSONObject(i).getString("protein"));
                 b = f1;
-                resp=resp.substring(resp.indexOf(',')+1);
-                f1 = new Float(resp.substring(0,resp.indexOf(',')));
+                f1 = new Float(resp.getJSONObject(i).getString("fats"));
                 j=f1;
-                resp=resp.substring(resp.indexOf(',')+1);
-                f1 = new Float(resp.substring(0,resp.indexOf(',')));
+                f1 = new Float(resp.getJSONObject(i).getString("carbs"));
                 u=f1;
-                resp=resp.substring(resp.indexOf(',')+1);
-                f1 = new Float(resp.substring(0,resp.indexOf(';')));
+                f1 = new Float(resp.getJSONObject(i).getString("calories"));
                 calories=f1;
             } catch (NumberFormatException e) {
                 System.err.println("Неверный формат строки!");
+            } catch (JSONException jEx){
+                Toast.makeText(getApplicationContext(),jEx.toString(), Toast.LENGTH_SHORT).show();
             }
-
-            resp=resp.substring(resp.indexOf(';')+1);
-
                 if(b!=0||j!=0||u!=0||calories!=0)
                 list.add(new FoodItem(foodName,b,j,u,id,calories));
         }
