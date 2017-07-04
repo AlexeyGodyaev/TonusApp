@@ -46,12 +46,10 @@
         android:elevation="20dp"
         android:text="Жрачка" />
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/my_food_basket"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/foodBasketFragment"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/todayActiveBtn"
@@ -61,6 +59,12 @@
         android:layout_height="wrap_content"
         android:text="Рукоделие(сидя)" />
 
+    <ListView
+        android:id="@+id/my_active_basket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
->!-- layout для итогов дня(вес и измеренная антропометрия), текст рекомендации
+
+
+    >!-- layout для итогов дня(вес и измеренная антропометрия), текст рекомендации
 </LinearLayout>
