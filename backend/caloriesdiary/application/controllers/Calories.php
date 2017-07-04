@@ -18,9 +18,7 @@ class Calories extends CI_Controller {
         $age = $this->input->post('age');
         $activityType = $this->input->post('activityType');
 
-        $result = $this->CaloriesCalc->caloriesPerday($weight, $height, $sex, $activityType, $age);
-
-        $response = array('loseWeight' => $result-800,'maintainWeight' => $result, 'gainWeight' => $result+800, 'status' => 1);
+        $response = $this->CaloriesCalc->caloriesPerday($weight, $height, $sex, $activityType, $age);
 
         echo json_encode($response, TRUE);
 

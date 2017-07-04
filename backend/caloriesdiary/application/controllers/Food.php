@@ -39,52 +39,26 @@ class Food extends CI_Controller {
 	public function get_food()
 	{
         $offset = $this->input->post('offset');
-		$food_q = $this->Product->get_food($offset);
+		$food = $this->Product->get_food($offset);
 
-		$response = array();
-    	$food = array();
-
-    	foreach ($food_q as $f) 
-    	{ 
-        	$food[] = array(
-            	"food_id"   =>  $f->food_id,
-            	"name"      =>  $f->name,
-            	"protein"   =>  $f->protein,
-            	"fats"      =>  $f->fats,
-            	"carbs"     =>  $f->carbs,
-            	"calories"  =>  $f->calories,
-                "category"  =>  $f->categ_name,
-                "category_id" => $f->category
-        	);
-    	} 
-
-    	$response['food'] = $food;
-    	echo json_encode($response, TRUE);
+    	echo json_encode($food, TRUE);
 	}
+
+    public function get_food_categories()
+    {
+        $response['categories'] = $this->Product->getFoodcategories();
+
+        echo json_encode($response, TRUE);
+    }
 
     public function get_food_by_category()
     {
         $id = $this->input->post('id');
         $offset = $this->input->post('offset');
 
-        $food_q = $this->Product->getfoodBycategory($id, $offset);
+        $food = $this->Product->getfoodBycategory($id, $offset);
 
-        foreach ($food_q as $f) 
-        { 
-            $food[] = array(
-                "food_id"   =>  $f->food_id,
-                "name"      =>  $f->name,
-                "protein"   =>  $f->protein,
-                "fats"      =>  $f->fats,
-                "carbs"     =>  $f->carbs,
-                "calories"  =>  $f->calories,
-                "category"  =>  $f->categ_name,
-                "category_id" => $f->category
-            );
-        } 
-
-        $response['food'] = $food;
-        echo json_encode($response, TRUE);
+        echo json_encode($food, TRUE);
     }
 
     public function get_food_by_name()
@@ -92,24 +66,9 @@ class Food extends CI_Controller {
         $query = $this->input->post('query');
         $offset = $this->input->post('offset');
 
-        $food_q = $this->Product->getfoodByname($query, $offset);
+        $food = $this->Product->getfoodByname($query, $offset);
 
-        foreach ($food_q as $f) 
-        { 
-            $food = array(
-                "food_id"   =>  $f->food_id,
-                "name"      =>  $f->name,
-                "protein"   =>  $f->protein,
-                "fats"      =>  $f->fats,
-                "carbs"     =>  $f->carbs,
-                "calories"  =>  $f->calories,
-                "category"  =>  $f->categ_name,
-                "category_id" => $f->category
-            );
-        }
-
-        $response['food'] = $food;
-        echo json_encode($response, TRUE);
+        echo json_encode($food, TRUE);
 
     }
 

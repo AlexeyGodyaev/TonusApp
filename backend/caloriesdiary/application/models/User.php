@@ -5,6 +5,19 @@ class User extends CI_Model {
     public function __construct()
     {
         parent::__construct();
+
+        $config = Array(
+        'protocol' => 'smtp',
+        'smtp_host' => 'ssl://smtp.mail.ru',
+        'smtp_port' => 465,
+        'smtp_user' => 'ml-98@mail.ru', 
+        'smtp_pass' => 'ubuntu', 
+        'mailtype' => 'text',
+        'charset' => 'utf-8',
+        'wordwrap' => TRUE
+        );
+
+        $this->load->library('email', $config);
         $this->load->database();
     }
 
@@ -24,21 +37,26 @@ class User extends CI_Model {
 
     public function check($username, $password)
     {
+        $this->db->cache_on();
         $query = $this->db->get_where('Users', array('username' => $username, 'password' => $password));
+        $this->db->cache_off();
 
         if ($query->num_rows() > 0)
         {  
+            $response['status'] = 1;
+            $response['msg'] = 'OK';
             foreach ($query->result() as $row) 
             {
-                return $row->user_id;                
+                $response["user_id"] = $row->user_id;                
             }
-                
         }
         else
         {
-            return 'Неверный логин или пароль';
+            $response['status'] = 0;
+            $response['msg'] = 'Неверный логин или пароль';
         }
-      
+
+        return $response;
     }
 
     public function reg($username, $email, $password)
@@ -47,7 +65,8 @@ class User extends CI_Model {
 
         if($query->num_rows() > 0)
         {
-            return 'Имя пользователя уже занято';
+            $response['status'] = 0;
+            $response['msg'] = 'Имя пользователя уже занято';
         }
         else
         {
@@ -55,7 +74,8 @@ class User extends CI_Model {
 
             if($query->num_rows() > 0)
             {
-                return 'Адрес электронной почты занят';
+                $response['status'] = 0;
+                $response['msg'] = 'Адрес электронной почты занят';
             }
             else
             {
@@ -65,33 +85,42 @@ class User extends CI_Model {
         }   
 
         $query = $this->db->insert("Users", $data);
+        $this->db->cache_delete();
 
         if($query)
         {
-            return 1;
+            $response['status'] = 1;
+            $response['msg'] = 'OK';
         }
         else
         {
-            return 'Unexpected error';
+            $response['status'] = 0;
+            $response['msg'] = 'Error occured';
         }
+
+        return $response;
     }
 
     public function del($id, $password)
     {
-        $query = $this->db->get_where('Users', array('id' => $id, 'password' => $password));
+        $query = $this->db->get_where('Users', array('user_id' => $id, 'password' => $password));
 
         if($query->num_rows() > 0)
         {
-            $this->db->delete('Users', array('id' => $id, 'password' =>$password));
+            $response['status'] = 1;
+            $response['msg'] = 'OK';
+            $this->db->delete('Users', array('user_id' => $id, 'password' =>$password));
             $this->db->delete('user_chars', array('id' => $id ));
-            return 1;
+            $this->db->cache_delete();
+            
         }
         else
         {
-            return 'Неверное имя пользователя или пароль';
+            $response['status'] = 0;
+            $response['msg'] = 'Неверное имя пользователя или пароль';
         }
-        
-       
+
+        return $response;
     }
 
     public function changePassword($username, $oldpassword, $newpassword)
@@ -100,14 +129,18 @@ class User extends CI_Model {
         
         if($query->num_rows() > 0)
         {
-                $data = array('password' => $newpassword);
-                $this->db->where('username',$username);
-                $this->db->update('Users',$data);
-                return 1;
+            $response['status'] = 1;
+            $response['msg'] = "OK";
+
+            $data = array('password' => $newpassword);
+            $this->db->where('username',$username);
+            $this->db->update('Users',$data);
+            $this->db->cache_delete();
         }
         else
         {
-            return 'Неверное имя пользователя или пароль';
+            $response['status'] = 0;
+            $response['msg'] = 'Неверное имя пользователя или пароль';
         }
     }
 
@@ -118,14 +151,32 @@ class User extends CI_Model {
         if($query->num_rows() > 0)
         {
             $newpassword = $this->generatePassword();
+
             $data = array('password' => $newpassword);
-            $this->db->where('email',$email);
-            $this->db->update('Users',$data);
-            return 'Ваш новый пароль: '. $newpassword;
+
+            $this->db->where('email', $email);
+            $this->db->update('Users', $data);
+            $this->db->cache_delete();
+
+            $this->email->from('ml-98@mail.ru', 'noreply');
+            $this->email->to($email);
+
+            $this->email->subject('Ваш новый пароль для аккаунта');
+
+            $this->email->message('Ваш новый пароль: '. $newpassword);
+
+            $response['status'] = 1;
+            $response['msg'] = 'OK';
+
+            $this->email->send();
+
         }
         else
         {
-            return 'Нет пользователя с таким email';
+            $response['status'] = 0;
+            $response['msg'] = 'Нет пользователя с таким email';
         }
+
+        return $response;
     }
 }

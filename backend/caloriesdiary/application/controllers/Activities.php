@@ -11,24 +11,35 @@ class Activities extends CI_Controller {
 
 	public function get_act_names()
 	{
-		$act_names_q = $this->Action->get_act_names();
-    	
-        $i = 0;
-        foreach ($act_names_q as $act) {
-            $actNames[$i] = $act->name;
-            $i++;
+		$timestamp = $this->input->post('timestamp');
+		$act_names_q = $this->Action->get_act_names($timestamp);
+
+        $actNames = array();
+
+        if($act_names_q != false)
+        {
+            $response['update'] = true;
+
+    	   $i = 0;
+        	foreach ($act_names_q as $act)
+        	 {
+            	$actNames[$i] = $act->name;
+            	$i++;
+        	 }
+        }
+        else
+        {
+            $response['update'] = $act_names_q;
         }
 
         $response['actNames'] = $actNames;
     	echo json_encode($response, TRUE);
-
 	}
 
 	public function get_activities()
 	{
-		$activities_q = $this->Action->get_activities();
-    	$response['activities'] = $activities_q;
-    	echo json_encode($response, TRUE);
+		$activities = $this->Action->get_activities();
+    	echo json_encode($activities, TRUE);
 	}
 
 }

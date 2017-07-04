@@ -27,7 +27,10 @@ class CaloriesCalc extends CI_Model {
         {
             $maffin -= 161;
         }
-        return $maffin*$value;
+
+        $result = $maffin*$value;
+
+        return array('status' => 1,'loseWeight' => $result - 800,'maintainWeight' => $result, 'gainWeight' => $result + 800);
     }
 
     public function saveUserChars($id, $realName, $weight, $height, $sex, $activityType, $age, $avgdream, $wokeup)
@@ -43,19 +46,23 @@ class CaloriesCalc extends CI_Model {
             {
                 $this->db->get_where('user_chars', array('id' => $id));
                 $query = $this->db->update("user_chars", $data);
+                $this->db->cache_delete();
 
                 if($query)
                 {
-                    return 1;
+                    $response['status'] = 1;
+                    $response['msg'] = 'Профиль обновлён';
                 }
                 else
                 {
-                    return 'Unexpected error';
+                    $response['status'] = 0;
+                    $response['msg'] = 'Error occured';
                 }
             } 
             else
             {
-                return 'Не все поля указаны';
+                $response['status'] = 0;
+                $response['msg'] = 'Не все поля указаны';
             }
             
         }
@@ -65,22 +72,66 @@ class CaloriesCalc extends CI_Model {
             "activityType" => $activityType, "age"=> $age, "avgdream" => $avgdream, "wokeup" => $wokeup);
 
             $query = $this->db->insert("user_chars", $data);
+            $this->db->cache_delete();
 
             if($query)
             {
-                return 1;
+                $response['status'] = 1;
+                $response['msg'] = 'ОК';
             }
             else
             {
-                return 'Unexpected error';
+                $response['status'] = 0;
+                $response['msg'] = 'Error occured';
             }
         }
+
+        return $response;
     }
 
     public function getUserChars($id)
     {
+        $this->db->cache_on();
         $query = $this->db->get_where('user_chars', array('id' => $id));
-        return $query->result();
+        $this->db->cache_off();
+
+        $userChars = array();
+
+        if($query)
+        {
+            foreach ($query->result() as $f) 
+            { 
+                $userChars[] = array(
+                    "realName"      =>  $f->realName,
+                    "weight"        =>  $f->weight,
+                    "height"        =>  $f->height,
+                    "sex"           =>  $f->sex,
+                    "age"           =>  $f->age,
+                    "activityType"  =>  $f->activityType,
+                    "avgdream"      =>  $f->avgdream,
+                    "wokeup"        =>  $f->wokeup
+                );
+            }
+
+            if(empty($userChars))
+            {
+                $response['status'] = 0;
+                $response['userChars'] = $userChars;
+            }
+           else
+            {
+                $response['status'] = 1;
+                $response['userChars'] = $userChars;
+            }   
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Error occured';
+            $response['userChars'] = $userChars;
+        }
+
+        return $response;
     }
 
 }

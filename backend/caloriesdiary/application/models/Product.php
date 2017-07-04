@@ -8,20 +8,21 @@ class Product extends CI_Model {
         $this->load->database();
     }
 
-
-    public function getTimestamp()
+     public function getTimestamp()
     {
-        $query = 'SELECT * FROM updates LIMIT 1';
-        $q = $this->db->query($query);
+        $q = $this->db->query('SELECT * FROM updates ORDER BY timestamp DESC LIMIT 1');
         if($q->num_rows() > 0)
         {
-            return 
+            foreach ($q->result() as $row)
+            {
+                return strtotime($row->timestamp);
+            }
         }
     }
 
     public function get_food_names($timestamp)
     {
-        if($this->getTimestamp() < $timestamp)
+        if($this->getTimestamp() > $timestamp)
         {
             $this->db->select('name');
             $query = $this->db->get('Food');
@@ -29,7 +30,7 @@ class Product extends CI_Model {
         }
         else
         {
-            return 0;
+            return false;
         }
     }
 
@@ -38,7 +39,44 @@ class Product extends CI_Model {
         $this->db->select('*');
         $this->db->from('Food');
         $this->db->join('categories', 'Food.category = categories.id');
-        $this->db->limit(500, $offset);
+        $this->db->limit(500, $offset*500);
+        $query = $this->db->get();
+
+        $food = array();
+
+        if($query)
+        {
+            $response['status'] = 1;
+            foreach ($query->result() as $f) 
+            { 
+                $food[] = array(
+                    "food_id"   =>  $f->food_id,
+                    "name"      =>  $f->name,
+                    "protein"   =>  $f->protein,
+                    "fats"      =>  $f->fats,
+                    "carbs"     =>  $f->carbs,
+                    "calories"  =>  $f->calories,
+                    "category"  =>  $f->categ_name,
+                    "category_id" => $f->category
+                );
+            } 
+
+            $response['food'] = $food;
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Error occured';
+            $response['food'] = $food;
+        }
+
+        return $response;
+    }
+
+    public function getFoodcategories()
+    {
+        $this->db->select('*');
+        $this->db->from('categories');
         $query = $this->db->get();
 
         return $query->result();
@@ -50,10 +88,37 @@ class Product extends CI_Model {
         $this->db->from('Food');
         $this->db->where('category',$id);
         $this->db->join('categories', 'Food.category = categories.id');
-        $this->db->limit(500, $offset);
+        $this->db->limit(500, $offset*500);
         $query = $this->db->get();
 
-        return $query->result();
+        $food = array();
+
+        if($query)
+        {
+            $response['status'] = 1;
+            foreach ($query->result() as $f) 
+            { 
+                $food[] = array(
+                    "food_id"   =>  $f->food_id,
+                    "name"      =>  $f->name,
+                    "protein"   =>  $f->protein,
+                    "fats"      =>  $f->fats,
+                    "carbs"     =>  $f->carbs,
+                    "calories"  =>  $f->calories,
+                    "category"  =>  $f->categ_name,
+                    "category_id" => $f->category
+                );
+            }
+            $response['food'] = $food;
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Error occured';
+            $response['food'] = $food;
+        }
+        
+        return $response;
     }
 
     public function getfoodByName($name, $offset)
@@ -62,10 +127,35 @@ class Product extends CI_Model {
         $this->db->from('Food');
         $this->db->where('name', $name);
         $this->db->join('categories', 'Food.category = categories.id');
-        $this->db->limit(500, $offset);
+        $this->db->limit(500, $offset*500);
         $query = $this->db->get();
 
-        return $query->result();
+         if($query)
+        {
+            $response['status'] = 1;
+            foreach ($query->result() as $f) 
+            { 
+                $food = array(
+                    "food_id"   =>  $f->food_id,
+                    "name"      =>  $f->name,
+                    "protein"   =>  $f->protein,
+                    "fats"      =>  $f->fats,
+                    "carbs"     =>  $f->carbs,
+                    "calories"  =>  $f->calories,
+                    "category"  =>  $f->categ_name,
+                    "category_id" => $f->category
+                );
+            }
+            $response['food'] = $food;
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Error occured';
+            $response['food'] = $food; 
+        }
+        
+        return $response;
     }
 
 }
