@@ -2,9 +2,11 @@ package com.caloriesdiary.caloriesdiary;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -28,6 +32,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
     RadioButton male,female;
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
+    String awakestr;
 
     int DIALOG_TIME = 1;
     int myHour = 14;
@@ -49,8 +54,70 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         sleep = (EditText) findViewById(R.id.sleep_edit);
         awake = (TextView) findViewById(R.id.awake_edit);
 
+
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
         editor = sharedPref.edit();
+
+        try
+        {
+            Post log = new Post();
+
+            String args[] = new String[3];
+
+            args[0] = "http://192.168.1.205/users/get_user_chars";  //аргументы для пост запроса
+            args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+
+
+            log.execute(args); // вызываем запрос
+            JSONObject JSans = log.get();
+
+            // Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
+
+            Toast.makeText(getApplicationContext(),JSans.toString(),Toast.LENGTH_LONG).show();
+
+            if(JSans.getString("status").equals("1"))
+            {
+                name.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("realName"));
+                age.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("age"));
+                height.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("height"));
+                weight.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("weight"));
+                if(JSans.getJSONArray("userChars").getJSONObject(0).getString("sex").equals("1"))
+                {
+                    male.setChecked(true);
+                }
+                else
+                {
+                    female.setChecked(true);
+                }
+                switch (JSans.getJSONArray("userChars").getJSONObject(0).getString("activityType"))
+                {
+                    case "1":
+                        spinner.setSelection(0);
+                        break;
+                    case "2":
+                        spinner.setSelection(1);
+                        break;
+                    case "3":
+                        spinner.setSelection(2);
+                        break;
+                    case "4":
+                        spinner.setSelection(3);
+                        break;
+                    case "5":
+                        spinner.setSelection(4);
+                        break;
+                }
+                sleep.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("avgdream"));
+                awake.setText("Ср. время пробуждения: "+JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup"));
+                awakestr =JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup");
+            }
+
+
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+        }
        // InitPreference();
     }
     @Override
@@ -63,7 +130,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
     public void onClick(View view) throws InterruptedException, ExecutionException {
-        String selected_activity = String.valueOf(spinner.getSelectedItemPosition());
+        String selected_activity = String.valueOf(spinner.getSelectedItemPosition()+1);
         String selected_gender;
         if(male.isChecked())
         {
@@ -90,17 +157,15 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         args[6] = age.getText().toString();
         args[7] = selected_activity;
         args[8] = sleep.getText().toString();
-        args[9] = String.valueOf(myHour)+":"+String.valueOf(myMinute) + ":00";
-
+        args[9] = awakestr;
 
         log.execute(args); // вызываем запрос
 
-        //log.get().toString()
+
         Toast.makeText(getApplicationContext(), log.get().toString() ,Toast.LENGTH_LONG ).show();
         editor.putBoolean("IS_PROFILE_CREATED",true);
         editor.commit();
         Intent intent = new Intent(getApplicationContext(),PersonalProfileActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
     public void onAwakeTimeClick(View view)
@@ -121,7 +186,15 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             myHour = hourOfDay;
             myMinute = minute;
-            awake.setText("Среднее время пробуждения: "+ String.valueOf(myHour)+":"+String.valueOf(myMinute));
+
+            if (myMinute <10) {
+                awake.setText("Ср. время пробуждения: " + String.valueOf(myHour) + ":0" + String.valueOf(myMinute) + ":00");
+                awakestr = String.valueOf(myHour) + ":0" + String.valueOf(myMinute) + ":00";
+            }
+            else {
+                awake.setText("Ср. время пробуждения: " + String.valueOf(myHour) + ":" + String.valueOf(myMinute) + ":00");
+                awakestr = String.valueOf(myHour) + ":" + String.valueOf(myMinute) + ":00";
+            }
         }
     };
 
