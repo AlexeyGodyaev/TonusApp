@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
   <RelativeLayout
+      android:id="@+id/profile_relative"
       android:layout_width="wrap_content"
       android:layout_height="match_parent">
   <TextView
@@ -12,6 +13,46 @@
       android:textSize="30dp"
       android:layout_marginTop="15dp"
       android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Имя:"
+        android:textSize="20dp"
+        android:layout_below="@id/header_text"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/gender_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Пол:"
+        android:textSize="20dp"
+        android:layout_below="@id/name_text"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/age_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Возраст:"
+        android:textSize="20dp"
+        android:layout_below="@id/gender_text"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/weight_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Вес:"
+        android:textSize="20dp"
+        android:layout_below="@id/age_text"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/height_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Рост:"
+        android:textSize="20dp"
+        android:layout_below="@id/weight_text"
+        android:layout_marginTop="10dp"/>
     <RelativeLayout
         android:id="@+id/layout_photo"
         android:layout_width="200dp"
@@ -26,16 +67,25 @@
           android:layout_alignParentRight="true"
           android:layout_marginRight="10dp"
           android:layout_marginTop="10dp"
+          android:onClick="onClickEditPhoto"
           />
     </RelativeLayout>
 
     <Button
-        android:id="@+id/edit_photo_btn"
+        android:id="@+id/edit_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ред."
-        android:layout_below="@id/layout_photo"
-        android:layout_alignRight="@+id/layout_photo"
-        android:onClick="onClickEditPhoto"/>
+        android:layout_below="@id/height_text"
+        android:layout_alignParentLeft="true"
+        android:onClick="onClickEditProfile"/>
+    <Button
+        android:id="@+id/delete_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Удалить"
+        android:layout_toRightOf="@id/edit_btn"
+        android:layout_below="@+id/height_text"
+        android:onClick="onClickDeleteProfile"/>
   </RelativeLayout>
 </ScrollView>

@@ -80,16 +80,37 @@ public void onClc(View view){
 
 
     public void onProfileClick(View view){
-        if(!sharedPref.getBoolean("IS_PROFILE_CREATED",false)) {
-            Intent intent = new Intent(getApplicationContext(), PersonalProfileEditActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(intent);
-        }
-        else
+        try
         {
-            Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
-            startActivity(intent);
+            Post log = new Post();
+
+            String args[] = new String[3];
+
+            args[0] = "http://192.168.1.205/users/get_user_chars";  //аргументы для пост запроса
+            args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+
+
+            log.execute(args); // вызываем запрос
+            JSONObject JSans = log.get();
+
+
+            if(JSans.getString("status").equals("0")) {
+                Intent intent = new Intent(getApplicationContext(), PersonalProfileEditActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent);
+            }
+            else if(JSans.getString("status").equals("1"))
+            {
+                Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
+                startActivity(intent);
+            }
         }
+        catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+        }
+
+
     }
     public void onCurrentStatClick (View view)
     {

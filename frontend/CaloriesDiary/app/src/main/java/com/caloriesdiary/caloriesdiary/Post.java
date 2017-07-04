@@ -60,6 +60,13 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                     case "http://192.168.1.205/users/forgot_password":
                         postDataParams.put("email",arg0[1]);
                         break;
+                    case "http://192.168.1.205/users/get_user_chars":
+                        postDataParams.put("id",arg0[1]);
+                        break;
+                    case "http://192.168.1.205/users/delete":
+                        postDataParams.put("id",arg0[1]);
+                        postDataParams.put("password",arg0[2]);
+                        break;
 
                 }
 
