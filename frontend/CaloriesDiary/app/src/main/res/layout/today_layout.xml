@@ -17,9 +17,9 @@
 
         <TextView
             android:id="@+id/todayDayOfTheWeek"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="" />
 
         <TextView
@@ -45,6 +45,13 @@
         android:layout_gravity="center"
         android:elevation="20dp"
         android:text="Жрачка" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/foodBasketFragment"
+        android:orientation="vertical">
+    </LinearLayout>
 
     <Button
         android:id="@+id/todayActiveBtn"
