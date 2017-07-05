@@ -33,7 +33,7 @@ public class GetFood extends AsyncTask<String, Void, JSONArray>{
             URL url = new URL(strings[0]); // первый аргумент из массива который передан при вызове
             JSONObject postDataParams = new JSONObject();
 
-            postDataParams.put("offset","0");
+            postDataParams.put("offset",strings[1]);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(15000 /* milliseconds */);
