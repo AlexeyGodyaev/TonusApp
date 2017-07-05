@@ -18,14 +18,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,111 +69,112 @@ public class ActionsCatalogActivity extends FragmentActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 JSONObject jsn = new JSONObject();
-                TextView txtName = (TextView) view.findViewById(R.id.productName);
+                final TextView txtName = (TextView) view.findViewById(R.id.productName);
                 final TextView txtCalories = (TextView) view.findViewById(R.id.productCalories);
-                try {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(ActionsCatalogActivity.this);
-                    builder.setTitle(txtName.getText().toString())
-                            .setCancelable(false)
-                            .setNegativeButton("Отмена",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            if(((LinearLayout) lp).getChildCount() > 0)
-                                                ((LinearLayout) lp).removeAllViews();
-                                            ((ViewManager)lp.getParent()).removeView(lp);
+                String kcalstr = txtCalories.getText().toString().substring(0, txtCalories.getText().toString().indexOf('.'));
+                final double kcal = Double.parseDouble(kcalstr);
+                final TextView kcaltextview = new TextView(ActionsCatalogActivity.this);
+                kcaltextview.setText(kcalstr + " kcal");
+                final AlertDialog.Builder builder = new AlertDialog.Builder(ActionsCatalogActivity.this);
+                builder.setTitle(txtName.getText().toString())
+                        .setCancelable(false)
+                        .setNegativeButton("Отмена",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        if (((LinearLayout) lp).getChildCount() > 0)
+                                            ((LinearLayout) lp).removeAllViews();
+                                        ((ViewManager) lp.getParent()).removeView(lp);
 
-                                            dialog.cancel();
+                                        dialog.cancel();
+                                    }
+                                })
+                        .setPositiveButton("ОК",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        JSONObject jObject = new JSONObject();
+                                        try {
+                                            JSONArray jsonArray = new JSONArray();
+                                            JSONObject jsn = new JSONObject();
+                                            File f = new File(getCacheDir(), "Actions.txt");
+                                            if (f.exists()) {
+                                                FileInputStream in = new FileInputStream(f);
+                                                ObjectInputStream inObject = new ObjectInputStream(in);
+                                                String text = inObject.readObject().toString();
+                                                inObject.close();
+
+
+                                                jsn = new JSONObject(text);
+                                                jsonArray = jsn.getJSONArray("active");
+                                                jsn.remove("active");
+                                            }
+
+                                            jsn.put("name", txtName.getText().toString());
+                                            jsn.put("calories", kcaltextview.getText().toString()
+                                                    .substring(0, kcaltextview.getText().toString().indexOf('.')));
+                                            jsonArray.put(jsn);
+                                            jObject.put("active", jsonArray);
+
+                                            FileOutputStream out = new FileOutputStream(f);
+                                            ObjectOutputStream outObject = new ObjectOutputStream(out);
+                                            outObject.writeObject(jObject.toString());
+                                            outObject.flush();
+                                            out.getFD().sync();
+                                            outObject.close();
+
+                                            //Toast.makeText(getApplicationContext(), jObject.toString() , Toast.LENGTH_LONG).show();
+                                        } catch (Exception iEx) {
+                                            Toast.makeText(getApplicationContext(), iEx.toString(), Toast.LENGTH_LONG).show();
+
                                         }
-                                    })
-                            .setPositiveButton("ОК",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            if(((LinearLayout) lp).getChildCount() > 0)
-                                                ((LinearLayout) lp).removeAllViews();
-                                            ((ViewManager)lp.getParent()).removeView(lp);
 
-                                        }
-                                    });
+                                        if (((LinearLayout) lp).getChildCount() > 0)
+                                            ((LinearLayout) lp).removeAllViews();
+                                        ((ViewManager) lp.getParent()).removeView(lp);
 
-                    String kcalstr = txtCalories.getText().toString().substring(0,txtCalories.getText().toString().indexOf('.'));
-                    final double kcal = Double.parseDouble(kcalstr);
+                                    }
+                                });
 
-                    final EditText input = new EditText(ActionsCatalogActivity.this);
-                        input.setHint("Введите время (в минутах)");
-                    final TextView kcaltextview = new TextView(ActionsCatalogActivity.this);
-                     kcaltextview.setText(kcalstr + " kcal");
-                    input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    input.addTextChangedListener(new TextWatcher()
-                    {
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count)
-                        {
-                            double newkcal = kcal;
-                            if(input.getText().length()>0)
-                            {
-                                int time = Integer.parseInt(input.getText().toString());
-                                if(time < 1440) {
-                                    newkcal = kcal * time / 60;
-                                    //Toast.makeText(getApplicationContext(),String.valueOf(newkcal),Toast.LENGTH_LONG).show();
-                                    kcaltextview.setText(newkcal + " kcal");
-                                }
-                                else
-                                {
-                                    Toast.makeText(getApplicationContext(),"Не пизди",Toast.LENGTH_LONG).show();
-                                    input.setText("0");
-                                }
+                final EditText input = new EditText(ActionsCatalogActivity.this);
+                input.setHint("Введите время (в минутах)");
 
-                            }
-                            else{
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                input.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        double newkcal = kcal;
+                        if (input.getText().length() > 0) {
+                            int time = Integer.parseInt(input.getText().toString());
+                            if (time < 1440) {
+                                newkcal = kcal * time / 60;
+                                //Toast.makeText(getApplicationContext(),String.valueOf(newkcal),Toast.LENGTH_LONG).show();
                                 kcaltextview.setText(newkcal + " kcal");
-
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Не пизди", Toast.LENGTH_LONG).show();
+                                input.setText("0");
                             }
 
-                        }
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int aft )
-                        {
+                        } else {
+                            kcaltextview.setText(newkcal + " kcal");
 
                         }
-                        @Override
-                        public void afterTextChanged(Editable s)
-                        {
 
-                        }
-                    });
-                    lp.addView(kcaltextview, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    lp.addView(input, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    builder.setView(lp);
-                    AlertDialog alert = builder.create();
-                    alert.show();
+                    }
 
-                    jsn.put("name",txtName.getText().toString());
-                    jsn.put("calories",txtCalories.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int aft) {
 
-                try {
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                            openFileOutput("Actions.txt",MODE_APPEND)));
+                    }
 
-                    writer.write(jsn.toString());
-                    writer.close();
+                    @Override
+                    public void afterTextChanged(Editable s) {
 
-                    FileInputStream fin = null;
-                    fin = openFileInput("Actions.txt");
-                    byte[] bytes = new byte[fin.available()];
-                    fin.read(bytes);
-                    String text = new String (bytes);
-
-                   // Toast.makeText(getApplicationContext(), text , Toast.LENGTH_LONG).show();
-                }
-                catch (FileNotFoundException fEx){
-
-                }
-                catch (IOException iEx){
-
-                }
+                    }
+                });
+                lp.addView(kcaltextview, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                lp.addView(input, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                builder.setView(lp);
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
     }

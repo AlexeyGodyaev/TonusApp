@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,7 +17,9 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -59,6 +62,82 @@ public class TodayActivity extends FragmentActivity {
         targetText.setText("Твой цель: -");
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH))+"е "+getMonth(calendar.get(Calendar.MONTH)));
         dayOfTheWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
+
+        foodBasketList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                JSONObject jObject = new JSONObject();
+                try {
+                    JSONArray jsonArray = new JSONArray();
+                    JSONObject jsn = new JSONObject();
+                    File f = new File(getCacheDir(), "Food.txt");
+                    FileInputStream in = new FileInputStream(f);
+                    ObjectInputStream inObject = new ObjectInputStream(in);
+                    String text = inObject.readObject().toString();
+                    inObject.close();
+
+                    jsn = new JSONObject(text);
+                    jsonArray = jsn.getJSONArray("food");
+                    JSONArray jArray = new JSONArray();
+                    jsn.remove("food");
+                    for(int j=0; j<jsonArray.length();j++) {
+                        if (j != i)
+                            jArray.put(jsonArray.getJSONObject(j));
+                    }
+                    jObject.put("food", jArray);
+
+                    FileOutputStream out = new FileOutputStream(f);
+                    ObjectOutputStream outObject = new ObjectOutputStream(out);
+                    outObject.writeObject(jObject.toString());
+                    outObject.flush();
+                    out.getFD().sync();
+                    outObject.close();
+
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                }
+                list.remove(i);
+                adapter.notifyDataSetChanged();
+                }
+        });
+
+        activeBasketList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                JSONObject jObject = new JSONObject();
+                try {
+                    JSONArray jsonArray = new JSONArray();
+                    JSONObject jsn = new JSONObject();
+                    File f = new File(getCacheDir(), "Actions.txt");
+                    FileInputStream in = new FileInputStream(f);
+                    ObjectInputStream inObject = new ObjectInputStream(in);
+                    String text = inObject.readObject().toString();
+                    inObject.close();
+
+                    jsn = new JSONObject(text);
+                    jsonArray = jsn.getJSONArray("active");
+                    JSONArray jArray = new JSONArray();
+                    jsn.remove("active");
+                    for(int j=0; j<jsonArray.length();j++) {
+                        if (j != i)
+                            jArray.put(jsonArray.getJSONObject(j));
+                    }
+                    jObject.put("active", jArray);
+
+                    FileOutputStream out = new FileOutputStream(f);
+                    ObjectOutputStream outObject = new ObjectOutputStream(out);
+                    outObject.writeObject(jObject.toString());
+                    outObject.flush();
+                    out.getFD().sync();
+                    outObject.close();
+
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                }
+                listActive.remove(i);
+                actionsAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
 
@@ -145,7 +224,7 @@ public class TodayActivity extends FragmentActivity {
 
 
         try {
-            File f = new File(getCacheDir(), "Action.txt");
+            File f = new File(getCacheDir(), "Actions.txt");
             if (f.exists()) {
                 FileInputStream in = new FileInputStream(f);
                 ObjectInputStream inObject = new ObjectInputStream(in);
@@ -159,8 +238,8 @@ public class TodayActivity extends FragmentActivity {
             if (resp != null&&activeFlag == true) {
             try {
                 JSONObject jOb = new JSONObject(resp);
-                JSONArray jArr = jOb.getJSONArray("action");
-                for (int i = 0; i < 3; i++) {
+                JSONArray jArr = jOb.getJSONArray("active");
+                for (int i = 0; i < jArr.length(); i++) {
                     try {
 //                        Integer i1 = new Integer(jArr.getJSONObject(i).getString("category_id"));
 //                        id = i1;

@@ -149,7 +149,8 @@ public class FoodCatalogActivity extends FragmentActivity {
                                         jsn.put("fats", s.substring(0, s.indexOf('/')));
                                         s = s.substring(s.indexOf('/') + 1);
                                         jsn.put("carbs", s);
-                                        jsn.put("calories", dialogCalories.getText().toString());
+                                        jsn.put("calories", dialogCalories.getText().toString()
+                                                .substring(0, dialogCalories.getText().toString().indexOf('.')));
                                         jsonArray.put(jsn);
                                         jObject.put("food", jsonArray);
 
