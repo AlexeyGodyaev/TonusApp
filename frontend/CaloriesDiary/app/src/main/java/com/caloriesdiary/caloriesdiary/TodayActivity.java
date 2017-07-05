@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutionException;
 
 public class TodayActivity extends FragmentActivity {
 
-    List<FoodItem> listFood = new ArrayList<FoodItem>();
+    List<FoodItem> list = new ArrayList<FoodItem>();
     List<ActionItem> listActive = new ArrayList<ActionItem>();
     TextView todayDate, dayOfTheWeek, countOfDays, targetText;
     Button activityBtn, todayFoodBtn, addFoodBtn;
@@ -37,7 +37,6 @@ public class TodayActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.today_layout);
-
         adapter = new FoodAdapter(this, initFoodData());
         actionsAdapter = new ActionsAdapter(this, initActiveData());
 
@@ -119,7 +118,7 @@ public class TodayActivity extends FragmentActivity {
 //                        System.err.println("Неверный формат строки!");
 //                    }
                     //if(b!=0||j!=0||u!=0||calories!=0)
-                    listFood.add(new FoodItem("hui", 1f, 2f, 3f, 4, 1435f));
+                    list.add(new FoodItem("hui", 1f, 2f, 3f, 4, 1435f));
                     //list.add(new FoodItem(foodName,b,j,u,id,calories));
                 }
             } catch (JSONException jEx) {
@@ -127,12 +126,12 @@ public class TodayActivity extends FragmentActivity {
             }
             foodFlag = false;
         } else {
-            while (listFood.isEmpty())
-                listFood.remove(0);
+            while (!list.isEmpty())
+                list.remove(0);
 
             foodFlag = true;
         }
-        return listFood;
+        return list;
     }
 
     private List<ActionItem> initActiveData() {
