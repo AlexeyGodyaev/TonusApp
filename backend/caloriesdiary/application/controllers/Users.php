@@ -9,6 +9,8 @@ class Users extends CI_Controller {
 
 		$this->load->model('User');
         $this->load->model('CaloriesCalc');
+
+        
 	}
 
 	public function auth()
@@ -71,9 +73,9 @@ class Users extends CI_Controller {
     {
         if($this->input->post(array('id', 'password')))
         {
-            $username = $this->input->post('id');
+            $id = $this->input->post('id');
             $password = $this->input->post('password');
-            $response = $this->User->del($username, $password);
+            $response = $this->User->del($id, $password);
         }
         else
         {

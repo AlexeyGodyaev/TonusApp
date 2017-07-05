@@ -18,6 +18,7 @@ class User extends CI_Model {
         );
 
         $this->load->library('email', $config);
+        $this->load->helper('email');
         $this->load->database();
     }
 
@@ -37,10 +38,19 @@ class User extends CI_Model {
 
     public function check($username, $password)
     {
-        $this->db->cache_on();
-        $query = $this->db->get_where('Users', array('username' => $username, 'password' => $password));
-        $this->db->cache_off();
-
+        if(valid_email($username))
+        {
+            $this->db->cache_on();
+            $query = $this->db->get_where('Users', array('email' => $username, 'password' => $password));
+            $this->db->cache_off();
+        }
+        else
+        {
+            $this->db->cache_on();
+            $query = $this->db->get_where('Users', array('username' => $username, 'password' => $password));
+            $this->db->cache_off();
+        }
+        
         if ($query->num_rows() > 0)
         {  
             $response['status'] = 1;
@@ -80,23 +90,22 @@ class User extends CI_Model {
             else
             {
                 $data = array("username" => $username, "email" => $email, "password" => $password);
+                $query = $this->db->insert("Users", $data);
+                $this->db->cache_delete();
+
+                if($query)
+                {
+                    $response['status'] = 1;
+                    $response['msg'] = 'OK';
+                }
+                else
+                {
+                    $response['status'] = 0;
+                    $response['msg'] = 'Error occured';
+                }
             }
 
         }   
-
-        $query = $this->db->insert("Users", $data);
-        $this->db->cache_delete();
-
-        if($query)
-        {
-            $response['status'] = 1;
-            $response['msg'] = 'OK';
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Error occured';
-        }
 
         return $response;
     }
@@ -133,8 +142,8 @@ class User extends CI_Model {
             $response['msg'] = "OK";
 
             $data = array('password' => $newpassword);
-            $this->db->where('username',$username);
-            $this->db->update('Users',$data);
+            $this->db->where('username', $username);
+            $this->db->update('Users', $data);
             $this->db->cache_delete();
         }
         else
@@ -142,6 +151,8 @@ class User extends CI_Model {
             $response['status'] = 0;
             $response['msg'] = 'Неверное имя пользователя или пароль';
         }
+
+        return $response;
     }
 
     public function forgot($email)
