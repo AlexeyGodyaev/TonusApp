@@ -22,16 +22,33 @@ class Product extends CI_Model {
 
     public function get_food_names($timestamp)
     {
+        $foodNames = array();
+
         if($this->getTimestamp() > $timestamp)
         {
             $this->db->select('name');
             $query = $this->db->get('Food');
-            return $query->result();
+            
+            $i = 0;
+            foreach ($query->result() as $f) 
+            {
+                $foodNames[$i] = $f->name;
+                $i++;
+            }
+
+            $response['status'] = 1;
+            $response['update'] = true;
+            $response['foodNames'] = $foodNames;
         }
         else
         {
-            return false;
+            $response['status'] = 1;
+            $response['update'] = false;
+            $response['foodNames'] = $foodNames;
         }
+
+        return $response;
+
     }
 
      public function get_food($offset)
@@ -79,7 +96,19 @@ class Product extends CI_Model {
         $this->db->from('categories');
         $query = $this->db->get();
 
-        return $query->result();
+        if($query)
+        {
+            $response['status'] = 1;
+            $response['categories'] = $query->result();
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Error occured';
+            $response['categories'] = array();
+        }
+
+        return $response;
     }
 
     public function getfoodBycategory($id, $offset)

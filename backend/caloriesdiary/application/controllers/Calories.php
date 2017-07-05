@@ -12,14 +12,21 @@ class Calories extends CI_Controller {
 
     public function get_calories_per_day()
     {
-        $weight = $this->input->post('weight');
-        $height = $this->input->post('height');
-        $sex = $this->input->post('sex');
-        $age = $this->input->post('age');
-        $activityType = $this->input->post('activityType');
+        if($this->input->post(array('weight','height','sex','age','activityType')))
+        {
+            $weight = $this->input->post('weight');
+            $height = $this->input->post('height');
+            $sex = $this->input->post('sex');
+            $age = $this->input->post('age');
+            $activityType = $this->input->post('activityType');
 
-        $response = $this->CaloriesCalc->caloriesPerday($weight, $height, $sex, $activityType, $age);
-
+            $response = $this->CaloriesCalc->caloriesPerday($weight, $height, $sex, $activityType, $age);
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Invalid params';
+        }
         echo json_encode($response, TRUE);
 
     }

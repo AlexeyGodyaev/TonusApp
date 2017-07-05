@@ -11,65 +11,77 @@ class Food extends CI_Controller {
 
 	public function get_food_names()
 	{
-        $timestamp = $this->input->post('timestamp');
-		$food_names_q = $this->Product->get_food_names($timestamp);
-
-        $foodNames = array();
-
-        if($food_names_q != 0)
+        if($this->input->post('timestamp'))
         {
-            $response['update'] = true;
-
-    	    $i = 0;
-            foreach ($food_names_q as $f) 
-            {
-                $foodNames[$i] = $f->name;
-                $i++;
-            }
+            $timestamp = $this->input->post('timestamp');
+		    $response = $this->Product->get_food_names($timestamp);
         }
         else
         {
-            $response['update'] = $food_names_q;
+            $response['status'] = 0;
+            $response['msg'] = 'Invalid params';
         }
 
-        $response['foodNames'] = $foodNames;
     	echo json_encode($response, TRUE);
 	}
 
 	public function get_food()
 	{
-        $offset = $this->input->post('offset');
-		$food = $this->Product->get_food($offset);
+        if($this->input->post('offset'))
+        {
+            $offset = $this->input->post('offset');
+            $response = $this->Product->get_food($offset);
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Invalid params';
+        }
 
-    	echo json_encode($food, TRUE);
+    	echo json_encode($response, TRUE);
 	}
 
     public function get_food_categories()
     {
-        $response['categories'] = $this->Product->getFoodcategories();
+        $response = $this->Product->getFoodcategories();
 
         echo json_encode($response, TRUE);
     }
 
     public function get_food_by_category()
     {
-        $id = $this->input->post('id');
-        $offset = $this->input->post('offset');
+        if($this->input->post(array('id', 'offset')))
+        {
+            $id = $this->input->post('id');
+            $offset = $this->input->post('offset');
 
-        $food = $this->Product->getfoodBycategory($id, $offset);
+            $response = $this->Product->getfoodBycategory($id, $offset);
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Invalid params';
+        }
 
-        echo json_encode($food, TRUE);
+        echo json_encode($response, TRUE);
     }
 
     public function get_food_by_name()
     {
-        $query = $this->input->post('query');
-        $offset = $this->input->post('offset');
+        if($this->input->post(array('query', 'offset')))
+        {
+            $query = $this->input->post('query');
+            $offset = $this->input->post('offset');
 
-        $food = $this->Product->getfoodByname($query, $offset);
+            $food = $this->Product->getfoodByname($query, $offset);
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Invalid params';
+        }
 
         echo json_encode($food, TRUE);
 
     }
-
 }

@@ -11,28 +11,17 @@ class Activities extends CI_Controller {
 
 	public function get_act_names()
 	{
-		$timestamp = $this->input->post('timestamp');
-		$act_names_q = $this->Action->get_act_names($timestamp);
+		if($this->input->post('timestamp'))
+		{
+			$timestamp = $this->input->post('timestamp');
+			$response = $this->Action->get_act_names($timestamp);
+		}
+		else
+		{
+			$response['status'] = 0;
+			$response['msg'] = 'Invalid params';
+		}
 
-        $actNames = array();
-
-        if($act_names_q != false)
-        {
-            $response['update'] = true;
-
-    	   $i = 0;
-        	foreach ($act_names_q as $act)
-        	 {
-            	$actNames[$i] = $act->name;
-            	$i++;
-        	 }
-        }
-        else
-        {
-            $response['update'] = $act_names_q;
-        }
-
-        $response['actNames'] = $actNames;
     	echo json_encode($response, TRUE);
 	}
 

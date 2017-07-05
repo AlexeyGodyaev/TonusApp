@@ -22,16 +22,32 @@ class Action extends CI_Model {
 
     public function get_act_names($timestamp)
     {
+        $actNames = array();
+        $response['status'] = 1;
+
         if($this->getTimestamp() > $timestamp)
         {
             $this->db->select('name');
             $query = $this->db->get('Activities');
-            return $query->result();
+            
+            $i = 0;
+            foreach ($query->result() as $act)
+            {
+                $actNames[$i] = $act->name;
+                $i++;
+            }
+
+            $response['update'] = true;
+            $response['actNames'] = $actNames;
         }
         else
         {
-            return false;
+            $response['status'] = 0;
+            $response['update'] = false;
+            $response['actNames'] = $actNames;
         }
+
+        return $response;
     }
 
     public function get_activities()
