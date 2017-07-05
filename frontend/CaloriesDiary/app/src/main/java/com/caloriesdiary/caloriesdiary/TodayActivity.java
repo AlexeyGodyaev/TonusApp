@@ -15,7 +15,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -25,13 +31,14 @@ public class TodayActivity extends FragmentActivity {
     TextView todayDate, dayOfTheWeek, countOfDays, targetText;
     Button activityBtn, todayFoodBtn, addFoodBtn;
     public ListView foodBasketList;
-    public FoodAdapter adapter = new FoodAdapter(getApplicationContext(), initData());
+   // public FoodAdapter adapter = new FoodAdapter(getApplicationContext(), initData());
 
 
     private boolean flag = true;
     public FragmentManager manager;
     public FragmentTransaction transaction;
     public FoodBasketFragment foodBasketFragment;
+    public FoodAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +47,46 @@ public class TodayActivity extends FragmentActivity {
 
         manager = getSupportFragmentManager();
         foodBasketFragment = new FoodBasketFragment();
-        foodBasketList = (ListView) findViewById(R.id.foodBasketList);
-        foodBasketList.setAdapter(adapter);
+
+
+       // foodBasketList.setAdapter(adapter);
+        try
+        {
+            JSONArray array = new JSONArray();
+            JSONObject jsn = new JSONObject();
+            JSONObject mainjsn = new JSONObject();
+           jsn.put("fats","lox");
+            jsn.put("category_id","fock");
+            array.put(jsn);
+            mainjsn.put("food",array);
+//            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+//                    openFileOutput("Food.txt",MODE_PRIVATE)));
+
+            File f = new File(getCacheDir(), "Food.txt");
+            FileOutputStream out=new FileOutputStream(f);
+            ObjectOutputStream outObject=new ObjectOutputStream(out);
+            outObject.writeObject(mainjsn.toString());
+            outObject.flush();
+            out.getFD().sync();
+            outObject.close();
+
+            FileInputStream in = new FileInputStream(f);
+            ObjectInputStream inObject = new ObjectInputStream(in);
+
+            Toast.makeText(getApplicationContext(),inObject.readObject().toString(),Toast.LENGTH_LONG).show();
+//            writer.write(mainjsn.toString());
+//            writer.close();
+            //initData();
+            inObject.close();
+
+
+        }
+        catch(Exception e)
+        {
+            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+        }
+
+
 
         Calendar calendar = Calendar.getInstance();
 
@@ -67,6 +112,21 @@ public class TodayActivity extends FragmentActivity {
         else {transaction.remove(foodBasketFragment);  flag = true;}
 
         transaction.commit();
+        try
+        {
+
+            adapter = new FoodAdapter(this, initData());
+
+            foodBasketList = (ListView) findViewById(R.id.foodBasketList);
+            if (foodBasketList == null)
+                Toast.makeText(getApplicationContext(),foodBasketFragment.getView().toString(),Toast.LENGTH_LONG).show();
+            foodBasketList.setAdapter(adapter);
+        }
+        catch(Exception e)
+        {
+            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public  void addFoodClc(View view) {

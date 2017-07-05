@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -39,6 +40,8 @@ public class FoodCatalogActivity extends FragmentActivity {
     ListView listView;
     EditText srch;
     private FilterFragment filterFragment;
+    List<FoodItem> list;
+    int offset;
 
     private FragmentManager manager;
     private FragmentTransaction transaction;
@@ -67,9 +70,29 @@ public class FoodCatalogActivity extends FragmentActivity {
         });
 
         listView = (ListView) findViewById(R.id.foodList);
-
-        FoodAdapter adapter = new FoodAdapter(this, initData());
+        list = new ArrayList<FoodItem>();
+        offset = 0;
+        final FoodAdapter adapter = new FoodAdapter(this, initData());
         listView.setAdapter(adapter);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                        srch.setText("i= " + String.valueOf(i) + ";" + "i1= "+ String.valueOf(i1)+ ";" + "i2= "+ String.valueOf(i2) );
+                if(i + i1 >= i2) {
+                    Toast.makeText(getApplicationContext(), "Загрузка следующей страницы...", Toast.LENGTH_SHORT).show();
+                    offset++;
+                    int buf = i;
+                    initData();
+                    listView.setAdapter(adapter);
+                    listView.setSelection(buf);
+                }
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -219,15 +242,17 @@ public class FoodCatalogActivity extends FragmentActivity {
         transaction.commit();
     }
 
+
+
     public  JSONArray getFood() throws InterruptedException, ExecutionException{
         GetFood get = new GetFood();
-        get.execute("http://192.168.1.205/food/get_food");
+        get.execute("http://192.168.1.205/food/get_food",String.valueOf(offset));
 
         return get.get();
     }
 
     private List<FoodItem> initData() {
-        List<FoodItem> list = new ArrayList<FoodItem>();
+
         JSONArray resp = null;
         String foodName = null;
         Float b=new Float(0), j=new Float(0), u=new Float(0), calories=new Float(0);
