@@ -2,6 +2,7 @@ package com.caloriesdiary.caloriesdiary;
 
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -26,9 +27,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,47 +105,43 @@ public class FoodCatalogActivity extends FragmentActivity {
                                     JSONObject jObject = new JSONObject();
                                     try {
                                         JSONArray jsonArray = new JSONArray();
+                                        JSONObject jsn=new JSONObject();
+                                        File f = new File(getCacheDir(), "Food.txt");
+                                        if (f.exists()) {
+                                            FileInputStream in = new FileInputStream(f);
+                                            ObjectInputStream inObject = new ObjectInputStream(in);
+                                            String text = inObject.readObject().toString();
+                                            inObject.close();
 
 
-                                        FileInputStream fin = null;
-                                        fin = openFileInput("Food.txt");
-                                        byte[] bytes = new byte[fin.available()];
-                                        fin.read(bytes);
-                                        String text = new String (bytes);
+                                            jsn = new JSONObject(text);
+                                            jsonArray = jsn.getJSONArray("food");
+                                            jsn.remove("food");
+                                        }
 
-                                        JSONObject jsn = new JSONObject(text);
-                                        jsonArray = jsn.getJSONArray("food");
-                                        jsn.remove("food");
-
-                                        jsn.put("name",txtName.getText().toString());
+                                        jsn.put("name", txtName.getText().toString());
                                         String s = dialogBJU.getText().toString();
-                                        jsn.put("protein",s.substring(0,s.indexOf('/')));
-                                        s=s.substring(s.indexOf('/')+1);
-                                        jsn.put("fats",s.substring(0,s.indexOf('/')));
-                                        s=s.substring(s.indexOf('/')+1);
-                                        jsn.put("carbs",s);
-                                        jsn.put("calories",dialogCalories.getText().toString());
+                                        jsn.put("protein", s.substring(0, s.indexOf('/')));
+                                        s = s.substring(s.indexOf('/') + 1);
+                                        jsn.put("fats", s.substring(0, s.indexOf('/')));
+                                        s = s.substring(s.indexOf('/') + 1);
+                                        jsn.put("carbs", s);
+                                        jsn.put("calories", dialogCalories.getText().toString());
                                         jsonArray.put(jsn);
                                         jObject.put("food", jsonArray);
 
-                                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                                                openFileOutput("Food.txt",MODE_PRIVATE)));
+                                        FileOutputStream out = new FileOutputStream(f);
+                                        ObjectOutputStream outObject = new ObjectOutputStream(out);
+                                        outObject.writeObject(jObject.toString());
+                                        outObject.flush();
+                                        out.getFD().sync();
+                                        outObject.close();
 
-                                        writer.write(jObject.toString());
-                                        writer.close();
-
-                                        //Toast.makeText(getApplicationContext(), jObject.toString() , Toast.LENGTH_LONG).show();
+                                      //  Toast.makeText(getApplicationContext(), jObject.toString() , Toast.LENGTH_LONG).show();
                                     }
-                                    catch (FileNotFoundException fEx){
-                                        Toast.makeText(getApplicationContext(), fEx.toString() , Toast.LENGTH_LONG).show();
-
-                                    }
-                                    catch (IOException iEx){
+                                    catch (Exception iEx){
                                         Toast.makeText(getApplicationContext(), iEx.toString() , Toast.LENGTH_LONG).show();
 
-                                    }
-                                    catch (JSONException e) {
-                                        Toast.makeText(getApplicationContext(), e.toString() , Toast.LENGTH_LONG).show();
                                     }
                                     if (lp.getChildCount() > 0)
                                     lp.removeAllViews();

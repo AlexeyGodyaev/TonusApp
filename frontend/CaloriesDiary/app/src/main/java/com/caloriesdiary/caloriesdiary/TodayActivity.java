@@ -15,7 +15,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -88,11 +92,13 @@ public class TodayActivity extends FragmentActivity {
 
 
         try {
-            FileInputStream fin = null;
-            fin = openFileInput("Food.txt");
-            byte[] bytes = new byte[fin.available()];
-            fin.read(bytes);
-            resp = new String(bytes);
+            File f = new File(getCacheDir(), "Food.txt");
+            if (f.exists()) {
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                resp = inObject.readObject().toString();
+                inObject.close();
+            }
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
         }
@@ -101,25 +107,25 @@ public class TodayActivity extends FragmentActivity {
             try {
                 JSONObject jOb = new JSONObject(resp);
                 JSONArray jArr = jOb.getJSONArray("food");
-                for (int i = 0; i < 3; i++) {
-//                    try {
+                for (int i = 0; i < jArr.length(); i++) {
+                    try {
 //                        Integer i1 = new Integer(jArr.getJSONObject(i).getString("category_id"));
 //                        id = i1;
-//                        foodName = jArr.getJSONObject(i).getString("name");
-//                        Float f1 = new Float(jArr.getJSONObject(i).getString("protein"));
-//                        b = f1;
-//                        f1 = new Float(jArr.getJSONObject(i).getString("fats"));
-//                        j = f1;
-//                        f1 = new Float(jArr.getJSONObject(i).getString("carbs"));
-//                        u = f1;
-//                        f1 = new Float(jArr.getJSONObject(i).getString("calories"));
-//                        calories = f1;
-//                    } catch (NumberFormatException e) {
-//                        System.err.println("Неверный формат строки!");
-//                    }
-                    //if(b!=0||j!=0||u!=0||calories!=0)
-                    list.add(new FoodItem("hui", 1f, 2f, 3f, 4, 1435f));
-                    //list.add(new FoodItem(foodName,b,j,u,id,calories));
+                        foodName = jArr.getJSONObject(i).getString("name");
+                        Float f1 = new Float(jArr.getJSONObject(i).getString("protein"));
+                        b = f1;
+                        f1 = new Float(jArr.getJSONObject(i).getString("fats"));
+                        j = f1;
+                        f1 = new Float(jArr.getJSONObject(i).getString("carbs"));
+                        u = f1;
+                        f1 = new Float(jArr.getJSONObject(i).getString("calories"));
+                        calories = f1;
+                    } catch (NumberFormatException e) {
+                        System.err.println("Неверный формат строки!");
+                    }
+                    if(b!=0||j!=0||u!=0||calories!=0)
+                    //list.add(new FoodItem("hui", 1f, 2f, 3f, 4, 1435f));
+                    list.add(new FoodItem(foodName,b,j,u,id,calories));
                 }
             } catch (JSONException jEx) {
                 Toast.makeText(getApplicationContext(), jEx.toString(), Toast.LENGTH_SHORT).show();
@@ -136,7 +142,7 @@ public class TodayActivity extends FragmentActivity {
 
     private List<ActionItem> initActiveData() {
         String resp = null;
-        String foodName = null;
+        String actionName = null;
         Float calories=new Float(0);
         Integer id=0;
 
@@ -159,13 +165,7 @@ public class TodayActivity extends FragmentActivity {
 //                    try {
 //                        Integer i1 = new Integer(jArr.getJSONObject(i).getString("category_id"));
 //                        id = i1;
-//                        foodName = jArr.getJSONObject(i).getString("name");
-//                        Float f1 = new Float(jArr.getJSONObject(i).getString("protein"));
-//                        b = f1;
-//                        f1 = new Float(jArr.getJSONObject(i).getString("fats"));
-//                        j = f1;
-//                        f1 = new Float(jArr.getJSONObject(i).getString("carbs"));
-//                        u = f1;
+//                        actionName = jArr.getJSONObject(i).getString("name");
 //                        f1 = new Float(jArr.getJSONObject(i).getString("calories"));
 //                        calories = f1;
 //                    } catch (NumberFormatException e) {
@@ -173,7 +173,7 @@ public class TodayActivity extends FragmentActivity {
 //                    }
                     //if(b!=0||j!=0||u!=0||calories!=0)
                     listActive.add(new ActionItem("hui", 3f, 4));
-                    //list.add(new FoodItem(foodName,b,j,u,id,calories));
+                    //list.add(new FoodItem(actionName,calories,id));
                 }
             } catch (JSONException jEx) {
                 Toast.makeText(getApplicationContext(), jEx.toString(), Toast.LENGTH_SHORT).show();
