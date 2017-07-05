@@ -16,6 +16,7 @@
         <activity android:name=".FoodCatalogActivity"/>
         <activity android:name=".ActionsCatalogActivity"/>
         <activity android:name=".GuestMainActivity"/>
+        <activity android:name=".SettingsActivity"/>
         <activity android:name=".DeleteAccountActivity"/>t
         <activity android:name=".AuthorizationActivity">
             <intent-filter>

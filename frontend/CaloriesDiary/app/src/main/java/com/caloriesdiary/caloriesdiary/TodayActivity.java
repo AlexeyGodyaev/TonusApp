@@ -62,13 +62,20 @@ public class TodayActivity extends FragmentActivity {
 //            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
 //                    openFileOutput("Food.txt",MODE_PRIVATE)));
 
-            File f = new File(getCacheDir(), "Food.txt");
+            File f = new File(getCacheDir(), "Food2.txt");
+            if(f.exists())
+                Toast.makeText(getApplicationContext(),"Файл есть",Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(getApplicationContext(),"Файла нетъ",Toast.LENGTH_LONG).show();
             FileOutputStream out=new FileOutputStream(f);
             ObjectOutputStream outObject=new ObjectOutputStream(out);
             outObject.writeObject(mainjsn.toString());
             outObject.flush();
             out.getFD().sync();
             outObject.close();
+
+
+
 
             FileInputStream in = new FileInputStream(f);
             ObjectInputStream inObject = new ObjectInputStream(in);
@@ -78,8 +85,6 @@ public class TodayActivity extends FragmentActivity {
 //            writer.close();
             //initData();
             inObject.close();
-
-
         }
         catch(Exception e)
         {
