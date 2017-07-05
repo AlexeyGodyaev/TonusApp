@@ -3,8 +3,7 @@ package com.caloriesdiary.caloriesdiary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -15,23 +14,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-<<<<<<< HEAD
-import java.io.BufferedWriter;
-=======
->>>>>>> Alex's-branch
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-<<<<<<< HEAD
-import java.io.OutputStreamWriter;
-=======
->>>>>>> Alex's-branch
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+
 
 public class TodayActivity extends FragmentActivity {
 
@@ -39,23 +28,11 @@ public class TodayActivity extends FragmentActivity {
     List<ActionItem> listActive = new ArrayList<ActionItem>();
     TextView todayDate, dayOfTheWeek, countOfDays, targetText;
     Button activityBtn, todayFoodBtn, addFoodBtn;
-<<<<<<< HEAD
-    public ListView foodBasketList;
-   // public FoodAdapter adapter = new FoodAdapter(getApplicationContext(), initData());
-
-
-    private boolean flag = true;
-    public FragmentManager manager;
-    public FragmentTransaction transaction;
-    public FoodBasketFragment foodBasketFragment;
-    public FoodAdapter adapter;
-=======
     ListView foodBasketList, activeBasketList;
     FoodAdapter adapter; //прихуярю сюда фрагмент чтоб блять можно было запустить обе листвьюхи
     ActionsAdapter actionsAdapter;
 
     private boolean foodFlag = false, activeFlag = false;
->>>>>>> Alex's-branch
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,56 +41,6 @@ public class TodayActivity extends FragmentActivity {
         adapter = new FoodAdapter(this, initFoodData());
         actionsAdapter = new ActionsAdapter(this, initActiveData());
 
-<<<<<<< HEAD
-        manager = getSupportFragmentManager();
-        foodBasketFragment = new FoodBasketFragment();
-
-
-       // foodBasketList.setAdapter(adapter);
-        try
-        {
-            JSONArray array = new JSONArray();
-            JSONObject jsn = new JSONObject();
-            JSONObject mainjsn = new JSONObject();
-           jsn.put("fats","lox");
-            jsn.put("category_id","fock");
-            array.put(jsn);
-            mainjsn.put("food",array);
-//            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-//                    openFileOutput("Food.txt",MODE_PRIVATE)));
-
-            File f = new File(getCacheDir(), "Food2.txt");
-            if(f.exists())
-                Toast.makeText(getApplicationContext(),"Файл есть",Toast.LENGTH_LONG).show();
-            else
-                Toast.makeText(getApplicationContext(),"Файла нетъ",Toast.LENGTH_LONG).show();
-            FileOutputStream out=new FileOutputStream(f);
-            ObjectOutputStream outObject=new ObjectOutputStream(out);
-            outObject.writeObject(mainjsn.toString());
-            outObject.flush();
-            out.getFD().sync();
-            outObject.close();
-
-
-
-
-            FileInputStream in = new FileInputStream(f);
-            ObjectInputStream inObject = new ObjectInputStream(in);
-
-            Toast.makeText(getApplicationContext(),inObject.readObject().toString(),Toast.LENGTH_LONG).show();
-//            writer.write(mainjsn.toString());
-//            writer.close();
-            //initData();
-            inObject.close();
-        }
-        catch(Exception e)
-        {
-            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
-        }
-
-
-=======
->>>>>>> Alex's-branch
 
         Calendar calendar = Calendar.getInstance();
 
@@ -122,7 +49,7 @@ public class TodayActivity extends FragmentActivity {
 
         activityBtn = (Button) findViewById(R.id.todayActiveBtn);
         todayFoodBtn = (Button) findViewById(R.id.todayFoodBtn);
-        //addFoodBtn = (Button) findViewById(R.id.addFoodBtn);
+//addFoodBtn = (Button) findViewById(R.id.addFoodBtn);
 
         todayDate = (TextView) findViewById(R.id.todayDate);
         dayOfTheWeek = (TextView) findViewById(R.id.todayDayOfTheWeek);
@@ -136,40 +63,21 @@ public class TodayActivity extends FragmentActivity {
 
 
 
-<<<<<<< HEAD
-        transaction.commit();
-        try
-        {
-
-            adapter = new FoodAdapter(this, initData());
-
-            foodBasketList = (ListView) findViewById(R.id.foodBasketList);
-            if (foodBasketList == null)
-                Toast.makeText(getApplicationContext(),foodBasketFragment.getView().toString(),Toast.LENGTH_LONG).show();
-            foodBasketList.setAdapter(adapter);
-        }
-        catch(Exception e)
-        {
-            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
-        }
-
-=======
     public void onTodayFoodBtnClc(View v){
-            initFoodData();
-            foodBasketList.setAdapter(adapter);
->>>>>>> Alex's-branch
+        initFoodData();
+        foodBasketList.setAdapter(adapter);
     }
 
-    public  void addFoodClc(View view) {
-//        Intent intent = new Intent(getApplicationContext(), FoodCatalogActivity.class);
-//        startActivity(intent);
+    public void addFoodClc(View view) {
+// Intent intent = new Intent(getApplicationContext(), FoodCatalogActivity.class);
+// startActivity(intent);
     }
 
     public void onTodayActivityBtnClc(View v){
         initActiveData();
         activeBasketList.setAdapter(actionsAdapter);
-//        Intent intent = new Intent(getApplicationContext(), ActionsCatalogActivity.class);
-//        startActivity(intent);
+// Intent intent = new Intent(getApplicationContext(), ActionsCatalogActivity.class);
+// startActivity(intent);
     }
 
 
@@ -198,8 +106,8 @@ public class TodayActivity extends FragmentActivity {
                 JSONArray jArr = jOb.getJSONArray("food");
                 for (int i = 0; i < jArr.length(); i++) {
                     try {
-//                        Integer i1 = new Integer(jArr.getJSONObject(i).getString("category_id"));
-//                        id = i1;
+// Integer i1 = new Integer(jArr.getJSONObject(i).getString("category_id"));
+// id = i1;
                         foodName = jArr.getJSONObject(i).getString("name");
                         Float f1 = new Float(jArr.getJSONObject(i).getString("protein"));
                         b = f1;
@@ -213,8 +121,8 @@ public class TodayActivity extends FragmentActivity {
                         System.err.println("Неверный формат строки!");
                     }
                     if(b!=0||j!=0||u!=0||calories!=0)
-                    //list.add(new FoodItem("hui", 1f, 2f, 3f, 4, 1435f));
-                    list.add(new FoodItem(foodName,b,j,u,id,calories));
+//list.add(new FoodItem("hui", 1f, 2f, 3f, 4, 1435f));
+                        list.add(new FoodItem(foodName,b,j,u,id,calories));
                 }
             } catch (JSONException jEx) {
                 Toast.makeText(getApplicationContext(), jEx.toString(), Toast.LENGTH_SHORT).show();
@@ -237,11 +145,13 @@ public class TodayActivity extends FragmentActivity {
 
 
         try {
-            FileInputStream fin = null;
-            fin = openFileInput("Food.txt");
-            byte[] bytes = new byte[fin.available()];
-            fin.read(bytes);
-            resp = new String(bytes);
+            File f = new File(getCacheDir(), "Action.txt");
+            if (f.exists()) {
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                resp = inObject.readObject().toString();
+                inObject.close();
+            }
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
         }
@@ -249,20 +159,20 @@ public class TodayActivity extends FragmentActivity {
         if (resp != null&&activeFlag == true) {
             try {
                 JSONObject jOb = new JSONObject(resp);
-                JSONArray jArr = jOb.getJSONArray("food");
+                JSONArray jArr = jOb.getJSONArray("action");
                 for (int i = 0; i < 3; i++) {
-//                    try {
-//                        Integer i1 = new Integer(jArr.getJSONObject(i).getString("category_id"));
-//                        id = i1;
-//                        actionName = jArr.getJSONObject(i).getString("name");
-//                        f1 = new Float(jArr.getJSONObject(i).getString("calories"));
-//                        calories = f1;
-//                    } catch (NumberFormatException e) {
-//                        System.err.println("Неверный формат строки!");
-//                    }
-                    //if(b!=0||j!=0||u!=0||calories!=0)
-                    listActive.add(new ActionItem("hui", 3f, 4));
-                    //list.add(new FoodItem(actionName,calories,id));
+                    try {
+// Integer i1 = new Integer(jArr.getJSONObject(i).getString("category_id"));
+// id = i1;
+                        actionName = jArr.getJSONObject(i).getString("name");
+                        Float f1 = new Float(jArr.getJSONObject(i).getString("calories"));
+                        calories = f1;
+                    } catch (NumberFormatException e) {
+                        System.err.println("Неверный формат строки!");
+                    }
+                    if(calories!=0)
+//listActive.add(new ActionItem("hui", 3f, 4));
+                        listActive.add(new ActionItem(actionName, calories, 5));
                 }
             } catch (JSONException jEx) {
                 Toast.makeText(getApplicationContext(), jEx.toString(), Toast.LENGTH_SHORT).show();
@@ -307,7 +217,7 @@ public class TodayActivity extends FragmentActivity {
         return s;
     }
 
-    private  String getMonth(int i){
+    private String getMonth(int i){
         String s="";
         switch (i){
             case Calendar.JANUARY:
