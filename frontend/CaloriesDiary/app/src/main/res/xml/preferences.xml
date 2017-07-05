@@ -2,23 +2,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
     android:key="pref_sync1"
-    android:title="Настройки1"
+    android:title="CheckBoxPreference"
     android:summary="Текст1"
     android:defaultValue="true" />
-    <CheckBoxPreference
-        android:key="pref_sync2"
-        android:title="Настройки2"
-        android:summary="Текст2"
-        android:defaultValue="false" />
-    <CheckBoxPreference
-        android:key="pref_sync3"
-        android:title="Настройки3"
-        android:summary="Текст3"
-        android:defaultValue="true" />
     <Preference
-        android:key="pref_key_sms_delete_limit"
-        android:dependency="pref_sync3"
-        android:summary="Тест1"
-        android:title="Настройки4" />
+        android:key="pref_key_delete_account"
+        android:title="Удалить учетную запись" />
+    <Preference
+        android:key="pref_key_change_password"
+        android:title="Сменить пароль"></Preference>
 
 </PreferenceScreen>

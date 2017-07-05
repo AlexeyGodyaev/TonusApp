@@ -87,6 +87,7 @@ public class ActionsCatalogActivity extends FragmentActivity {
                                                 ((LinearLayout) lp).removeAllViews();
                                             ((ViewManager)lp.getParent()).removeView(lp);
 
+
                                         }
                                     });
 

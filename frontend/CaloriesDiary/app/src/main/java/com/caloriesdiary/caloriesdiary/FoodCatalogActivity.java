@@ -88,7 +88,7 @@ public class FoodCatalogActivity extends FragmentActivity {
             @Override
             public void onScroll(AbsListView absListView, int i, int i1, int i2) {
                         srch.setText("i= " + String.valueOf(i) + ";" + "i1= "+ String.valueOf(i1)+ ";" + "i2= "+ String.valueOf(i2) );
-                if(i + i1 >= i2) {
+                if((i + i1 >= i2) && i2 < 5000 ) {
                     Toast.makeText(getApplicationContext(), "Загрузка следующей страницы...", Toast.LENGTH_SHORT).show();
                     offset++;
                     int buf = i;
