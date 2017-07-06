@@ -17,9 +17,12 @@
         <activity android:name=".ActionsCatalogActivity"/>
         <activity android:name=".GuestMainActivity"/>
         <activity android:name=".SettingsActivity"/>
+<<<<<<< HEAD
         <activity android:name=".DeleteAccountActivity"/>
         <activity android:name=".ChangePasswordActivity"/>
+=======
         <activity android:name=".DeleteAccountActivity"/>t
+>>>>>>> Alex's-branch
         <activity android:name=".AuthorizationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
