@@ -95,7 +95,7 @@ public class TodayActivity extends FragmentActivity {
                     outObject.close();
 
                 }catch (Exception e){
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"1 +" + e.toString(), Toast.LENGTH_SHORT).show();
                 }
                 list.remove(i);
                 adapter.notifyDataSetChanged();
@@ -178,7 +178,7 @@ public class TodayActivity extends FragmentActivity {
                 inObject.close();
             }
         } catch (Exception ex) {
-            Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"2 +" +  ex.toString(), Toast.LENGTH_SHORT).show();
         }
 
         if (resp != null&&foodFlag == true) {
@@ -206,7 +206,7 @@ public class TodayActivity extends FragmentActivity {
                         list.add(new FoodItem(foodName,b,j,u,id,calories));
                 }
             } catch (JSONException jEx) {
-                Toast.makeText(getApplicationContext(), jEx.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"3 +" +  jEx.toString(), Toast.LENGTH_SHORT).show();
             }
             foodFlag = false;
         } else {
