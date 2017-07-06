@@ -88,7 +88,11 @@ public class FoodCatalogActivity extends FragmentActivity {
             @Override
             public void onScroll(AbsListView absListView, int i, int i1, int i2) {
                         srch.setText("i= " + String.valueOf(i) + ";" + "i1= "+ String.valueOf(i1)+ ";" + "i2= "+ String.valueOf(i2) );
+<<<<<<< HEAD
                 if((i + i1 >= i2) && i2 < 5000 ) {
+=======
+                if(i + i1 >= i2) {
+>>>>>>> Alex's-branch
                     Toast.makeText(getApplicationContext(), "Загрузка следующей страницы...", Toast.LENGTH_SHORT).show();
                     offset++;
                     int buf = i;
@@ -149,7 +153,8 @@ public class FoodCatalogActivity extends FragmentActivity {
                                         jsn.put("fats", s.substring(0, s.indexOf('/')));
                                         s = s.substring(s.indexOf('/') + 1);
                                         jsn.put("carbs", s);
-                                        jsn.put("calories", dialogCalories.getText().toString());
+                                        jsn.put("calories", dialogCalories.getText().toString()
+                                                .substring(0, dialogCalories.getText().toString().indexOf('.')));
                                         jsonArray.put(jsn);
                                         jObject.put("food", jsonArray);
 

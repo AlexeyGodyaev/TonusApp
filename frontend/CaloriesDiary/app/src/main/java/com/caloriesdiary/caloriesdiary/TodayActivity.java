@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -59,6 +60,82 @@ public class TodayActivity extends FragmentActivity {
         targetText.setText("Твой цель: -");
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH))+"е "+getMonth(calendar.get(Calendar.MONTH)));
         dayOfTheWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
+
+        foodBasketList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                JSONObject jObject = new JSONObject();
+                try {
+                    JSONArray jsonArray = new JSONArray();
+                    JSONObject jsn = new JSONObject();
+                    File f = new File(getCacheDir(), "Food.txt");
+                    FileInputStream in = new FileInputStream(f);
+                    ObjectInputStream inObject = new ObjectInputStream(in);
+                    String text = inObject.readObject().toString();
+                    inObject.close();
+
+                    jsn = new JSONObject(text);
+                    jsonArray = jsn.getJSONArray("food");
+                    JSONArray jArray = new JSONArray();
+                    jsn.remove("food");
+                    for(int j=0; j<jsonArray.length();j++) {
+                        if (j != i)
+                            jArray.put(jsonArray.getJSONObject(j));
+                    }
+                    jObject.put("food", jArray);
+
+                    FileOutputStream out = new FileOutputStream(f);
+                    ObjectOutputStream outObject = new ObjectOutputStream(out);
+                    outObject.writeObject(jObject.toString());
+                    outObject.flush();
+                    out.getFD().sync();
+                    outObject.close();
+
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                }
+                list.remove(i);
+                adapter.notifyDataSetChanged();
+                }
+        });
+
+        activeBasketList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                JSONObject jObject = new JSONObject();
+                try {
+                    JSONArray jsonArray = new JSONArray();
+                    JSONObject jsn = new JSONObject();
+                    File f = new File(getCacheDir(), "Actions.txt");
+                    FileInputStream in = new FileInputStream(f);
+                    ObjectInputStream inObject = new ObjectInputStream(in);
+                    String text = inObject.readObject().toString();
+                    inObject.close();
+
+                    jsn = new JSONObject(text);
+                    jsonArray = jsn.getJSONArray("active");
+                    JSONArray jArray = new JSONArray();
+                    jsn.remove("active");
+                    for(int j=0; j<jsonArray.length();j++) {
+                        if (j != i)
+                            jArray.put(jsonArray.getJSONObject(j));
+                    }
+                    jObject.put("active", jArray);
+
+                    FileOutputStream out = new FileOutputStream(f);
+                    ObjectOutputStream outObject = new ObjectOutputStream(out);
+                    outObject.writeObject(jObject.toString());
+                    outObject.flush();
+                    out.getFD().sync();
+                    outObject.close();
+
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                }
+                listActive.remove(i);
+                actionsAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
 
@@ -145,7 +222,11 @@ public class TodayActivity extends FragmentActivity {
 
 
         try {
+<<<<<<< HEAD
             File f = new File(getCacheDir(), "Action.txt");
+=======
+            File f = new File(getCacheDir(), "Actions.txt");
+>>>>>>> Alex's-branch
             if (f.exists()) {
                 FileInputStream in = new FileInputStream(f);
                 ObjectInputStream inObject = new ObjectInputStream(in);
@@ -156,14 +237,22 @@ public class TodayActivity extends FragmentActivity {
             Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
         }
 
-        if (resp != null&&activeFlag == true) {
+            if (resp != null&&activeFlag == true) {
             try {
                 JSONObject jOb = new JSONObject(resp);
+<<<<<<< HEAD
                 JSONArray jArr = jOb.getJSONArray("action");
                 for (int i = 0; i < 3; i++) {
                     try {
 // Integer i1 = new Integer(jArr.getJSONObject(i).getString("category_id"));
 // id = i1;
+=======
+                JSONArray jArr = jOb.getJSONArray("active");
+                for (int i = 0; i < jArr.length(); i++) {
+                    try {
+//                        Integer i1 = new Integer(jArr.getJSONObject(i).getString("category_id"));
+//                        id = i1;
+>>>>>>> Alex's-branch
                         actionName = jArr.getJSONObject(i).getString("name");
                         Float f1 = new Float(jArr.getJSONObject(i).getString("calories"));
                         calories = f1;
@@ -171,8 +260,13 @@ public class TodayActivity extends FragmentActivity {
                         System.err.println("Неверный формат строки!");
                     }
                     if(calories!=0)
+<<<<<<< HEAD
 //listActive.add(new ActionItem("hui", 3f, 4));
                         listActive.add(new ActionItem(actionName, calories, 5));
+=======
+                    //listActive.add(new ActionItem("hui", 3f, 4));
+                    listActive.add(new ActionItem(actionName, calories, 5));
+>>>>>>> Alex's-branch
                 }
             } catch (JSONException jEx) {
                 Toast.makeText(getApplicationContext(), jEx.toString(), Toast.LENGTH_SHORT).show();
