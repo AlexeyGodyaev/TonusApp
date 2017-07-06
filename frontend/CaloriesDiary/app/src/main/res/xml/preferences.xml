@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
     android:key="pref_sync1"
-<<<<<<< HEAD
+
     android:title="CheckBoxPreference"
     android:summary="Текст1"
     android:defaultValue="true" />
@@ -12,7 +12,7 @@
     <Preference
         android:key="pref_key_change_password"
         android:title="Сменить пароль"></Preference>
-=======
+
     android:title="Настройки1"
     android:summary="Текст1"
     android:defaultValue="true" />
@@ -31,6 +31,6 @@
         android:dependency="pref_sync3"
         android:summary="Тест1"
         android:title="Настройки4" />
->>>>>>> Alex's-branch
+
 
 </PreferenceScreen>
