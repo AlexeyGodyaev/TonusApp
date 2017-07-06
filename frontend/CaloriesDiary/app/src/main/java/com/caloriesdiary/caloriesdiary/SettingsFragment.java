@@ -1,10 +1,15 @@
 package com.caloriesdiary.caloriesdiary;
 
+<<<<<<< HEAD
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.widget.Toast;
+=======
+import android.os.Bundle;
+import android.preference.PreferenceFragment;
+>>>>>>> Alex's-branch
 
 
 public class SettingsFragment extends PreferenceFragment {
@@ -13,6 +18,7 @@ public class SettingsFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.preferences);
+<<<<<<< HEAD
         Preference DeletePref = (Preference) findPreference("pref_key_delete_account");
         DeletePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
@@ -31,5 +37,7 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });
+=======
+>>>>>>> Alex's-branch
     }
 }
