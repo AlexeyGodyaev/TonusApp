@@ -1,5 +1,6 @@
 package com.caloriesdiary.caloriesdiary;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +36,7 @@ public class TodayActivity extends FragmentActivity {
     ListView foodBasketList, activeBasketList;
     FoodAdapter adapter; //прихуярю сюда фрагмент чтоб блять можно было запустить обе листвьюхи
     ActionsAdapter actionsAdapter;
-
+    int layout_height;
     private boolean foodFlag = false, activeFlag = false;
 
     @Override
@@ -43,7 +45,6 @@ public class TodayActivity extends FragmentActivity {
         setContentView(R.layout.today_layout);
         adapter = new FoodAdapter(this, initFoodData());
         actionsAdapter = new ActionsAdapter(this, initActiveData());
-
 
         Calendar calendar = Calendar.getInstance();
 
@@ -140,11 +141,12 @@ public class TodayActivity extends FragmentActivity {
         });
     }
 
-
-
     public void onTodayFoodBtnClc(View v){
-            initFoodData();
-            foodBasketList.setAdapter(adapter);
+        initFoodData();
+        foodBasketList.setAdapter(adapter);
+
+       // Toast.makeText(this, String.valueOf(adapter.getCount()*96),Toast.LENGTH_SHORT).show();
+
     }
 
     public  void addFoodClc(View view) {
@@ -157,6 +159,7 @@ public class TodayActivity extends FragmentActivity {
         activeBasketList.setAdapter(actionsAdapter);
 //        Intent intent = new Intent(getApplicationContext(), ActionsCatalogActivity.class);
 //        startActivity(intent);
+        onContentChanged();
     }
 
 
