@@ -125,6 +125,7 @@ public class ActionsCatalogActivity extends FragmentActivity {
                                         } catch (Exception iEx) {
                                             Toast.makeText(getApplicationContext(), iEx.toString(), Toast.LENGTH_LONG).show();
 
+
                                         }
 
                                         if (((LinearLayout) lp).getChildCount() > 0)
@@ -181,7 +182,7 @@ public class ActionsCatalogActivity extends FragmentActivity {
 
     public  String getAction() throws InterruptedException, ExecutionException {
         GetActions get = new GetActions();
-        get.execute("http://192.168.1.205/activities/get_activities");
+        get.execute("http://94.130.12.179/activities/get_activities");
 
         return get.get().toString();
     }

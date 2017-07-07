@@ -104,7 +104,7 @@ public void onClc(View view){
 
             String args[] = new String[3];
 
-            args[0] = "http://192.168.1.205/users/get_user_chars";  //аргументы для пост запроса
+            args[0] = "http://94.130.12.179/users/get_user_chars";  //аргументы для пост запроса
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
 
 

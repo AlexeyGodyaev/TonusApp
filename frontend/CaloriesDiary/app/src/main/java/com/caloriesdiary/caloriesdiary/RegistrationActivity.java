@@ -36,7 +36,7 @@ public class RegistrationActivity extends Activity {
     public void regClc(View view) throws  InterruptedException, ExecutionException{
         if(pass.getText().toString().equals(passAgain.getText().toString())){
         String args[] = new String[4];
-            args[0]="http://192.168.1.205/users/register";
+            args[0]="http://94.130.12.179/users/register";
             args[1]=name.getText().toString();
             args[2]=pass.getText().toString();
             args[3]=mail.getText().toString();

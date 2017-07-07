@@ -56,7 +56,7 @@ public class AuthorizationActivity extends Activity {
 
         String args[] = new String[3];
 
-        args[0] = "http://192.168.1.205/users/auth";  //аргументы для пост запроса
+        args[0] = "http://94.130.12.179/users/auth";  //аргументы для пост запроса
         args[1] = login.getText().toString();
         args[2] = pass.getText().toString();
 
