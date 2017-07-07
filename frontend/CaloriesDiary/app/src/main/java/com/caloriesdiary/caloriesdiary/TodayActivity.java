@@ -1,10 +1,13 @@
 package com.caloriesdiary.caloriesdiary;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,7 +30,7 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class TodayActivity extends FragmentActivity {
+public class TodayActivity extends Activity {
 
     List<FoodItem> list = new ArrayList<FoodItem>();
     List<ActionItem> listActive = new ArrayList<ActionItem>();
@@ -36,7 +39,8 @@ public class TodayActivity extends FragmentActivity {
     ListView foodBasketList, activeBasketList;
     FoodAdapter adapter; //прихуярю сюда фрагмент чтоб блять можно было запустить обе листвьюхи
     ActionsAdapter actionsAdapter;
-    int layout_height;
+
+
     private boolean foodFlag = false, activeFlag = false;
 
     @Override
@@ -50,6 +54,7 @@ public class TodayActivity extends FragmentActivity {
 
         foodBasketList = (ListView) findViewById(R.id.my_food_basket);
         activeBasketList = (ListView) findViewById(R.id.my_active_basket);
+        //foodBasketList.setNestedScrollingEnabled(true);
 
         activityBtn = (Button) findViewById(R.id.todayActiveBtn);
         todayFoodBtn = (Button) findViewById(R.id.todayFoodBtn);

@@ -52,7 +52,7 @@
         android:layout_weight="0.2"/>
 
     <Spinner
-        android:id="@+id/typrSpinner"
+        android:id="@+id/typeSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.8"/>
@@ -93,5 +93,58 @@
             android:layout_weight="0.3"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/weightGoalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:text="Желаемый результат:"
+            android:layout_weight="2"
+            />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/editWeight"
+            android:hint="Вес"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/liveTypeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:text="Образ жизни:"
+            android:layout_weight="0.2"/>
+
+        <Spinner
+            android:id="@+id/liveTypeSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Начать" />
 
 </LinearLayout>
