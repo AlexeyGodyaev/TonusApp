@@ -37,16 +37,16 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                 JSONObject postDataParams = new JSONObject();
 
                 switch (arg0[0]) {
-                    case "http://192.168.1.205/users/auth":
+                    case "http://94.130.12.179/users/auth":
                         postDataParams.put("username", arg0[1]);//далее по массиву
                         postDataParams.put("password", arg0[2]);
                         break;
-                    case "http://192.168.1.205/users/register":
+                    case "http://94.130.12.179/users/register":
                         postDataParams.put("username", arg0[1]);//далее по массиву
                         postDataParams.put("password", arg0[2]);
                         postDataParams.put("email", arg0[3]);
                         break;
-                    case "http://192.168.1.205/users/save_user_chars":
+                    case "http://94.130.12.179/users/save_user_chars":
                         postDataParams.put("id",arg0[1]);
                         postDataParams.put("realName",arg0[2]);
                         postDataParams.put("weight",arg0[3]);
@@ -57,17 +57,17 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("avg_dream",arg0[8]);
                         postDataParams.put("wokeup_time",arg0[9]);
                         break;
-                    case "http://192.168.1.205/users/forgot_password":
+                    case "http://94.130.12.179/users/forgot_password":
                         postDataParams.put("email",arg0[1]);
                         break;
-                    case "http://192.168.1.205/users/get_user_chars":
+                    case "http://94.130.12.179/users/get_user_chars":
                         postDataParams.put("id",arg0[1]);
                         break;
-                    case "http://192.168.1.205/users/delete":
+                    case "http://94.130.12.179/users/delete":
                         postDataParams.put("id",arg0[1]);
                         postDataParams.put("password",arg0[2]);
                         break;
-                    case "http://192.168.1.205/users/change_password":
+                    case "http://94.130.12.179/users/change_password":
                         postDataParams.put("username",arg0[1]);
                         postDataParams.put("oldpassword",arg0[2]);
                         postDataParams.put("newpassword",arg0[3]);
