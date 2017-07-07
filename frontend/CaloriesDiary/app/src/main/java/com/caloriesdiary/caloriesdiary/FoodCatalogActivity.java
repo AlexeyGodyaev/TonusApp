@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -176,7 +177,7 @@ public class FoodCatalogActivity extends FragmentActivity {
 
 
                 final EditText input = new EditText(FoodCatalogActivity.this);
-
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
 
                 dialogBJU.setText(txtBJU.getText().toString());
                 dialogCalories.setText(txtCalories.getText().toString());
