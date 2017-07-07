@@ -83,9 +83,8 @@
         android:id="@+id/delete_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Удалить"
-        android:layout_toRightOf="@id/edit_btn"
-        android:layout_below="@+id/height_text"
+        android:text="Задать цель"
+        android:layout_below="@+id/edit_btn"
         android:onClick="onClickDeleteProfile"/>
   </RelativeLayout>
 </ScrollView>

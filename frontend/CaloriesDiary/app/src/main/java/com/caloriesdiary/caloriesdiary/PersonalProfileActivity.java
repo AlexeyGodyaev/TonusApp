@@ -121,7 +121,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
     }
     public void onClickDeleteProfile(View view)
     {
-            Intent intent = new Intent(getApplicationContext(),DeleteAccountActivity.class);
+            Intent intent = new Intent(getApplicationContext(),SetAGoal.class);
             startActivity(intent);
     }
     @Override

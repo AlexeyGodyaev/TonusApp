@@ -22,13 +22,13 @@
 
         <TextView
             android:id="@+id/goalAlertText"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="(не более 100 символов)" />
     </LinearLayout>
 
     <EditText
+        android:maxLength="100"
         android:id="@+id/editGoal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,10 +36,9 @@
         android:inputType="textPersonName"
         android:hint="Введите текст" />
 
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:padding="3dp">
 
     <TextView
@@ -48,49 +47,42 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:textColor="#000000"
-        android:text="Тип:"
-        android:layout_weight="0.2"/>
+        android:text="Тип:" />
 
     <Spinner
         android:id="@+id/typeSpinner"
+        android:entries="@array/goalTypesList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.8"/>
+        android:layout_marginLeft = "20dp"
+        android:layout_toRightOf="@+id/goalTypeText"/>
 
-</LinearLayout>
-
-    <TextView
-        android:padding="3dp"
-        android:id="@+id/goalDateText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:textColor="#000000"
-        android:text="Дата окончания:"/>
+</RelativeLayout>
 
     <LinearLayout
-        android:padding="10dp"
+        android:padding="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/dateDaySpinner"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/goalDateText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"/>
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:text="Продолжительность:"
+            android:layout_weight="1.5"/>
 
-        <Spinner
-            android:id="@+id/dateMonthSpinner"
-            android:layout_width="match_parent"
+        <EditText
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"/>
+            android:inputType="number"
+            android:maxLength="3"
+            android:id="@+id/editDaysCount"
+            android:hint="Дни"
+            android:layout_weight="1"/>
 
-        <Spinner
-            android:id="@+id/dateYearSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"/>
     </LinearLayout>
 
     <LinearLayout
@@ -113,36 +105,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:maxLength="3"
             android:id="@+id/editWeight"
             android:hint="Вес"
             android:layout_weight="1"/>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:padding="3dp">
 
         <TextView
             android:id="@+id/liveTypeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:textColor="#000000"
+            android:layout_weight="0.25"
             android:text="Образ жизни:"
-            android:layout_weight="0.2"/>
+            android:textColor="#000000"
+            android:textSize="20dp" />
 
         <Spinner
             android:id="@+id/liveTypeSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"/>
+            android:layout_gravity="center"
+            android:layout_marginLeft = "20dp"
+            android:layout_toRightOf="@+id/liveTypeText"
+            android:entries="@array/activitylist" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Начать" />
