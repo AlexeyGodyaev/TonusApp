@@ -121,8 +121,9 @@ public class PersonalProfileActivity extends AppCompatActivity {
     }
     public void onClickDeleteProfile(View view)
     {
-            Intent intent = new Intent(getApplicationContext(),SetAGoal.class);
-            startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(),SetAGoal.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {

@@ -10,11 +10,11 @@
     </string-array>
 
     <string-array name="goalTypesList">
-        <item>Сушка</item>
-        <item>Легкий (2-3 дня в неделю)</item>
-        <item>Умеренный (3-5 дней в неделю) </item>
-        <item>Тяжелый (6-7 дней в неделю)</item>
-        <item>Очень тяжелый (Тренировки по два раза в день)</item>
+        <item>Снижение массы подкожного жира</item>
+        <item>Снизить общую массу тела</item>
+        <item>Набрать мышечную массу, безжировую</item>
+        <item>Набрать общую массу тела</item>
+        <item>Сохранение кондиций тела при смене деятельности</item>
     </string-array>
 
     <string-array name="categories">
