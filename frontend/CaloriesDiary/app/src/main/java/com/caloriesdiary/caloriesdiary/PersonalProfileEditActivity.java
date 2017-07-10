@@ -39,6 +39,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
     int myMinute = 35;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personal_edit_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -112,7 +113,6 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
                 awakestr =JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup");
             }
 
-
         }
         catch (Exception e)
         {
@@ -129,44 +129,68 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private boolean isEmpty(TextView text) {
+        if(text.getText().toString() == "")
+            return true;
+        return (text.getText().toString().length()==0)?true:false;
+    }
+
     public void onClick(View view) throws InterruptedException, ExecutionException {
-        String selected_activity = String.valueOf(spinner.getSelectedItemPosition()+1);
-        String selected_gender;
-        if(male.isChecked())
-        {
-            selected_gender = "1";
+
+        try {
+            String selected_activity = String.valueOf(spinner.getSelectedItemPosition() + 1);
+            String selected_gender;
+
+            if (!isEmpty(name) && !isEmpty(weight) && !isEmpty(age) && !isEmpty(height)) {
+
+                if (Integer.parseInt(weight.getText().toString()) > 10
+                        && Integer.parseInt(weight.getText().toString()) < 750
+                        && Integer.parseInt(age.getText().toString()) < 130
+                        && Integer.parseInt(height.getText().toString()) < 300
+                        && Integer.parseInt(sleep.getText().toString()) < 24) {
+
+                    if (male.isChecked()) {
+                        selected_gender = "1";
+                    } else if (female.isChecked()) {
+                        selected_gender = "2";
+                    } else {
+                        selected_gender = "1";
+                    }
+
+                    Post log = new Post();
+
+                    String args[] = new String[10];
+
+                    args[0] = "http://94.130.12.179/users/save_user_chars";  //аргументы для пост запроса
+                    args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+                    args[2] = name.getText().toString();
+                    args[3] = weight.getText().toString();
+                    args[4] = height.getText().toString();
+                    args[5] = selected_gender;
+                    args[6] = age.getText().toString();
+                    args[7] = selected_activity;
+                    args[8] = sleep.getText().toString();
+                    args[9] = awakestr;
+
+                    log.execute(args); // вызываем запрос
+
+                    Toast.makeText(getApplicationContext(), log.get().toString(), Toast.LENGTH_LONG).show();
+                    editor.putBoolean("IS_PROFILE_CREATED", true);
+                    editor.commit();
+                    Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Некоторые поля введены некорректно", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "Поля не могут быть пустыми", Toast.LENGTH_LONG).show();
+            }
         }
-        else if ( female.isChecked())
+        catch (Exception e)
         {
-            selected_gender = "2";
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        else
-        {
-            selected_gender = "1";
-        }
-        Post log = new Post();
-
-        String args [] = new String[10];
-
-        args[0] = "http://94.130.12.179/users/save_user_chars";  //аргументы для пост запроса
-        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
-        args[2] = name.getText().toString();
-        args[3] = weight.getText().toString();
-        args[4] = height.getText().toString();
-        args[5] = selected_gender;
-        args[6] = age.getText().toString();
-        args[7] = selected_activity;
-        args[8] = sleep.getText().toString();
-        args[9] = awakestr;
-
-        log.execute(args); // вызываем запрос
-
-
-        Toast.makeText(getApplicationContext(), log.get().toString() ,Toast.LENGTH_LONG ).show();
-        editor.putBoolean("IS_PROFILE_CREATED",true);
-        editor.commit();
-        Intent intent = new Intent(getApplicationContext(),PersonalProfileActivity.class);
-        startActivity(intent);
     }
     public void onAwakeTimeClick(View view)
     {

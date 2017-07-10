@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="25dp"
+        android:maxLength="50"
         android:hint="Имя" />
     <EditText
         android:id="@+id/age_edit"
@@ -16,6 +17,7 @@
         android:hint="Возраст"
         android:layout_below="@id/name_edit"
         android:layout_marginLeft="30dp"
+        android:maxLength="3"
         android:inputType="number"/>
     <TextView
         android:id="@+id/gender_text"
@@ -26,6 +28,7 @@
         android:layout_alignLeft="@+id/age_edit"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
+        android:maxLength="3"
         android:layout_below="@id/age_edit"/>
     <RadioGroup
         android:id="@+id/gender_edit"
@@ -54,6 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Рост (в см)"
+        android:maxLength="3"
         android:layout_below="@+id/gender_edit"
         android:layout_marginLeft="30dp"
         android:inputType="number"/>
@@ -64,6 +68,7 @@
         android:hint="Вес (в кг)"
         android:layout_below="@+id/height_edit"
         android:layout_marginLeft="30dp"
+        android:maxLength="3"
         android:inputType="number"/>
     <TextView
         android:id="@+id/activity_text"
@@ -93,6 +98,7 @@
         android:hint="Среднее время сна (в часах)"
         android:layout_below="@+id/activity_spinner"
         android:layout_marginLeft="30dp"
+        android:maxLength="2"
         android:inputType="number"/>
     <TextView
         android:id="@+id/awake_edit"
