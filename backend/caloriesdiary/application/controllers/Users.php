@@ -127,6 +127,26 @@ class Users extends CI_Controller {
         echo json_encode($response, TRUE);
     }
 
+    public function save_goal()
+    {
+         if($this->input->post('id, desiredWeight, activityType, period, goal'))
+        { 
+            
+            $id = $this->input->post('id');
+            $desiredWeight = $this->input->post('desiredWeight');
+            $activityType = $this->input->post('activityType');
+            $period = $this->input->post('period');
+            $goal = $this->input->post('goal');
+            
+            $response = $this->CaloriesCalc->saveUserGoal($id, $desiredWeight, $activityType, $period, $goal);
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Invalid params';
+        }
+    }
+
     public function forgot_password()
     {
         if($this->input->post('email'))

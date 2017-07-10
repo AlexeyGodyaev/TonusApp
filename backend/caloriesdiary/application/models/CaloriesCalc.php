@@ -134,4 +134,67 @@ class CaloriesCalc extends CI_Model {
         return $response;
     }
 
+    public function saveUserGoal($id, $desiredWeight, $activityType, $period, $goal)
+    {
+        $query = $this->db->get_where('user_goal', array('id' => $id));
+
+        if($query->num_rows() > 0)
+        {
+            $dataGoal = array("desiredWeight" => $desiredWeight, "period" => $period, "goal" => $goal);
+            $dataProfile = array("activityType" => $activityType);
+
+            if(count(array_filter($dataGoal)) == count($dataGoal)) 
+            {
+                $this->db->get_where('user_goal', array('id' => $id));
+                $query = $this->db->update("user_goal", $dataGoal);
+
+                $this->db->get_where('user_chars', array('id' => $id));
+                $query = $this->db->update("user_chars", $dataProfile);
+
+                $this->db->cache_delete();
+
+                if($query)
+                {
+                    $response['status'] = 1;
+                    $response['msg'] = 'Цель обновлена';
+                }
+                else
+                {
+                    $response['status'] = 0;
+                    $response['msg'] = 'Error occured';
+                }
+            } 
+            else
+            {
+                $response['status'] = 0;
+                $response['msg'] = 'Не все поля указаны';
+            }
+            
+        }
+        else
+        {
+            $dataGoal = array("desiredWeight" => $desiredWeight,"period" => $period, "goal" => $goal);
+
+            $query = $this->db->insert("user_goal", $dataGoal);
+
+            $this->db->get_where('user_chars', array('id' => $id));
+            $query = $this->db->update("user_chars", $dataProfile);
+
+            $this->db->cache_delete();
+
+            if($query)
+            {
+                $response['status'] = 1;
+                $response['msg'] = 'ОК';
+            }
+            else
+            {
+                $response['status'] = 0;
+                $response['msg'] = 'Error occured';
+            }
+        }
+
+        return $response;
+    }
+
 }
