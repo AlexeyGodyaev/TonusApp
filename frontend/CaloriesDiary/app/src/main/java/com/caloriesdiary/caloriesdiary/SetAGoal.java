@@ -7,6 +7,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Calendar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +24,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 public class SetAGoal extends AppCompatActivity {
     EditText editGoalName, editWeight;
@@ -27,7 +36,7 @@ public class SetAGoal extends AppCompatActivity {
     SharedPreferences.Editor editor;
     SeekBar periodsCount;
     Calendar calendar = Calendar.getInstance();
-    String s[] = new String[6];
+    String s[] = new String[7];
     Calendar today = Calendar.getInstance();
     int DIALOG_DATE = 1;
     int myYear;
@@ -118,19 +127,21 @@ public class SetAGoal extends AppCompatActivity {
 
     public void onStartRoadToGoal(View view){
         Post post = new Post();
-
+        try {
         s[0] = "http://94.130.12.179/users/save_goal";
         s[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
 
         s[2] = editWeight.getText().toString();
         s[4] = String.valueOf(liveType.getSelectedItemPosition()+1); s[5] = String.valueOf(goalType.getSelectedItemPosition()+1);
+        s[6] = editGoalName.getText().toString();
 
-        post.execute(s);
-        try {
-            Toast.makeText(getApplicationContext(), post.get().toString(), Toast.LENGTH_LONG);
+            post.execute(s);
+
+            Toast.makeText(getApplicationContext(), post.get().toString(), Toast.LENGTH_LONG).show();
         } catch (Exception e){
-            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
+
         Intent intent = new Intent(this, TodayActivity.class);
         startActivity(intent);
     }

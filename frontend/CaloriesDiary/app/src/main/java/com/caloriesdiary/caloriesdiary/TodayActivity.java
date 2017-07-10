@@ -1,6 +1,7 @@
 package com.caloriesdiary.caloriesdiary;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.view.View;
@@ -33,7 +34,8 @@ public class TodayActivity extends Activity {
     ListView foodBasketList, activeBasketList;
     FoodAdapter adapter; //прихуярю сюда фрагмент чтоб блять можно было запустить обе листвьюхи
     ActionsAdapter actionsAdapter;
-
+    SharedPreferences sharedPref = null;
+    SharedPreferences.Editor editor;
 
     private boolean foodFlag = false, activeFlag = false;
 
@@ -44,11 +46,15 @@ public class TodayActivity extends Activity {
         adapter = new FoodAdapter(this, initFoodData());
         actionsAdapter = new ActionsAdapter(this, initActiveData());
 
+
         Calendar calendar = Calendar.getInstance();
 
         foodBasketList = (ListView) findViewById(R.id.my_food_basket);
         activeBasketList = (ListView) findViewById(R.id.my_active_basket);
         //foodBasketList.setNestedScrollingEnabled(true);
+
+        sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
+        editor = sharedPref.edit();
 
         activityBtn = (Button) findViewById(R.id.todayActiveBtn);
         todayFoodBtn = (Button) findViewById(R.id.todayFoodBtn);
@@ -59,7 +65,21 @@ public class TodayActivity extends Activity {
         countOfDays = (TextView) findViewById(R.id.dayNumber);
         targetText = (TextView) findViewById(R.id.targetTextView);
 
-        targetText.setText("Твой цель: -");
+        try {
+        Post post = new Post();
+        String s [] = new String[2];
+        s[0] = "http://94.130.12.179/users/get_goal"; s[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+
+        post.execute(s);
+
+            JSONObject js = post.get();
+            JSONObject jo = js.getJSONObject("userGoal");
+            targetText.setText("Твой цель: "+ jo.getString("name"));
+
+        } catch (Exception e){
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+        }
+
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH))+"е "+getMonth(calendar.get(Calendar.MONTH)));
         dayOfTheWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
 

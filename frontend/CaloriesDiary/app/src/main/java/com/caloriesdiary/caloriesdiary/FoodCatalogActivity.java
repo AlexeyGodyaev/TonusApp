@@ -166,7 +166,6 @@ public class FoodCatalogActivity extends FragmentActivity {
                                                 }
                                                 catch (Exception iEx){
                                                     Toast.makeText(getApplicationContext(), iEx.toString() , Toast.LENGTH_LONG).show();
-
                                                 }
                                                 if (lp.getChildCount() > 0)
                                                     lp.removeAllViews();
