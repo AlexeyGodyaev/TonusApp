@@ -37,6 +37,21 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                 JSONObject postDataParams = new JSONObject();
 
                 switch (arg0[0]) {
+<<<<<<< HEAD
+=======
+                    case "http://94.130.12.179/users/get_goal":
+                        postDataParams.put("id",arg0[1]);
+                        break;
+                    case "http://94.130.12.179/users/save_goal":
+                        postDataParams.put("id",arg0[1]);
+                        postDataParams.put("desired_weight",arg0[2]);
+                        postDataParams.put("period",arg0[3]);
+                        postDataParams.put("goal",arg0[5]);
+                        postDataParams.put("activityType",arg0[4]);
+                        postDataParams.put("name", arg0[6]);
+                        postDataParams.put("begin_date", arg0[7]);
+                        break;
+>>>>>>> Alex's-branch
                     case "http://94.130.12.179/users/auth":
                         postDataParams.put("username", arg0[1]);//далее по массиву
                         postDataParams.put("password", arg0[2]);

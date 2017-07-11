@@ -1,0 +1,19 @@
+Users:
+- user_id
+- username
+- password
+- email
+
+user_chars:
+- realName
+- weight
+- height
+- sex
+- age
+- avgdream
+- wokeup_time
+
+updates
+- id
+- comment
+- timestamp

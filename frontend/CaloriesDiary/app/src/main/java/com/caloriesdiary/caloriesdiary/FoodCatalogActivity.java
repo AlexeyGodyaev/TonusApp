@@ -167,7 +167,10 @@ public class FoodCatalogActivity extends FragmentActivity {
                                                 }
                                                 catch (Exception iEx){
                                                     Toast.makeText(getApplicationContext(), iEx.toString() , Toast.LENGTH_LONG).show();
+<<<<<<< HEAD
 
+=======
+>>>>>>> Alex's-branch
                                                 }
                                                 if (lp.getChildCount() > 0)
                                                     lp.removeAllViews();
@@ -177,7 +180,11 @@ public class FoodCatalogActivity extends FragmentActivity {
 
 
                 final EditText input = new EditText(FoodCatalogActivity.this);
+<<<<<<< HEAD
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
+=======
+
+>>>>>>> Alex's-branch
 
                 dialogBJU.setText(txtBJU.getText().toString());
                 dialogCalories.setText(txtCalories.getText().toString());

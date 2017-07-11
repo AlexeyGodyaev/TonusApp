@@ -34,6 +34,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
     private final int reqcode = 1;
+    JSONObject JSans;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +61,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
 
             log.execute(args); // вызываем запрос
-            JSONObject JSans = log.get();
+            JSans = log.get();
 
            // Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
 
@@ -121,8 +122,18 @@ public class PersonalProfileActivity extends AppCompatActivity {
     }
     public void onClickDeleteProfile(View view)
     {
-            Intent intent = new Intent(getApplicationContext(),DeleteAccountActivity.class);
-            startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(),SetAGoal.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        try {
+            intent.putExtra("realName",JSans.getJSONArray("userChars").getJSONObject(0).getString("realName"));
+            intent.putExtra("sex",JSans.getJSONArray("userChars").getJSONObject(0).getString("sex"));
+            intent.putExtra("age",JSans.getJSONArray("userChars").getJSONObject(0).getString("age"));
+            intent.putExtra("height",JSans.getJSONArray("userChars").getJSONObject(0).getString("height"));
+        }catch (Exception e){
+
+        }
+
+        startActivity(intent);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {

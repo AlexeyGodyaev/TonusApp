@@ -20,11 +20,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 
-
 public class AuthorizationActivity extends Activity {
 
-    Button reg;
-    Button logBtn;
+    Button reg,logBtn;
     EditText login, pass;
     TextView err;
     SharedPreferences sharedPref = null;
@@ -52,6 +50,7 @@ public class AuthorizationActivity extends Activity {
     }
 
     public void loginClc(View view) throws InterruptedException, ExecutionException {
+
         Post log = new Post();
 
         String args[] = new String[3];
@@ -63,31 +62,24 @@ public class AuthorizationActivity extends Activity {
         log.execute(args); // вызываем запрос
         int status = -1;
         JSONObject JSans = log.get();
-        try
-        {
-            err.setText("Status: " +JSans.getString("status"));
-            status =  JSans.getInt("status");
-
-            if(status == 1)
-            {
-                editor.putInt("PROFILE_ID",JSans.getInt("user_id"));
+        try {
+            err.setText("Status: " + JSans.getString("status"));
+            status = JSans.getInt("status");
+            if (status == 1) {
+                editor.putInt("PROFILE_ID", JSans.getInt("user_id"));
                 editor.commit();
-                Toast.makeText(getApplicationContext(), "Добро пожаловать, " + login.getText().toString() +" " + String.valueOf(sharedPref.getInt("PROFILE_ID",0)), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Toast.makeText(getApplicationContext(), "Добро пожаловать, " + login.getText().toString() + " " + String.valueOf(sharedPref.getInt("PROFILE_ID", 0)), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-            }
-            else if(status == 0)
-            {
+            } else if (status == 0) {
                 err.setText("Неправильное имя пользователя или пароль");
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             err.setText(e.toString());
         }
-
     }
     public void guestClc(View view)
     {
@@ -103,7 +95,6 @@ public class AuthorizationActivity extends Activity {
     }
     public void InitPreference()
     {
-
         if(sharedPref.getBoolean("IS_FIRST_LAUNCH",true))
         {
             Toast.makeText(getApplicationContext(),"Вы в приложении в первый раз ",Toast.LENGTH_LONG).show();
