@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,11 +27,11 @@
             android:id="@+id/goalAlertText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(не более 25 символов)" />
+            android:text="(не более 30 символов)" />
     </LinearLayout>
 
     <EditText
-        android:maxLength="25"
+        android:maxLength="30"
         android:id="@+id/editGoal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,17 +58,32 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/goalTypeText"/>
 
+<LinearLayout
+    android:padding="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-        <TextView
-            android:padding="5dp"
-            android:id="@+id/goalDateText"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:textColor="#000000"
-            android:text="Продолжительность" />
+    <TextView
+        android:padding="5dp"
+        android:id="@+id/goalDateText"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textColor="#000000"
+        android:text="Продолжительность:" />
 
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_marginLeft="85dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="3"
+        android:id="@+id/editDaysCount"
+        android:hint="Дни"/>
+</LinearLayout>
 
     <TextView
         android:padding="5dp"
@@ -86,6 +104,24 @@
 
     <TextView
         android:padding="5dp"
+        android:id="@+id/todayWeightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textColor="#000000"
+        android:text="Ваш текущий вес:"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="3"
+        android:id="@+id/editTodayWeight"
+        android:hint="Вес, кг"/>
+
+
+    <TextView
+        android:padding="5dp"
             android:id="@+id/weightGoalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,7 +135,7 @@
             android:inputType="number"
             android:maxLength="3"
             android:id="@+id/editWeight"
-            android:hint="Вес"/>
+            android:hint="Вес, кг"/>
 
 
         <TextView
@@ -118,6 +154,41 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:entries="@array/activitylist" />
+    <LinearLayout
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:padding="5dp"
+            android:id="@+id/avgTimeText"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textColor="#000000"
+            android:text="Среднее время сня:" />
+
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_marginLeft="85dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="3"
+            android:id="@+id/editHrsCount"
+            android:hint="Часы"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/awakeEditAgain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:hint="Среднее время пробуждения"
+        android:padding="5dp"
+        android:onClick="onAwakeTimeClk"/>
 
     <Button
         android:padding="5dp"
@@ -126,5 +197,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Начать" />
-
 </LinearLayout>
+</ScrollView>
