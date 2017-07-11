@@ -1,25 +1,37 @@
 package com.caloriesdiary.caloriesdiary;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by emilg on 10.07.2017.
- */
 
 public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
@@ -36,6 +48,9 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
         setTitle("СПРАВОЧНИК БЛЮД");
 
+        final LinearLayout lp = new LinearLayout(this);
+        lp.setOrientation(LinearLayout.VERTICAL);
+
         mRecyclerView =  (RecyclerView) findViewById(R.id.food_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
@@ -44,6 +59,146 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
         mAdapter = new RecycleFoodAdapter(initData());
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
+                mRecyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+                final TextView txtName = (TextView) view.findViewById(R.id.recycler_food_item_name);
+                TextView txtBJU = (TextView) view.findViewById(R.id.recycler_food_item_bju);
+                final TextView txtCalories = (TextView) view.findViewById(R.id.recycler_food_item_calories);
+                final TextView dialogBJU = new TextView(RecycleFoodCatalogActivity.this);
+                final TextView dialogCalories = new TextView(RecycleFoodCatalogActivity.this);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(RecycleFoodCatalogActivity.this);
+                builder.setTitle(txtName.getText())
+                        .setCancelable(false)
+                        .setNegativeButton("Отмена",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        if (lp.getChildCount() > 0)
+                                            lp.removeAllViews();
+                                        ((ViewManager) lp.getParent()).removeView(lp);
+                                        dialog.cancel();
+                                    }
+                                })
+                        .setPositiveButton("OK",
+                                new
+                                        DialogInterface.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                JSONObject jObject = new JSONObject();
+                                                try {
+                                                    JSONArray jsonArray = new JSONArray();
+                                                    JSONObject jsn=new JSONObject();
+                                                    File f = new File(getCacheDir(), "Food.txt");
+                                                    if (f.exists()) {
+                                                        FileInputStream in = new FileInputStream(f);
+                                                        ObjectInputStream inObject = new ObjectInputStream(in);
+                                                        String text = inObject.readObject().toString();
+                                                        inObject.close();
+
+
+                                                        jsn = new JSONObject(text);
+                                                        jsonArray = jsn.getJSONArray("food");
+                                                        jsn.remove("food");
+                                                    }
+
+                                                    jsn.put("name", txtName.getText().toString());
+                                                    String s = dialogBJU.getText().toString();
+                                                    jsn.put("protein", s.substring(0, s.indexOf('/')));
+                                                    s = s.substring(s.indexOf('/') + 1);
+                                                    jsn.put("fats", s.substring(0, s.indexOf('/')));
+                                                    s = s.substring(s.indexOf('/') + 1);
+                                                    jsn.put("carbs", s);
+                                                    jsn.put("calories", dialogCalories.getText().toString()
+                                                            .substring(0, dialogCalories.getText().toString().indexOf('.')));
+                                                    jsonArray.put(jsn);
+                                                    jObject.put("food", jsonArray);
+
+                                                    FileOutputStream out = new FileOutputStream(f);
+                                                    ObjectOutputStream outObject = new ObjectOutputStream(out);
+                                                    outObject.writeObject(jObject.toString());
+                                                    outObject.flush();
+                                                    out.getFD().sync();
+                                                    outObject.close();
+
+// Toast.makeText(getApplicationContext(), jObject.toString() , Toast.LENGTH_LONG).show();
+                                                }
+                                                catch (Exception iEx){
+                                                    Toast.makeText(getApplicationContext(), iEx.toString() , Toast.LENGTH_LONG).show();
+
+                                                }
+                                                if (lp.getChildCount() > 0)
+                                                    lp.removeAllViews();
+                                                ((ViewManager) lp.getParent()).removeView(lp);
+                                            }
+                                        });
+
+
+                final EditText input = new EditText(RecycleFoodCatalogActivity.this);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+                dialogBJU.setText(txtBJU.getText().toString());
+                dialogCalories.setText(txtCalories.getText().toString());
+
+                lp.addView(dialogCalories, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                lp.addView(dialogBJU, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                lp.addView(input, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                final double caloriesCount = Double.parseDouble(txtCalories.getText().toString().
+                        substring(0,dialogCalories.getText().toString().indexOf('.')));
+                String parsBJU = txtBJU.getText().toString();
+                final double dialogProtein = Double.parseDouble(parsBJU.
+                        substring(0, parsBJU.indexOf('/')));
+                parsBJU = parsBJU.substring(parsBJU.indexOf('/')+1);
+                final double dialogFats = Double.parseDouble(parsBJU.
+                        substring(0,parsBJU.indexOf('/')));
+                parsBJU = parsBJU.substring(parsBJU.indexOf('/')+1);
+                final double dialogCarbs = Double.parseDouble(parsBJU);
+
+                input.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        double massCount = Double.parseDouble(input.getText().toString());
+
+                        double newCount =
+                                (massCount/100)*caloriesCount;
+                        dialogCalories.setText(Double.toString(newCount));
+
+                        double protein = (massCount/100)*dialogProtein;
+                        double fats = (massCount/100)*dialogFats;
+                        double carbs = (massCount/100)*dialogCarbs;
+
+                        dialogBJU.setText(Double.toString(protein)+"/"+Double.toString(fats)+"/"+Double.toString(carbs));
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+                builder.setView(lp);
+                AlertDialog alert = builder.create();
+                alert.show();
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Toast.makeText(getApplicationContext(), "Long press on position :"+position,
+                        Toast.LENGTH_LONG).show();
+            }
+        }));
     }
 
 

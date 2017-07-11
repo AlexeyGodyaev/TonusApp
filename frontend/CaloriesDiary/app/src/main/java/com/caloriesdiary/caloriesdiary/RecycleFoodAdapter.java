@@ -12,13 +12,18 @@ import java.util.List;
 public class RecycleFoodAdapter extends RecyclerView.Adapter<RecycleFoodAdapter.ViewHolder>  {
     private List<FoodItem> listitem;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
         public TextView nameview,caloriesview,bjuview;
         public ViewHolder(View view) {
             super(view);
             nameview = (TextView) view.findViewById(R.id.recycler_food_item_name);
             caloriesview = (TextView) view.findViewById(R.id.recycler_food_item_calories);
             bjuview = (TextView) view.findViewById(R.id.recycler_food_item_bju);
+            view.setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View v) {
+
         }
 
     }
