@@ -77,46 +77,8 @@ public class MainActivity extends AppCompatActivity
         View v = navigationView.getHeaderView(0);
         userMail = (TextView) v.findViewById(R.id.head_usermail_text);
         userName = (TextView) v.findViewById(R.id.head_username_text);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        try {
-            userMail.setText(sharedPref.getString("userMail", "Нет данных"));
-            userName.setText(sharedPref.getString("userName", "Нет данных"));
-        } catch (Exception e){
-            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
-        }
-        getMenuInflater().inflate(R.menu.main,menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // получим идентификатор выбранного пункта меню
-        int id = item.getItemId();
-
-// Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-
-        // Операции для выбранного пункта меню
-        switch (id) {
-
-            case R.id.settings_menu:
-                Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
-                startActivity(intent);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        userMail.setText(sharedPref.getString("userMail", "Нет данных"));
+        userName.setText(sharedPref.getString("userName", "Нет данных"));
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -159,7 +121,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_rar) {
 
         } else if (id == R.id.nav_settings) {
-
+            Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_about) {
 
         }
