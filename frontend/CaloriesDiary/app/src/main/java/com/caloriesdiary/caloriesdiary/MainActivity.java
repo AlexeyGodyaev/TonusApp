@@ -4,10 +4,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +36,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+
     Button btn;
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
@@ -37,19 +46,42 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        btn= (Button) findViewById(R.id.profile_btn);
-        id_text_view = (TextView) findViewById(R.id.id_text_view);
-        sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
-        editor = sharedPref.edit();
+
+            setContentView(R.layout.main_layout);
+            btn = (Button) findViewById(R.id.profile_btn);
+            //id_text_view = (TextView) findViewById(R.id.id_text_view);
+            sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
+            editor = sharedPref.edit();
 
 
-        id_text_view.setText("ID = " + String.valueOf(sharedPref.getInt("PROFILE_ID",0)));
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+
+
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
+
+
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+        getMenuInflater().inflate(R.menu.main,menu);
         return true;
     }
     @Override
@@ -57,10 +89,19 @@ public class MainActivity extends AppCompatActivity {
         // получим идентификатор выбранного пункта меню
         int id = item.getItemId();
 
+// Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
 
         // Операции для выбранного пункта меню
         switch (id) {
+
             case R.id.settings_menu:
                 Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
                 startActivity(intent);
@@ -71,6 +112,55 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_profile) {
+            try
+            {
+                Post log = new Post();
+
+                String args[] = new String[3];
+
+                args[0] = "http://94.130.12.179/users/get_user_chars";  //аргументы для пост запроса
+                args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+
+
+                log.execute(args); // вызываем запрос
+                JSONObject JSans = log.get();
+
+
+                if(JSans.getString("status").equals("0")) {
+                    Intent intent = new Intent(getApplicationContext(), PersonalProfileEditActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(intent);
+                }
+                else if(JSans.getString("status").equals("1"))
+                {
+                    Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
+                    startActivity(intent);
+                }
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+            }
+
+        } else if (id == R.id.nav_rar) {
+
+        } else if (id == R.id.nav_settings) {
+
+        } else if (id == R.id.nav_about) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 
     public  void onTodayClc(View view){
         Intent intent = new Intent(getApplicationContext(),TodayActivity.class);
@@ -95,6 +185,15 @@ public void onClc(View view){
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 
     public void onProfileClick(View view){
@@ -127,9 +226,8 @@ public void onClc(View view){
         {
             Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
         }
-
-
     }
+
     public void onCurrentStatClick (View view)
     {
         //Toast.makeText(getApplicationContext(),getCacheDir().toString(),Toast.LENGTH_LONG).show();

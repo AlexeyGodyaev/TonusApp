@@ -29,7 +29,9 @@
         </activity>
         <activity android:name=".TodayActivity"/>
         <activity android:name=".RegistrationActivity"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".ForgetPassActivity"/>
 
