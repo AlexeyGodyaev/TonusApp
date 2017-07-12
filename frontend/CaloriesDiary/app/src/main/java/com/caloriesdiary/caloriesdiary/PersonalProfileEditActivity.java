@@ -191,32 +191,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
-<<<<<<< HEAD
-        Post log = new Post();
 
-        String args [] = new String[10];
-
-        args[0] = "http://94.130.12.179/users/save_user_chars";  //аргументы для пост запроса
-        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
-        args[2] = name.getText().toString();
-        args[3] = weight.getText().toString();
-        args[4] = height.getText().toString();
-        args[5] = selected_gender;
-        args[6] = age.getText().toString();
-        args[7] = selected_activity;
-        args[8] = sleep.getText().toString();
-        args[9] = awakestr;
-
-        log.execute(args); // вызываем запрос
-
-
-        Toast.makeText(getApplicationContext(), log.get().toString() ,Toast.LENGTH_LONG ).show();
-        editor.putBoolean("IS_PROFILE_CREATED",true);
-        editor.commit();
-        Intent intent = new Intent(getApplicationContext(),PersonalProfileActivity.class);
-        startActivity(intent);
-=======
->>>>>>> Alex's-branch
     }
     public void onAwakeTimeClick(View view)
     {

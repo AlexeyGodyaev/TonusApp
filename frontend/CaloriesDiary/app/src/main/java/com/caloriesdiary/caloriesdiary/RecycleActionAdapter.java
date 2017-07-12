@@ -45,6 +45,7 @@ public class RecycleActionAdapter extends RecyclerView.Adapter<RecycleActionAdap
 
         ViewHolder vh = new ViewHolder(view);
         return vh;
+
     }
 
     @Override

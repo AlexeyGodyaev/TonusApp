@@ -1,11 +1,6 @@
 package com.caloriesdiary.caloriesdiary;
 
 
-<<<<<<< HEAD
-import android.support.v7.app.AppCompatActivity;
-
-public class SetAGoal extends AppCompatActivity {
-=======
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -181,5 +176,5 @@ public class SetAGoal extends AppCompatActivity {
         Intent intent = new Intent(this, TodayActivity.class);
         startActivity(intent);
     }
->>>>>>> Alex's-branch
+
 }

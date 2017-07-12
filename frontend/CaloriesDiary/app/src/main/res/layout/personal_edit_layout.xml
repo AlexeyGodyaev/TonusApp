@@ -8,13 +8,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="25dp"
-<<<<<<< HEAD
-        android:hint="Имя"
-        />
-=======
+
         android:maxLength="50"
         android:hint="Имя" />
->>>>>>> Alex's-branch
+
     <EditText
         android:id="@+id/age_edit"
         android:layout_width="wrap_content"

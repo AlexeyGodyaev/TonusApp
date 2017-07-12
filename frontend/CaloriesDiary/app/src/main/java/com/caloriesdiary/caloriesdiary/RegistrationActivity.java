@@ -40,43 +40,12 @@ public class RegistrationActivity extends Activity {
     }
 
     public void regClc(View view) throws  InterruptedException, ExecutionException{
-<<<<<<< HEAD
-        if(pass.getText().toString().equals(passAgain.getText().toString())){
-        String args[] = new String[4];
-            args[0]="http://94.130.12.179/users/register";
-            args[1]=name.getText().toString();
-            args[2]=pass.getText().toString();
-            args[3]=mail.getText().toString();
 
-            Post sendReg = new Post();
-            sendReg.execute(args);
-            String ans = sendReg.get().toString();
-
-            JSONObject js = sendReg.get();
-            try
-            {
-                js.getInt("status");
-                error.setText(ans);
-                if(js.getInt("status") == 1)
-                {
-                    Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(),js.getString("msg"),Toast.LENGTH_LONG);
-                }
-            }
-            catch (Exception e)
-            {
-=======
         try
         {
             Pattern pattern = Pattern.compile(EMAIL_PATTERN);
             Matcher emailMatcher = pattern.matcher(mail.getText().toString());
->>>>>>> Alex's-branch
+
 
             if(pass.getText().toString().equals(passAgain.getText().toString())){
 
