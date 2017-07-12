@@ -42,45 +42,52 @@ public class MainActivity extends AppCompatActivity
     Button btn;
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
-    TextView id_text_view;
+    TextView userName, userMail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-            setContentView(R.layout.main_layout);
-            btn = (Button) findViewById(R.id.profile_btn);
-            //id_text_view = (TextView) findViewById(R.id.id_text_view);
-            sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
-            editor = sharedPref.edit();
+        setContentView(R.layout.main_layout);
+        btn = (Button) findViewById(R.id.profile_btn);
+        //id_text_view = (TextView) findViewById(R.id.id_text_view);
+        sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
+        editor = sharedPref.edit();
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
 
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
 
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.setDrawerListener(toggle);
-            toggle.syncState();
-
-
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
-
-
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View v = navigationView.getHeaderView(0);
+        userMail = (TextView) v.findViewById(R.id.head_usermail_text);
+        userName = (TextView) v.findViewById(R.id.head_username_text);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
+        try {
+            userMail.setText(sharedPref.getString("userMail", "Нет данных"));
+            userName.setText(sharedPref.getString("userName", "Нет данных"));
+        } catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
         getMenuInflater().inflate(R.menu.main,menu);
         return true;
     }

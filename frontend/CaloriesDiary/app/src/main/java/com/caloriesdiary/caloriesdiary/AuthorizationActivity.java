@@ -67,6 +67,8 @@ public class AuthorizationActivity extends Activity {
             status = JSans.getInt("status");
             if (status == 1) {
                 editor.putInt("PROFILE_ID", JSans.getInt("user_id"));
+                editor.putString("userName", JSans.getString("username"));
+                editor.putString("userMail", JSans.getString("email"));
                 editor.commit();
                 Toast.makeText(getApplicationContext(), "Добро пожаловать, " + login.getText().toString() + " " + String.valueOf(sharedPref.getInt("PROFILE_ID", 0)), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
