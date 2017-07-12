@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">CaloriesDiary</string>
-    <string name="button_up">🢑</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
     <string-array name="activitylist">
         <item>Практически нет</item>
         <item>Легкий (2-3 дня в неделю)</item>
