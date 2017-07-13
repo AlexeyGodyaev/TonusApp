@@ -41,6 +41,9 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                     case "http://94.130.12.179/users/get_goal":
                         postDataParams.put("id",arg0[1]);
                         break;
+                    case "http://94.130.12.179/users/get_goal_archive":
+                        postDataParams.put("id",arg0[1]);
+                        break;
                     case "http://94.130.12.179/users/save_goal":
                         postDataParams.put("id",arg0[1]);
                         postDataParams.put("desired_weight",arg0[2]);
@@ -86,8 +89,6 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("oldpassword",arg0[2]);
                         postDataParams.put("newpassword",arg0[3]);
                         break;
-
-
                 }
 
 

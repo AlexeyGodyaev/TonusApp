@@ -119,7 +119,8 @@ public class MainActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.nav_rar) {
-
+            Intent intent = new Intent(getApplicationContext(),ArchiveActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
             startActivity(intent);
