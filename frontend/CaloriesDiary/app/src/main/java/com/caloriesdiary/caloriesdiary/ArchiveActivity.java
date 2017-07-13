@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -22,7 +23,7 @@ public class ArchiveActivity extends AppCompatActivity {
 
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
-
+    String endDate [];
     JSONArray jArr;
 
     private RecyclerView mRecyclerView;
@@ -61,10 +62,13 @@ public class ArchiveActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, final int position) {
                 Intent intent = new Intent(getApplicationContext(), ArchiveItemData.class);
+
                 try {
                     intent.putExtra("name", jArr.getJSONObject(position).getString("name"));
+                    intent.putExtra("active", jArr.getJSONObject(position).getString("activityType"));
+                    intent.putExtra("state", jArr.getJSONObject(position).getString("active"));
                     intent.putExtra("begin_date", jArr.getJSONObject(position).getString("begin_date"));
-                    intent.putExtra("period", jArr.getJSONObject(position).getString("period"));
+                    intent.putExtra("endDate", endDate[position]);
                     intent.putExtra("desired_weight", jArr.getJSONObject(position).getString("desired_weight"));
                     intent.putExtra("goal", jArr.getJSONObject(position).getString("goal"));
                     startActivity(intent);
@@ -116,10 +120,36 @@ public class ArchiveActivity extends AppCompatActivity {
             try {
                 JSONObject js = new JSONObject(resp);
                 jArr = js.getJSONArray("userGoals");
+                endDate = new String[jArr.length()];
                 for (int i=0; i < jArr.length(); i++) {
 
+                    Calendar calendar = Calendar.getInstance();
+                    endDate [i] = jArr.getJSONObject(i).getString("begin_date");
+                    calendar.set(Calendar.YEAR,Integer.parseInt(endDate[i].substring(0,endDate[i].indexOf('-'))));
+
+                    endDate[i] = endDate[i].substring(endDate[i].indexOf('-')+1);
+                    if (endDate[i].substring(0,1).equals("0"))
+                        endDate[i] = endDate[i].substring(1);
+                    calendar.set(Calendar.MONTH,Integer.parseInt(endDate[i].substring(0,endDate[i].indexOf('-'))));
+
+                    endDate[i] = endDate[i].substring(endDate[i].indexOf('-')+1);
+                    if (endDate[i].substring(0,1).equals("0"))
+                        endDate[i] = endDate[i].substring(1);
+                    calendar.set(Calendar.DAY_OF_MONTH,Integer.parseInt(endDate[i]));
+
+                    int end = calendar.get(Calendar.DAY_OF_YEAR)+Integer.parseInt(jArr.getJSONObject(i).getString("period"));
+                    calendar.set(Calendar.DAY_OF_YEAR,end);
+
+                    endDate[i] = String.valueOf(calendar.get(Calendar.YEAR))+"-";
+                    if (calendar.get(Calendar.MONTH)<10)
+                        endDate[i]+="0";
+                    endDate[i]+= String.valueOf(calendar.get(Calendar.MONTH)) +"-";
+                    if (calendar.get(Calendar.DAY_OF_MONTH)<10)
+                        endDate[i]+="0";
+                    endDate[i]+=String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+
                     actionName = jArr.getJSONObject(i).getString("name");
-                    date = jArr.getJSONObject(i).getString("begin_date");
+                    date = jArr.getJSONObject(i).getString("begin_date") + "/" +"\n" + endDate[i];
                     list.add(new ArchiveItem(actionName, date));
                 }
             } catch (Exception e){
