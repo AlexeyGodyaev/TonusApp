@@ -40,10 +40,12 @@ public class RegistrationActivity extends Activity {
     }
 
     public void regClc(View view) throws  InterruptedException, ExecutionException{
+
         try
         {
             Pattern pattern = Pattern.compile(EMAIL_PATTERN);
             Matcher emailMatcher = pattern.matcher(mail.getText().toString());
+
 
             if(pass.getText().toString().equals(passAgain.getText().toString())){
 

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -7,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,6 +27,7 @@
 
         <TextView
             android:id="@+id/goalAlertText"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="(не более 30 символов)" />
@@ -32,12 +35,14 @@
 
     <EditText
         android:maxLength="30"
+
         android:id="@+id/editGoal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Введите текст" />
+
 
 
 
@@ -199,3 +204,4 @@
         android:text="Начать" />
 </LinearLayout>
 </ScrollView>
+

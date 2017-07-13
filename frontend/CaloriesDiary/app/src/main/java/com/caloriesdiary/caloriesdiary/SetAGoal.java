@@ -176,4 +176,5 @@ public class SetAGoal extends AppCompatActivity {
         Intent intent = new Intent(this, TodayActivity.class);
         startActivity(intent);
     }
+
 }

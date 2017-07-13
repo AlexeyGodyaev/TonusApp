@@ -144,13 +144,13 @@ public void onClc(View view){
 }
 
     public void onFoodCatalogClc(View view){
-        Intent intent = new Intent(getApplicationContext(),FoodCatalogActivity.class);
+        Intent intent = new Intent(getApplicationContext(),RecycleFoodCatalogActivity.class);
 
         startActivity(intent);
     }
 
     public void onActionsCatalogClc(View view){
-        Intent intent = new Intent(getApplicationContext(),ActionsCatalogActivity.class);
+        Intent intent = new Intent(getApplicationContext(),RecycleActionCatalogActivity.class);
 
         startActivity(intent);
     }
@@ -200,22 +200,8 @@ public void onClc(View view){
 
     public void onCurrentStatClick (View view)
     {
-        //Toast.makeText(getApplicationContext(),getCacheDir().toString(),Toast.LENGTH_LONG).show();
-
-       // File file = new File("/data/user/0/com.caloriesdiary.caloriesdiary/cache/text.txt");
-        try
-        {
-           // OutputStreamWriter writer = new OutputStreamWriter(getApplicationContext().openFileOutput("text.txt", getApplicationContext().MODE_APPEND));
-       // writer.write("Hello");
-         //   writer.close();
-         //Gson gson = new Gson();
-
-          //  Toast.makeText(getApplicationContext(),obj.toString(),Toast.LENGTH_LONG).show();
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
-        }
+        Intent intent = new Intent(getApplicationContext(), ActionsCatalogActivity.class);
+        startActivity(intent);
     }
     public void onDiaryClick (View view)
     {

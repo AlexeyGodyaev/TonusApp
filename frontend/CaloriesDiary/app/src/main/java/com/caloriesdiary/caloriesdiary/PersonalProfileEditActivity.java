@@ -191,6 +191,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
+
     }
     public void onAwakeTimeClick(View view)
     {

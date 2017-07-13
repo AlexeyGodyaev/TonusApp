@@ -1,26 +1,21 @@
 package com.caloriesdiary.caloriesdiary;
 
-
-
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,88 +23,53 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class FoodCatalogActivity extends FragmentActivity {
-    boolean flag = true;
-    ListView listView;
-    EditText srch;
-    private FilterFragment filterFragment;
-    List<FoodItem> list;
-    int offset;
 
-    private FragmentManager manager;
-    private FragmentTransaction transaction;
+public class RecycleFoodCatalogActivity extends AppCompatActivity {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.food_catalog_layout);
+        setContentView(R.layout.recycle_food_catalog_layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        setTitle("СПРАВОЧНИК БЛЮД");
 
         final LinearLayout lp = new LinearLayout(this);
         lp.setOrientation(LinearLayout.VERTICAL);
 
-        filterFragment = new FilterFragment();
-        manager = getSupportFragmentManager();
+        mRecyclerView =  (RecyclerView) findViewById(R.id.food_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
 
-        srch = (EditText) findViewById(R.id.srchFood);
-        srch.setOnKeyListener(new View.OnKeyListener() {
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new RecycleFoodAdapter(initData());
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
+                mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if(keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
-                        (i == KeyEvent.KEYCODE_ENTER)){
-//высылаем пост с именем
-                }
-                return false;
-            }
-        });
+            public void onClick(View view, final int position) {
+                final TextView txtName = (TextView) view.findViewById(R.id.recycler_food_item_name);
+                TextView txtBJU = (TextView) view.findViewById(R.id.recycler_food_item_bju);
+                final TextView txtCalories = (TextView) view.findViewById(R.id.recycler_food_item_calories);
+                final TextView dialogBJU = new TextView(RecycleFoodCatalogActivity.this);
+                final TextView dialogCalories = new TextView(RecycleFoodCatalogActivity.this);
 
-        listView = (ListView) findViewById(R.id.foodList);
-        list = new ArrayList<FoodItem>();
-        offset = 0;
-        final FoodAdapter adapter = new FoodAdapter(this, initData());
-        listView.setAdapter(adapter);
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView absListView, int i) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
-                srch.setText("i= " + String.valueOf(i) + ";" + "i1= "+ String.valueOf(i1)+ ";" + "i2= "+ String.valueOf(i2) );
-                if(i + i1 >= i2) {
-                    Toast.makeText(getApplicationContext(), "Загрузка следующей страницы...", Toast.LENGTH_SHORT).show();
-                    offset++;
-                    int buf = i;
-                    initData();
-                    listView.setAdapter(adapter);
-                    listView.setSelection(buf);
-                }
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l) {
-                final TextView txtName = (TextView) view.findViewById(R.id.productName);
-                TextView txtBJU = (TextView) view.findViewById(R.id.bJU);
-                final TextView txtCalories = (TextView) view.findViewById(R.id.productCalories);
-                final TextView dialogBJU = new TextView(FoodCatalogActivity.this);
-                final TextView dialogCalories = new TextView(FoodCatalogActivity.this);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(FoodCatalogActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(RecycleFoodCatalogActivity.this);
                 builder.setTitle(txtName.getText())
                         .setCancelable(false)
                         .setNegativeButton("Отмена",
@@ -176,10 +136,8 @@ public class FoodCatalogActivity extends FragmentActivity {
                                         });
 
 
-                final EditText input = new EditText(FoodCatalogActivity.this);
-
+                final EditText input = new EditText(RecycleFoodCatalogActivity.this);
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
-
 
                 dialogBJU.setText(txtBJU.getText().toString());
                 dialogCalories.setText(txtCalories.getText().toString());
@@ -233,33 +191,37 @@ public class FoodCatalogActivity extends FragmentActivity {
                 AlertDialog alert = builder.create();
                 alert.show();
 
-
             }
-        });
-    }
 
-    public void onClcFilterButton(View view){
-        transaction = manager.beginTransaction();
-
-        if(flag == true){
-            transaction.add(R.id.filterFragmentFood, filterFragment); flag = false;}
-        else {transaction.remove(filterFragment); flag = true;}
-
-        transaction.commit();
+            @Override
+            public void onLongClick(View view, int position) {
+                Toast.makeText(getApplicationContext(), "Long press on position :"+position,
+                        Toast.LENGTH_LONG).show();
+            }
+        }));
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public JSONArray getFood() throws InterruptedException,
-            ExecutionException{
+            ExecutionException {
         GetFood get = new GetFood();
-        get.execute("http://94.130.12.179/food/get_food",String.valueOf(offset));
+        get.execute("http://94.130.12.179/food/get_food",String.valueOf(-1));
 
         return get.get();
     }
 
     private List<FoodItem> initData() {
-
+        List<FoodItem> list = new ArrayList<FoodItem>();
         JSONArray resp = null;
         String foodName = null;
         Float b=new Float(0), j=new Float(0), u=new Float(0), calories=new Float(0);
@@ -297,4 +259,5 @@ public class FoodCatalogActivity extends FragmentActivity {
 
         return list;
     }
+
 }
