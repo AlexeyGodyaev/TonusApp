@@ -130,7 +130,7 @@ public class ArchiveActivity extends AppCompatActivity {
                     endDate[i] = endDate[i].substring(endDate[i].indexOf('-')+1);
                     if (endDate[i].substring(0,1).equals("0"))
                         endDate[i] = endDate[i].substring(1);
-                    calendar.set(Calendar.MONTH,Integer.parseInt(endDate[i].substring(0,endDate[i].indexOf('-'))));
+                    calendar.set(Calendar.MONTH,Integer.parseInt(endDate[i].substring(0,endDate[i].indexOf('-')))-1);
 
                     endDate[i] = endDate[i].substring(endDate[i].indexOf('-')+1);
                     if (endDate[i].substring(0,1).equals("0"))
@@ -144,9 +144,9 @@ public class ArchiveActivity extends AppCompatActivity {
                     if (calendar.get(Calendar.MONTH)<10)
                         endDate[i]+="0";
                     endDate[i]+= String.valueOf(calendar.get(Calendar.MONTH)) +"-";
-                    if (calendar.get(Calendar.DAY_OF_MONTH)<10)
+                    if (calendar.get(Calendar.DAY_OF_MONTH)<9)
                         endDate[i]+="0";
-                    endDate[i]+=String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                    endDate[i]+=String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)+1);
 
                     actionName = jArr.getJSONObject(i).getString("name");
                     date = jArr.getJSONObject(i).getString("begin_date") + "/" +"\n" + endDate[i];
