@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:paddingLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <TextView
+        android:paddingBottom="3dp"
+        android:id="@+id/state_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Состояние:" />
+
+    <TextView
+        android:paddingBottom="10dp"
+        android:textColor="#000000"
+        android:id="@+id/state_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:paddingBottom="3dp"
+        android:id="@+id/archive_goal_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Название:" />
+
+    <TextView
+        android:paddingBottom="10dp"
+        android:textColor="#000000"
+        android:id="@+id/archive_goal_name_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:paddingBottom="3dp"
+        android:id="@+id/archive_goal_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Тип:" />
+
+    <TextView
+        android:paddingBottom="10dp"
+        android:textColor="#000000"
+        android:id="@+id/archive_goal_type_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:paddingBottom="3dp"
+        android:id="@+id/archive_begin_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Дата начала:" />
+
+    <TextView
+        android:paddingBottom="10dp"
+        android:textColor="#000000"
+        android:id="@+id/archive_begin_date_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:paddingBottom="3dp"
+        android:id="@+id/archive_end_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Дата окончания:" />
+
+    <TextView
+        android:paddingBottom="10dp"
+        android:textColor="#000000"
+        android:id="@+id/archive_end_date_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+        <TextView
+            android:paddingBottom="3dp"
+            android:id="@+id/archive_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Желаемый результат:" />
+
+        <TextView
+            android:paddingBottom="10dp"
+            android:textColor="#000000"
+            android:id="@+id/archive_weight_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
+            android:paddingBottom="3dp"
+            android:id="@+id/live_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Уровень активности" />
+
+        <TextView
+            android:paddingBottom="10dp"
+            android:textColor="#000000"
+            android:id="@+id/live_type_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+    </LinearLayout>
+</ScrollView>
