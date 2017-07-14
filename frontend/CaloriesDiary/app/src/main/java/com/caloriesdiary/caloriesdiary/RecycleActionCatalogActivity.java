@@ -1,6 +1,7 @@
 package com.caloriesdiary.caloriesdiary;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -8,10 +9,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.GestureDetector;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,6 +48,8 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
         setContentView(R.layout.recycle_action_catalog_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
 
         setTitle("АКТИВНОСТЬ");
 
@@ -189,11 +194,33 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+
+        try
+        {
+
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+
+
+        return true;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
                 onBackPressed();
+                return true;
+            case R.id.action_search:
+                Toast.makeText(this, "идр", Toast.LENGTH_SHORT).show();
+                
                 return true;
         }
         return super.onOptionsItemSelected(item);

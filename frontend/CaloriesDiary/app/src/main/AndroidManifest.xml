@@ -34,9 +34,10 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".ForgetPassActivity"/>
-        <activity android:name=".RecycleActionCatalogActivity"/>
-        <activity android:name=".RecycleFoodCatalogActivity"/>
+        <activity android:name=".RecycleActionCatalogActivity">
 
+        </activity>
+        <activity android:name=".RecycleFoodCatalogActivity"/>
 
 
     </application>
