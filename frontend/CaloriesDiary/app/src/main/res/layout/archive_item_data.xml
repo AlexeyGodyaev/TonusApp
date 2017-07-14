@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:paddingTop="15dp"
         android:paddingLeft="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -114,5 +115,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
+
+        <TextView
+            android:id="@+id/archive_antropometry_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="25dp"
+            android:textColor="#A5CDCD"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:elevation="20dp"
+
+            android:onClick="onAntropometryClc"
+            android:text="Антропометрия" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/antropometry_archive"
+            android:orientation="horizontal">
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
