@@ -25,6 +25,12 @@ public class RegistrationActivity extends Activity {
     Pattern pattern;
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+    public boolean valid(String toExamine) {
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]*$");
+        Matcher matcher = pattern.matcher(toExamine);
+        return matcher.find();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,59 +45,53 @@ public class RegistrationActivity extends Activity {
 
     }
 
-    public void regClc(View view) throws  InterruptedException, ExecutionException{
-
-        try
-        {
+    public void regClc(View view) throws InterruptedException, ExecutionException {
+        try {
             Pattern pattern = Pattern.compile(EMAIL_PATTERN);
             Matcher emailMatcher = pattern.matcher(mail.getText().toString());
 
+            if (pass.getText().toString().equals(passAgain.getText().toString()) && pass.getText().toString().length() > 5) {
 
-            if(pass.getText().toString().equals(passAgain.getText().toString())){
+                if (emailMatcher.matches()) {
 
-                if(emailMatcher.matches()) {
+                    if (name.getText().toString().length() > 3 && valid(name.getText().toString())) {
 
-                    if(name.getText().toString().length() > 3) {
+                        String args[] = new String[4];
+                        args[0] = "http://94.130.12.179/users/register";
+                        args[1] = name.getText().toString();
+                        args[2] = pass.getText().toString();
+                        args[3] = mail.getText().toString();
 
-                            String args[] = new String[4];
-                            args[0] = "http://94.130.12.179/users/register";
-                            args[1] = name.getText().toString();
-                            args[2] = pass.getText().toString();
-                            args[3] = mail.getText().toString();
 
-                            Post sendReg = new Post();
-                            sendReg.execute(args);
-                            String ans = sendReg.get().toString();
+                        Post sendReg = new Post();
+                        sendReg.execute(args);
+                        String ans = sendReg.get().toString();
 
-                            JSONObject js = sendReg.get();
+                        JSONObject js = sendReg.get();
 
-                            js.getInt("status");
-                            error.setText(ans);
-                            if (js.getInt("status") == 1) {
-                                Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(getApplicationContext(), js.getString("msg"), Toast.LENGTH_LONG);
-                            }
+                        js.getInt("status");
+                        error.setText(ans);
+                        if (js.getInt("status") == 1) {
+                            Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(getApplicationContext(), js.getString("msg"), Toast.LENGTH_LONG);
                         }
-                        else{
-                            error.setText("Логин должен содержать более 3 символов");
-                        }
+                    } else {
+                        error.setText("Логин должен содержать более 6 символов и должен состоять из букв латинского алфавита или цифр!");
                     }
-                    else{
-                        error.setText("Неверный адрес электронной почты");
-                    }
-            }
-            else {
+                } else {
+                    error.setText("Неверный адрес электронной почты");
+                }
+            } else {
                 error.setText("Пароли не совпадают");
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }
-

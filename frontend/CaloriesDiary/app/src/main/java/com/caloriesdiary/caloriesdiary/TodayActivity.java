@@ -43,11 +43,19 @@ public class TodayActivity extends AppCompatActivity {
 
     List<FoodItem> list = new ArrayList<FoodItem>();
     List<ActionItem> listActive = new ArrayList<ActionItem>();
+<<<<<<< HEAD
     TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn , activityBtn, antropometry;
     Button saveTodayParams;
     private TodayAntropometryFragment fragment;
     private FragmentManager manager;
     private FragmentTransaction transaction;
+=======
+    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn, activityBtn, calories;
+    Button addFoodBtn;
+  //  ListView foodBasketList, activeBasketList;
+   // FoodAdapter adapter; //прихуярю сюда фрагмент чтоб блять можно было запустить обе листвьюхи
+   // ActionsAdapter actionsAdapter;
+>>>>>>> origin/Lev's-branch
     private RecyclerView foodRecyclerView;
     private RecyclerView.Adapter foodAdapter;
     private RecyclerView.LayoutManager foodLayoutManager;
@@ -64,6 +72,47 @@ public class TodayActivity extends AppCompatActivity {
 
     EditText editMass;
     private boolean foodFlag = false, activeFlag = false, antropometryFlag = true;
+
+    public void CalcCalories()
+    {
+        try {
+            File f = new File(getCacheDir(), "Food.txt");
+            FileInputStream in = new FileInputStream(f);
+            ObjectInputStream inObject = new ObjectInputStream(in);
+            String text = inObject.readObject().toString();
+            inObject.close();
+
+            JSONObject jsn = new JSONObject(text);
+            JSONArray jsonArray = jsn.getJSONArray("food");
+            int sum = 0;
+
+            for(int j=0; j < jsonArray.length();j++) {
+                sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
+            }
+
+            String answer = "Потреблено: " + sum + " ккал";
+
+            f = new File(getCacheDir(), "Actions.txt");
+            in = new FileInputStream(f);
+            inObject = new ObjectInputStream(in);
+            text = inObject.readObject().toString();
+            inObject.close();
+
+            jsn = new JSONObject(text);
+            jsonArray = jsn.getJSONArray("active");
+            sum = 0;
+
+            for(int j=0; j < jsonArray.length();j++) {
+                sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
+            }
+                answer += " Сгорело: " + sum + " ккал";
+
+            calories.setText(answer);
+
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +154,9 @@ public class TodayActivity extends AppCompatActivity {
         dayOfTheWeek = (TextView) findViewById(R.id.todayDayOfTheWeek);
         countOfDays = (TextView) findViewById(R.id.dayNumber);
         targetText = (TextView) findViewById(R.id.targetTextView);
+        calories = (TextView) findViewById(R.id.foodCalories);
+
+        CalcCalories();
 
         try {
             JSONObject jsn = new JSONObject();

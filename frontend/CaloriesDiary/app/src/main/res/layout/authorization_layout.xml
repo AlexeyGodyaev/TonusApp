@@ -20,6 +20,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="noob"
+        android:maxLength="16"
         android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
         android:layout_alignBaseline="@+id/loginLable"
@@ -33,6 +34,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
+        android:maxLength="32"
         android:text="1234"
         android:layout_alignBaseline="@+id/passwordLable"
         android:layout_alignBottom="@+id/passwordLable"
@@ -81,6 +83,7 @@
         android:layout_below="@+id/registrationButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="17dp"
+        android:onClick="googleClc"
         android:text="Google"
         />
 

@@ -53,10 +53,14 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("name", arg0[6]);
                         postDataParams.put("begin_date", arg0[7]);
                         break;
-
                     case "http://94.130.12.179/users/auth":
                         postDataParams.put("username", arg0[1]);//далее по массиву
                         postDataParams.put("password", arg0[2]);
+                        break;
+                    case "http://94.130.12.179/users/google_auth":
+                        postDataParams.put("ga_id", arg0[1]);//далее по массиву
+                        postDataParams.put("email", arg0[2]);
+                        postDataParams.put("username", arg0[3]);
                         break;
                     case "http://94.130.12.179/users/register":
                         postDataParams.put("username", arg0[1]);//далее по массиву

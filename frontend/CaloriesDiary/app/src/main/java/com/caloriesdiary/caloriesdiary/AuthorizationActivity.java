@@ -19,8 +19,23 @@ import org.json.JSONObject;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+
 
 public class AuthorizationActivity extends Activity {
+
+    GoogleApiClient m;
+    GoogleSignInOptions gso;
+    private static final int RC_SIGN_IN = 9001;
+
+    Post log;
 
     Button reg,logBtn;
     EditText login, pass;
@@ -41,6 +56,96 @@ public class AuthorizationActivity extends Activity {
         editor = sharedPref.edit();
         InitPreference();
 
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        m = new GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+    }
+
+    public void googleClc(View view)
+    {
+        switch (view.getId()) {
+            case R.id.googleAccountButton:
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(m);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+                break;
+        }
+    }
+
+    public void handleSignInResult(GoogleSignInResult result) throws InterruptedException, ExecutionException {
+        if (result.isSuccess()) {
+            GoogleSignInAccount acct = result.getSignInAccount();
+
+            Post log = new Post();
+
+            String args[] = new String[4];
+
+            args[0] = "http://94.130.12.179/users/google_auth";  //аргументы для пост запроса
+            args[1] = acct.getId();
+            args[2] = acct.getEmail();
+            args[3] = acct.getGivenName();
+
+            log.execute(args); // вызываем запрос
+            int status = -1;
+            JSONObject JSans = log.get();
+
+            try {
+                err.setText(JSans.getString("status"));
+                status = JSans.getInt("status");
+                if (status == 1) {
+                    editor.putInt("PROFILE_ID", JSans.getInt("user_id"));
+                    editor.putString("userName", JSans.getString("username"));
+                    editor.putString("userMail", JSans.getString("email"));
+                    editor.commit();
+
+                    Toast.makeText(getApplicationContext(), "Добро пожаловать, " + acct.getGivenName() + " " + String.valueOf(sharedPref.getInt("PROFILE_ID", 0)), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            }
+            catch(Exception e)
+            {
+                Toast.makeText(this, "Так блэт " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+        } else {
+            Toast.makeText(this, result.getStatus().toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Результат авторизации возращается из GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            try {
+                handleSignInResult(result);
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        m.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        m.disconnect();
     }
 
     public  void registrationClc(View view){
@@ -80,7 +185,7 @@ public class AuthorizationActivity extends Activity {
             }
         }
         catch (Exception e) {
-            err.setText(e.toString());
+            Toast.makeText(getApplicationContext(), "Сервис не доступен " + e.toString(), Toast.LENGTH_LONG ).show();
         }
     }
     public void guestClc(View view)
@@ -95,6 +200,7 @@ public class AuthorizationActivity extends Activity {
         Intent intent = new Intent(getApplicationContext(),ForgetPassActivity.class);
         startActivity(intent);
     }
+
     public void InitPreference()
     {
         if(sharedPref.getBoolean("IS_FIRST_LAUNCH",true))
@@ -104,7 +210,6 @@ public class AuthorizationActivity extends Activity {
             editor.putInt("PROFILE_ID",0);
             editor.putBoolean("IS_PROFILE_CREATED",false);
         }
-
 
         editor.commit();
         Map<String, ?> allEntries = sharedPref.getAll();   //Увидеть все настройки

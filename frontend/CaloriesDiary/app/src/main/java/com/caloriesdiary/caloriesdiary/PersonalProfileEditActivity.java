@@ -196,8 +196,6 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
     public void onAwakeTimeClick(View view)
     {
         showDialog(DIALOG_TIME);
-
-
     }
     protected Dialog onCreateDialog(int id) {
         if (id == DIALOG_TIME) {

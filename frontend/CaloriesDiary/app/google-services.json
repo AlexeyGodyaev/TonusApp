@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "750242941893",
+    "firebase_url": "https://fir-caloriesdiary.firebaseio.com",
+    "project_id": "firebase-caloriesdiary",
+    "storage_bucket": "firebase-caloriesdiary.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750242941893:android:ce33fd72b0a5f1e2",
+        "android_client_info": {
+          "package_name": "com.caloriesdiary.caloriesdiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750242941893-n1013lbcf26ho47rv4ifac1ivsrsfimc.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "750242941893-nmofirmtcbfut5mdgsi44m4j8ctpstvg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.caloriesdiary.caloriesdiary",
+            "certificate_hash": "1d5b90058e8ac3d530882d549c755020acfb6904"
+          }
+        },
+        {
+          "client_id": "750242941893-dd5u55mrcjvmtbm024toqjcnrsc7a1c6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.caloriesdiary.caloriesdiary",
+            "certificate_hash": "e3c3ddd5823a14d64d6da253f435160e155391ca"
+          }
+        },
+        {
+          "client_id": "750242941893-ufirpob9jib05f65e5cb74c7d4hs1ipo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0i_vAsfkHa-YcgRfy8ZdYjx_s2ga3VRM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750242941893-n1013lbcf26ho47rv4ifac1ivsrsfimc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
