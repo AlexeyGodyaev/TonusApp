@@ -38,6 +38,30 @@
             android:textSize="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Обхват плеч до/после:"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:textSize="15dp"
+            android:id="@+id/shoulders_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:textSize="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Обхват правой руки до/после:"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"

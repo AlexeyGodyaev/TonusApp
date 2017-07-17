@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class ArchiveAntropometryFragment extends Fragment{
-    TextView rLeg, lLeg, rHand, lHand, mass, chest, waist, butt, calves;
+    TextView rLeg, lLeg, rHand, lHand, mass, chest, waist, butt, calves, shoulders;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -17,6 +17,9 @@ public class ArchiveAntropometryFragment extends Fragment{
         View v = inflater.inflate(R.layout.archive_antropometry_fragment, container, false);
         rLeg = (TextView) v.findViewById(R.id.right_leg_count);
         rLeg.setText(getActivity().getIntent().getStringExtra("rLeg"));
+
+        shoulders = (TextView) v.findViewById(R.id.shoulders_count);
+        shoulders.setText(getActivity().getIntent().getStringExtra("shoulders"));
 
         lLeg = (TextView) v.findViewById(R.id.left_leg_count);
         lLeg.setText(getActivity().getIntent().getStringExtra("lLeg"));

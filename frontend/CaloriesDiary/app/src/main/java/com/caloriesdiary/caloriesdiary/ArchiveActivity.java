@@ -80,6 +80,7 @@ public class ArchiveActivity extends AppCompatActivity {
                     intent.putExtra("calves", jArr.getJSONObject(position).getString("calfs"));
                     intent.putExtra("butt", jArr.getJSONObject(position).getString("hiney"));
                     intent.putExtra("mass", jArr.getJSONObject(position).getString("weight"));
+                    intent.putExtra("shoulders", jArr.getJSONObject(position).getString("shoulders"));
                     startActivity(intent);
                 } catch (Exception e){
                     Toast.makeText(ArchiveActivity.this, e.toString(), Toast.LENGTH_LONG).show();

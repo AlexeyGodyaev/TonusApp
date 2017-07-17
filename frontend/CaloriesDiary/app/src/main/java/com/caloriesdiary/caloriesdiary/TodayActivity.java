@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,11 +43,11 @@ public class TodayActivity extends AppCompatActivity {
 
     List<FoodItem> list = new ArrayList<FoodItem>();
     List<ActionItem> listActive = new ArrayList<ActionItem>();
-    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn , activityBtn;
+    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn , activityBtn, antropometry;
     Button addFoodBtn;
-  //  ListView foodBasketList, activeBasketList;
-   // FoodAdapter adapter; //прихуярю сюда фрагмент чтоб блять можно было запустить обе листвьюхи
-   // ActionsAdapter actionsAdapter;
+    private TodayAntropometryFragment fragment;
+    private FragmentManager manager;
+    private FragmentTransaction transaction;
     private RecyclerView foodRecyclerView;
     private RecyclerView.Adapter foodAdapter;
     private RecyclerView.LayoutManager foodLayoutManager;
@@ -57,7 +59,7 @@ public class TodayActivity extends AppCompatActivity {
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
 
-    private boolean foodFlag = false, activeFlag = false;
+    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,8 @@ public class TodayActivity extends AppCompatActivity {
         setTitle("Сегодня");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-     //   adapter = new FoodAdapter(this, initFoodData());
-     //   actionsAdapter = new ActionsAdapter(this, initActiveData());
+
+        antropometry = (TextView) findViewById(R.id.today_antropometry);
         foodRecyclerView = (RecyclerView) findViewById(R.id.food_busket_recycler_view);
         foodRecyclerView.setHasFixedSize(true);
         foodLayoutManager = new LinearLayoutManager(this);
@@ -82,10 +84,8 @@ public class TodayActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
 
-     //   foodBasketList = (ListView) findViewById(R.id.my_food_basket);
-     //   activeBasketList = (ListView) findViewById(R.id.my_active_basket);
-
-
+        manager = getSupportFragmentManager();
+        fragment = new TodayAntropometryFragment();
 
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
         editor = sharedPref.edit();
@@ -163,82 +163,7 @@ public class TodayActivity extends AppCompatActivity {
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH))+"е "+getMonth(calendar.get(Calendar.MONTH)));
         dayOfTheWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
 
-//        foodBasketList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                JSONObject jObject = new JSONObject();
-//                try {
-//                    JSONArray jsonArray = new JSONArray();
-//                    JSONObject jsn = new JSONObject();
-//                    File f = new File(getCacheDir(), "Food.txt");
-//                    FileInputStream in = new FileInputStream(f);
-//                    ObjectInputStream inObject = new ObjectInputStream(in);
-//                    String text = inObject.readObject().toString();
-//                    inObject.close();
-//
-//                    jsn = new JSONObject(text);
-//                    jsonArray = jsn.getJSONArray("food");
-//                    JSONArray jArray = new JSONArray();
-//                    jsn.remove("food");
-//                    for(int j=0; j<jsonArray.length();j++) {
-//                        if (j != i)
-//                            jArray.put(jsonArray.getJSONObject(j));
-//                    }
-//                    jObject.put("food", jArray);
-//
-//                    FileOutputStream out = new FileOutputStream(f);
-//                    ObjectOutputStream outObject = new ObjectOutputStream(out);
-//                    outObject.writeObject(jObject.toString());
-//                    outObject.flush();
-//                    out.getFD().sync();
-//                    outObject.close();
-//
-//                }catch (Exception e){
-//                    Toast.makeText(getApplicationContext(),"1 +" + e.toString(), Toast.LENGTH_SHORT).show();
-//                }
-//                list.remove(i);
-//                adapter.notifyDataSetChanged();
-//            }
-//        });
-//
-//        activeBasketList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                JSONObject jObject = new JSONObject();
-//                try {
-//                    JSONArray jsonArray = new JSONArray();
-//                    JSONObject jsn = new JSONObject();
-//                    File f = new File(getCacheDir(), "Actions.txt");
-//                    FileInputStream in = new FileInputStream(f);
-//                    ObjectInputStream inObject = new ObjectInputStream(in);
-//                    String text =
-//                            inObject.readObject().toString();
-//                    inObject.close();
-//
-//                    jsn = new JSONObject(text);
-//                    jsonArray = jsn.getJSONArray("active");
-//                    JSONArray jArray = new JSONArray();
-//                    jsn.remove("active");
-//                    for(int j=0; j<jsonArray.length();j++) {
-//                        if (j != i)
-//                            jArray.put(jsonArray.getJSONObject(j));
-//                    }
-//                    jObject.put("active", jArray);
-//
-//                    FileOutputStream out = new FileOutputStream(f);
-//                    ObjectOutputStream outObject = new ObjectOutputStream(out);
-//                    outObject.writeObject(jObject.toString());
-//                    outObject.flush();
-//                    out.getFD().sync();
-//                    outObject.close();
-//
-//                }catch (Exception e){
-//                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-//                }
-//                listActive.remove(i);
-//                actionsAdapter.notifyDataSetChanged();
-//            }
-//        });
+
     }
 
     @Override
@@ -252,16 +177,21 @@ public class TodayActivity extends AppCompatActivity {
     }
     public void onTodayFoodBtnClc(View v){
         initFoodData();
-       // foodBasketList.setAdapter(adapter);
+
         foodRecyclerView.setAdapter(foodAdapter);
-       // Toast.makeText(this, String.valueOf(adapter.getCount()*96),Toast.LENGTH_SHORT).show();
-
-
     }
 
-    public void addFoodClc(View view) {
-// Intent intent = new Intent(getApplicationContext(), FoodCatalogActivity.class);
-// startActivity(intent);
+    public void todayAntrClc(View view) {
+        transaction = manager.beginTransaction();
+
+        if(antropometryFlag == true){
+            transaction.add(R.id.antropometry_today, fragment); antropometryFlag = false;
+
+        }
+        else {transaction.remove(fragment); antropometryFlag = true;}
+
+        transaction.commit();
+
     }
 
     public void onTodayActivityBtnClc(View v){
