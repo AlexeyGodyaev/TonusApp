@@ -375,15 +375,30 @@ public class TodayActivity extends AppCompatActivity {
             }
             else
             {
-                jsn.put("rLeg", "");
-                jsn.put("lLeg", "");
-                jsn.put("rHand", "");
-                jsn.put("lHand", "");
-                jsn.put("calves", "");
-                jsn.put("shoulders", "");
-                jsn.put("butt", "");
-                jsn.put("waist", "");
-                jsn.put("chest", "");
+                if (jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
+                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
+                                "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
+                    jsn.put("rLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("rLeg"));
+                    jsn.put("lLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("lLeg"));
+                    jsn.put("rHand", jsonArray.getJSONObject(jsonArray.length() - 1).getString("rHand"));
+                    jsn.put("lHand", jsonArray.getJSONObject(jsonArray.length() - 1).getString("lHand"));
+                    jsn.put("calves", jsonArray.getJSONObject(jsonArray.length() - 1).getString("calves"));
+                    jsn.put("shoulders", jsonArray.getJSONObject(jsonArray.length() - 1).getString("shoulders"));
+                    jsn.put("butt", jsonArray.getJSONObject(jsonArray.length() - 1).getString("butt"));
+                    jsn.put("waist", jsonArray.getJSONObject(jsonArray.length() - 1).getString("waist"));
+                    jsn.put("chest", jsonArray.getJSONObject(jsonArray.length() - 1).getString("chest"));
+                }
+                else {
+                    jsn.put("rLeg", "");
+                    jsn.put("lLeg", "");
+                    jsn.put("rHand", "");
+                    jsn.put("lHand", "");
+                    jsn.put("calves", "");
+                    jsn.put("shoulders", "");
+                    jsn.put("butt", "");
+                    jsn.put("waist", "");
+                    jsn.put("chest", "");
+                }
             }
             if (jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
                     .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
