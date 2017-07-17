@@ -43,19 +43,13 @@ public class TodayActivity extends AppCompatActivity {
 
     List<FoodItem> list = new ArrayList<FoodItem>();
     List<ActionItem> listActive = new ArrayList<ActionItem>();
-<<<<<<< HEAD
-    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn , activityBtn, antropometry;
+
+    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn , activityBtn, antropometry, calories;
     Button saveTodayParams;
     private TodayAntropometryFragment fragment;
     private FragmentManager manager;
     private FragmentTransaction transaction;
-=======
-    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn, activityBtn, calories;
-    Button addFoodBtn;
-  //  ListView foodBasketList, activeBasketList;
-   // FoodAdapter adapter; //прихуярю сюда фрагмент чтоб блять можно было запустить обе листвьюхи
-   // ActionsAdapter actionsAdapter;
->>>>>>> origin/Lev's-branch
+
     private RecyclerView foodRecyclerView;
     private RecyclerView.Adapter foodAdapter;
     private RecyclerView.LayoutManager foodLayoutManager;
