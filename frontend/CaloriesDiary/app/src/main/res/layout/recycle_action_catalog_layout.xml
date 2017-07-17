@@ -2,7 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnActionsSortName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Сортировать (А-Я)"
+            android:onClick="onClickActionsSortName"/>
+        <Button
+            android:id="@+id/btnActionsSortKcal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сортировать (Ккал)"
+            android:layout_weight="1"
+            android:onClick="onClickActionsSortKcal"/>
+    </LinearLayout>
 
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    android:layout_marginRight="5dp"
+    android:text="Число ккал приведено за 1 час деятельности"
+    android:textSize="8dp"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/action_recycler_view"
         android:scrollbars="vertical"

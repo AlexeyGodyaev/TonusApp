@@ -1,15 +1,21 @@
 package com.caloriesdiary.caloriesdiary;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +44,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    List<FoodItem> list = new ArrayList<FoodItem>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +52,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         setContentView(R.layout.recycle_food_catalog_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        handleIntent(getIntent());
         setTitle("СПРАВОЧНИК БЛЮД");
 
         final LinearLayout lp = new LinearLayout(this);
@@ -200,7 +207,25 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             }
         }));
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        try {
+            MenuInflater inflater = getMenuInflater();
 
+            inflater.inflate(R.menu.menu_main, menu);
+
+            SearchManager searchManager =
+                    (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView =
+                    (SearchView) menu.findItem(R.id.menu_search).getActionView();
+            searchView.setSearchableInfo(
+                    searchManager.getSearchableInfo(getComponentName()));
+
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -208,8 +233,36 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.menu_refresh:
+                mAdapter = new RecycleFoodAdapter(list);
+                mRecyclerView.setAdapter(mAdapter);
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+    private void handleIntent(Intent intent) {
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
+            List<FoodItem> querylist = new ArrayList<FoodItem>();
+            for(int i = 0; i < list.size() ; i++ )
+            {
+                FoodItem item = list.get(i);
+                if(item.getName().contains(query))
+                {
+                    querylist.add(item);
+                }
+            }
+
+            mAdapter = new RecycleFoodAdapter(querylist);
+            mRecyclerView.setAdapter(mAdapter);
+            //use the query to search
+        }
     }
 
     public JSONArray getFood() throws InterruptedException,
@@ -221,7 +274,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     }
 
     private List<FoodItem> initData() {
-        List<FoodItem> list = new ArrayList<FoodItem>();
+
         JSONArray resp = null;
         String foodName = null;
         Float b=new Float(0), j=new Float(0), u=new Float(0), calories=new Float(0);
