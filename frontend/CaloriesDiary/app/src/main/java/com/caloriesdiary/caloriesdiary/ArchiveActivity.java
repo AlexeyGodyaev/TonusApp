@@ -71,6 +71,16 @@ public class ArchiveActivity extends AppCompatActivity {
                     intent.putExtra("endDate", endDate[position]);
                     intent.putExtra("desired_weight", jArr.getJSONObject(position).getString("desired_weight"));
                     intent.putExtra("goal", jArr.getJSONObject(position).getString("goal"));
+                    intent.putExtra("rLeg", jArr.getJSONObject(position).getString("right_thigh"));
+                    intent.putExtra("lLeg", jArr.getJSONObject(position).getString("left_thigh"));
+                    intent.putExtra("rHand", jArr.getJSONObject(position).getString("right_hand"));
+                    intent.putExtra("lHand", jArr.getJSONObject(position).getString("left_hand"));
+                    intent.putExtra("waist", jArr.getJSONObject(position).getString("waist"));
+                    intent.putExtra("chest", jArr.getJSONObject(position).getString("breast"));
+                    intent.putExtra("calves", jArr.getJSONObject(position).getString("calfs"));
+                    intent.putExtra("butt", jArr.getJSONObject(position).getString("hiney"));
+                    intent.putExtra("mass", jArr.getJSONObject(position).getString("weight"));
+                    intent.putExtra("shoulders", jArr.getJSONObject(position).getString("shoulders"));
                     startActivity(intent);
                 } catch (Exception e){
                     Toast.makeText(ArchiveActivity.this, e.toString(), Toast.LENGTH_LONG).show();

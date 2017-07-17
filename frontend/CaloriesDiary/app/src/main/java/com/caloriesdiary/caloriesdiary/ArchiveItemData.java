@@ -1,15 +1,24 @@
 package com.caloriesdiary.caloriesdiary;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
 public class ArchiveItemData extends AppCompatActivity{
-    TextView goalName, goalType, desiredWeight, goalState, beginDate, endDate, liveType;
+    TextView goalName, goalType, desiredWeight, goalState, beginDate, endDate, liveType,  antropometryText;
     String typeText;
+    boolean flag = true;
+    private ArchiveAntropometryFragment fragment;
+    private FragmentManager manager;
+    private FragmentTransaction transaction;
 
 
     @Override
@@ -17,11 +26,14 @@ public class ArchiveItemData extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.archive_item_data);
 
+        manager = getSupportFragmentManager();
+        fragment = new ArchiveAntropometryFragment();
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setTitle("ПРОСМОТР ЦЕЛИ");
 
-
+        antropometryText = (TextView) findViewById(R.id.archive_antropometry_text);
         goalState = (TextView) findViewById(R.id.state_count);
         switch (getIntent().getStringExtra("state")){
             case "false":
@@ -87,4 +99,17 @@ public class ArchiveItemData extends AppCompatActivity{
         }
         liveType.setText(typeText);
     }
+
+    public void onAntropometryClc(View view){
+        transaction = manager.beginTransaction();
+
+        if(flag == true){
+            transaction.add(R.id.antropometry_archive, fragment); flag = false;
+
+            }
+        else {transaction.remove(fragment); flag = true;}
+
+        transaction.commit();
+    }
+
 }

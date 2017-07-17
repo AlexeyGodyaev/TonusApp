@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,11 +43,11 @@ public class TodayActivity extends AppCompatActivity {
 
     List<FoodItem> list = new ArrayList<FoodItem>();
     List<ActionItem> listActive = new ArrayList<ActionItem>();
-    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn , activityBtn;
-    Button addFoodBtn;
-  //  ListView foodBasketList, activeBasketList;
-   // FoodAdapter adapter; //прихуярю сюда фрагмент чтоб блять можно было запустить обе листвьюхи
-   // ActionsAdapter actionsAdapter;
+    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn , activityBtn, antropometry;
+    Button saveTodayParams;
+    private TodayAntropometryFragment fragment;
+    private FragmentManager manager;
+    private FragmentTransaction transaction;
     private RecyclerView foodRecyclerView;
     private RecyclerView.Adapter foodAdapter;
     private RecyclerView.LayoutManager foodLayoutManager;
@@ -54,10 +56,14 @@ public class TodayActivity extends AppCompatActivity {
     private RecyclerView.Adapter actionAdapter;
     private RecyclerView.LayoutManager actionLayoutManager;
 
+    private JSONArray todayParams = null;
+
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
+    Calendar calendar;
 
-    private boolean foodFlag = false, activeFlag = false;
+    EditText editMass;
+    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +72,10 @@ public class TodayActivity extends AppCompatActivity {
         setTitle("Сегодня");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-     //   adapter = new FoodAdapter(this, initFoodData());
-     //   actionsAdapter = new ActionsAdapter(this, initActiveData());
+
+        saveTodayParams = (Button) findViewById(R.id.save_today_params);
+
+        antropometry = (TextView) findViewById(R.id.today_antropometry);
         foodRecyclerView = (RecyclerView) findViewById(R.id.food_busket_recycler_view);
         foodRecyclerView.setHasFixedSize(true);
         foodLayoutManager = new LinearLayoutManager(this);
@@ -80,24 +88,93 @@ public class TodayActivity extends AppCompatActivity {
         actionRecyclerView.setLayoutManager(actionLayoutManager);
         actionAdapter = new RecycleActionAdapter(initActiveData());
 
-        Calendar calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
 
-     //   foodBasketList = (ListView) findViewById(R.id.my_food_basket);
-     //   activeBasketList = (ListView) findViewById(R.id.my_active_basket);
+        manager = getSupportFragmentManager();
+        fragment = new TodayAntropometryFragment();
 
-
+        editMass = (EditText) findViewById(R.id.edit_mass);
 
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
         editor = sharedPref.edit();
 
         activityBtn = (TextView) findViewById(R.id.todayActiveBtn);
         todayFoodBtn = (TextView) findViewById(R.id.todayFoodBtn);
-//addFoodBtn = (Button) findViewById(R.id.addFoodBtn);
 
         todayDate = (TextView) findViewById(R.id.todayDate);
         dayOfTheWeek = (TextView) findViewById(R.id.todayDayOfTheWeek);
         countOfDays = (TextView) findViewById(R.id.dayNumber);
         targetText = (TextView) findViewById(R.id.targetTextView);
+
+        try {
+            JSONObject jsn = new JSONObject();
+            File f = new File(getCacheDir(), "Today_params.txt");
+            if (f.exists()) {
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                String text = inObject.readObject().toString();
+                inObject.close();
+
+
+                jsn = new JSONObject(text);
+                todayParams = jsn.getJSONArray("today_params");
+                jsn.remove("today_params");
+
+                if (todayParams.length() > 0 && todayParams.getJSONObject(todayParams.length() - 1).getString("date")
+                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
+                                "." + String.valueOf(calendar.get(Calendar.YEAR)))){
+
+                    editMass.setText(todayParams.getJSONObject(todayParams.length()-1).getString("mass"));
+                }
+            }
+        } catch (Exception e){
+
+        }
+        actionRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
+                actionRecyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, final int i) {
+                JSONObject jObject = new JSONObject();
+                try {
+                    JSONArray jsonArray = new JSONArray();
+                    JSONObject jsn = new JSONObject();
+                    File f = new File(getCacheDir(), "Actions.txt");
+                    FileInputStream in = new FileInputStream(f);
+                    ObjectInputStream inObject = new ObjectInputStream(in);
+                    String text = inObject.readObject().toString();
+                    inObject.close();
+
+                    jsn = new JSONObject(text);
+                    jsonArray = jsn.getJSONArray("active");
+                    JSONArray jArray = new JSONArray();
+                    jsn.remove("active");
+                    for(int j=0; j<jsonArray.length();j++) {
+                        if (j != i)
+                            jArray.put(jsonArray.getJSONObject(j));
+                    }
+                    jObject.put("active", jArray);
+
+                    FileOutputStream out = new FileOutputStream(f);
+                    ObjectOutputStream outObject = new ObjectOutputStream(out);
+                    outObject.writeObject(jObject.toString());
+                    outObject.flush();
+                    out.getFD().sync();
+                    outObject.close();
+
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(),"1 +" + e.toString(), Toast.LENGTH_SHORT).show();
+                }
+                listActive.remove(i);
+                actionAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Toast.makeText(getApplicationContext(), "Long press on position :"+position,
+                        Toast.LENGTH_LONG).show();
+            }
+        }));
 
         foodRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 foodRecyclerView, new RecyclerTouchListener.ClickListener() {
@@ -154,7 +231,7 @@ public class TodayActivity extends AppCompatActivity {
 
             JSONObject js = post.get();
             JSONObject jo = js.getJSONObject("userGoal");
-            targetText.setText("Твой цель: "+ jo.getString("name"));
+            targetText.setText("Твоя цель: "+ jo.getString("name"));
 
         } catch (Exception e){
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
@@ -163,82 +240,7 @@ public class TodayActivity extends AppCompatActivity {
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH))+"е "+getMonth(calendar.get(Calendar.MONTH)));
         dayOfTheWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
 
-//        foodBasketList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                JSONObject jObject = new JSONObject();
-//                try {
-//                    JSONArray jsonArray = new JSONArray();
-//                    JSONObject jsn = new JSONObject();
-//                    File f = new File(getCacheDir(), "Food.txt");
-//                    FileInputStream in = new FileInputStream(f);
-//                    ObjectInputStream inObject = new ObjectInputStream(in);
-//                    String text = inObject.readObject().toString();
-//                    inObject.close();
-//
-//                    jsn = new JSONObject(text);
-//                    jsonArray = jsn.getJSONArray("food");
-//                    JSONArray jArray = new JSONArray();
-//                    jsn.remove("food");
-//                    for(int j=0; j<jsonArray.length();j++) {
-//                        if (j != i)
-//                            jArray.put(jsonArray.getJSONObject(j));
-//                    }
-//                    jObject.put("food", jArray);
-//
-//                    FileOutputStream out = new FileOutputStream(f);
-//                    ObjectOutputStream outObject = new ObjectOutputStream(out);
-//                    outObject.writeObject(jObject.toString());
-//                    outObject.flush();
-//                    out.getFD().sync();
-//                    outObject.close();
-//
-//                }catch (Exception e){
-//                    Toast.makeText(getApplicationContext(),"1 +" + e.toString(), Toast.LENGTH_SHORT).show();
-//                }
-//                list.remove(i);
-//                adapter.notifyDataSetChanged();
-//            }
-//        });
-//
-//        activeBasketList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                JSONObject jObject = new JSONObject();
-//                try {
-//                    JSONArray jsonArray = new JSONArray();
-//                    JSONObject jsn = new JSONObject();
-//                    File f = new File(getCacheDir(), "Actions.txt");
-//                    FileInputStream in = new FileInputStream(f);
-//                    ObjectInputStream inObject = new ObjectInputStream(in);
-//                    String text =
-//                            inObject.readObject().toString();
-//                    inObject.close();
-//
-//                    jsn = new JSONObject(text);
-//                    jsonArray = jsn.getJSONArray("active");
-//                    JSONArray jArray = new JSONArray();
-//                    jsn.remove("active");
-//                    for(int j=0; j<jsonArray.length();j++) {
-//                        if (j != i)
-//                            jArray.put(jsonArray.getJSONObject(j));
-//                    }
-//                    jObject.put("active", jArray);
-//
-//                    FileOutputStream out = new FileOutputStream(f);
-//                    ObjectOutputStream outObject = new ObjectOutputStream(out);
-//                    outObject.writeObject(jObject.toString());
-//                    outObject.flush();
-//                    out.getFD().sync();
-//                    outObject.close();
-//
-//                }catch (Exception e){
-//                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-//                }
-//                listActive.remove(i);
-//                actionsAdapter.notifyDataSetChanged();
-//            }
-//        });
+
     }
 
     @Override
@@ -252,24 +254,34 @@ public class TodayActivity extends AppCompatActivity {
     }
     public void onTodayFoodBtnClc(View v){
         initFoodData();
-       // foodBasketList.setAdapter(adapter);
+
         foodRecyclerView.setAdapter(foodAdapter);
-       // Toast.makeText(this, String.valueOf(adapter.getCount()*96),Toast.LENGTH_SHORT).show();
-
-
     }
 
-    public void addFoodClc(View view) {
-// Intent intent = new Intent(getApplicationContext(), FoodCatalogActivity.class);
-// startActivity(intent);
+    public void todayAntrClc(View view) {
+        transaction = manager.beginTransaction();
+        try {
+            if (antropometryFlag == true) {
+                transaction.add(R.id.antropometry_today, fragment);
+                antropometryFlag = false;
+
+
+            } else {
+                transaction.remove(fragment);
+                antropometryFlag = true;
+            }
+
+            transaction.commit();
+
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void onTodayActivityBtnClc(View v){
         initActiveData();
-      //  activeBasketList.setAdapter(actionsAdapter);
         actionRecyclerView.setAdapter(actionAdapter);
-//        Intent intent = new Intent(getApplicationContext(), ActionsCatalogActivity.class);
-//        startActivity(intent);
         onContentChanged();
 
     }
@@ -300,8 +312,6 @@ public class TodayActivity extends AppCompatActivity {
                 JSONArray jArr = jOb.getJSONArray("food");
                 for (int i = 0; i < jArr.length(); i++) {
                     try {
-// Integer i1 = new Integer(jArr.getJSONObject(i).getString("category_id"));
-// id = i1;
                         foodName = jArr.getJSONObject(i).getString("name");
                         Float f1 = new Float(jArr.getJSONObject(i).getString("protein"));
                         b = f1;
@@ -315,7 +325,6 @@ public class TodayActivity extends AppCompatActivity {
                         System.err.println("Неверный формат строки!");
                     }
                     if(b!=0||j!=0||u!=0||calories!=0)
-//list.add(new FoodItem("hui", 1f, 2f, 3f, 4, 1435f));
                         list.add(new FoodItem(foodName,b,j,u,id,calories));
                 }
             } catch (JSONException jEx) {
@@ -329,6 +338,76 @@ public class TodayActivity extends AppCompatActivity {
             foodFlag = true;
         }
         return list;
+    }
+
+    public void onSaveTodayDataClc (View view){
+        try {
+            JSONObject jObject = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            JSONObject jsn = new JSONObject();
+            File f = new File(getCacheDir(), "Today_params.txt");
+            if (f.exists()) {
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                String text = inObject.readObject().toString();
+                inObject.close();
+
+
+                jsn = new JSONObject(text);
+                jsonArray = jsn.getJSONArray("today_params");
+                jsn.remove("today_params");
+            }
+
+            jsn.put("mass", editMass.getText().toString());
+
+            jsn.put("date", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
+                    "." + String.valueOf(calendar.get(Calendar.YEAR)));
+            if (fragment.getView() != null) {
+                jsn.put("rLeg", fragment.getrLeg().getText().toString());
+                jsn.put("lLeg", fragment.getlLeg().getText().toString());
+                jsn.put("rHand", fragment.getrHand().getText().toString());
+                jsn.put("lHand", fragment.getlHand().getText().toString());
+                jsn.put("calves", fragment.getCalves().getText().toString());
+                jsn.put("shoulders", fragment.getShoulders().getText().toString());
+                jsn.put("butt", fragment.getButt().getText().toString());
+                jsn.put("waist", fragment.getWaist().getText().toString());
+                jsn.put("chest", fragment.getChest().getText().toString());
+            }
+            else
+            {
+                jsn.put("rLeg", "");
+                jsn.put("lLeg", "");
+                jsn.put("rHand", "");
+                jsn.put("lHand", "");
+                jsn.put("calves", "");
+                jsn.put("shoulders", "");
+                jsn.put("butt", "");
+                jsn.put("waist", "");
+                jsn.put("chest", "");
+            }
+            if (jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
+                    .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
+                            "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
+                JSONArray jArray = new JSONArray();
+                for (int i = 0; i < jsonArray.length() - 1; i++)
+                    jArray.put(jsonArray.getJSONObject(i));
+                jArray.put(jsn);
+                jObject.put("today_params", jArray);
+            } else {
+                jsonArray.put(jsn);
+                jObject.put("today_params", jsonArray);
+            }
+
+            FileOutputStream out = new FileOutputStream(f);
+            ObjectOutputStream outObject = new ObjectOutputStream(out);
+            outObject.writeObject(jObject.toString());
+            outObject.flush();
+            out.getFD().sync();
+            outObject.close();
+
+        } catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private List<ActionItem> initActiveData() {
@@ -356,8 +435,6 @@ public class TodayActivity extends AppCompatActivity {
                 JSONArray jArr = jOb.getJSONArray("active");
                 for (int i = 0; i < jArr.length(); i++) {
                     try {
-// Integer i1 = new Integer(jArr.getJSONObject(i).getString("category_id"));
-// id = i1;
                         actionName = jArr.getJSONObject(i).getString("name");
                         Float f1 = new Float(jArr.getJSONObject(i).getString("calories"));
                         calories = f1;
@@ -365,7 +442,6 @@ public class TodayActivity extends AppCompatActivity {
                         System.err.println("Неверный формат строки!");
                     }
                     if(calories!=0)
-//listActive.add(new
 
                     listActive.add(new ActionItem(actionName, calories, 5));
                 }
