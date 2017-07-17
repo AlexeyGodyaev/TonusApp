@@ -311,7 +311,6 @@ public class TodayActivity extends AppCompatActivity {
                 transaction.add(R.id.antropometry_today, fragment);
                 antropometryFlag = false;
 
-
             } else {
                 transaction.remove(fragment);
                 antropometryFlag = true;
