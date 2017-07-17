@@ -52,7 +52,7 @@ public class TodayAntropometryFragment extends Fragment{
         calves = (EditText) v.findViewById(R.id.edit_calves);
         shoulders = (EditText) v.findViewById(R.id.edit_shoulders);
         try {
-            if (todayParams.length() > 0 && todayParams.getJSONObject(todayParams.length() - 1).getString("date")
+            if ( todayParams != null && todayParams.length() > 0 && todayParams.getJSONObject(todayParams.length() - 1).getString("date")
                     .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
                             "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
 
