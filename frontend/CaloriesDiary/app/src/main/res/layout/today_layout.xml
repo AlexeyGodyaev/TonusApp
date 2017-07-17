@@ -113,6 +113,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
                 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Вес" />
+
+            <EditText
+                android:id="@+id/edit_mass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:hint="кг" />
 
             <TextView
                 android:id="@+id/today_antropometry"
@@ -131,7 +143,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/antropometry_today"
-        android:orientation="vertical"/>
+        android:orientation="vertical">
+    </LinearLayout>
+
+            <Button
+                android:id="@+id/save_today_params"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:onClick="onSaveTodayDataClc"
+                android:text="Сохранить" />
         </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
