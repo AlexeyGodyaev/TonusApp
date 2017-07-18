@@ -66,6 +66,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
         mAdapter = new RecycleFoodAdapter(initData());
         mRecyclerView.setAdapter(mAdapter);
+
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -206,7 +207,29 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         }));
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = mLayoutManager.getChildCount();
+                int totalItemCount = mLayoutManager.getItemCount();
+               // int firstVisibleItems = mLayoutManager.find
+            }
+        });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         try {
@@ -234,7 +257,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.menu_refresh:
-                mAdapter = new RecycleFoodAdapter(list);
+                mAdapter = new RecycleFoodAdapter(initData());
                 mRecyclerView.setAdapter(mAdapter);
                 return true;
         }
