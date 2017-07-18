@@ -22,6 +22,7 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".DeleteAccountActivity" />
         <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".StatActivity" />
         <activity android:name=".AuthorizationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

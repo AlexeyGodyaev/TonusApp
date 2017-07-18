@@ -150,6 +150,12 @@ public void onClc(View view){
         startActivity(intent);
     }
 
+    public void onStatClc(View view){
+        Intent intent = new Intent(getApplicationContext(),StatActivity.class);
+
+        startActivity(intent);
+    }
+
     public void onActionsCatalogClc(View view){
         Intent intent = new Intent(getApplicationContext(),RecycleActionCatalogActivity.class);
 
@@ -199,11 +205,6 @@ public void onClc(View view){
         }
     }
 
-    public void onCurrentStatClick (View view)
-    {
-        Intent intent = new Intent(getApplicationContext(), ActionsCatalogActivity.class);
-        startActivity(intent);
-    }
     public void onDiaryClick (View view)
     {
         try
