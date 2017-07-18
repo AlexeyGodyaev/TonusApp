@@ -1,58 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@mipmap/loginform_blue_red">
+<TextView
+    android:id="@+id/main_label"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="ДИЕТА"
+    android:layout_centerHorizontal="true"
+    android:textSize="48dp"
+    android:layout_marginTop="75dp"/>
 
-    <TextView
-        android:id="@+id/passwordLable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Password "
-        android:layout_marginTop="23dp"
-        android:layout_below="@+id/editLogin"
-        android:layout_alignLeft="@+id/loginLable"
-        android:layout_alignStart="@+id/loginLable" />
 
     <EditText
         android:id="@+id/editLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="13"
         android:inputType="textPersonName"
         android:text="noob"
+        android:hint="Ваш логин \\ E-mail"
         android:maxLength="16"
         android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
-        android:layout_alignBaseline="@+id/loginLable"
-        android:layout_alignBottom="@+id/loginLable"
-        android:layout_toRightOf="@+id/passwordLable"
-        android:layout_toEndOf="@+id/passwordLable" />
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/main_label"
+        />
 
     <EditText
         android:id="@+id/editPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="13"
         android:inputType="textPassword"
         android:maxLength="32"
         android:text="1234"
-        android:layout_alignBaseline="@+id/passwordLable"
-        android:layout_alignBottom="@+id/passwordLable"
-        android:layout_alignLeft="@+id/editLogin"
-        android:layout_alignStart="@+id/editLogin" />
+        android:hint="Ваш пароль"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/editLogin"
+        android:layout_marginTop="15dp"
+         />
 
     <TextView
-        android:id="@+id/loginLable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:textSize="20sp"
-        android:layout_marginTop="14dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="14dp"
-        android:layout_marginStart="14dp" />
+        android:text="Забыли пароль?"
+        android:layout_below="@id/editPassword"
+        android:layout_alignLeft="@id/editPassword"
+        android:onClick="forgetpassClick"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/googleAccountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Google+"
+        android:layout_below="@id/editPassword"
+        android:layout_alignRight="@id/editPassword"
+        android:onClick="googleClc"
+        android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/loginButton"
@@ -60,60 +67,43 @@
         android:layout_height="wrap_content"
         android:text="Вход"
         android:onClick="loginClc"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:layout_below="@+id/editPassword"
         android:layout_alignRight="@+id/editPassword"
-        android:layout_alignEnd="@+id/editPassword" />
+         />
 
     <Button
         android:id="@+id/registrationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Регистрация"
+        android:textColor="#ffffff"
         android:onClick="registrationClc"
-        android:layout_alignBaseline="@+id/guestButton"
-        android:layout_alignBottom="@+id/guestButton"
-        android:layout_alignLeft="@+id/passwordLable"
-        android:layout_alignStart="@+id/passwordLable" />
+        android:background="@android:color/transparent"
 
-    <Button
-        android:id="@+id/googleAccountButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/registrationButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="17dp"
-        android:onClick="googleClc"
-        android:text="Google"
-        />
-
-    <Button
-        android:id="@+id/guestButton"
+        android:layout_below="@+id/editPassword"
+        android:layout_alignLeft="@+id/editPassword"
+        android:layout_marginTop="50dp"  />
+    <TextView
+        android:id="@+id/guest_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Я гость"
+        android:text="Войти как Гость"
+        android:layout_below="@+id/registrationButton"
+        android:layout_centerHorizontal="true"
         android:onClick="guestClc"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_alignBaseline="@+id/loginButton"
-        android:layout_alignBottom="@+id/loginButton"
-        android:layout_toLeftOf="@+id/loginButton"
-        android:layout_toStartOf="@+id/loginButton" />
+        android:layout_marginTop="45dp"
+        android:textSize="20dp"/>
+
 
     <TextView
         android:id="@+id/testRequestText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/googleAccountButton"
+        android:layout_below="@+id/guest_text_view"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="27dp"
         android:text="TextView" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Забыли пароль?"
-        android:layout_below="@id/editPassword"
-        android:layout_alignRight="@id/editPassword"
-        android:onClick="forgetpassClick"/>
+
 
 </RelativeLayout>

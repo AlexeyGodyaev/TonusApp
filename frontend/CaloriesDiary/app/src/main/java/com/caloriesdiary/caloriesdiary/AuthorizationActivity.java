@@ -69,7 +69,7 @@ public class AuthorizationActivity extends Activity {
     public void googleClc(View view)
     {
         switch (view.getId()) {
-            case R.id.googleAccountButton:
+            case R.id.googleAccountTextView:
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(m);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
                 break;
