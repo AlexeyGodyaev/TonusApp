@@ -1,5 +1,6 @@
 package com.caloriesdiary.caloriesdiary;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Map;
+import java.util.jar.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -79,6 +81,8 @@ public class MainActivity extends AppCompatActivity
         userName = (TextView) v.findViewById(R.id.head_username_text);
         userMail.setText(sharedPref.getString("userMail", "Нет данных"));
         userName.setText(sharedPref.getString("userName", "Нет данных"));
+
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
