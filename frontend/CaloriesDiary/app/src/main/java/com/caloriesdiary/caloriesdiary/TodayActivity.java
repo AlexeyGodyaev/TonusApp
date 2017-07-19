@@ -44,6 +44,8 @@ public class TodayActivity extends AppCompatActivity {
     List<FoodItem> list = new ArrayList<FoodItem>();
     List<ActionItem> listActive = new ArrayList<ActionItem>();
 
+    int sum = 0, sum1 = 0;
+
     TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn , activityBtn, antropometry, calories;
     Button saveTodayParams;
     private TodayAntropometryFragment fragment;
@@ -299,7 +301,7 @@ public class TodayActivity extends AppCompatActivity {
 
             JSONObject jsn = new JSONObject(text);
             JSONArray jsonArray = jsn.getJSONArray("food");
-            int sum = 0;
+
 
             for(int j=0; j < jsonArray.length();j++) {
                 sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
@@ -315,12 +317,12 @@ public class TodayActivity extends AppCompatActivity {
 
             jsn = new JSONObject(text);
             jsonArray = jsn.getJSONArray("active");
-            sum = 0;
+
 
             for(int j=0; j < jsonArray.length();j++) {
-                sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
+                sum1 += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
             }
-            answer += " Сгорело: " + sum + " ккал";
+            answer += " Сгорело: " + sum1 + " ккал";
 
             calories.setText(answer);
 
@@ -402,6 +404,8 @@ public class TodayActivity extends AppCompatActivity {
             }
 
             jsn.put("mass", editMass.getText().toString());
+            jsn.put("eatedCalories", String.valueOf(sum));
+            jsn.put("bernCalories", String.valueOf(sum1));
 
             jsn.put("date", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
                     "." + String.valueOf(calendar.get(Calendar.YEAR)));
@@ -418,7 +422,7 @@ public class TodayActivity extends AppCompatActivity {
             }
             else
             {
-                if (jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
+                if (jsonArray!= null && jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
                         .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
                                 "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
                     jsn.put("rLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("rLeg"));
@@ -443,7 +447,7 @@ public class TodayActivity extends AppCompatActivity {
                     jsn.put("chest", "");
                 }
             }
-            if (jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
+            if (jsonArray != null && jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
                     .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
                             "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
                 JSONArray jArray = new JSONArray();
