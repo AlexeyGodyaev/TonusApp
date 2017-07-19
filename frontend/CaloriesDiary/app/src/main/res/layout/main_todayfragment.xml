@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal"
+    >
+    <LinearLayout
+        android:id="@+id/left_side"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Твое состояние на сегодня"
+            android:layout_margin="8sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/right_side"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:background="#aa33aa"
+        android:layout_toRightOf="@+id/left_side">
+         <TextView
+            android:id="@+id/daylostview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дней прошло"
+
+
+            android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/day_lost_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5/25"
+            android:textSize="40sp"
+            />
+    </LinearLayout>
+
+
+
+
+
+</RelativeLayout>
