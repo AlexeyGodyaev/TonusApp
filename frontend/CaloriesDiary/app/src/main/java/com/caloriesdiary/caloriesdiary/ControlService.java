@@ -35,12 +35,6 @@ public class ControlService extends Service {
         try {
             Toast.makeText(this, "Service !Control! online", Toast.LENGTH_SHORT).show();
 
-            SendNotification s = new SendNotification();
-            String[] notif = new String[2];
-            notif[0] = "Чё сцуко";
-            notif[1] = "За тобой выехали";
-            String resp = s.execute(notif).get();
-            Toast.makeText(this, resp, Toast.LENGTH_SHORT).show();
             stopSelf();
         }
         catch (Exception e)
