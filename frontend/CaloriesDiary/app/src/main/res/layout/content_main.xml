@@ -46,6 +46,19 @@
         android:onClick="onDiaryClick"
         >
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/main_statCont"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@id/main_diaryCont"
+
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="25dp"
+        android:background="@xml/border"
+        android:onClick="onStatClc"
+        >
+    </LinearLayout>
     <Button
         android:id="@+id/today_btn"
         android:layout_width="250dp"
@@ -53,7 +66,7 @@
         android:layout_gravity="center"
         android:onClick="onTodayClc"
         android:text="Сегодня"
-        android:layout_below="@id/main_diaryCont"
+        android:layout_below="@id/main_statCont"
 
         android:layout_alignLeft="@+id/profile_btn"
         android:layout_alignStart="@+id/profile_btn"

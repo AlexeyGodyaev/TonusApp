@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager manager;
     MainTodayFragment todayfragment;
     MainDiaryFragment diaryfragment;
+    MainStatFragment statfragment;
     FragmentTransaction fragmentTransaction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +69,11 @@ public class MainActivity extends AppCompatActivity
         manager = getSupportFragmentManager();
         todayfragment = new MainTodayFragment();
         diaryfragment = new MainDiaryFragment();
+        statfragment = new MainStatFragment();
         fragmentTransaction = manager.beginTransaction();
         fragmentTransaction.add(R.id.main_todayCont,todayfragment);
         fragmentTransaction.add(R.id.main_diaryCont,diaryfragment);
+        fragmentTransaction.add(R.id.main_statCont,statfragment);
         fragmentTransaction.commit();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
