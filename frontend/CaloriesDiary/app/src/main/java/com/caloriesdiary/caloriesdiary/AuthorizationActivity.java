@@ -182,6 +182,11 @@ public class AuthorizationActivity extends Activity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+
+                //Запуск службы ControlService
+                intent = new Intent(this, ControlService.class);
+                startService(intent);
+
             } else if (status == 0) {
                 err.setText("Неправильное имя пользователя или пароль");
             }
