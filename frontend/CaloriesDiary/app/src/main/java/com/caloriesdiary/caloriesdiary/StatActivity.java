@@ -25,7 +25,7 @@ import java.io.ObjectInputStream;
 public class StatActivity extends AppCompatActivity {
     GraphView massGraph, eatedCaloriesGraph, bernCaloriesGraph, rLegGraph, lLegGraph, calvesGraph, buttGraph, rHandGraph,
             lHandGraph, chestGraph, shouldersGraph, waistGraph;
-    JSONArray graphArr;
+    JSONArray graphArr=null;
     DataPoint massData [], eatedData[], bernData [], rLegData [], lLegData [], rHandData [],
     lHandData [], waistData [], chestData [], buttData [], shouldersData [], calvesData [];
     String graphHor [];
@@ -84,7 +84,7 @@ public class StatActivity extends AppCompatActivity {
         calvesGraph.setTitle("Икры");
 
         try {
-            if (graphArr.length()>1) {
+            if (graphArr!=null&&graphArr.length()>1) {
 
                 massData = new DataPoint[graphArr.length()];
                 eatedData = new DataPoint[graphArr.length()];
