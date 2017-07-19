@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Текущая статистика"
-        android:onClick="onCurrentStatClick"
+        android:onClick="onStatClc"
         android:layout_marginBottom="10dp"
         android:layout_below="@id/profile_btn"
         android:layout_alignLeft="@+id/diary_btn"
