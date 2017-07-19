@@ -1,13 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.caloriesdiary.caloriesdiary.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+<TextView
+    android:id="@+id/main_time_textview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="01 января 1900"
+    android:layout_marginLeft="25dp"
+    android:layout_marginStart="25dp"
+    android:layout_marginTop="65dp"
+    android:textSize="25sp"/>
+    <LinearLayout
+        android:id="@+id/main_todayCont"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@id/main_time_textview"
+        android:layout_margin="25dp"
+        android:background="@xml/border"
+        android:onClick="onTodayClc"
+        >
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/main_diaryCont"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@id/main_todayCont"
+        
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="25dp"
+        android:background="@xml/border"
+        android:onClick="onDiaryClick"
+        >
+    </LinearLayout>
     <Button
         android:id="@+id/today_btn"
         android:layout_width="250dp"
@@ -15,7 +51,8 @@
         android:layout_gravity="center"
         android:onClick="onTodayClc"
         android:text="Сегодня"
-        android:layout_above="@+id/profile_btn"
+        android:layout_below="@id/main_diaryCont"
+
         android:layout_alignLeft="@+id/profile_btn"
         android:layout_alignStart="@+id/profile_btn"
         android:layout_marginBottom="13dp" />
@@ -27,7 +64,8 @@
         android:layout_gravity="center"
         android:text="Профиль"
         android:onClick="onProfileClick"
-        android:layout_above="@+id/current_stat_btn"
+        android:layout_below="@id/today_btn"
+
         android:layout_alignLeft="@+id/current_stat_btn"
         android:layout_alignStart="@+id/current_stat_btn"
         android:layout_marginBottom="13dp" />
@@ -40,7 +78,7 @@
         android:text="Текущая статистика"
         android:onClick="onStatClc"
         android:layout_marginBottom="10dp"
-        android:layout_above="@+id/diary_btn"
+        android:layout_below="@id/profile_btn"
         android:layout_alignLeft="@+id/diary_btn"
         android:layout_alignStart="@+id/diary_btn" />
     <Button
@@ -50,7 +88,7 @@
         android:layout_gravity="center"
         android:text="Дневник"
         android:onClick="onDiaryClick"
-        android:layout_above="@+id/food_btn"
+        android:layout_below="@id/current_stat_btn"
         android:layout_alignLeft="@+id/food_btn"
         android:layout_alignStart="@+id/food_btn"
         android:layout_marginBottom="10dp" />
@@ -62,7 +100,7 @@
         android:layout_gravity="center"
         android:text="Справочник продуктов"
         android:layout_marginBottom="13dp"
-        android:layout_above="@+id/activity_btn"
+        android:layout_below="@id/diary_btn"
         android:layout_centerHorizontal="true" />
     <Button
         android:id="@+id/activity_btn"
@@ -71,10 +109,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Справочник активности"
-        android:layout_marginBottom="106dp"
-        android:layout_alignParentBottom="true"
+
+
         android:layout_alignLeft="@+id/food_btn"
-        android:layout_alignStart="@+id/food_btn" />
+
+        android:layout_below="@id/food_btn"/>
    <!--
     <TextView
         android:id="@+id/id_text_view"
@@ -86,4 +125,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_btn" />
 -->
+
 </RelativeLayout>
+</ScrollView>
