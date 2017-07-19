@@ -142,11 +142,15 @@ public class MainActivity extends AppCompatActivity
 
         startActivity(intent);
     }
-public void onClc(View view){
-    Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
 
-    startActivity(intent);
-}
+    public void onExitClc(View view){
+        Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
+
+        editor.putInt("PROFILE_ID", 0);
+        editor.commit();
+
+        startActivity(intent);
+    }
 
     public void onFoodCatalogClc(View view){
         Intent intent = new Intent(getApplicationContext(),RecycleFoodCatalogActivity.class);
