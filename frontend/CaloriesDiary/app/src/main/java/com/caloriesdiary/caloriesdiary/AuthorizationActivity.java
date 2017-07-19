@@ -26,7 +26,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-
+import com.google.firebase.iid.FirebaseInstanceId;
 
 
 public class AuthorizationActivity extends Activity {
@@ -34,6 +34,7 @@ public class AuthorizationActivity extends Activity {
     GoogleApiClient m;
     GoogleSignInOptions gso;
     private static final int RC_SIGN_IN = 9001;
+    String tkn;
 
     Post log;
 
@@ -155,19 +156,20 @@ public class AuthorizationActivity extends Activity {
     }
 
     public void loginClc(View view) throws InterruptedException, ExecutionException {
-
+        try {
         Post log = new Post();
 
-        String args[] = new String[3];
+        String args[] = new String[4];
 
         args[0] = "http://94.130.12.179/users/auth";  //аргументы для пост запроса
         args[1] = login.getText().toString();
         args[2] = pass.getText().toString();
+        args[3] = FirebaseInstanceId.getInstance().getToken();
 
         log.execute(args); // вызываем запрос
         int status = -1;
         JSONObject JSans = log.get();
-        try {
+
             err.setText("Status: " + JSans.getString("status"));
             status = JSans.getInt("status");
             if (status == 1) {
