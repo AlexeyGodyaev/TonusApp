@@ -63,50 +63,8 @@ public class TodayActivity extends AppCompatActivity {
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
     Calendar calendar;
-
     EditText editMass;
     private boolean foodFlag = false, activeFlag = false, antropometryFlag = true;
-
-    public void CalcCalories()
-    {
-        try {
-            File f = new File(getCacheDir(), "Food.txt");
-            FileInputStream in = new FileInputStream(f);
-            ObjectInputStream inObject = new ObjectInputStream(in);
-            String text = inObject.readObject().toString();
-            inObject.close();
-
-            JSONObject jsn = new JSONObject(text);
-            JSONArray jsonArray = jsn.getJSONArray("food");
-            int sum = 0;
-
-            for(int j=0; j < jsonArray.length();j++) {
-                sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
-            }
-
-            String answer = "Потреблено: " + sum + " ккал";
-
-            f = new File(getCacheDir(), "Actions.txt");
-            in = new FileInputStream(f);
-            inObject = new ObjectInputStream(in);
-            text = inObject.readObject().toString();
-            inObject.close();
-
-            jsn = new JSONObject(text);
-            jsonArray = jsn.getJSONArray("active");
-            sum = 0;
-
-            for(int j=0; j < jsonArray.length();j++) {
-                sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
-            }
-                answer += " Сгорело: " + sum + " ккал";
-
-            calories.setText(answer);
-
-        }catch (Exception e){
-            Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -330,6 +288,46 @@ public class TodayActivity extends AppCompatActivity {
         actionRecyclerView.setAdapter(actionAdapter);
         onContentChanged();
 
+    }
+    public void CalcCalories()
+    {
+        try {
+            File f = new File(getCacheDir(), "Food.txt");
+            FileInputStream in = new FileInputStream(f);
+            ObjectInputStream inObject = new ObjectInputStream(in);
+            String text = inObject.readObject().toString();
+            inObject.close();
+
+            JSONObject jsn = new JSONObject(text);
+            JSONArray jsonArray = jsn.getJSONArray("food");
+            int sum = 0;
+
+            for(int j=0; j < jsonArray.length();j++) {
+                sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
+            }
+
+            String answer = "Потреблено: " + sum + " ккал";
+
+            f = new File(getCacheDir(), "Actions.txt");
+            in = new FileInputStream(f);
+            inObject = new ObjectInputStream(in);
+            text = inObject.readObject().toString();
+            inObject.close();
+
+            jsn = new JSONObject(text);
+            jsonArray = jsn.getJSONArray("active");
+            sum = 0;
+
+            for(int j=0; j < jsonArray.length();j++) {
+                sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
+            }
+            answer += " Сгорело: " + sum + " ккал";
+
+            calories.setText(answer);
+
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
 
