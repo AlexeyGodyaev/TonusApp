@@ -11,6 +11,12 @@ import android.widget.Toast;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.net.MalformedURLException;
 
 public class ControlService extends Service {
@@ -29,8 +35,7 @@ public class ControlService extends Service {
     }
 
     @Override
-    public IBinder onBind(Intent intent)
-    {
+    public IBinder onBind(Intent intent) {
         return new Binder();
     }
 
@@ -38,23 +43,27 @@ public class ControlService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         try {
-            sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
+            sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
             Post log = new Post();
 
             String[] args = new String[4];
             args[0] = "http://94.130.12.179/users/send_push";
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-            args[2] = "Ты чё жрёшь, хватит!";
-            args[3] = "Иди спортом позанимайся";
+
+            if (checkCalories()) {
+                args[2] = "Ты чё жрёшь, хватит!";
+                args[3] = "Иди спортом позанимайся";
+            } else {
+                args[2] = "Ты чё не жрёшь!";
+                args[3] = "Жри давай";
+            }
 
             log.execute(args);
             String resp = log.get().toString();
 
             Toast.makeText(this, resp, Toast.LENGTH_SHORT).show();
-            //stopSelf();
-        }
-        catch (Exception e)
-        {
+
+        } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
 
@@ -62,4 +71,42 @@ public class ControlService extends Service {
 
     }
 
+    public boolean checkCalories() {
+            int sumFood = 0;
+            int sumSport = 0;
+        try {
+
+            File f = new File(getCacheDir(), "Food.txt");
+            FileInputStream in = new FileInputStream(f);
+            ObjectInputStream inObject = new ObjectInputStream(in);
+            String text = inObject.readObject().toString();
+            inObject.close();
+
+            JSONObject jsn = new JSONObject(text);
+            JSONArray jsonArray = jsn.getJSONArray("food");
+
+
+            for (int j = 0; j < jsonArray.length(); j++) {
+                sumFood += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
+            }
+
+            f = new File(getCacheDir(), "Actions.txt");
+            in = new FileInputStream(f);
+            inObject = new ObjectInputStream(in);
+            text = inObject.readObject().toString();
+            inObject.close();
+
+            jsn = new JSONObject(text);
+            jsonArray = jsn.getJSONArray("active");
+
+            for (int j = 0; j < jsonArray.length(); j++) {
+                sumSport += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return sumSport > sumFood;
+    }
 }
