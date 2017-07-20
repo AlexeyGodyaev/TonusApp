@@ -83,12 +83,13 @@ public class AuthorizationActivity extends Activity {
 
             Post log = new Post();
 
-            String args[] = new String[4];
+            String args[] = new String[5];
 
             args[0] = "http://94.130.12.179/users/google_auth";  //аргументы для пост запроса
             args[1] = acct.getId();
             args[2] = acct.getEmail();
             args[3] = acct.getGivenName();
+            args[4] = FirebaseInstanceId.getInstance().getToken();
 
             log.execute(args); // вызываем запрос
             int status = -1;
