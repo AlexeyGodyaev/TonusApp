@@ -4,7 +4,9 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,6 +52,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recycle_food_catalog_layout);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         handleIntent(getIntent());
@@ -227,6 +230,8 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        InitList initList = new InitList();
+        initList.execute();
 
     }
 
@@ -307,7 +312,9 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             resp = getFood();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } catch (ExecutionException e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         if (resp != null)
@@ -335,5 +342,33 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
         return list;
     }
+ class InitList extends AsyncTask<Void,Void,Void>
+ {
+     @Override
+     protected void onPreExecute() {
+         super.onPreExecute();
+         Toast.makeText(RecycleFoodCatalogActivity.this, "Начало", Toast.LENGTH_SHORT).show();
+     }
 
+     @Override
+     protected Void doInBackground(Void... voids) {
+         //Toast.makeText(RecycleFoodCatalogActivity.this, "Этап1", Toast.LENGTH_SHORT).show();
+         try
+         {
+
+         }
+         catch (Exception e)
+         {
+
+         }
+         //Toast.makeText(RecycleFoodCatalogActivity.this, "Этап2", Toast.LENGTH_SHORT).show();
+         return null;
+     }
+
+     @Override
+     protected void onPostExecute(Void aVoid) {
+         super.onPostExecute(aVoid);
+         Toast.makeText(RecycleFoodCatalogActivity.this, "Конец", Toast.LENGTH_SHORT).show();
+     }
+ }
 }

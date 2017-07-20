@@ -45,7 +45,6 @@ import java.util.jar.*;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Button btn;
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
     TextView userName, userMail, currentTime;
@@ -54,12 +53,13 @@ public class MainActivity extends AppCompatActivity
     MainTodayFragment todayfragment;
     MainDiaryFragment diaryfragment;
     MainStatFragment statfragment;
+    MainFoodFragment foodfragment;
+    MainActivityFragment activityfragment;
     FragmentTransaction fragmentTransaction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
-        btn = (Button) findViewById(R.id.profile_btn);
         currentTime = (TextView) findViewById(R.id.main_time_textview);
         calendar = Calendar.getInstance();
         currentTime.setText(calendar.get(Calendar.DAY_OF_MONTH)+" "+getMonth(calendar.get(Calendar.MONTH))+" "+calendar.get(Calendar.YEAR));
@@ -70,10 +70,14 @@ public class MainActivity extends AppCompatActivity
         todayfragment = new MainTodayFragment();
         diaryfragment = new MainDiaryFragment();
         statfragment = new MainStatFragment();
+        foodfragment = new MainFoodFragment();
+        activityfragment = new MainActivityFragment();
         fragmentTransaction = manager.beginTransaction();
         fragmentTransaction.add(R.id.main_todayCont,todayfragment);
         fragmentTransaction.add(R.id.main_diaryCont,diaryfragment);
         fragmentTransaction.add(R.id.main_statCont,statfragment);
+        fragmentTransaction.add(R.id.main_foodCont,foodfragment);
+        fragmentTransaction.add(R.id.main_activityCont,activityfragment);
         fragmentTransaction.commit();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
