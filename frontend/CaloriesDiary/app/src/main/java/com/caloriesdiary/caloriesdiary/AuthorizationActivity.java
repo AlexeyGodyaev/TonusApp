@@ -1,6 +1,9 @@
 package com.caloriesdiary.caloriesdiary;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -113,7 +116,7 @@ public class AuthorizationActivity extends Activity {
             }
             catch(Exception e)
             {
-                Toast.makeText(this, "Так блэт " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,  e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         } else {
@@ -184,9 +187,17 @@ public class AuthorizationActivity extends Activity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 
-                //Запуск службы ControlService
-                intent = new Intent(this, ControlService.class);
-                startService(intent);
+                //Запуск службы ControlService (Каждый час)
+                 Intent startServiceIntent = new Intent(this,
+                        ControlService.class);
+                PendingIntent startWebServicePendingIntent = PendingIntent.getService(this, 0,
+                        startServiceIntent, 0);
+
+                AlarmManager alarmManager = (AlarmManager) this
+                        .getSystemService(Context.ALARM_SERVICE);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis(), 30*1000*60,
+                        startWebServicePendingIntent);
 
             } else if (status == 0) {
                 err.setText("Неправильное имя пользователя или пароль");

@@ -23,8 +23,6 @@ public class FirebaseNotify  extends FirebaseMessagingService{
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage)
     {
-        Log.d("T", remoteMessage.toString());
-
         if (remoteMessage.getData().size() > 0) {
             sendNotification(remoteMessage.getData().get("message"));
         }

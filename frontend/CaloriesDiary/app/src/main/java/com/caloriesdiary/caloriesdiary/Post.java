@@ -23,6 +23,7 @@ import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import static android.R.attr.breadCrumbShortTitle;
 import static android.R.attr.data;
 
 public class Post extends AsyncTask<String, Void, JSONObject> {
@@ -63,6 +64,11 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("email", arg0[2]);
                         postDataParams.put("username", arg0[3]);
                         postDataParams.put("instanceToken", arg0[4]);
+                        break;
+                    case "http://94.130.12.179/users/send_push":
+                        postDataParams.put("id", arg0[1]);
+                        postDataParams.put("title", arg0[2]);
+                        postDataParams.put("body", arg0[3]);
                         break;
                     case "http://94.130.12.179/users/register":
                         postDataParams.put("username", arg0[1]);//далее по массиву
