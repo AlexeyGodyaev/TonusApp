@@ -173,7 +173,7 @@
             android:layout_height="wrap_content"
             android:textSize="18dp"
             android:textColor="#000000"
-            android:text="Среднее время сня:" />
+            android:text="Среднее время сна:" />
 
 
         <EditText

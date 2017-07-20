@@ -17,8 +17,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.OutputStreamWriter;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -68,6 +75,38 @@ public class AuthorizationActivity extends Activity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+        try {
+            JSONArray jsonArray;
+            JSONObject jsn;
+            File f = new File(getCacheDir(), "Today_params.txt");
+            if (f.exists()) {
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                String text = inObject.readObject().toString();
+                inObject.close();
+
+
+                jsn = new JSONObject(text);
+                jsonArray = jsn.getJSONArray("today_params");
+                jsn.remove("today_params");
+
+                Calendar c = Calendar.getInstance();
+
+                if(jsonArray.length()>0 && !jsonArray.getJSONObject(jsonArray.length()-1).getString("date")
+                        .equals( String.valueOf(c.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(c.get(Calendar.MONTH)) +
+                                "." + String.valueOf(c.get(Calendar.YEAR)))){
+                    File food = new File(getCacheDir(), "Food.txt");
+                    if(food.exists())
+                    food.delete();
+
+                    File active = new File(getCacheDir(), "Actions.txt");
+                    if(active.exists())
+                    active.delete();
+                }
+            }
+        }catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void googleClc(View view)

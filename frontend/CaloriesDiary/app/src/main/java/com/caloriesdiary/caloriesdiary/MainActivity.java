@@ -1,6 +1,8 @@
 package com.caloriesdiary.caloriesdiary;
 
 import android.app.Application;
+import android.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +10,7 @@ import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -35,6 +38,7 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.jar.*;
 
@@ -44,16 +48,30 @@ public class MainActivity extends AppCompatActivity
     Button btn;
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
-    TextView userName, userMail;
+    TextView userName, userMail, currentTime;
+    Calendar calendar;
+    private FragmentManager manager;
+    MainTodayFragment todayfragment;
+    MainDiaryFragment diaryfragment;
+    FragmentTransaction fragmentTransaction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.main_layout);
         btn = (Button) findViewById(R.id.profile_btn);
+        currentTime = (TextView) findViewById(R.id.main_time_textview);
+        calendar = Calendar.getInstance();
+        currentTime.setText(calendar.get(Calendar.DAY_OF_MONTH)+" "+getMonth(calendar.get(Calendar.MONTH))+" "+calendar.get(Calendar.YEAR));
         //id_text_view = (TextView) findViewById(R.id.id_text_view);
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
         editor = sharedPref.edit();
+        manager = getSupportFragmentManager();
+        todayfragment = new MainTodayFragment();
+        diaryfragment = new MainDiaryFragment();
+        fragmentTransaction = manager.beginTransaction();
+        fragmentTransaction.add(R.id.main_todayCont,todayfragment);
+        fragmentTransaction.add(R.id.main_diaryCont,diaryfragment);
+        fragmentTransaction.commit();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -142,11 +160,15 @@ public class MainActivity extends AppCompatActivity
 
         startActivity(intent);
     }
-public void onClc(View view){
-    Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
 
-    startActivity(intent);
-}
+    public void onExitClc(View view){
+        Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
+
+        editor.putInt("PROFILE_ID", 0);
+        editor.commit();
+
+        startActivity(intent);
+    }
 
     public void onFoodCatalogClc(View view){
         Intent intent = new Intent(getApplicationContext(),RecycleFoodCatalogActivity.class);
@@ -272,5 +294,48 @@ public void onClc(View view){
             default :
                 return super.onTouchEvent(event);
         }
+    }
+    private String getMonth(int i){
+        String s="";
+        switch (i){
+            case Calendar.JANUARY:
+                s = "Января";
+                break;
+            case Calendar.FEBRUARY:
+                s = "Февраля";
+                break;
+            case Calendar.MARCH:
+                s = "Марта";
+                break;
+            case Calendar.APRIL:
+                s = "Апреля";
+                break;
+            case Calendar.MAY:
+                s = "Мая";
+                break;
+            case Calendar.JUNE:
+                s = "Июня";
+                break;
+            case Calendar.JULY:
+                s = "Июля";
+                break;
+            case Calendar.AUGUST:
+                s = "Августа";
+                break;
+            case Calendar.SEPTEMBER:
+                s = "Сентября";
+                break;
+            case Calendar.OCTOBER:
+                s = "Октября";
+                break;
+            case Calendar.NOVEMBER:
+                s = "Ноября";
+                break;
+            case Calendar.DECEMBER:
+                s = "Декабря";
+                break;
+        }
+
+        return s;
     }
 }

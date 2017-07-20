@@ -44,6 +44,8 @@ public class TodayActivity extends AppCompatActivity {
     List<FoodItem> list = new ArrayList<FoodItem>();
     List<ActionItem> listActive = new ArrayList<ActionItem>();
 
+    int sum = 0, sum1 = 0;
+
     TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn , activityBtn, antropometry, calories;
     Button saveTodayParams;
     private TodayAntropometryFragment fragment;
@@ -73,8 +75,6 @@ public class TodayActivity extends AppCompatActivity {
         setTitle("Сегодня");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        saveTodayParams = (Button) findViewById(R.id.save_today_params);
 
         antropometry = (TextView) findViewById(R.id.today_antropometry);
         foodRecyclerView = (RecyclerView) findViewById(R.id.food_busket_recycler_view);
@@ -299,7 +299,7 @@ public class TodayActivity extends AppCompatActivity {
 
             JSONObject jsn = new JSONObject(text);
             JSONArray jsonArray = jsn.getJSONArray("food");
-            int sum = 0;
+
 
             for(int j=0; j < jsonArray.length();j++) {
                 sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
@@ -315,12 +315,12 @@ public class TodayActivity extends AppCompatActivity {
 
             jsn = new JSONObject(text);
             jsonArray = jsn.getJSONArray("active");
-            sum = 0;
+
 
             for(int j=0; j < jsonArray.length();j++) {
-                sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
+                sum1 += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
             }
-            answer += " Сгорело: " + sum + " ккал";
+            answer += " Сгорело: " + sum1 + " ккал";
 
             calories.setText(answer);
 
@@ -381,91 +381,6 @@ public class TodayActivity extends AppCompatActivity {
             foodFlag = true;
         }
         return list;
-    }
-
-    public void onSaveTodayDataClc (View view){
-        try {
-            JSONObject jObject = new JSONObject();
-            JSONArray jsonArray = new JSONArray();
-            JSONObject jsn = new JSONObject();
-            File f = new File(getCacheDir(), "Today_params.txt");
-            if (f.exists()) {
-                FileInputStream in = new FileInputStream(f);
-                ObjectInputStream inObject = new ObjectInputStream(in);
-                String text = inObject.readObject().toString();
-                inObject.close();
-
-
-                jsn = new JSONObject(text);
-                jsonArray = jsn.getJSONArray("today_params");
-                jsn.remove("today_params");
-            }
-
-            jsn.put("mass", editMass.getText().toString());
-
-            jsn.put("date", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
-                    "." + String.valueOf(calendar.get(Calendar.YEAR)));
-            if (fragment.getView() != null) {
-                jsn.put("rLeg", fragment.getrLeg().getText().toString());
-                jsn.put("lLeg", fragment.getlLeg().getText().toString());
-                jsn.put("rHand", fragment.getrHand().getText().toString());
-                jsn.put("lHand", fragment.getlHand().getText().toString());
-                jsn.put("calves", fragment.getCalves().getText().toString());
-                jsn.put("shoulders", fragment.getShoulders().getText().toString());
-                jsn.put("butt", fragment.getButt().getText().toString());
-                jsn.put("waist", fragment.getWaist().getText().toString());
-                jsn.put("chest", fragment.getChest().getText().toString());
-            }
-            else
-            {
-                if (jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
-                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
-                                "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
-                    jsn.put("rLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("rLeg"));
-                    jsn.put("lLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("lLeg"));
-                    jsn.put("rHand", jsonArray.getJSONObject(jsonArray.length() - 1).getString("rHand"));
-                    jsn.put("lHand", jsonArray.getJSONObject(jsonArray.length() - 1).getString("lHand"));
-                    jsn.put("calves", jsonArray.getJSONObject(jsonArray.length() - 1).getString("calves"));
-                    jsn.put("shoulders", jsonArray.getJSONObject(jsonArray.length() - 1).getString("shoulders"));
-                    jsn.put("butt", jsonArray.getJSONObject(jsonArray.length() - 1).getString("butt"));
-                    jsn.put("waist", jsonArray.getJSONObject(jsonArray.length() - 1).getString("waist"));
-                    jsn.put("chest", jsonArray.getJSONObject(jsonArray.length() - 1).getString("chest"));
-                }
-                else {
-                    jsn.put("rLeg", "");
-                    jsn.put("lLeg", "");
-                    jsn.put("rHand", "");
-                    jsn.put("lHand", "");
-                    jsn.put("calves", "");
-                    jsn.put("shoulders", "");
-                    jsn.put("butt", "");
-                    jsn.put("waist", "");
-                    jsn.put("chest", "");
-                }
-            }
-            if (jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
-                    .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
-                            "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
-                JSONArray jArray = new JSONArray();
-                for (int i = 0; i < jsonArray.length() - 1; i++)
-                    jArray.put(jsonArray.getJSONObject(i));
-                jArray.put(jsn);
-                jObject.put("today_params", jArray);
-            } else {
-                jsonArray.put(jsn);
-                jObject.put("today_params", jsonArray);
-            }
-
-            FileOutputStream out = new FileOutputStream(f);
-            ObjectOutputStream outObject = new ObjectOutputStream(out);
-            outObject.writeObject(jObject.toString());
-            outObject.flush();
-            out.getFD().sync();
-            outObject.close();
-
-        } catch (Exception e){
-            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
-        }
     }
 
     private List<ActionItem> initActiveData() {
@@ -588,5 +503,95 @@ public class TodayActivity extends AppCompatActivity {
         }
 
         return s;
+    }
+
+    @Override
+    protected void onStop() {
+        try {
+            JSONObject jObject = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            JSONObject jsn = new JSONObject();
+            File f = new File(getCacheDir(), "Today_params.txt");
+            if (f.exists()) {
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                String text = inObject.readObject().toString();
+                inObject.close();
+
+
+                jsn = new JSONObject(text);
+                jsonArray = jsn.getJSONArray("today_params");
+                jsn.remove("today_params");
+            }
+
+            jsn.put("mass", editMass.getText().toString());
+            jsn.put("eatedCalories", String.valueOf(sum));
+            jsn.put("bernCalories", String.valueOf(sum1));
+
+            jsn.put("date", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
+                    "." + String.valueOf(calendar.get(Calendar.YEAR)));
+            if (fragment.getView() != null) {
+                jsn.put("rLeg", fragment.getrLeg().getText().toString());
+                jsn.put("lLeg", fragment.getlLeg().getText().toString());
+                jsn.put("rHand", fragment.getrHand().getText().toString());
+                jsn.put("lHand", fragment.getlHand().getText().toString());
+                jsn.put("calves", fragment.getCalves().getText().toString());
+                jsn.put("shoulders", fragment.getShoulders().getText().toString());
+                jsn.put("butt", fragment.getButt().getText().toString());
+                jsn.put("waist", fragment.getWaist().getText().toString());
+                jsn.put("chest", fragment.getChest().getText().toString());
+            }
+            else
+            {
+                if (jsonArray!= null && jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
+                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
+                                "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
+                    jsn.put("rLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("rLeg"));
+                    jsn.put("lLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("lLeg"));
+                    jsn.put("rHand", jsonArray.getJSONObject(jsonArray.length() - 1).getString("rHand"));
+                    jsn.put("lHand", jsonArray.getJSONObject(jsonArray.length() - 1).getString("lHand"));
+                    jsn.put("calves", jsonArray.getJSONObject(jsonArray.length() - 1).getString("calves"));
+                    jsn.put("shoulders", jsonArray.getJSONObject(jsonArray.length() - 1).getString("shoulders"));
+                    jsn.put("butt", jsonArray.getJSONObject(jsonArray.length() - 1).getString("butt"));
+                    jsn.put("waist", jsonArray.getJSONObject(jsonArray.length() - 1).getString("waist"));
+                    jsn.put("chest", jsonArray.getJSONObject(jsonArray.length() - 1).getString("chest"));
+                }
+                else {
+                    jsn.put("rLeg", "");
+                    jsn.put("lLeg", "");
+                    jsn.put("rHand", "");
+                    jsn.put("lHand", "");
+                    jsn.put("calves", "");
+                    jsn.put("shoulders", "");
+                    jsn.put("butt", "");
+                    jsn.put("waist", "");
+                    jsn.put("chest", "");
+                }
+            }
+            if (jsonArray != null && jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
+                    .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
+                            "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
+                JSONArray jArray = new JSONArray();
+                for (int i = 0; i < jsonArray.length() - 1; i++)
+                    jArray.put(jsonArray.getJSONObject(i));
+                jArray.put(jsn);
+                jObject.put("today_params", jArray);
+            } else {
+                jsonArray.put(jsn);
+                jObject.put("today_params", jsonArray);
+            }
+
+            FileOutputStream out = new FileOutputStream(f);
+            ObjectOutputStream outObject = new ObjectOutputStream(out);
+            outObject.writeObject(jObject.toString());
+            outObject.flush();
+            out.getFD().sync();
+            outObject.close();
+
+        } catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        super.onStop();
     }
 }
