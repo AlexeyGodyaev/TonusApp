@@ -1,13 +1,22 @@
 package com.caloriesdiary.caloriesdiary;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewManager;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
@@ -20,13 +29,19 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 
 public class StatActivity extends AppCompatActivity {
+    TextView setGraphs, massGraphTxt, eatedCaloriesGraphTxt, bernCaloriesGraphTxt, rLegGraphTxt, lLegGraphTxt,
+            calvesGraphTxt, buttGraphTxt, rHandGraphTxt, lHandGraphTxt, chestGraphTxt, shouldersGraphTxt, waistGraphTxt;
+    LinearLayout mainLayout;
     GraphView massGraph, eatedCaloriesGraph, bernCaloriesGraph, rLegGraph, lLegGraph, calvesGraph, buttGraph, rHandGraph,
             lHandGraph, chestGraph, shouldersGraph, waistGraph;
     JSONArray graphArr=null;
+    JSONObject graphDraw=null;
     DataPoint massData [], eatedData[], bernData [], rLegData [], lLegData [], rHandData [],
     lHandData [], waistData [], chestData [], buttData [], shouldersData [], calvesData [];
     String graphHor [];
@@ -37,9 +52,168 @@ public class StatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stat_layout);
 
+        mainLayout = (LinearLayout) findViewById(R.id.hui);
+        final LinearLayout lp = new LinearLayout(this);
+        lp.setOrientation(LinearLayout.VERTICAL);
         int a;
-
+        setGraphs = (TextView) findViewById(R.id.graph_params);
         setTitle("Статистика");
+
+        try {
+            File f = new File(getCacheDir(), "Graph_params.txt");
+            if (f.exists()) {
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                String text = inObject.readObject().toString();
+                inObject.close();
+                graphDraw = new JSONObject(text);
+            }
+        }  catch (Exception e){
+
+        }
+
+        setGraphs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final CheckBox massCheck, eatedCheck, bernCheck, buttCheck, shouldersCheck,  calvesCheck, chestCheck,
+                        waistCheck, handsCheck, legsCheck;
+                massCheck = new CheckBox(StatActivity.this);
+                massCheck.setText("Масса");
+                eatedCheck = new CheckBox(StatActivity.this);
+                eatedCheck.setText("Потребленные калории");
+                bernCheck = new CheckBox(StatActivity.this);
+                bernCheck.setText("Затраченные калории");
+                buttCheck = new CheckBox(StatActivity.this);
+                buttCheck.setText("Ягодицы");
+                shouldersCheck = new CheckBox(StatActivity.this);
+                shouldersCheck.setText("Плечи");
+                calvesCheck = new CheckBox(StatActivity.this);
+                calvesCheck.setText("Икры");
+                chestCheck = new CheckBox(StatActivity.this);
+                chestCheck.setText("Грудь");
+                waistCheck = new CheckBox(StatActivity.this);
+                waistCheck.setText("Талия");
+                handsCheck = new CheckBox(StatActivity.this);
+                handsCheck.setText("Руки");
+                legsCheck = new CheckBox(StatActivity.this);
+                legsCheck.setText("Бедра");
+
+                lp.addView(massCheck, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                lp.addView(eatedCheck, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                lp.addView(bernCheck, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                lp.addView(shouldersCheck, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                lp.addView(handsCheck, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                lp.addView(chestCheck, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                lp.addView(waistCheck, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                lp.addView(buttCheck, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                lp.addView(legsCheck, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                lp.addView(calvesCheck, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                try {
+                    File f = new File(getCacheDir(), "Graph_params.txt");
+                    if (f.exists()) {
+                        FileInputStream in = new FileInputStream(f);
+                        ObjectInputStream inObject = new ObjectInputStream(in);
+                        String text = inObject.readObject().toString();
+                        inObject.close();
+                        JSONObject jsn = new JSONObject(text);
+
+                        if (jsn.getString("mass").equals("true"))
+                            massCheck.setChecked(true);
+                        if (jsn.getString("eated").equals("true"))
+                            eatedCheck.setChecked(true);
+                        if (jsn.getString("bern").equals("true"))
+                            bernCheck.setChecked(true);
+                        if (jsn.getString("shoulders").equals("true"))
+                            shouldersCheck.setChecked(true);
+                        if (jsn.getString("hands").equals("true"))
+                            handsCheck.setChecked(true);
+                        if (jsn.getString("chest").equals("true"))
+                            chestCheck.setChecked(true);
+                        if (jsn.getString("waist").equals("true"))
+                            waistCheck.setChecked(true);
+                        if (jsn.getString("butt").equals("true"))
+                            buttCheck.setChecked(true);
+                        if (jsn.getString("legs").equals("true"))
+                            legsCheck.setChecked(true);
+                        if (jsn.getString("calves").equals("true"))
+                            calvesCheck.setChecked(true);
+
+                        f.createNewFile();
+                    }
+                }  catch (Exception e){
+
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(StatActivity.this);
+                builder.setTitle("Выберите отображаемые графики")
+                        .setCancelable(false)
+                        .setNegativeButton("Отмена",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        if (lp.getChildCount() > 0)
+                                            lp.removeAllViews();
+                                        ((ViewManager) lp.getParent()).removeView(lp);
+                                        dialog.cancel();
+                                    }
+                                })
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                try {
+                                    JSONObject jsn;
+                                    File f = new File(getCacheDir(), "Graph_params.txt");
+
+                                    jsn = new JSONObject();
+
+                                    jsn.put("mass", massCheck.isChecked());
+                                    jsn.put("shoulders", shouldersCheck.isChecked());
+                                    jsn.put("calves", calvesCheck.isChecked());
+                                    jsn.put("chest", chestCheck.isChecked());
+                                    jsn.put("waist", waistCheck.isChecked());
+                                    jsn.put("butt", buttCheck.isChecked());
+                                    jsn.put("bern", bernCheck.isChecked());
+                                    jsn.put("eated", eatedCheck.isChecked());
+                                    jsn.put("legs", legsCheck.isChecked());
+                                    jsn.put("hands", handsCheck.isChecked());
+
+
+                                    FileOutputStream out = new FileOutputStream(f);
+                                    ObjectOutputStream outObject = new ObjectOutputStream(out);
+                                    outObject.writeObject(jsn.toString());
+                                    outObject.flush();
+                                    out.getFD().sync();
+                                    outObject.close();
+                                }
+                                catch (Exception iEx){
+                                    Toast.makeText(getApplicationContext(), iEx.toString() , Toast.LENGTH_LONG).show();
+                                }
+
+                                if (lp.getChildCount() > 0)
+                                    lp.removeAllViews();
+                                ((ViewManager) lp.getParent()).removeView(lp);
+
+                                recreate();
+                            }
+                        });
+
+                builder.setView(lp);
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
 
         try {
             JSONObject jsn;
@@ -72,6 +246,19 @@ public class StatActivity extends AppCompatActivity {
         buttGraph = (GraphView) findViewById(R.id.butt_graph_container);
         chestGraph = (GraphView) findViewById(R.id.chest_graph_container);
         waistGraph = (GraphView) findViewById(R.id.waist_graph_container);
+
+        massGraphTxt = (TextView) findViewById(R.id.mass_text);
+        eatedCaloriesGraphTxt = (TextView) findViewById(R.id.eated_text);
+        bernCaloriesGraphTxt = (TextView) findViewById(R.id.bern_text);
+        shouldersGraphTxt = (TextView) findViewById(R.id.shoulders_text);
+        rHandGraphTxt = (TextView) findViewById(R.id.rh_text);
+        lHandGraphTxt = (TextView) findViewById(R.id.lh_text);
+        lLegGraphTxt = (TextView) findViewById(R.id.ll_text);
+        rLegGraphTxt = (TextView) findViewById(R.id.rl_text);
+        calvesGraphTxt = (TextView) findViewById(R.id.calves_text);
+        buttGraphTxt = (TextView) findViewById(R.id.butt_text);
+        chestGraphTxt = (TextView) findViewById(R.id.chest_text);
+        waistGraphTxt = (TextView) findViewById(R.id.waist_text);
 
         try {
             if (graphArr!=null&&graphArr.length()>1) {
@@ -178,6 +365,9 @@ public class StatActivity extends AppCompatActivity {
                 massGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                 massSeries.setColor(Color.WHITE);
                 massGraph.addSeries(massSeries);
+                if(graphDraw!=null&&graphDraw.getString("mass").equals("false"))
+                    mainLayout.removeView(massGraph);
+
 
                 LineGraphSeries<DataPoint> eatedSeries = new LineGraphSeries<>(eatedData);
                 StaticLabelsFormatter eatedLabelsFormatter = new StaticLabelsFormatter(eatedCaloriesGraph);
@@ -189,6 +379,9 @@ public class StatActivity extends AppCompatActivity {
                 eatedCaloriesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                 eatedSeries.setColor(Color.WHITE);
                 eatedCaloriesGraph.addSeries(eatedSeries);
+                if(graphDraw!=null&&graphDraw.getString("eated").equals("false"))
+                    mainLayout.removeView(eatedCaloriesGraph);
+
 
                 LineGraphSeries<DataPoint> bernSeries = new LineGraphSeries<>(bernData);
                 StaticLabelsFormatter bernLabelsFormatter = new StaticLabelsFormatter(bernCaloriesGraph);
@@ -200,6 +393,8 @@ public class StatActivity extends AppCompatActivity {
                 bernCaloriesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                 bernSeries.setColor(Color.WHITE);
                 bernCaloriesGraph.addSeries(bernSeries);
+                if(graphDraw!=null&&graphDraw.getString("bern").equals("false"))
+                    mainLayout.removeView(bernCaloriesGraph);
 
                 LineGraphSeries<DataPoint> shouldersSeries = new LineGraphSeries<>(shouldersData);
                 StaticLabelsFormatter shouldersLabelsFormatter = new StaticLabelsFormatter(shouldersGraph);
@@ -211,6 +406,8 @@ public class StatActivity extends AppCompatActivity {
                 shouldersGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                 shouldersSeries.setColor(Color.WHITE);
                 shouldersGraph.addSeries(shouldersSeries);
+                if(graphDraw!=null&&graphDraw.getString("shoulders").equals("false"))
+                    mainLayout.removeView(shouldersGraph);
 
                 LineGraphSeries<DataPoint> waistSeries = new LineGraphSeries<>(waistData);
                 StaticLabelsFormatter waistLabelsFormatter = new StaticLabelsFormatter(waistGraph);
@@ -222,6 +419,8 @@ public class StatActivity extends AppCompatActivity {
                 waistGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                 waistSeries.setColor(Color.WHITE);
                 waistGraph.addSeries(waistSeries);
+                if(graphDraw!=null&&graphDraw.getString("waist").equals("false"))
+                    mainLayout.removeView(waistGraph);
 
                 LineGraphSeries<DataPoint> chestSeries = new LineGraphSeries<>(chestData);
                 StaticLabelsFormatter chestLabelsFormatter = new StaticLabelsFormatter(chestGraph);
@@ -233,6 +432,8 @@ public class StatActivity extends AppCompatActivity {
                 chestGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                 chestSeries.setColor(Color.WHITE);
                 chestGraph.addSeries(chestSeries);
+                if(graphDraw!=null&&graphDraw.getString("chest").equals("false"))
+                    mainLayout.removeView(chestGraph);
 
                 LineGraphSeries<DataPoint> buttSeries = new LineGraphSeries<>(buttData);
                 StaticLabelsFormatter buttLabelsFormatter = new StaticLabelsFormatter(buttGraph);
@@ -244,6 +445,8 @@ public class StatActivity extends AppCompatActivity {
                 buttGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                 buttSeries.setColor(Color.WHITE);
                 buttGraph.addSeries(buttSeries);
+                if(graphDraw!=null&&graphDraw.getString("butt").equals("false"))
+                    mainLayout.removeView(buttGraph);
 
                 LineGraphSeries<DataPoint> rLegSeries = new LineGraphSeries<>(rLegData);
                 StaticLabelsFormatter rLegLabelsFormatter = new StaticLabelsFormatter(rLegGraph);
@@ -266,6 +469,9 @@ public class StatActivity extends AppCompatActivity {
                 lLegGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                 lLegSeries.setColor(Color.WHITE);
                 lLegGraph.addSeries(lLegSeries);
+                if(graphDraw!=null&&graphDraw.getString("legs").equals("false")){
+                    mainLayout.removeView(lLegGraph);
+                    mainLayout.removeView(rLegGraph);}
 
                 LineGraphSeries<DataPoint> rHandSeries = new LineGraphSeries<>(rHandData);
                 StaticLabelsFormatter rHandLabelsFormatter = new StaticLabelsFormatter(rHandGraph);
@@ -288,7 +494,10 @@ public class StatActivity extends AppCompatActivity {
                 lHandGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                 lHandSeries.setColor(Color.WHITE);
                 lHandGraph.addSeries(lHandSeries);
-                
+                if(graphDraw!=null&&graphDraw.getString("hands").equals("false")){
+                    mainLayout.removeView(rHandGraph);
+                    mainLayout.removeView(lHandGraph);}
+
                 LineGraphSeries<DataPoint> calvesSeries = new LineGraphSeries<>(calvesData);
                 StaticLabelsFormatter calvesLabelsFormatter = new StaticLabelsFormatter(calvesGraph);
                 calvesLabelsFormatter.setHorizontalLabels(graphHor);
@@ -299,6 +508,8 @@ public class StatActivity extends AppCompatActivity {
                 calvesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                 calvesSeries.setColor(Color.WHITE);
                 calvesGraph.addSeries(calvesSeries);
+                if(graphDraw!=null&&graphDraw.getString("calves").equals("false"))
+                    mainLayout.removeView(calvesGraph);
             }
             else Toast.makeText(this, "Статистика доступна после двух заполненных дней", Toast.LENGTH_LONG).show();
 

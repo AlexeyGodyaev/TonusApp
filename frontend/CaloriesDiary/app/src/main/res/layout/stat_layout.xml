@@ -6,6 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/hui"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:id="@+id/mass_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Масса" />
@@ -34,6 +36,7 @@
             android:id="@+id/mass_graph_container"/>
 
         <TextView
+            android:id="@+id/eated_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Потребляемые калории" />
@@ -44,6 +47,7 @@
             android:id="@+id/eated_calories_graph_container"/>
 
         <TextView
+            android:id="@+id/bern_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Затраченные калории" />
@@ -54,6 +58,7 @@
             android:id="@+id/bern_calories_graph_container"/>
 
         <TextView
+            android:id="@+id/shoulders_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Плечи" />
@@ -64,6 +69,7 @@
             android:id="@+id/shoulders_graph_container"/>
 
         <TextView
+            android:id="@+id/rh_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Правая рука" />
@@ -74,6 +80,7 @@
             android:id="@+id/right_hand_graph_container"/>
 
         <TextView
+            android:id="@+id/lh_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Левая рука" />
@@ -84,6 +91,7 @@
             android:id="@+id/left_hand_graph_container"/>
 
         <TextView
+            android:id="@+id/chest_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Грудь" />
@@ -94,6 +102,7 @@
             android:id="@+id/chest_graph_container"/>
 
         <TextView
+            android:id="@+id/waist_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Талия" />
@@ -104,6 +113,7 @@
             android:id="@+id/waist_graph_container"/>
 
         <TextView
+            android:id="@+id/butt_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ягодицы" />
@@ -114,6 +124,7 @@
             android:id="@+id/butt_graph_container"/>
 
         <TextView
+            android:id="@+id/rl_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Правое бедро" />
@@ -124,6 +135,7 @@
             android:id="@+id/right_leg_graph_container"/>
 
         <TextView
+            android:id="@+id/ll_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Левое бедро" />
@@ -134,6 +146,7 @@
             android:id="@+id/left_leg_graph_container"/>
 
         <TextView
+            android:id="@+id/calves_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Икры" />
