@@ -183,13 +183,19 @@ public class SetAGoal extends AppCompatActivity {
                 saveGoal[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
                 saveGoal[2] = jsonObject.getString("desired_weight");
                 saveGoal[3] = jsonObject.getString("period");
-                saveGoal[4] = jsonObject.getString("goal");
-                saveGoal[5] = jsonObject.getString("activityType");
-                saveGoal[6] = jsonObject.getString("name");
-                saveGoal[7] = jsonObject.getString("begin_date");
-                saveGoal[8] = jArr.getJSONObject(jArr.length()-1).getString("mass");
-                if (jArr.length() < Integer.parseInt(jsonObject.getString("period")))
-                saveGoal[9] = "false"; else saveGoal[9] = "true";
+                saveGoal[4] = jsonObject.getString("begin_date");
+                saveGoal[5] = jsonObject.getString("goal");
+                if(jArr.getJSONObject(jArr.length()-1).getString("mass").equals("")) {
+                    saveGoal[6] = "0";
+                }else
+                {
+                    saveGoal[6] = jArr.getJSONObject(jArr.length()-1).getString("mass");
+                }
+                saveGoal[7] = jsonObject.getString("activityType");
+                saveGoal[9] = jsonObject.getString("name");
+                if (jArr.length() < Integer.parseInt(jsonObject.getString("period"))) {
+                    saveGoal[8] = "false";
+                }else{ saveGoal[9] = "true";}
                 saveGoal[10] = jArr.getJSONObject(0).getString("mass")+"/"
                         +jArr.getJSONObject(jArr.length()-1).getString("mass");
                 saveGoal[11] = jArr.getJSONObject(0).getString("lHand")+"/"
@@ -211,9 +217,12 @@ public class SetAGoal extends AppCompatActivity {
                 saveGoal[19] =jArr.getJSONObject(0).getString("shoulders")+"/"
                         +jArr.getJSONObject(jArr.length()-1).getString("shoulders");
 
+
                 Post save = new Post();
                 save.execute(saveGoal);
-                Toast.makeText(this, save.get().toString(), Toast.LENGTH_LONG).show();
+                JSONObject json = save.get();
+                Toast.makeText(this, json.toString(), Toast.LENGTH_SHORT).show();
+
             }
         } catch (Exception e){
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
