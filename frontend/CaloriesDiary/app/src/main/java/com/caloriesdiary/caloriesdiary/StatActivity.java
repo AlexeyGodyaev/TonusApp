@@ -2,6 +2,7 @@ package com.caloriesdiary.caloriesdiary;
 
 
 import android.app.AlertDialog;
+import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -51,7 +52,7 @@ public class StatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.stat_layout);
+        setContentView(R.layout.huiniy);
 
         viewParams = (TextView) findViewById(R.id.graph_params_value);
         mainLayout = (LinearLayout) findViewById(R.id.hui);
@@ -59,7 +60,7 @@ public class StatActivity extends AppCompatActivity {
         lp.setOrientation(LinearLayout.VERTICAL);
         int a;
         setGraphs = (TextView) findViewById(R.id.graph_params);
-        setTitle("Статистика");
+        //setTitle("Статистика");
 
         try {
             File f = new File(getCacheDir(), "Graph_params.txt");
