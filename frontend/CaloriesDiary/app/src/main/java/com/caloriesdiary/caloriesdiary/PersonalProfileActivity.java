@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.Time;
@@ -22,10 +25,12 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 
 public class PersonalProfileActivity extends AppCompatActivity {
@@ -55,9 +60,22 @@ public class PersonalProfileActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
 
+        mToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view,"Клие на актионебар",Snackbar.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(),this.getCacheDir().toString(),Toast.LENGTH_LONG).show();
+                Intent pickphoto = new Intent(Intent.ACTION_PICK);
+                pickphoto.setType("image/*");
+                startActivityForResult(pickphoto,reqcode);
+            }
+        });
+
         setSupportActionBar(mToolbar);
-//        getSupportActionBar().setDisplayShowHomeEnabled(false);
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         try
         {
@@ -93,17 +111,35 @@ public class PersonalProfileActivity extends AppCompatActivity {
         {
             Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
         }
-        File imgFile = new  File("/data/user/0/com.caloriesdiary.caloriesdiary/cache/avatar.jpg");
+        File imgFile = new  File("/data/user/0/com.caloriesdiary.caloriesdiary/cache/avatar.png");
+        String imgPath = "/data/user/0/com.caloriesdiary.caloriesdiary/cache/avatar.png";
 
         if(imgFile.exists()){
 
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
+
             ImageView myImage = (ImageView) findViewById(R.id.personal_photo);
 
             myImage.setImageBitmap(myBitmap);
 
+
+
+            try
+            {
+                final Uri imageUri = Uri.fromFile(imgFile);
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                Drawable dr = Drawable.createFromStream(imageStream,"avatar.png");
+                mToolbar.setBackground(dr);
+            }
+            catch(Exception e)
+            {
+                Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+
         }
+
 
     }
     @Override
@@ -157,29 +193,44 @@ public class PersonalProfileActivity extends AppCompatActivity {
                         //объект и отображаем в элементе ImageView нашего интерфейса:
                         final Uri imageUri = imageReturnedIntent.getData();
                         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                        photo_view.setImageBitmap(selectedImage);
-                        SavePicture(photo_view,this.getCacheDir().toString());
+                        Drawable dr = Drawable.createFromStream(imageStream,"avatar.png");
+                        mToolbar.setBackground(dr);
+                       //final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                        //photo_view.setImageBitmap(selectedImage);
+                        SavePicture(this.getCacheDir().toString(),dr,imageUri);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
                 }
         }}
 
-    private String SavePicture(ImageView iv, String folderToSave)
+    private String SavePicture(String folderToSave, Drawable drawable, Uri uri)
     {
         OutputStream fOut = null;
-        Time time = new Time();
-        time.setToNow();
 
         try {
-            File file = new File(folderToSave,"avatar.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
-            fOut = new FileOutputStream(file);
-            iv.buildDrawingCache();
-            Bitmap bitmap = iv.getDrawingCache();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut); // сохранять картинку в jpeg-формате с 85% сжатия.
-            fOut.flush();
-            fOut.close();
+            File file = new File(folderToSave,"avatar.png"); // создать уникальное имя для файла
+
+            final int chunkSize = 1024;  // We'll read in one kB at a time
+            byte[] imageData = new byte[chunkSize];
+
+            try {
+                InputStream in = getContentResolver().openInputStream(uri);
+                OutputStream out = new FileOutputStream(file);  // I'm assuming you already have the File object for where you're writing to
+
+                int bytesRead;
+                while ((bytesRead = in.read(imageData)) > 0) {
+                    out.write(Arrays.copyOfRange(imageData, 0, Math.max(0, bytesRead)));
+                }
+                in.close();
+                out.close();
+            } catch (Exception ex) {
+
+            } finally {
+
+            }
+
+            
             MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(),  file.getName()); // регистрация в фотоальбоме
             Toast.makeText(getApplicationContext(),"Сохарненик",Toast.LENGTH_LONG).show();
         }
