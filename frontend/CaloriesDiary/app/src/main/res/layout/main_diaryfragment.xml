@@ -4,9 +4,36 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:background="#8888ff">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/diaryimage"/>
+    <RelativeLayout
+        android:id="@+id/diary_left_side"
+        android:layout_width="125dp"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp">
+        <ImageView
+            android:id="@+id/diary_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/diaryimage"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/diary_left_side">
+        <TextView
+            android:id="@+id/diary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дневник"
+            android:textSize="30sp"
+            android:layout_centerInParent="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Нажми для перехода"
+            android:layout_below="@+id/diary_text"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
 
 </RelativeLayout>

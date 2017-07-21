@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.format.Time;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,14 +34,15 @@ public class PersonalProfileActivity extends AppCompatActivity {
     TextView name_text,age_text,weight_text,height_text,gender_text;
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
+    private Toolbar mToolbar;
     private final int reqcode = 1;
     JSONObject JSans;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personal_layout);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
         editor = sharedPref.edit();
         photo_view = (ImageView) findViewById(R.id.personal_photo);
@@ -49,6 +51,13 @@ public class PersonalProfileActivity extends AppCompatActivity {
         weight_text = (TextView) findViewById(R.id.weight_text);
         height_text = (TextView) findViewById(R.id.height_text);
         gender_text = (TextView) findViewById(R.id.gender_text);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+
+        setSupportActionBar(mToolbar);
+//        getSupportActionBar().setDisplayShowHomeEnabled(false);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         try
         {

@@ -3,6 +3,7 @@ package com.caloriesdiary.caloriesdiary;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.support.v4.app.FragmentManager;
@@ -109,6 +110,7 @@ public class TodayActivity extends AppCompatActivity {
         calories = (TextView) findViewById(R.id.foodCalories);
 
         CalcCalories();
+
 
         try {
             JSONObject jsn = new JSONObject();
@@ -244,6 +246,12 @@ public class TodayActivity extends AppCompatActivity {
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH))+"е "+getMonth(calendar.get(Calendar.MONTH)));
         dayOfTheWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 
@@ -593,5 +601,25 @@ public class TodayActivity extends AppCompatActivity {
         }
 
         super.onStop();
+    }
+    class InitCalories extends AsyncTask<Void,Void,Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            calories.setText("Loading...");
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Toast.makeText(TodayActivity.this, "Финита", Toast.LENGTH_SHORT).show();
+            super.onPostExecute(aVoid);
+        }
     }
 }

@@ -30,7 +30,10 @@
         <activity android:name=".ArchiveActivity" />
         <activity android:name=".ArchiveItemData" />
         <activity android:name=".PersonalProfileEditActivity" />
-        <activity android:name=".PersonalProfileActivity" />
+        <activity android:name=".PersonalProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity android:name=".FoodCatalogActivity" />
         <activity android:name=".ActionsCatalogActivity" />
         <activity android:name=".GuestMainActivity" />
