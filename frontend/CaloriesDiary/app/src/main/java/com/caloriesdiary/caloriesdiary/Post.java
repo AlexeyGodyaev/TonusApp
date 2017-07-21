@@ -23,6 +23,7 @@ import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import static android.R.attr.breadCrumbShortTitle;
 import static android.R.attr.data;
 
 public class Post extends AsyncTask<String, Void, JSONObject> {
@@ -62,6 +63,12 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("ga_id", arg0[1]);//далее по массиву
                         postDataParams.put("email", arg0[2]);
                         postDataParams.put("username", arg0[3]);
+                        postDataParams.put("instanceToken", arg0[4]);
+                        break;
+                    case "http://94.130.12.179/users/send_push":
+                        postDataParams.put("id", arg0[1]);
+                        postDataParams.put("title", arg0[2]);
+                        postDataParams.put("body", arg0[3]);
                         break;
                     case "http://94.130.12.179/users/register":
                         postDataParams.put("username", arg0[1]);//далее по массиву
@@ -93,6 +100,27 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("username",arg0[1]);
                         postDataParams.put("oldpassword",arg0[2]);
                         postDataParams.put("newpassword",arg0[3]);
+                        break;
+                    case "http://94.130.12.179/users/save_goal_archive":
+                        postDataParams.put("id",arg0[1]);
+                        postDataParams.put("desired_weight",arg0[2]);
+                        postDataParams.put("period",arg0[3]);
+                        postDataParams.put("goal",arg0[5]);
+                        postDataParams.put("activityType",arg0[4]);
+                        postDataParams.put("name", arg0[6]);
+                        postDataParams.put("begin_date", arg0[7]);
+                        postDataParams.put("endup_weight", arg0[8]);
+                        postDataParams.put("active", arg0[9]);
+                        postDataParams.put("weight", arg0[10]);
+                        postDataParams.put("left_hand", arg0[11]);
+                        postDataParams.put("right_hand", arg0[12]);
+                        postDataParams.put("breast", arg0[13]);
+                        postDataParams.put("waist", arg0[14]);
+                        postDataParams.put("hiney", arg0[15]);
+                        postDataParams.put("left_thigh", arg0[16]);
+                        postDataParams.put("right_thigh", arg0[17]);
+                        postDataParams.put("calfs", arg0[18]);
+                        postDataParams.put("shoulders", arg0[19]);
                         break;
                 }
 

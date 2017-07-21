@@ -14,6 +14,11 @@ import android.widget.Toast;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,6 +52,21 @@ public class RegistrationActivity extends Activity {
         mail = (EditText) findViewById(R.id.editMail);
     }
 
+    public String hashPass(String pass) throws NoSuchAlgorithmException, UnsupportedEncodingException
+    {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashData = digest.digest(pass.getBytes("UTF-8"));
+
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < hashData.length; i++) {
+            sb.append(Integer.toString((hashData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
+
+        return sb.toString();
+    }
+
     public void regClc(View view) throws InterruptedException, ExecutionException {
         try {
             Pattern pattern = Pattern.compile(EMAIL_PATTERN);
@@ -61,7 +81,7 @@ public class RegistrationActivity extends Activity {
                         String args[] = new String[4];
                         args[0] = "http://94.130.12.179/users/register";
                         args[1] = name.getText().toString();
-                        args[2] = pass.getText().toString();
+                        args[2] = hashPass(pass.getText().toString());
                         args[3] = mail.getText().toString();
 
 

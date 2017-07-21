@@ -40,12 +40,12 @@ public class SetAGoal extends AppCompatActivity {
     String s[] = new String[8];
     String s1 [] = new String[10];
     String awakestr = null;
+    String  saveGoal [] = new String [20];
 
     Calendar today = Calendar.getInstance();
     int DIALOG_TIME = 1;
     int myHour;
     int myMinute;
-    int myDay;
 
 
     @Override
@@ -57,8 +57,8 @@ public class SetAGoal extends AppCompatActivity {
         goalType = (Spinner) findViewById(R.id.typeSpinner);
         liveType = (Spinner) findViewById(R.id.liveTypeSpinner);
         editGoalName = (EditText) findViewById(R.id.editGoal);
-        editWeight = (EditText) findViewById(R.id.editTodayWeight);
-        editTodayWeight = (EditText) findViewById(R.id.editWeight);
+        editWeight = (EditText) findViewById(R.id.editWeight);
+        editTodayWeight = (EditText) findViewById(R.id.editTodayWeight);
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
         editor = sharedPref.edit();
         periodsCount = (SeekBar) findViewById(R.id.periodsCountBar);
@@ -146,13 +146,86 @@ public class SetAGoal extends AppCompatActivity {
 
 
     public void onStartRoadToGoal(View view){
+
+        try {
+            JSONObject jsn;
+            JSONArray jArr;
+
+            File f = new File(getCacheDir(), "Today_params.txt");
+            if (f.exists()) {
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                String text = inObject.readObject().toString();
+                inObject.close();
+
+                File food = new File(getCacheDir(), "Food.txt");
+                File active = new File(getCacheDir(), "Actions.txt");
+                food.delete();
+                active.delete();
+                f.delete();
+                jsn = new JSONObject(text);
+                jArr = jsn.getJSONArray("today_params");
+                jsn.remove("today_params");
+
+
+                Post getGoal = new Post();
+                String getParams[] = new String[2];
+                getParams[0] = "http://94.130.12.179/users/get_goal";
+                getParams[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+
+                getGoal.execute(getParams);
+
+                JSONObject js = getGoal.get();
+                JSONObject jsonObject = js.getJSONObject("userGoal");
+
+
+                saveGoal[0] = "http://94.130.12.179/users/save_goal_archive";
+                saveGoal[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+                saveGoal[2] = jsonObject.getString("desired_weight");
+                saveGoal[3] = jsonObject.getString("period");
+                saveGoal[4] = jsonObject.getString("goal");
+                saveGoal[5] = jsonObject.getString("activityType");
+                saveGoal[6] = jsonObject.getString("name");
+                saveGoal[7] = jsonObject.getString("begin_date");
+                saveGoal[8] = jArr.getJSONObject(jArr.length()-1).getString("mass");
+                if (jArr.length() < Integer.parseInt(jsonObject.getString("period")))
+                saveGoal[9] = "false"; else saveGoal[9] = "true";
+                saveGoal[10] = jArr.getJSONObject(0).getString("mass")+"/"
+                        +jArr.getJSONObject(jArr.length()-1).getString("mass");
+                saveGoal[11] = jArr.getJSONObject(0).getString("lHand")+"/"
+                        +jArr.getJSONObject(jArr.length()-1).getString("lHand");
+                saveGoal[12] =jArr.getJSONObject(0).getString("rHand")+"/"
+                        +jArr.getJSONObject(jArr.length()-1).getString("rHand");
+                saveGoal[13] =jArr.getJSONObject(0).getString("chest")+"/"
+                        +jArr.getJSONObject(jArr.length()-1).getString("chest");
+                saveGoal[14] =jArr.getJSONObject(0).getString("waist")+"/"
+                        +jArr.getJSONObject(jArr.length()-1).getString("waist");
+                saveGoal[15] =jArr.getJSONObject(0).getString("butt")+"/"
+                        +jArr.getJSONObject(jArr.length()-1).getString("butt");
+                saveGoal[16] =jArr.getJSONObject(0).getString("lLeg")+"/"
+                        +jArr.getJSONObject(jArr.length()-1).getString("lLeg");
+                saveGoal[17] =jArr.getJSONObject(0).getString("rLeg")+"/"
+                        +jArr.getJSONObject(jArr.length()-1).getString("rLeg");
+                saveGoal[18] =jArr.getJSONObject(0).getString("calves")+"/"
+                        +jArr.getJSONObject(jArr.length()-1).getString("calves");
+                saveGoal[19] =jArr.getJSONObject(0).getString("shoulders")+"/"
+                        +jArr.getJSONObject(jArr.length()-1).getString("shoulders");
+
+                Post save = new Post();
+                save.execute(saveGoal);
+                Toast.makeText(this, save.get().toString(), Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+
         Post post = new Post();
         try {
         s[0] = "http://94.130.12.179/users/save_goal";
         s[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
         s[7] = String.valueOf(calendar.get(Calendar.YEAR))+"-"
                 +String.valueOf(calendar.get(Calendar.MONTH)+1)+"-"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-        s[2] = editWeight.getText().toString();  s[3]= editDate.getText().toString();
+            s[2] = editWeight.getText().toString();  s[3]= editDate.getText().toString();
         s[4] = String.valueOf(liveType.getSelectedItemPosition()+1); s[5] = String.valueOf(goalType.getSelectedItemPosition()+1);
         s[6] = editGoalName.getText().toString();
 
@@ -173,7 +246,7 @@ public class SetAGoal extends AppCompatActivity {
         } catch (Exception e){
 
         }
-        Intent intent = new Intent(this, TodayActivity.class);
+            Intent intent = new Intent(this, TodayActivity.class);
         startActivity(intent);
     }
 
