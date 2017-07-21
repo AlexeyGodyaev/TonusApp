@@ -134,7 +134,6 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                                                     out.getFD().sync();
                                                     outObject.close();
 
-// Toast.makeText(getApplicationContext(), jObject.toString() , Toast.LENGTH_LONG).show();
                                                 }
                                                 catch (Exception iEx){
                                                     Toast.makeText(getApplicationContext(), iEx.toString() , Toast.LENGTH_LONG).show();
