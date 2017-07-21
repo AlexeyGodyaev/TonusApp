@@ -215,6 +215,7 @@ public class AuthorizationActivity extends Activity {
 
             err.setText("Status: " + JSans.getString("status"));
             status = JSans.getInt("status");
+
             if (status == 1) {
                 editor.putInt("PROFILE_ID", JSans.getInt("user_id"));
                 editor.putString("userName", JSans.getString("username"));
@@ -235,7 +236,7 @@ public class AuthorizationActivity extends Activity {
                 AlarmManager alarmManager = (AlarmManager) this
                         .getSystemService(Context.ALARM_SERVICE);
                 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                        System.currentTimeMillis(),60*1000*60*5,
+                        System.currentTimeMillis(),5*60*1000*60,
                         startWebServicePendingIntent);
 
             } else if (status == 0) {
