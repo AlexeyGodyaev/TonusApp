@@ -105,12 +105,12 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("id",arg0[1]);
                         postDataParams.put("desired_weight",arg0[2]);
                         postDataParams.put("period",arg0[3]);
+                        postDataParams.put("begin_date",arg0[4]);
                         postDataParams.put("goal",arg0[5]);
-                        postDataParams.put("activityType",arg0[4]);
-                        postDataParams.put("name", arg0[6]);
-                        postDataParams.put("begin_date", arg0[7]);
-                        postDataParams.put("endup_weight", arg0[8]);
-                        postDataParams.put("active", arg0[9]);
+                        postDataParams.put("endup_weight", arg0[6]);
+                        postDataParams.put("activityType", arg0[7]);
+                        postDataParams.put("active", arg0[8]);
+                        postDataParams.put("name", arg0[9]);
                         postDataParams.put("weight", arg0[10]);
                         postDataParams.put("left_hand", arg0[11]);
                         postDataParams.put("right_hand", arg0[12]);
