@@ -5,6 +5,10 @@
       android:id="@+id/profile_relative"
       android:layout_width="wrap_content"
       android:layout_height="match_parent">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/profiletoolbar"
+        />
   <TextView
       android:id="@+id/header_text"
       android:layout_width="wrap_content"
@@ -12,7 +16,8 @@
       android:text="Мой профиль"
       android:textSize="30dp"
       android:layout_marginTop="15dp"
-      android:layout_centerHorizontal="true"/>
+      android:layout_centerHorizontal="true"
+      android:layout_below="@+id/toolbar"/>
     <TextView
         android:id="@+id/name_text"
         android:layout_width="wrap_content"
