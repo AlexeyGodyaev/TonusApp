@@ -213,7 +213,7 @@ public class SetAGoal extends AppCompatActivity {
 
                 Post save = new Post();
                 save.execute(saveGoal);
-                save.get();
+                Toast.makeText(this, save.get().toString(), Toast.LENGTH_LONG).show();
             }
         } catch (Exception e){
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
