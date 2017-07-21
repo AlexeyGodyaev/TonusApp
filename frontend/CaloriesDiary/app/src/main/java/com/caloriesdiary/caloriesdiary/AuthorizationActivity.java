@@ -1,6 +1,9 @@
 package com.caloriesdiary.caloriesdiary;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -122,12 +125,13 @@ public class AuthorizationActivity extends Activity {
 
             Post log = new Post();
 
-            String args[] = new String[4];
+            String args[] = new String[5];
 
             args[0] = "http://94.130.12.179/users/google_auth";  //аргументы для пост запроса
             args[1] = acct.getId();
             args[2] = acct.getEmail();
             args[3] = acct.getGivenName();
+            args[4] = FirebaseInstanceId.getInstance().getToken();
 
             log.execute(args); // вызываем запрос
             int status = -1;
@@ -151,7 +155,7 @@ public class AuthorizationActivity extends Activity {
             }
             catch(Exception e)
             {
-                Toast.makeText(this, "Так блэт " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,  e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         } else {
@@ -222,9 +226,17 @@ public class AuthorizationActivity extends Activity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 
-                //Запуск службы ControlService
-                intent = new Intent(this, ControlService.class);
-                startService(intent);
+                //Запуск службы ControlService (Каждые 5 часов)
+                Intent startServiceIntent = new Intent(this,
+                        ControlService.class);
+                PendingIntent startWebServicePendingIntent = PendingIntent.getService(this, 0,
+                        startServiceIntent, 0);
+
+                AlarmManager alarmManager = (AlarmManager) this
+                        .getSystemService(Context.ALARM_SERVICE);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis(),60*1000*60*5,
+                        startWebServicePendingIntent);
 
             } else if (status == 0) {
                 err.setText("Неправильное имя пользователя или пароль");
