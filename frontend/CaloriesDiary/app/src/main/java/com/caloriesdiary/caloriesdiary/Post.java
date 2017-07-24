@@ -3,28 +3,21 @@ package com.caloriesdiary.caloriesdiary;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Switch;
-
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import static android.R.attr.breadCrumbShortTitle;
-import static android.R.attr.data;
 
 public class Post extends AsyncTask<String, Void, JSONObject> {
 
@@ -152,8 +145,8 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                     BufferedReader in=new BufferedReader(
                             new InputStreamReader(
                                     conn.getInputStream(), "UTF-8"));
-                    StringBuffer sb = new StringBuffer("");
-                    String line="";
+                    StringBuilder sb = new StringBuilder("");
+                    String line;
 
 
                     while((line = in.readLine()) != null) {
@@ -180,11 +173,8 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
         }
 
 
-        protected void onPostExecute(String result) {
 
-    }
-
-    public String getPostDataString(JSONObject params) throws Exception {
+    private String getPostDataString(JSONObject params) throws Exception {
 
         StringBuilder result = new StringBuilder();
         boolean first = true;

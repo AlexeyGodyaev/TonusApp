@@ -4,19 +4,14 @@ package com.caloriesdiary.caloriesdiary;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
@@ -27,10 +22,8 @@ import java.util.concurrent.ExecutionException;
 public class RegistrationActivity extends Activity {
 
     TextView error;
-    Button regBtn;
     EditText name, pass, passAgain, mail;
 
-    Pattern pattern;
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     public boolean valid(String toExamine) {
@@ -44,12 +37,12 @@ public class RegistrationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_layout);
 
-        error = (TextView) findViewById(R.id.registrationErrorView);
-        regBtn = (Button) findViewById(R.id.registrationButton);
-        name = (EditText) findViewById(R.id.editRegLogin);
-        pass = (EditText) findViewById(R.id.editRegPassword);
-        passAgain = (EditText) findViewById(R.id.editPasswordAgain);
-        mail = (EditText) findViewById(R.id.editMail);
+        error = findViewById(R.id.registrationErrorView);
+        //regBtn = (Button) findViewById(R.id.registrationButton);
+        name =  findViewById(R.id.editRegLogin);
+        pass =  findViewById(R.id.editRegPassword);
+        passAgain =  findViewById(R.id.editPasswordAgain);
+        mail =  findViewById(R.id.editMail);
     }
 
     public String hashPass(String pass) throws NoSuchAlgorithmException, UnsupportedEncodingException
@@ -57,7 +50,7 @@ public class RegistrationActivity extends Activity {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hashData = digest.digest(pass.getBytes("UTF-8"));
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < hashData.length; i++) {
             sb.append(Integer.toString((hashData[i] & 0xff) + 0x100, 16).substring(1));
         }
