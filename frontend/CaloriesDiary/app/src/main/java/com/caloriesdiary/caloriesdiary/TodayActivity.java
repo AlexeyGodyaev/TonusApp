@@ -47,7 +47,7 @@ public class TodayActivity extends AppCompatActivity {
 
     int sum = 0, sum1 = 0;
 
-    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn , activityBtn, antropometry, calories;
+    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn , activityBtn, antropometry, foodCalories, sportCalories;
     Button saveTodayParams;
     private TodayAntropometryFragment fragment;
     private FragmentManager manager;
@@ -107,7 +107,8 @@ public class TodayActivity extends AppCompatActivity {
         dayOfTheWeek = (TextView) findViewById(R.id.todayDayOfTheWeek);
         countOfDays = (TextView) findViewById(R.id.dayNumber);
         targetText = (TextView) findViewById(R.id.targetTextView);
-        calories = (TextView) findViewById(R.id.foodCalories);
+        foodCalories = (TextView) findViewById(R.id.foodCalories);
+        sportCalories = (TextView) findViewById(R.id.sportCalories);
 
         CalcCalories();
 
@@ -313,7 +314,7 @@ public class TodayActivity extends AppCompatActivity {
                 sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
             }
 
-            String answer = "Потреблено: " + sum + " ккал";
+            foodCalories.setText(sum + "ккал");
 
             f = new File(getCacheDir(), "Actions.txt");
             in = new FileInputStream(f);
@@ -328,9 +329,8 @@ public class TodayActivity extends AppCompatActivity {
             for(int j=0; j < jsonArray.length();j++) {
                 sum1 += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
             }
-            answer += " Сгорело: " + sum1 + " ккал";
 
-            calories.setText(answer);
+            sportCalories.setText(sum1 + "ккал");
 
         }catch (Exception e){
             Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -606,7 +606,8 @@ public class TodayActivity extends AppCompatActivity {
     {
         @Override
         protected void onPreExecute() {
-            calories.setText("Loading...");
+            foodCalories.setText("Loading...");
+            sportCalories.setText("Loading...");
             super.onPreExecute();
         }
 

@@ -61,8 +61,6 @@ public class ControlService extends Service {
             log.execute(args);
             String resp = log.get().toString();
 
-            Toast.makeText(this, resp, Toast.LENGTH_SHORT).show();
-
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -74,6 +72,7 @@ public class ControlService extends Service {
     public boolean checkCalories() {
             int sumFood = 0;
             int sumSport = 0;
+
         try {
 
             File f = new File(getCacheDir(), "Food.txt");

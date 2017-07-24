@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onStatClc(View view){
-        Intent intent = new Intent(getApplicationContext(),StatActivity.class);
+        Intent intent = new Intent(getApplicationContext(),Testing.class);
 
         startActivity(intent);
     }
