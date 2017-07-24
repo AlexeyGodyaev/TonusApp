@@ -45,6 +45,9 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                     case "http://94.130.12.179/users/get_goal_archive":
                         postDataParams.put("id",arg0[1]);
                         break;
+                    case "http://94.130.12.179/calories/get_per_day":
+                        postDataParams.put("id",arg0[1]);
+                        break;
                     case "http://94.130.12.179/users/save_goal":
                         postDataParams.put("id",arg0[1]);
                         postDataParams.put("desired_weight",arg0[2]);
