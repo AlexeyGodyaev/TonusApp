@@ -39,7 +39,7 @@ public class TodayActivity extends AppCompatActivity {
 
     int sum, sum1;
 
-    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn, activityBtn, antropometry, foodCalories, sportCalories, normCalories, PFCtext;
+    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn, dayNote, activityBtn, antropometry, foodCalories, sportCalories, normCalories, PFCtext;
     private TodayAntropometryFragment fragment;
     private FragmentManager manager;
     FragmentTransaction transaction;
@@ -90,6 +90,7 @@ public class TodayActivity extends AppCompatActivity {
         fragment = new TodayAntropometryFragment();
 
         editMass = (EditText) findViewById(R.id.edit_mass);
+        dayNote = (TextView) findViewById(R.id.DayNote);
 
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
@@ -130,6 +131,7 @@ public class TodayActivity extends AppCompatActivity {
                                 "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
 
                     editMass.setText(todayParams.getJSONObject(todayParams.length() - 1).getString("mass"));
+                    dayNote.setText(todayParams.getJSONObject(todayParams.length() - 1).getString("note"));
                 }
             }
         } catch (Exception e) {
@@ -540,6 +542,7 @@ public class TodayActivity extends AppCompatActivity {
             jsn.put("mass", editMass.getText().toString());
             jsn.put("eatedCalories", String.valueOf(sum));
             jsn.put("bernCalories", String.valueOf(sum1));
+            jsn.put("note", dayNote.getText().toString());
 
             jsn.put("date", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
                     "." + String.valueOf(calendar.get(Calendar.YEAR)));
