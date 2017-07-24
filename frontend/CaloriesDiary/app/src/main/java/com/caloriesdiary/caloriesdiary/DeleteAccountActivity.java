@@ -13,8 +13,7 @@ import org.json.JSONObject;
 
 public class DeleteAccountActivity extends AppCompatActivity {
     EditText login,pass;
-    SharedPreferences sharedPref = null;
-    SharedPreferences.Editor editor;
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +22,6 @@ public class DeleteAccountActivity extends AppCompatActivity {
         login = (EditText) findViewById(R.id.confirm_login);
         pass = (EditText) findViewById(R.id.confirm_pass);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
-        editor = sharedPref.edit();
     }
 
     public void onClickDelete(View view)

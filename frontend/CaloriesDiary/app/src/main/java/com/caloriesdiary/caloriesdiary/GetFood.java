@@ -15,7 +15,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
-import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -57,8 +56,8 @@ public class GetFood extends AsyncTask<String, Void, JSONArray>{
                 BufferedReader in=new BufferedReader(
                         new InputStreamReader(
                                 conn.getInputStream(), "UTF-8"));
-                StringBuffer sb = new StringBuffer("");
-                String line="";
+                //StringBuffer sb = new StringBuffer("");
+                String line;
 
                 JSONObject js = null;
                 while((line = in.readLine()) != null) {
@@ -80,7 +79,7 @@ public class GetFood extends AsyncTask<String, Void, JSONArray>{
         }
 
     }
-    public String getPostDataString(JSONObject params) throws Exception {
+    private String getPostDataString(JSONObject params) throws Exception {
 
         StringBuilder result = new StringBuilder();
         boolean first = true;

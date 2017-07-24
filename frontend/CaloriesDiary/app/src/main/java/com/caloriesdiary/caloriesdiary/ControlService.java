@@ -1,10 +1,16 @@
 package com.caloriesdiary.caloriesdiary;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -42,34 +48,33 @@ public class ControlService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        try {
-            sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
-            Post log = new Post();
-
-            String[] args = new String[4];
-            args[0] = "http://94.130.12.179/users/send_push";
-            args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-
-            if (checkCalories()) {
-                args[2] = "Ты чё жрёшь, хватит!";
-                args[3] = "Иди спортом позанимайся";
-            } else {
-                args[2] = "Ты чё не жрёшь!";
-                args[3] = "Жри давай";
-            }
-
-            log.execute(args);
-            String resp = log.get().toString();
-
-        } catch (Exception e) {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
-        }
-
+        checkCalories();
         return super.onStartCommand(intent, flags, startId);
 
     }
 
-    public boolean checkCalories() {
+    private void sendNotification(String messageBody, String messageTitle) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.human_icon)
+                .setContentTitle(messageTitle)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, notificationBuilder.build());
+    }
+
+    public void checkCalories() {
             int sumFood = 0;
             int sumSport = 0;
 
@@ -103,9 +108,17 @@ public class ControlService extends Service {
             }
 
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            stopSelf();
         }
 
-        return sumSport > sumFood;
+        if (sumSport > sumFood)
+        {
+            sendNotification("Поешь", "Недостаточно каллорий");
+        }
+        else
+        {
+            sendNotification("Иди спортом позанимайся", "Избыток каллорий");
+        }
+
     }
 }

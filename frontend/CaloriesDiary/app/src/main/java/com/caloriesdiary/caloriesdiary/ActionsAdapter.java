@@ -2,17 +2,14 @@ package com.caloriesdiary.caloriesdiary;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
 
 public class ActionsAdapter extends BaseAdapter {
 
@@ -49,11 +46,11 @@ public class ActionsAdapter extends BaseAdapter {
 
         ActionItem actionItem = getActionItem(i);
 
-        final TextView productName, bJU, calories;
-        productName = (TextView) view.findViewById(R.id.productName);
+        final TextView productName, calories;
+        productName =  view.findViewById(R.id.productName);
         productName.setText(actionItem.getName());
 
-        calories = (TextView) view.findViewById(R.id.productCalories);
+        calories = view.findViewById(R.id.productCalories);
         calories.setText(actionItem.getCalories().toString() +" kcal");
 
         return view;

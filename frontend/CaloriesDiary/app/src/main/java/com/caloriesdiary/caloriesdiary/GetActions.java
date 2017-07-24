@@ -39,8 +39,8 @@ public class GetActions extends AsyncTask<String, Void, String>{
                 BufferedReader in=new BufferedReader(
                         new InputStreamReader(
                                 conn.getInputStream(), "UTF-8"));
-                StringBuffer sb = new StringBuffer("");
-                String line="";
+                StringBuilder sb = new StringBuilder("");
+                String line;
 
 
                 while((line = in.readLine()) != null) {

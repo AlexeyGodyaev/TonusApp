@@ -9,9 +9,7 @@ import android.content.SharedPreferences;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Calendar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,8 +31,7 @@ public class SetAGoal extends AppCompatActivity {
     EditText editGoalName, editWeight, editDate, editHrs, editTodayWeight;
     TextView  awake;
     Spinner goalType, liveType;
-    SharedPreferences sharedPref = null;
-    SharedPreferences.Editor editor;
+    SharedPreferences sharedPref;
     SeekBar periodsCount;
     Calendar calendar = Calendar.getInstance();
     String s[] = new String[8];
@@ -60,7 +57,6 @@ public class SetAGoal extends AppCompatActivity {
         editWeight = (EditText) findViewById(R.id.editWeight);
         editTodayWeight = (EditText) findViewById(R.id.editTodayWeight);
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
-        editor = sharedPref.edit();
         periodsCount = (SeekBar) findViewById(R.id.periodsCountBar);
         periodsCount.setEnabled(false);
 //-------------- данные пользователя для отправки
@@ -122,8 +118,7 @@ public class SetAGoal extends AppCompatActivity {
     }
     protected Dialog onCreateDialog(int id) {
         if (id == DIALOG_TIME) {
-            TimePickerDialog tpd = new TimePickerDialog(this, myCallBack, myHour, myMinute, true);
-            return tpd;
+            return new TimePickerDialog(this, myCallBack, myHour, myMinute, true);
         }
         return super.onCreateDialog(id);
     }
@@ -253,7 +248,7 @@ public class SetAGoal extends AppCompatActivity {
 
             post.execute(s1);
         } catch (Exception e){
-
+            Toast.makeText(this, "Сервис не доступен", Toast.LENGTH_SHORT).show();
         }
             Intent intent = new Intent(this, TodayActivity.class);
         startActivity(intent);

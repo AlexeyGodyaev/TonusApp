@@ -43,6 +43,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <TextView
+                android:id="@+id/normaCalories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/PFCtext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -128,7 +138,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/action_busket_recycler_view"
                 android:scrollbars="vertical"
-                android:layout_below="@+id/todayActiveBtn">
+                    android:layout_below="@+id/todayActiveBtn"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
 
             </android.support.v7.widget.RecyclerView>
             </RelativeLayout>
@@ -163,12 +175,20 @@
                 android:onClick="todayAntrClc"
                 android:text="Антропометрия" />
 
-    <LinearLayout
+            <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/antropometry_today"
         android:orientation="vertical">
     </LinearLayout>
+
+            <Button
+                android:id="@+id/statsButton"
+                android:layout_width="98dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:onClick="onStatsClc"
+                android:text="Статистика" />
 
         </LinearLayout>
 
