@@ -37,10 +37,12 @@
         <activity android:name=".FoodCatalogActivity" />
         <activity android:name=".ActionsCatalogActivity" />
         <activity android:name=".GuestMainActivity" />
+        <activity android:name=".Testing"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".SettingsActivity" />
         <activity android:name=".DeleteAccountActivity" />
         <activity android:name=".ChangePasswordActivity" />
-        <activity android:name=".StatActivity" />
+        <activity android:name=".StatActivity"/>
         <activity android:name=".AuthorizationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
