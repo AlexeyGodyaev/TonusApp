@@ -63,6 +63,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     List<FoodItem> list = new ArrayList<FoodItem>();
     GetFood get;
+    TextView errors;
 
 
     @Override
@@ -86,7 +87,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-
+        errors = (TextView) findViewById(R.id.error_view);
 //        mAdapter = new RecycleFoodAdapter(initData());
 //        mRecyclerView.setAdapter(mAdapter);
 
@@ -376,7 +377,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 //        return list;
 //    }
 
-    class GetFood extends AsyncTask<String, Void, JSONArray>{
+    class GetFood extends AsyncTask<String, Void, String>{
         @Override
         protected void onPreExecute() {
             Toast.makeText(RecycleFoodCatalogActivity.this, "Загрузка блюд...", Toast.LENGTH_SHORT).show();
@@ -384,8 +385,8 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(JSONArray jsonArray) {
-            super.onPostExecute(jsonArray);
+        protected void onPostExecute(String string) {
+            super.onPostExecute(string);
 
             JSONArray resp = null;
             String foodName = null;
@@ -393,15 +394,27 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             Integer id=0;
 
             try {
-                resp = get.get();
-            } catch (InterruptedException e) {
-                Toast.makeText(RecycleFoodCatalogActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+//
+//                JSONArray array = new JSONArray(get.get());
+//
+//                resp =  array;
+                String answer = get.get();
+                try
+                {
+                    JSONArray array = new JSONArray(answer);
+                    resp =  array;
+                }
+                catch (Exception e)
+                {
+                    errors.setText(get.get());
+                }
+
             }
             catch (Exception e)
             {
                 e.printStackTrace();
-                Toast.makeText(RecycleFoodCatalogActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                //errors.setText(e.toString());
+                Toast.makeText(RecycleFoodCatalogActivity.this, e.toString(), Toast.LENGTH_LONG).show();
             }
             if (resp != null)
                 for(int i = 0; i<resp.length(); i++){
@@ -421,6 +434,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                         System.err.println("Неверный формат строки!");
                     } catch (JSONException jEx){
                         Toast.makeText(getApplicationContext(),jEx.toString(), Toast.LENGTH_SHORT).show();
+                        //errors.setText(jEx.toString());
                     }
                     if(b!=0||j!=0||u!=0||calories!=0)
                         list.add(new FoodItem(foodName,b,j,u,id,calories));
@@ -434,7 +448,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         }
 
         @Override
-        protected JSONArray doInBackground(String... strings) {
+        protected String doInBackground(String... strings) {
 
             try {
 
@@ -444,8 +458,8 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 postDataParams.put("offset",strings[1]);
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(15000 /* milliseconds */);
-                conn.setConnectTimeout(15000 /* milliseconds */);
+                conn.setReadTimeout(150000 /* milliseconds */);
+                conn.setConnectTimeout(150000 /* milliseconds */);
                 conn.setRequestMethod("POST");
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
@@ -467,24 +481,32 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                                     conn.getInputStream(), "UTF-8"));
                     //StringBuffer sb = new StringBuffer("");
                     String line;
+                    try
+                    {
+                        JSONObject js = null;
+                        while((line = in.readLine()) != null) {
+                            js = new JSONObject(line);
+                            break;
+                        }
+                        JSONArray jArr = js.getJSONArray("food");
 
-                    JSONObject js = null;
-                    while((line = in.readLine()) != null) {
-                        js = new JSONObject(line);
-                        break;
+                        in.close();
+                        return jArr.toString();
                     }
-                    JSONArray jArr = js.getJSONArray("food");
+                    catch (Exception e)
+                    {
+                        return "JSONparse error: " + e.toString();
+                    }
 
-                    in.close();
-                    return jArr;
+
 
                 }
                 else {
-                    return null;
+                    return "Response error: " + String.valueOf(responseCode);
                 }
             }
             catch(Exception e){
-                return null;
+                return "Connection error: " + e.toString();
             }
 
         }
