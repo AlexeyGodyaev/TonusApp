@@ -31,7 +31,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
             args[1] = login.getText().toString();
             args[2] = oldpass.getText().toString();
             args[3] = newpass.getText().toString();
-            ///Toast.makeText(getApplicationContext(),args[1] + " " +args[2] + " "+args[3] ,Toast.LENGTH_LONG).show();
 
             log.execute(args); // вызываем запрос
             JSONObject JSans = log.get();

@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.util.Log;
-import android.view.Menu;
 
 import android.view.View;
 import android.widget.Button;
@@ -20,11 +19,10 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.io.OutputStreamWriter;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -33,8 +31,6 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -44,11 +40,9 @@ public class AuthorizationActivity extends Activity {
     GoogleApiClient m;
     GoogleSignInOptions gso;
     private static final int RC_SIGN_IN = 9001;
-    String tkn;
 
     Post log;
 
-    Button reg,logBtn;
     EditText login, pass;
     TextView err;
     SharedPreferences sharedPref = null;
@@ -58,11 +52,10 @@ public class AuthorizationActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authorization_layout);
-        reg = (Button) findViewById(R.id.registrationButton);
-        logBtn = (Button) findViewById(R.id.loginButton);
-        login = (EditText) findViewById(R.id.editLogin);
-        pass = (EditText) findViewById(R.id.editPassword);
-        err = (TextView) findViewById(R.id.testRequestText);
+
+        login =  findViewById(R.id.editLogin);
+        pass =  findViewById(R.id.editPassword);
+        err =  findViewById(R.id.testRequestText);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
         editor = sharedPref.edit();
         InitPreference();
@@ -172,11 +165,10 @@ public class AuthorizationActivity extends Activity {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             try {
                 handleSignInResult(result);
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-            catch (Exception e)
-            {
 
-            }
         }
     }
 
@@ -236,7 +228,7 @@ public class AuthorizationActivity extends Activity {
                 AlarmManager alarmManager = (AlarmManager) this
                         .getSystemService(Context.ALARM_SERVICE);
                 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                        System.currentTimeMillis(),5*60*1000*60,
+                        System.currentTimeMillis(),System.currentTimeMillis() + 1000*60*60*5,
                         startWebServicePendingIntent);
 
             } else if (status == 0) {

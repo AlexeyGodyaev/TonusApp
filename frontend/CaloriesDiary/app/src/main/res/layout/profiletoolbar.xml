@@ -4,10 +4,19 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:minHeight="?attr/actionBarSize"
-    android:background="@drawable/image1"
+    local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     local:theme="@style/AppTheme"
-    local:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+    android:background="#ff0000">
+
+    <ImageView
+
+        android:id="@+id/toolbar_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/image1"
+        />
+
+
 
 
 </android.support.v7.widget.Toolbar>
