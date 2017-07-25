@@ -63,7 +63,6 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     List<FoodItem> list = new ArrayList<FoodItem>();
     GetFood get;
-    ProgressBar progressbar;
 
 
     @Override
@@ -87,7 +86,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        progressbar = (ProgressBar) findViewById(R.id.progress_bar);
+
 //        mAdapter = new RecycleFoodAdapter(initData());
 //        mRecyclerView.setAdapter(mAdapter);
 
@@ -291,8 +290,8 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.menu_refresh:
-                mAdapter = new RecycleFoodAdapter(initData());
-                mRecyclerView.setAdapter(mAdapter);
+//                mAdapter = new RecycleFoodAdapter(initData());
+//                mRecyclerView.setAdapter(mAdapter);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -327,55 +326,55 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         }
     }
 
-    public JSONArray getFood() throws InterruptedException,
-            ExecutionException {
-        GetFood get = new GetFood();
-        get.execute("http://94.130.12.179/food/get_food",String.valueOf(-1));
-
-        return get.get();
-    }
-
-    private List<FoodItem> initData() {
-
-        JSONArray resp = null;
-        String foodName = null;
-        Float b=new Float(0), j=new Float(0), u=new Float(0), calories=new Float(0);
-        Integer id=0;
-
-        try {
-            resp = getFood();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        if (resp != null)
-            for(int i = 0; i<resp.length(); i++){
-                try {
-                    Integer i1 = new Integer(resp.getJSONObject(i).getString("category_id"));
-                    id=i1;
-                    foodName = resp.getJSONObject(i).getString("name");
-                    Float f1 = new Float(resp.getJSONObject(i).getString("protein"));
-                    b = f1;
-                    f1 = new Float(resp.getJSONObject(i).getString("fats"));
-                    j=f1;
-                    f1 = new Float(resp.getJSONObject(i).getString("carbs"));
-                    u=f1;
-                    f1 = new Float(resp.getJSONObject(i).getString("calories"));
-                    calories=f1;
-                } catch (NumberFormatException e) {
-                    System.err.println("Неверный формат строки!");
-                } catch (JSONException jEx){
-                    Toast.makeText(getApplicationContext(),jEx.toString(), Toast.LENGTH_SHORT).show();
-                }
-                if(b!=0||j!=0||u!=0||calories!=0)
-                    list.add(new FoodItem(foodName,b,j,u,id,calories));
-            }
-
-        return list;
-    }
+//    public JSONArray getFood() throws InterruptedException,
+//            ExecutionException {
+//        GetFood get = new GetFood();
+//        get.execute("http://94.130.12.179/food/get_food",String.valueOf(-1));
+//
+//        return get.get();
+//    }
+//
+//    private List<FoodItem> initData() {
+//
+//        JSONArray resp = null;
+//        String foodName = null;
+//        Float b=new Float(0), j=new Float(0), u=new Float(0), calories=new Float(0);
+//        Integer id=0;
+//
+//        try {
+//            resp = getFood();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//        if (resp != null)
+//            for(int i = 0; i<resp.length(); i++){
+//                try {
+//                    Integer i1 = new Integer(resp.getJSONObject(i).getString("category_id"));
+//                    id=i1;
+//                    foodName = resp.getJSONObject(i).getString("name");
+//                    Float f1 = new Float(resp.getJSONObject(i).getString("protein"));
+//                    b = f1;
+//                    f1 = new Float(resp.getJSONObject(i).getString("fats"));
+//                    j=f1;
+//                    f1 = new Float(resp.getJSONObject(i).getString("carbs"));
+//                    u=f1;
+//                    f1 = new Float(resp.getJSONObject(i).getString("calories"));
+//                    calories=f1;
+//                } catch (NumberFormatException e) {
+//                    System.err.println("Неверный формат строки!");
+//                } catch (JSONException jEx){
+//                    Toast.makeText(getApplicationContext(),jEx.toString(), Toast.LENGTH_SHORT).show();
+//                }
+//                if(b!=0||j!=0||u!=0||calories!=0)
+//                    list.add(new FoodItem(foodName,b,j,u,id,calories));
+//            }
+//
+//        return list;
+//    }
 
     class GetFood extends AsyncTask<String, Void, JSONArray>{
         @Override
@@ -396,11 +395,13 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             try {
                 resp = get.get();
             } catch (InterruptedException e) {
+                Toast.makeText(RecycleFoodCatalogActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
             catch (Exception e)
             {
                 e.printStackTrace();
+                Toast.makeText(RecycleFoodCatalogActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
             }
             if (resp != null)
                 for(int i = 0; i<resp.length(); i++){
@@ -428,7 +429,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             mAdapter = new RecycleFoodAdapter(list);
             mRecyclerView.setAdapter(mAdapter);
             Toast.makeText(RecycleFoodCatalogActivity.this, "Загружено элементов: " + String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
-            progressbar.setVisibility(ProgressBar.INVISIBLE);
+
 
         }
 
