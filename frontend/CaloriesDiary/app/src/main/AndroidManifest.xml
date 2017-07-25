@@ -91,6 +91,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity android:name=".FoodBuilderActivity"></activity>
 
         <service
             android:name=".ControlService"

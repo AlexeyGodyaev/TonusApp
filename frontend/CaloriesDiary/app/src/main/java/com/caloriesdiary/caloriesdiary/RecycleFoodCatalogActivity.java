@@ -1,5 +1,6 @@
 package com.caloriesdiary.caloriesdiary;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,14 +34,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
+
+import javax.net.ssl.HttpsURLConnection;
 
 
 public class RecycleFoodCatalogActivity extends AppCompatActivity {
@@ -47,11 +62,16 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     List<FoodItem> list = new ArrayList<FoodItem>();
+    GetFood get;
+    ProgressBar progressbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recycle_food_catalog_layout);
+
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -67,8 +87,19 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecycleFoodAdapter(initData());
-        mRecyclerView.setAdapter(mAdapter);
+        progressbar = (ProgressBar) findViewById(R.id.progress_bar);
+//        mAdapter = new RecycleFoodAdapter(initData());
+//        mRecyclerView.setAdapter(mAdapter);
+
+        get = new GetFood();
+        get.execute("http://94.130.12.179/food/get_food",String.valueOf(-1));
+
+
+
+
+
+
+
 
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 mRecyclerView, new RecyclerTouchListener.ClickListener() {
@@ -229,8 +260,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        InitList initList = new InitList();
-        initList.execute();
+
 
     }
 
@@ -267,6 +297,11 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    public void onClickFoodBuilder(View view)
+    {
+            Intent intent = new Intent(getApplicationContext(),FoodBuilderActivity.class);
+            startActivity(intent);
+    }
     @Override
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
@@ -280,7 +315,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             for(int i = 0; i < list.size() ; i++ )
             {
                 FoodItem item = list.get(i);
-                if(item.getName().contains(query))
+                if(item.getName().toLowerCase().contains(query.toLowerCase()))
                 {
                     querylist.add(item);
                 }
@@ -341,33 +376,140 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
         return list;
     }
- class InitList extends AsyncTask<Void,Void,Void>
- {
-     @Override
-     protected void onPreExecute() {
-         super.onPreExecute();
-         Toast.makeText(RecycleFoodCatalogActivity.this, "Начало", Toast.LENGTH_SHORT).show();
-     }
 
-     @Override
-     protected Void doInBackground(Void... voids) {
-         //Toast.makeText(RecycleFoodCatalogActivity.this, "Этап1", Toast.LENGTH_SHORT).show();
-         try
-         {
+    class GetFood extends AsyncTask<String, Void, JSONArray>{
+        @Override
+        protected void onPreExecute() {
+            Toast.makeText(RecycleFoodCatalogActivity.this, "Загрузка блюд...", Toast.LENGTH_SHORT).show();
+            super.onPreExecute();
+        }
 
-         }
-         catch (Exception e)
-         {
+        @Override
+        protected void onPostExecute(JSONArray jsonArray) {
+            super.onPostExecute(jsonArray);
 
-         }
-         //Toast.makeText(RecycleFoodCatalogActivity.this, "Этап2", Toast.LENGTH_SHORT).show();
-         return null;
-     }
+            JSONArray resp = null;
+            String foodName = null;
+            Float b=new Float(0), j=new Float(0), u=new Float(0), calories=new Float(0);
+            Integer id=0;
 
-     @Override
-     protected void onPostExecute(Void aVoid) {
-         super.onPostExecute(aVoid);
-         Toast.makeText(RecycleFoodCatalogActivity.this, "Конец", Toast.LENGTH_SHORT).show();
-     }
- }
+            try {
+                resp = get.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            if (resp != null)
+                for(int i = 0; i<resp.length(); i++){
+                    try {
+                        Integer i1 = new Integer(resp.getJSONObject(i).getString("category_id"));
+                        id=i1;
+                        foodName = resp.getJSONObject(i).getString("name");
+                        Float f1 = new Float(resp.getJSONObject(i).getString("protein"));
+                        b = f1;
+                        f1 = new Float(resp.getJSONObject(i).getString("fats"));
+                        j=f1;
+                        f1 = new Float(resp.getJSONObject(i).getString("carbs"));
+                        u=f1;
+                        f1 = new Float(resp.getJSONObject(i).getString("calories"));
+                        calories=f1;
+                    } catch (NumberFormatException e) {
+                        System.err.println("Неверный формат строки!");
+                    } catch (JSONException jEx){
+                        Toast.makeText(getApplicationContext(),jEx.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                    if(b!=0||j!=0||u!=0||calories!=0)
+                        list.add(new FoodItem(foodName,b,j,u,id,calories));
+                }
+
+            mAdapter = new RecycleFoodAdapter(list);
+            mRecyclerView.setAdapter(mAdapter);
+            Toast.makeText(RecycleFoodCatalogActivity.this, "Загружено элементов: " + String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
+            progressbar.setVisibility(ProgressBar.INVISIBLE);
+
+        }
+
+        @Override
+        protected JSONArray doInBackground(String... strings) {
+
+            try {
+
+                URL url = new URL(strings[0]); // первый аргумент из массива который передан при вызове
+                JSONObject postDataParams = new JSONObject();
+
+                postDataParams.put("offset",strings[1]);
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(15000 /* milliseconds */);
+                conn.setConnectTimeout(15000 /* milliseconds */);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(getPostDataString(postDataParams)); // преобразуем json объект в строку параметров запроса
+
+                writer.flush();
+                writer.close();
+                os.close();
+
+                int responseCode=conn.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    BufferedReader in=new BufferedReader(
+                            new InputStreamReader(
+                                    conn.getInputStream(), "UTF-8"));
+                    //StringBuffer sb = new StringBuffer("");
+                    String line;
+
+                    JSONObject js = null;
+                    while((line = in.readLine()) != null) {
+                        js = new JSONObject(line);
+                        break;
+                    }
+                    JSONArray jArr = js.getJSONArray("food");
+
+                    in.close();
+                    return jArr;
+
+                }
+                else {
+                    return null;
+                }
+            }
+            catch(Exception e){
+                return null;
+            }
+
+        }
+        private String getPostDataString(JSONObject params) throws Exception {
+
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+
+            Iterator<String> itr = params.keys();
+
+            while(itr.hasNext()){
+
+                String key= itr.next();
+                Object value = params.get(key);
+
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                result.append(URLEncoder.encode(key, "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+            }
+            return result.toString();
+        }
+    }
 }
