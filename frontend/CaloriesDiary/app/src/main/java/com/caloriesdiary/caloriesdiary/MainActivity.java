@@ -1,9 +1,6 @@
 package com.caloriesdiary.caloriesdiary;
 
-import android.app.Application;
-import android.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,28 +16,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.Calendar;
-import java.util.Map;
-import java.util.jar.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -184,7 +168,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onStatClc(View view){
-        Intent intent = new Intent(getApplicationContext(),Testing.class);
+        Intent intent = new Intent(getApplicationContext(),StatActivity.class);
 
         startActivity(intent);
     }
