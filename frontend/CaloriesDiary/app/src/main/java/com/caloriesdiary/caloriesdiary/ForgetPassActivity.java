@@ -33,11 +33,9 @@ public class ForgetPassActivity extends AppCompatActivity {
 
         log.execute(args); // вызываем запрос
         JSONObject JSans = log.get();
-        //Toast.makeText(getApplicationContext(), log.get().toString(),Toast.LENGTH_LONG).show();
+
         try
         {
-
-
             if(JSans.getInt("status") == 1)
             {
                 Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
@@ -54,5 +52,13 @@ public class ForgetPassActivity extends AppCompatActivity {
         {
 
         }
+    }
+
+    public void cancelClc(View view)
+    {
+        Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
