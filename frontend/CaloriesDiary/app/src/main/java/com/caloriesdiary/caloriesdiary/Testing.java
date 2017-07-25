@@ -77,6 +77,28 @@ public class Testing extends AppCompatActivity {
             return fragment;
         }
 
+
+        private GraphView massGraph, eatedCaloriesGraph, bernCaloriesGraph, rLegGraph, lLegGraph, calvesGraph, buttGraph, rHandGraph,
+                lHandGraph, chestGraph, shouldersGraph, waistGraph;
+        private TextView setGraphs, massGraphTxt, eatedCaloriesGraphTxt, bernCaloriesGraphTxt, rLegGraphTxt, lLegGraphTxt,
+                calvesGraphTxt, buttGraphTxt, rHandGraphTxt, lHandGraphTxt, chestGraphTxt, shouldersGraphTxt, waistGraphTxt, viewParams;
+        private LinearLayout mainLayout;
+        private JSONArray graphArr=null;
+        private JSONObject graphDraw=null;
+        private String s="";
+        private String graphHor [];
+
+        private  void initMassGraph(){
+            try {
+
+
+
+            } catch (Exception e){
+
+            }
+        }
+
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -84,17 +106,13 @@ public class Testing extends AppCompatActivity {
             if (getArguments().getInt(ARG_SECTION_NUMBER)==1){
                 rootView = inflater.inflate(R.layout.stat_layout, container, false);
 
-                TextView setGraphs, massGraphTxt, eatedCaloriesGraphTxt, bernCaloriesGraphTxt, rLegGraphTxt, lLegGraphTxt,
-                        calvesGraphTxt, buttGraphTxt, rHandGraphTxt, lHandGraphTxt, chestGraphTxt, shouldersGraphTxt, waistGraphTxt, viewParams;
-                LinearLayout mainLayout;
-                GraphView massGraph, eatedCaloriesGraph, bernCaloriesGraph, rLegGraph, lLegGraph, calvesGraph, buttGraph, rHandGraph,
-                        lHandGraph, chestGraph, shouldersGraph, waistGraph;
-                JSONArray graphArr=null;
-                JSONObject graphDraw=null;
+
+
+
                 DataPoint massData [], eatedData[], bernData [], rLegData [], lLegData [], rHandData [],
                         lHandData [], waistData [], chestData [], buttData [], shouldersData [], calvesData [];
-                String graphHor [];
-                String s="";
+
+
 
                 viewParams = (TextView) rootView.findViewById(R.id.graph_params_value);
                 mainLayout = (LinearLayout) rootView.findViewById(R.id.hui);
@@ -282,18 +300,6 @@ public class Testing extends AppCompatActivity {
                 } catch (Exception e) {
                     Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                 }
-                massGraph = (GraphView) rootView.findViewById(R.id.mass_graph_container);
-                eatedCaloriesGraph = (GraphView) rootView.findViewById(R.id.eated_calories_graph_container);
-                bernCaloriesGraph = (GraphView) rootView.findViewById(R.id.bern_calories_graph_container);
-                shouldersGraph = (GraphView) rootView.findViewById(R.id.shoulders_graph_container);
-                rHandGraph = (GraphView) rootView.findViewById(R.id.right_hand_graph_container);
-                lHandGraph = (GraphView) rootView.findViewById(R.id.left_hand_graph_container);
-                lLegGraph = (GraphView) rootView.findViewById(R.id.left_leg_graph_container);
-                rLegGraph = (GraphView) rootView.findViewById(R.id.right_leg_graph_container);
-                calvesGraph = (GraphView) rootView.findViewById(R.id.calves_graph_container);
-                buttGraph = (GraphView) rootView.findViewById(R.id.butt_graph_container);
-                chestGraph = (GraphView) rootView.findViewById(R.id.chest_graph_container);
-                waistGraph = (GraphView) rootView.findViewById(R.id.waist_graph_container);
 
                 massGraphTxt = (TextView) rootView.findViewById(R.id.mass_text);
                 eatedCaloriesGraphTxt = (TextView) rootView.findViewById(R.id.eated_text);
@@ -307,6 +313,172 @@ public class Testing extends AppCompatActivity {
                 buttGraphTxt = (TextView) rootView.findViewById(R.id.butt_text);
                 chestGraphTxt = (TextView) rootView.findViewById(R.id.chest_text);
                 waistGraphTxt = (TextView) rootView.findViewById(R.id.waist_text);
+
+                massGraph = (GraphView) rootView.findViewById(R.id.mass_graph_container);
+                try {
+                    if(graphDraw!=null&&graphDraw.getString("mass").equals("false")) {
+                        mainLayout.removeView(massGraph);
+                        mainLayout.removeView(massGraphTxt);
+                    } else {
+                        massGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        massGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
+                        massGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+                        massGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                    }
+                } catch (Exception e){
+
+                }
+
+                eatedCaloriesGraph = (GraphView) rootView.findViewById(R.id.eated_calories_graph_container);
+                try {
+                    if (graphDraw != null && graphDraw.getString("eated").equals("false")) {
+                        mainLayout.removeView(eatedCaloriesGraph);
+                        mainLayout.removeView(eatedCaloriesGraphTxt);
+                    } else {
+                        eatedCaloriesGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        eatedCaloriesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
+                        eatedCaloriesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+                        eatedCaloriesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                    }
+                }catch (Exception e){
+
+                }
+
+                bernCaloriesGraph = (GraphView) rootView.findViewById(R.id.bern_calories_graph_container);
+                try {
+                    if (graphDraw != null && graphDraw.getString("bern").equals("false")) {
+                        mainLayout.removeView(bernCaloriesGraph);
+                        mainLayout.removeView(bernCaloriesGraphTxt);
+                    } else {
+                        bernCaloriesGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        bernCaloriesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
+                        bernCaloriesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+                        bernCaloriesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                    }
+                }catch (Exception e){
+
+                }
+
+                shouldersGraph = (GraphView) rootView.findViewById(R.id.shoulders_graph_container);
+                try {
+                    if(graphDraw!=null&&graphDraw.getString("shoulders").equals("false")) {
+                        mainLayout.removeView(shouldersGraph);
+                        mainLayout.removeView(shouldersGraphTxt);
+                    } else {
+                        shouldersGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        shouldersGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
+                        shouldersGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+                        shouldersGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                    }
+                } catch (Exception e){
+
+                }
+
+                rHandGraph = (GraphView) rootView.findViewById(R.id.right_hand_graph_container);
+                lHandGraph = (GraphView) rootView.findViewById(R.id.left_hand_graph_container);
+                try {
+                    if(graphDraw!=null&&graphDraw.getString("hands").equals("false")){
+                        mainLayout.removeView(rHandGraph);
+                        mainLayout.removeView(lHandGraph);
+                        mainLayout.removeView(rHandGraphTxt);
+                        mainLayout.removeView(lHandGraphTxt);
+                    } else {
+                        rHandGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        rHandGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
+                        rHandGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+                        rHandGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+
+                        lHandGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        lHandGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
+                        lHandGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+                        lHandGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                    }
+                } catch (Exception e) {
+
+                }
+
+                lLegGraph = (GraphView) rootView.findViewById(R.id.left_leg_graph_container);
+                rLegGraph = (GraphView) rootView.findViewById(R.id.right_leg_graph_container);
+                try {
+                    if(graphDraw!=null&&graphDraw.getString("legs").equals("false")){
+                        mainLayout.removeView(lLegGraph);
+                        mainLayout.removeView(rLegGraph);
+                        mainLayout.removeView(lLegGraphTxt);
+                        mainLayout.removeView(rLegGraphTxt);
+                    } else {
+                        lLegGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        lLegGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
+                        lLegGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+                        lLegGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+
+                        rLegGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        rLegGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
+                        rLegGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+                        rLegGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                    }
+                } catch (Exception e) {
+
+                }
+
+                calvesGraph = (GraphView) rootView.findViewById(R.id.calves_graph_container);
+                try {if(graphDraw!=null&&graphDraw.getString("calves").equals("false")) {
+                    mainLayout.removeView(calvesGraph);
+                    mainLayout.removeView(calvesGraphTxt);
+                } else {
+                    calvesGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                    calvesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
+                    calvesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+                    calvesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                }
+                } catch (Exception e){
+
+                }
+
+                buttGraph = (GraphView) rootView.findViewById(R.id.butt_graph_container);
+                try {
+                    if(graphDraw!=null&&graphDraw.getString("butt").equals("false")) {
+                        mainLayout.removeView(buttGraph);
+                        mainLayout.removeView(buttGraphTxt);
+                    } else {
+                        buttGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        buttGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
+                        buttGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+                        buttGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                    }
+                } catch (Exception e){
+
+                }
+
+                chestGraph = (GraphView) rootView.findViewById(R.id.chest_graph_container);
+                try {
+                    if(graphDraw!=null&&graphDraw.getString("chest").equals("false")) {
+                        mainLayout.removeView(chestGraph);
+                        mainLayout.removeView(chestGraphTxt);
+                    } else {
+                        chestGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        chestGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
+                        chestGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+                        chestGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                    }
+                } catch (Exception e){
+
+                }
+
+                waistGraph = (GraphView) rootView.findViewById(R.id.waist_graph_container);
+                try {
+                    if(graphDraw!=null&&graphDraw.getString("waist").equals("false")) {
+                        mainLayout.removeView(waistGraph);
+                        mainLayout.removeView(waistGraphTxt);
+                    } else {
+                        waistGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        waistGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
+                        waistGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+                        waistGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                    }
+                } catch (Exception e){
+
+                }
+
 
                 try {
                     if (graphArr!=null&&graphArr.length()>1) {
@@ -403,89 +575,51 @@ public class Testing extends AppCompatActivity {
                             graphHor[i] = graphArr.getJSONObject(i).getString("date");
                         }
 
-                        if(graphDraw!=null&&graphDraw.getString("mass").equals("false")) {
-                            mainLayout.removeView(massGraph);
-                            mainLayout.removeView(massGraphTxt);
-                        } else {
+                        if(graphDraw!=null&&graphDraw.getString("mass").equals("true")) {
                             LineGraphSeries<DataPoint> massSeries = new LineGraphSeries<>(massData);
                             StaticLabelsFormatter massLabelsFormatter = new StaticLabelsFormatter(massGraph);
                             massLabelsFormatter.setHorizontalLabels(graphHor);
                             massGraph.getGridLabelRenderer().setLabelFormatter(massLabelsFormatter);
-                            massGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
-                            massGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
-                            massGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
-                            massGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                             massSeries.setColor(Color.WHITE);
                             massGraph.addSeries(massSeries);
                             s+="Масса, ";
                         }
 
-                        if(graphDraw!=null&&graphDraw.getString("eated").equals("false")) {
-                            mainLayout.removeView(eatedCaloriesGraph);
-                            mainLayout.removeView(eatedCaloriesGraphTxt);
-                        } else {
+                        if(graphDraw!=null&&graphDraw.getString("eated").equals("true")){
                             LineGraphSeries<DataPoint> eatedSeries = new LineGraphSeries<>(eatedData);
                             StaticLabelsFormatter eatedLabelsFormatter = new StaticLabelsFormatter(eatedCaloriesGraph);
                             eatedLabelsFormatter.setHorizontalLabels(graphHor);
                             eatedCaloriesGraph.getGridLabelRenderer().setLabelFormatter(eatedLabelsFormatter);
-                            eatedCaloriesGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
-                            eatedCaloriesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
-                            eatedCaloriesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
-                            eatedCaloriesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                             eatedSeries.setColor(Color.WHITE);
                             eatedCaloriesGraph.addSeries(eatedSeries);
                             s+="Потребляемые калории, ";
                         }
 
-                        if(graphDraw!=null&&graphDraw.getString("bern").equals("false")) {
-                            Toast.makeText(getActivity().getApplicationContext(), "Зашли", Toast.LENGTH_SHORT).show();
-                            mainLayout.removeView(bernCaloriesGraph);
-                            mainLayout.removeView(bernCaloriesGraphTxt);
-                        } else {
+                        if(graphDraw!=null&&graphDraw.getString("bern").equals("true")) {
                             LineGraphSeries<DataPoint> bernSeries = new LineGraphSeries<>(bernData);
                             StaticLabelsFormatter bernLabelsFormatter = new StaticLabelsFormatter(bernCaloriesGraph);
                             bernLabelsFormatter.setHorizontalLabels(graphHor);
                             bernCaloriesGraph.getGridLabelRenderer().setLabelFormatter(bernLabelsFormatter);
-                            bernCaloriesGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
-                            bernCaloriesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
-                            bernCaloriesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
-                            bernCaloriesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                             bernSeries.setColor(Color.WHITE);
                             bernCaloriesGraph.addSeries(bernSeries);
                             s+="Затраченные калории, ";
                         }
 
-                        if(graphDraw!=null&&graphDraw.getString("shoulders").equals("false")) {
-                            mainLayout.removeView(shouldersGraph);
-                            mainLayout.removeView(shouldersGraphTxt);
-                        } else {
+                        if(graphDraw!=null&&graphDraw.getString("shoulders").equals("true")){
                             LineGraphSeries<DataPoint> shouldersSeries = new LineGraphSeries<>(shouldersData);
                             StaticLabelsFormatter shouldersLabelsFormatter = new StaticLabelsFormatter(shouldersGraph);
                             shouldersLabelsFormatter.setHorizontalLabels(graphHor);
                             shouldersGraph.getGridLabelRenderer().setLabelFormatter(shouldersLabelsFormatter);
-                            shouldersGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
-                            shouldersGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
-                            shouldersGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
-                            shouldersGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                             shouldersSeries.setColor(Color.WHITE);
                             shouldersGraph.addSeries(shouldersSeries);
                             s+="Плечи, ";
                         }
 
-                        if(graphDraw!=null&&graphDraw.getString("hands").equals("false")){
-                            mainLayout.removeView(rHandGraph);
-                            mainLayout.removeView(lHandGraph);
-                            mainLayout.removeView(rHandGraphTxt);
-                            mainLayout.removeView(lHandGraphTxt);
-                        } else {
+                        if(graphDraw!=null&&graphDraw.getString("hands").equals("true")){
                             LineGraphSeries<DataPoint> rHandSeries = new LineGraphSeries<>(rHandData);
                             StaticLabelsFormatter rHandLabelsFormatter = new StaticLabelsFormatter(rHandGraph);
                             rHandLabelsFormatter.setHorizontalLabels(graphHor);
                             rHandGraph.getGridLabelRenderer().setLabelFormatter(rHandLabelsFormatter);
-                            rHandGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
-                            rHandGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
-                            rHandGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
-                            rHandGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                             rHandSeries.setColor(Color.WHITE);
                             rHandGraph.addSeries(rHandSeries);
 
@@ -493,80 +627,46 @@ public class Testing extends AppCompatActivity {
                             StaticLabelsFormatter lHandLabelsFormatter = new StaticLabelsFormatter(lHandGraph);
                             lHandLabelsFormatter.setHorizontalLabels(graphHor);
                             lHandGraph.getGridLabelRenderer().setLabelFormatter(lHandLabelsFormatter);
-                            lHandGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
-                            lHandGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
-                            lHandGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
-                            lHandGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                             lHandSeries.setColor(Color.WHITE);
                             lHandGraph.addSeries(lHandSeries);
                             s+="Руки, ";
                         }
 
-                        if(graphDraw!=null&&graphDraw.getString("chest").equals("false")) {
-                            mainLayout.removeView(chestGraph);
-                            mainLayout.removeView(chestGraphTxt);
-                        } else {
+                        if(graphDraw!=null&&graphDraw.getString("chest").equals("true")) {
                             LineGraphSeries<DataPoint> chestSeries = new LineGraphSeries<>(chestData);
                             StaticLabelsFormatter chestLabelsFormatter = new StaticLabelsFormatter(chestGraph);
                             chestLabelsFormatter.setHorizontalLabels(graphHor);
                             chestGraph.getGridLabelRenderer().setLabelFormatter(chestLabelsFormatter);
-                            chestGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
-                            chestGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
-                            chestGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
-                            chestGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                             chestSeries.setColor(Color.WHITE);
                             chestGraph.addSeries(chestSeries);
                             s+="Грудь, ";
                         }
 
-                        if(graphDraw!=null&&graphDraw.getString("waist").equals("false")) {
-                            mainLayout.removeView(waistGraph);
-                            mainLayout.removeView(waistGraphTxt);
-                        } else {
+                        if(graphDraw!=null&&graphDraw.getString("waist").equals("true")) {
                             LineGraphSeries<DataPoint> waistSeries = new LineGraphSeries<>(waistData);
                             StaticLabelsFormatter waistLabelsFormatter = new StaticLabelsFormatter(waistGraph);
                             waistLabelsFormatter.setHorizontalLabels(graphHor);
                             waistGraph.getGridLabelRenderer().setLabelFormatter(waistLabelsFormatter);
-                            waistGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
-                            waistGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
-                            waistGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
-                            waistGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                             waistSeries.setColor(Color.WHITE);
                             waistGraph.addSeries(waistSeries);
                             s+="Талия, ";
                         }
 
-                        if(graphDraw!=null&&graphDraw.getString("butt").equals("false")) {
-                            mainLayout.removeView(buttGraph);
-                            mainLayout.removeView(buttGraphTxt);
-                        } else {
+                        if(graphDraw!=null&&graphDraw.getString("butt").equals("true")) {
                             LineGraphSeries<DataPoint> buttSeries = new LineGraphSeries<>(buttData);
                             StaticLabelsFormatter buttLabelsFormatter = new StaticLabelsFormatter(buttGraph);
                             buttLabelsFormatter.setHorizontalLabels(graphHor);
                             buttGraph.getGridLabelRenderer().setLabelFormatter(buttLabelsFormatter);
-                            buttGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
-                            buttGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
-                            buttGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
-                            buttGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                             buttSeries.setColor(Color.WHITE);
                             buttGraph.addSeries(buttSeries);
                             s+="Ягодицы, ";
                         }
 
-                        if(graphDraw!=null&&graphDraw.getString("legs").equals("false")){
-                            mainLayout.removeView(lLegGraph);
-                            mainLayout.removeView(rLegGraph);
-                            mainLayout.removeView(lLegGraphTxt);
-                            mainLayout.removeView(rLegGraphTxt);
-                        } else {
+                        if(graphDraw!=null&&graphDraw.getString("legs").equals("true")){
                             LineGraphSeries<DataPoint> rLegSeries = new LineGraphSeries<>(rLegData);
                             StaticLabelsFormatter rLegLabelsFormatter = new StaticLabelsFormatter(rLegGraph);
                             rLegLabelsFormatter.setHorizontalLabels(graphHor);
                             rLegGraph.getGridLabelRenderer().setLabelFormatter(rLegLabelsFormatter);
-                            rLegGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
-                            rLegGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
-                            rLegGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
-                            rLegGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                             rLegSeries.setColor(Color.WHITE);
                             rLegGraph.addSeries(rLegSeries);
 
@@ -574,28 +674,17 @@ public class Testing extends AppCompatActivity {
                             StaticLabelsFormatter lLegLabelsFormatter = new StaticLabelsFormatter(lLegGraph);
                             lLegLabelsFormatter.setHorizontalLabels(graphHor);
                             lLegGraph.getGridLabelRenderer().setLabelFormatter(lLegLabelsFormatter);
-                            lLegGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
-                            lLegGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
-                            lLegGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
-                            lLegGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                             lLegSeries.setColor(Color.WHITE);
                             lLegGraph.addSeries(lLegSeries);
                             s+="Бедра, ";
                         }
 
 
-                        if(graphDraw!=null&&graphDraw.getString("calves").equals("false")) {
-                            mainLayout.removeView(calvesGraph);
-                            mainLayout.removeView(calvesGraphTxt);
-                        } else {
+                        if(graphDraw!=null&&graphDraw.getString("calves").equals("true")) {
                             LineGraphSeries<DataPoint> calvesSeries = new LineGraphSeries<>(calvesData);
                             StaticLabelsFormatter calvesLabelsFormatter = new StaticLabelsFormatter(calvesGraph);
                             calvesLabelsFormatter.setHorizontalLabels(graphHor);
                             calvesGraph.getGridLabelRenderer().setLabelFormatter(calvesLabelsFormatter);
-                            calvesGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
-                            calvesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
-                            calvesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
-                            calvesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                             calvesSeries.setColor(Color.WHITE);
                             calvesGraph.addSeries(calvesSeries);
                             s+= "Икры, ";
@@ -618,6 +707,8 @@ public class Testing extends AppCompatActivity {
             }
             return rootView;
         }
+
+
     }
 
     /**
