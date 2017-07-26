@@ -8,17 +8,22 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.Time;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +40,11 @@ import java.util.Arrays;
 
 public class PersonalProfileActivity extends AppCompatActivity {
 
-    ImageView photo_view;
-    TextView name_text,age_text,weight_text,height_text,gender_text;
+    ProfileAntropometryFragment fragment;
+    FragmentManager manager;
+    FragmentTransaction transaction;
+    boolean antropometryFlag = true;
+    TextView name_text,age_text,weight_text,height_text,gender_text, wakeup_text, sleep_text;
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
     private Toolbar mToolbar;
@@ -46,13 +54,16 @@ public class PersonalProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personal_layout);
+        manager = getSupportFragmentManager();
+        fragment = new ProfileAntropometryFragment();
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setDisplayShowHomeEnabled(true);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
         editor = sharedPref.edit();
-        photo_view = (ImageView) findViewById(R.id.personal_photo);
         name_text = (TextView) findViewById(R.id.name_text);
         age_text = (TextView) findViewById(R.id.age_text);
+        sleep_text = (TextView) findViewById(R.id.sleep_time_text);
+        wakeup_text = (TextView) findViewById(R.id.wakeup_time_text);
         weight_text = (TextView) findViewById(R.id.weight_text);
         height_text = (TextView) findViewById(R.id.height_text);
         gender_text = (TextView) findViewById(R.id.gender_text);
@@ -72,10 +83,12 @@ public class PersonalProfileActivity extends AppCompatActivity {
         });
 
         setSupportActionBar(mToolbar);
-        //getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+      //  getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         try
         {
@@ -105,6 +118,8 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 age_text.setText("Возраст: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("age"));
                 weight_text.setText("Вес: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("weight"));
                 height_text.setText("Рост: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("height"));
+            wakeup_text.setText("Время пробуждения: "+JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup").substring(0,5));
+            sleep_text.setText("Среднее время сна: "+JSans.getJSONArray("userChars").getJSONObject(0).getString("avgdream"));
 
         }
         catch (Exception e)
@@ -116,21 +131,24 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
         if(imgFile.exists()){
 
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
-
-            ImageView myImage = (ImageView) findViewById(R.id.personal_photo);
-
-            myImage.setImageBitmap(myBitmap);
-
-
-
             try
             {
                 final Uri imageUri = Uri.fromFile(imgFile);
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 Drawable dr = Drawable.createFromStream(imageStream,"avatar.png");
-                mToolbar.setBackground(dr);
+
+                //dr.setAlpha(30);
+                ImageView imageView = (ImageView) mToolbar.findViewById(R.id.toolbar_image);
+
+
+                imageView.setImageDrawable(dr);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                //Есть 2 стула, один имэйджью обрезанный, с другой бэкграунд растянутый. Какой юзнешь, а какой с проекта пошлешь?
+
+
+
+               // mToolbar.setBackground(dr);
             }
             catch(Exception e)
             {
@@ -240,4 +258,25 @@ public class PersonalProfileActivity extends AppCompatActivity {
         }
         return "";
     }
+
+    public void profileAntrClc(View view) {
+        transaction = manager.beginTransaction();
+        try {
+            if (antropometryFlag) {
+                transaction.add(R.id.profile_antr_container, fragment);
+                antropometryFlag = false;
+
+            } else {
+                transaction.remove(fragment);
+                antropometryFlag = true;
+            }
+
+            transaction.commit();
+
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 }

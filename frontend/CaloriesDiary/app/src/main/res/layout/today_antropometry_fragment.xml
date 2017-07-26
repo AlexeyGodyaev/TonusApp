@@ -6,6 +6,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Обхват плеч" />
+
+    <EditText
+        android:id="@+id/edit_shoulders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="см" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Обхват левой руки" />
 
     <EditText
@@ -23,19 +36,6 @@
 
     <EditText
         android:id="@+id/edit_right_hand"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        android:hint="см" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Обхват плеч" />
-
-    <EditText
-        android:id="@+id/edit_shoulders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
