@@ -239,7 +239,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
             for(int i = 0; i < list.size() ; i++ )
             {
                 ActionItem item = list.get(i);
-             if(item.getName().contains(query))
+             if(item.getName().toLowerCase().contains(query.toLowerCase()))
              {
                  querylist.add(item);
              }

@@ -2,12 +2,14 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingLeft="15dp">
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingRight="15dp">
 
 
     <LinearLayout
@@ -21,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:textColor="#000000"
+            android:textColor="@android:color/holo_blue_light"
             android:text="Название:"
             android:layout_weight="0.8"/>
 
@@ -63,32 +65,24 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/goalTypeText"/>
 
-<LinearLayout
-    android:padding="5dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
 
     <TextView
-        android:padding="5dp"
         android:id="@+id/goalDateText"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
+        android:padding="5dp"
+        android:text="Продолжительность:"
         android:textColor="#000000"
-        android:text="Продолжительность:" />
+        android:textSize="18dp" />
 
 
     <EditText
-        android:layout_width="100dp"
-        android:layout_marginLeft="85dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:maxLength="3"
         android:id="@+id/editDaysCount"
         android:hint="Дни"/>
-</LinearLayout>
 
     <TextView
         android:padding="5dp"
@@ -102,6 +96,7 @@
     <SeekBar
         android:padding="5dp"
         android:id="@+id/periodsCountBar"
+
         android:max="1"
         android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="match_parent"

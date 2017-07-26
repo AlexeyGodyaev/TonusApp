@@ -4,7 +4,17 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+<Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Переход к конструктору блюд"
+    android:onClick="onClickFoodBuilder"/>
+    <TextView
+        android:id="@+id/error_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Error text:"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/food_recycler_view"
         android:scrollbars="vertical"

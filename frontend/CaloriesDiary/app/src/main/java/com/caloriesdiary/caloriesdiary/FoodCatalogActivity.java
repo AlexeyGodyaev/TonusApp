@@ -245,10 +245,13 @@ public class FoodCatalogActivity extends FragmentActivity {
 
     public JSONArray getFood() throws InterruptedException,
             ExecutionException{
-        GetFood get = new GetFood();
-        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
 
-        return get.get();
+        //RecycleFoodCatalogActivity.GetFood get = new RecycleFoodCatalogActivity.GetFood();
+        //get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
+
+
+       // return get.get();
+        return null;
     }
 
     private List<FoodItem> initData() {
