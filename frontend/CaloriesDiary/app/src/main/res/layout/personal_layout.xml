@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent">
   <RelativeLayout
       android:id="@+id/profile_relative"
@@ -20,6 +21,7 @@
       android:layout_below="@+id/toolbar"/>
     <TextView
         android:id="@+id/name_text"
+        android:paddingLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Имя:"
@@ -28,6 +30,7 @@
         android:layout_marginTop="10dp"/>
     <TextView
         android:id="@+id/gender_text"
+        android:paddingLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Пол:"
@@ -36,6 +39,7 @@
         android:layout_marginTop="10dp"/>
     <TextView
         android:id="@+id/age_text"
+        android:paddingLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Возраст:"
@@ -44,6 +48,7 @@
         android:layout_marginTop="10dp"/>
     <TextView
         android:id="@+id/weight_text"
+        android:paddingLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Вес:"
@@ -52,44 +57,76 @@
         android:layout_marginTop="10dp"/>
     <TextView
         android:id="@+id/height_text"
+        android:paddingLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Рост:"
         android:textSize="20dp"
         android:layout_below="@id/weight_text"
         android:layout_marginTop="10dp"/>
-    <RelativeLayout
-        android:id="@+id/layout_photo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_below="@+id/header_text"
-        android:layout_alignParentRight="true">
-      <ImageView
-          android:id="@+id/personal_photo"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:src="@drawable/image1"
-          android:layout_alignParentRight="true"
-          android:layout_marginRight="10dp"
-          android:layout_marginTop="10dp"
-          android:onClick="onClickEditPhoto"
-          />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/prof_antr_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="20dp"
+        android:layout_below="@id/height_text"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:elevation="20dp"
+        android:onClick="profileAntrClc"
+        android:text="Антропометрия" />
 
-    <Button
-        android:id="@+id/edit_btn"
+<LinearLayout
+    android:layout_below="@id/prof_antr_btn"
+    android:layout_width="match_parent"
+    android:paddingLeft="20dp"
+    android:orientation="vertical"
+    android:id="@+id/profile_antr_container"
+    android:layout_height="wrap_content">
+</LinearLayout>
+    <TextView
+        android:id="@+id/sleep_time_text"
+        android:paddingLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ред."
-        android:layout_below="@id/height_text"
-        android:layout_alignParentLeft="true"
-        android:onClick="onClickEditProfile"/>
+        android:textSize="20dp"
+        android:layout_below="@id/profile_antr_container"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/wakeup_time_text"
+        android:paddingLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_below="@id/sleep_time_text"
+        android:layout_marginTop="10dp"/>
+
     <Button
         android:id="@+id/delete_btn"
+        android:textColor="@android:color/white"
+        android:background="@android:color/holo_blue_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Задать цель"
-        android:layout_below="@+id/edit_btn"
-        android:onClick="onClickDeleteProfile"/>
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:onClick="onClickDeleteProfile"
+        android:layout_below="@+id/wakeup_time_text"
+        android:layout_marginLeft="230dp"
+       />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/header_text"
+        android:onClick="onClickEditProfile"
+        android:layout_marginLeft="280dp"
+        android:layout_marginBottom="22dp"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_input_add" />
   </RelativeLayout>
 </ScrollView>
