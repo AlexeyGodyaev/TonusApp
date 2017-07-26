@@ -1,6 +1,8 @@
 package com.caloriesdiary.caloriesdiary;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,7 +21,14 @@ public class ForgetPassActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forget_pass_layout);
-        mail_edit = (EditText) findViewById(R.id.mail_edit);
+        setTitle("Восстановление пароля");
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient));
+
+                mail_edit = (EditText) findViewById(R.id.mail_edit);
     }
     public void sendClick(View view) throws InterruptedException, ExecutionException
     {

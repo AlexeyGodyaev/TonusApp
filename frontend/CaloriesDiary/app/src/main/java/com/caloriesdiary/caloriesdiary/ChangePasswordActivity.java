@@ -20,7 +20,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         newpass = (EditText) findViewById(R.id.changepass_newpassword);
     }
 
-    public void cancelClc()
+    public void cancelClc(View view)
     {
 
     }

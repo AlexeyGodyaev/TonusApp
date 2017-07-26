@@ -4,6 +4,7 @@ package com.caloriesdiary.caloriesdiary;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
 
 import java.util.concurrent.ExecutionException;
 
-public class RegistrationActivity extends Activity {
+public class RegistrationActivity  extends AppCompatActivity {
 
     TextView error;
     EditText name, pass, passAgain, mail;
@@ -34,11 +35,18 @@ public class RegistrationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_layout);
 
-        error = findViewById(R.id.registrationErrorView);
-        name =  findViewById(R.id.editRegLogin);
-        pass =  findViewById(R.id.editRegPassword);
-        passAgain =  findViewById(R.id.editPasswordAgain);
-        mail =  findViewById(R.id.editMail);
+        setTitle("Восстановление пароля");
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient));
+
+        error = (TextView) findViewById(R.id.registrationErrorView);
+        name = (EditText) findViewById(R.id.editRegLogin);
+        pass =  (EditText) findViewById(R.id.editRegPassword);
+        passAgain = (EditText) findViewById(R.id.editPasswordAgain);
+        mail = (EditText) findViewById(R.id.editMail);
     }
 
 
