@@ -51,7 +51,7 @@ public class ActionsAdapter extends BaseAdapter {
         productName.setText(actionItem.getName());
 
         calories = view.findViewById(R.id.productCalories);
-        calories.setText(actionItem.getCalories().toString() +" kcal");
+        calories.setText(actionItem.getCalories().toString() +" ккал");
 
         return view;
     }

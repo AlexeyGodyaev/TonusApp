@@ -5,17 +5,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,11 +17,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.net.MalformedURLException;
 
 public class ControlService extends Service {
 
-    SharedPreferences sharedPref = null;
 
     public ControlService() {
 
@@ -75,6 +67,7 @@ public class ControlService extends Service {
     }
 
     public void checkCalories() {
+
             int sumFood = 0;
             int sumSport = 0;
 

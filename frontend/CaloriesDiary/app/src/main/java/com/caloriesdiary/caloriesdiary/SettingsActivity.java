@@ -1,7 +1,6 @@
 package com.caloriesdiary.caloriesdiary;
 
 import android.os.Bundle;
-import android.preference.Preference;
 import android.support.v7.app.AppCompatActivity;
 
 

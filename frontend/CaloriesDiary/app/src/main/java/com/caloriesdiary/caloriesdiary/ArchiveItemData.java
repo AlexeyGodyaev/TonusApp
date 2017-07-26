@@ -4,13 +4,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Calendar;
 
 public class ArchiveItemData extends AppCompatActivity{
     TextView goalName, goalType, desiredWeight, goalState, beginDate, endDate, liveType,  antropometryText;
@@ -103,7 +99,7 @@ public class ArchiveItemData extends AppCompatActivity{
     public void onAntropometryClc(View view){
         transaction = manager.beginTransaction();
 
-        if(flag == true){
+        if(flag){
             transaction.add(R.id.antropometry_archive, fragment); flag = false;
 
             }
