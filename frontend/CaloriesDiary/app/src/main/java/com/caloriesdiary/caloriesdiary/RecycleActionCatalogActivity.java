@@ -324,7 +324,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
     }
     public  String getAction() throws InterruptedException, ExecutionException {
         GetActions get = new GetActions();
-        get.execute("http://94.130.12.179/activities/get_activities");
+        get.execute("http://caloriesdiary.ru/activities/get_activities");
 
         return get.get().toString();
     }
