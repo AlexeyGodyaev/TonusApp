@@ -33,7 +33,7 @@ public class ForgetPassActivity extends AppCompatActivity {
 
         String args[] = new String[3];
 
-        args[0] = "http://94.130.12.179/users/forgot_password";  //аргументы для пост запроса
+        args[0] = "http://caloriesdiary.ru/users/forgot_password";  //аргументы для пост запроса
         args[1] = mail_edit.getText().toString();
 
 

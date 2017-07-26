@@ -96,7 +96,7 @@ public class TodayActivity extends AppCompatActivity {
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
 
-        args[0] = "http://94.130.12.179/calories/get_per_day";
+        args[0] = "http://caloriesdiary.ru/calories/get_per_day";
         args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
 
 
@@ -234,7 +234,7 @@ public class TodayActivity extends AppCompatActivity {
         try {
             Post post = new Post();
             String s[] = new String[2];
-            s[0] = "http://94.130.12.179/users/get_goal";
+            s[0] = "http://caloriesdiary.ru/users/get_goal";
             s[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
 
             post.execute(s);

@@ -60,7 +60,7 @@ public class SetAGoal extends AppCompatActivity {
         periodsCount = (SeekBar) findViewById(R.id.periodsCountBar);
         periodsCount.setEnabled(false);
 //-------------- данные пользователя для отправки
-        s1[0] = "http://94.130.12.179/users/save_user_chars";
+        s1[0] = "http://caloriesdiary.ru/users/save_user_chars";
         s1[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
         s1[2] = getIntent().getStringExtra("realNAme");
         s1[5] = getIntent().getStringExtra("sex");
@@ -165,7 +165,7 @@ public class SetAGoal extends AppCompatActivity {
 
                 Post getGoal = new Post();
                 String getParams[] = new String[2];
-                getParams[0] = "http://94.130.12.179/users/get_goal";
+                getParams[0] = "http://caloriesdiary.ru/users/get_goal";
                 getParams[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
 
                 getGoal.execute(getParams);
@@ -174,7 +174,7 @@ public class SetAGoal extends AppCompatActivity {
                 JSONObject jsonObject = js.getJSONObject("userGoal");
 
 
-                saveGoal[0] = "http://94.130.12.179/users/save_goal_archive";
+                saveGoal[0] = "http://caloriesdiary.ru/users/save_goal_archive";
                 saveGoal[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
                 saveGoal[2] = jsonObject.getString("desired_weight");
                 saveGoal[3] = jsonObject.getString("period");
@@ -225,7 +225,7 @@ public class SetAGoal extends AppCompatActivity {
 
         Post post = new Post();
         try {
-        s[0] = "http://94.130.12.179/users/save_goal";
+        s[0] = "http://caloriesdiary.ru/users/save_goal";
         s[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
         s[7] = String.valueOf(calendar.get(Calendar.YEAR))+"-"
                 +String.valueOf(calendar.get(Calendar.MONTH)+1)+"-"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
