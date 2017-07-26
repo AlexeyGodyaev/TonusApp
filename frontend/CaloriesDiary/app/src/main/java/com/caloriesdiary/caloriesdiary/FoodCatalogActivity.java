@@ -1,8 +1,6 @@
 package com.caloriesdiary.caloriesdiary;
 
 
-
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,7 +12,6 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -28,15 +25,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -63,7 +56,7 @@ public class FoodCatalogActivity extends FragmentActivity {
         filterFragment = new FilterFragment();
         manager = getSupportFragmentManager();
 
-        srch = (EditText) findViewById(R.id.srchFood);
+        srch = findViewById(R.id.srchFood);
         srch.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -75,8 +68,8 @@ public class FoodCatalogActivity extends FragmentActivity {
             }
         });
 
-        listView = (ListView) findViewById(R.id.foodList);
-        list = new ArrayList<FoodItem>();
+        listView = findViewById(R.id.foodList);
+        list = new ArrayList<>();
         offset = 0;
         final FoodAdapter adapter = new FoodAdapter(this, initData());
         listView.setAdapter(adapter);
@@ -103,9 +96,9 @@ public class FoodCatalogActivity extends FragmentActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l) {
-                final TextView txtName = (TextView) view.findViewById(R.id.productName);
-                TextView txtBJU = (TextView) view.findViewById(R.id.bJU);
-                final TextView txtCalories = (TextView) view.findViewById(R.id.productCalories);
+                final TextView txtName =  view.findViewById(R.id.productName);
+                TextView txtBJU = view.findViewById(R.id.bJU);
+                final TextView txtCalories = view.findViewById(R.id.productCalories);
                 final TextView dialogBJU = new TextView(FoodCatalogActivity.this);
                 final TextView dialogCalories = new TextView(FoodCatalogActivity.this);
 
@@ -241,7 +234,7 @@ public class FoodCatalogActivity extends FragmentActivity {
     public void onClcFilterButton(View view){
         transaction = manager.beginTransaction();
 
-        if(flag == true){
+        if(flag){
             transaction.add(R.id.filterFragmentFood, filterFragment); flag = false;}
         else {transaction.remove(filterFragment); flag = true;}
 
@@ -262,30 +255,23 @@ public class FoodCatalogActivity extends FragmentActivity {
 
         JSONArray resp = null;
         String foodName = null;
-        Float b=new Float(0), j=new Float(0), u=new Float(0), calories=new Float(0);
+        Float b=0.0f, j=0.0f, u=0.0f, calories=0.0f;
         Integer id=0;
 
         try {
             resp = getFood();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         if (resp != null)
             for(int i = 0; i<resp.length(); i++){
                 try {
-                    Integer i1 = new Integer(resp.getJSONObject(i).getString("category_id"));
-                    id=i1;
+                    id = Integer.valueOf(resp.getJSONObject(i).getString("category_id"));
                     foodName = resp.getJSONObject(i).getString("name");
-                    Float f1 = new Float(resp.getJSONObject(i).getString("protein"));
-                    b = f1;
-                    f1 = new Float(resp.getJSONObject(i).getString("fats"));
-                    j=f1;
-                    f1 = new Float(resp.getJSONObject(i).getString("carbs"));
-                    u=f1;
-                    f1 = new Float(resp.getJSONObject(i).getString("calories"));
-                    calories=f1;
+                    b = Float.valueOf(resp.getJSONObject(i).getString("protein"));
+                    j= Float.valueOf(resp.getJSONObject(i).getString("fats"));
+                    u=Float.valueOf(resp.getJSONObject(i).getString("carbs"));
+                    calories=Float.valueOf(resp.getJSONObject(i).getString("calories"));
                 } catch (NumberFormatException e) {
                     System.err.println("Неверный формат строки!");
                 } catch (JSONException jEx){

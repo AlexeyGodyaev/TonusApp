@@ -22,7 +22,6 @@ import java.util.concurrent.ExecutionException;
 public class ArchiveActivity extends AppCompatActivity {
 
     SharedPreferences sharedPref = null;
-    SharedPreferences.Editor editor;
     String endDate [];
     JSONArray jArr;
 
@@ -39,7 +38,6 @@ public class ArchiveActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
-        editor = sharedPref.edit();
 
         setTitle("АРХИВ");
 
@@ -115,16 +113,14 @@ public class ArchiveActivity extends AppCompatActivity {
     }
 
     private List<ArchiveItem> initData() {
-        List<ArchiveItem> list = new ArrayList<ArchiveItem>();
+        List<ArchiveItem> list = new ArrayList<>();
         String resp = null;
         String actionName, date;
 
         try {
             resp = getAction();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+
         }
         if (resp != null)
             try {

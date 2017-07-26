@@ -5,9 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -47,14 +45,14 @@ public class FoodAdapter extends BaseAdapter{
         FoodItem foodItem = getFoodItem(i);
 
         TextView productName, bJU, calories;
-        productName = (TextView) view.findViewById(R.id.productName);
+        productName = view.findViewById(R.id.productName);
         productName.setText(foodItem.getName());
 
-        bJU = (TextView) view.findViewById(R.id.bJU);
+        bJU = view.findViewById(R.id.bJU);
         bJU.setText(foodItem.getB().toString()+"/"+foodItem.getJ().toString()+"/"+foodItem.getU().toString());
 
-        calories = (TextView) view.findViewById(R.id.productCalories);
-        calories.setText(foodItem.getCalories().toString() + " kcal");
+        calories = view.findViewById(R.id.productCalories);
+        calories.setText(foodItem.getCalories().toString() + " ккал");
 
         return view;
     }

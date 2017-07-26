@@ -3,7 +3,6 @@ package com.caloriesdiary.caloriesdiary;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
@@ -19,19 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -49,7 +42,7 @@ public class ActionsCatalogActivity extends FragmentActivity {
         final LinearLayout lp = new LinearLayout(this);
         lp.setOrientation(LinearLayout.VERTICAL);
 
-        srch = (EditText) findViewById(R.id.srchAction);
+        srch = findViewById(R.id.srchAction);
         srch.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -61,28 +54,28 @@ public class ActionsCatalogActivity extends FragmentActivity {
             }
         });
 
-        listView = (ListView) findViewById(R.id.actionsList);
+        listView =  findViewById(R.id.actionsList);
 
         ActionsAdapter adapter = new ActionsAdapter(this, initData());
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                JSONObject jsn = new JSONObject();
-                final TextView txtName = (TextView) view.findViewById(R.id.productName);
-                final TextView txtCalories = (TextView) view.findViewById(R.id.productCalories);
+
+                final TextView txtName =  view.findViewById(R.id.productName);
+                final TextView txtCalories = view.findViewById(R.id.productCalories);
                 String kcalstr = txtCalories.getText().toString().substring(0, txtCalories.getText().toString().indexOf('.'));
                 final double kcal = Double.parseDouble(kcalstr);
                 final TextView kcaltextview = new TextView(ActionsCatalogActivity.this);
-                kcaltextview.setText(kcalstr + " kcal");
+                kcaltextview.setText(kcalstr + " ккал");
                 final AlertDialog.Builder builder = new AlertDialog.Builder(ActionsCatalogActivity.this);
                 builder.setTitle(txtName.getText().toString())
                         .setCancelable(false)
                         .setNegativeButton("Отмена",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        if (((LinearLayout) lp).getChildCount() > 0)
-                                            ((LinearLayout) lp).removeAllViews();
+                                        if (lp.getChildCount() > 0)
+                                            lp.removeAllViews();
                                         ((ViewManager) lp.getParent()).removeView(lp);
 
                                         dialog.cancel();
@@ -128,8 +121,8 @@ public class ActionsCatalogActivity extends FragmentActivity {
 
                                         }
 
-                                        if (((LinearLayout) lp).getChildCount() > 0)
-                                            ((LinearLayout) lp).removeAllViews();
+                                        if ( lp.getChildCount() > 0)
+                                            lp.removeAllViews();
                                         ((ViewManager) lp.getParent()).removeView(lp);
 
                                     }
@@ -148,14 +141,14 @@ public class ActionsCatalogActivity extends FragmentActivity {
                             if (time < 1440) {
                                 newkcal = kcal * time / 60;
                                 //Toast.makeText(getApplicationContext(),String.valueOf(newkcal),Toast.LENGTH_LONG).show();
-                                kcaltextview.setText(newkcal + " kcal");
+                                kcaltextview.setText(newkcal + " ккал");
                             } else {
                                 Toast.makeText(getApplicationContext(), "Не пизди", Toast.LENGTH_LONG).show();
                                 input.setText("0");
                             }
 
                         } else {
-                            kcaltextview.setText(newkcal + " kcal");
+                            kcaltextview.setText(newkcal + " ккал");
 
                         }
 
@@ -184,28 +177,26 @@ public class ActionsCatalogActivity extends FragmentActivity {
         GetActions get = new GetActions();
         get.execute("http://caloriesdiary.ru/activities/get_activities");
 
-        return get.get().toString();
+        return get.get();
     }
 
     private List<ActionItem> initData() {
-        List<ActionItem> list = new ArrayList<ActionItem>();
+        List<ActionItem> list = new ArrayList<>();
         String resp = null;
         String actionName;
-        Float calories=new Float(0);
+        Float calories=0.0f;
         Integer id=0;
 
         try {
             resp = getAction();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+
         }
         if (resp != null)
             while(resp.length()>10){
                 try {
-                    Integer f1 = new Integer(resp.substring(0,resp.indexOf(',')));
-                    id=f1;
+                    id=Integer.valueOf(resp.substring(0,resp.indexOf(',')));
+
                 } catch (NumberFormatException e) {
                     System.err.println("Неверный формат строки!");
                 }
@@ -215,8 +206,7 @@ public class ActionsCatalogActivity extends FragmentActivity {
                 resp=resp.substring(resp.indexOf(',')+1);
 
                 try {
-                    Float f1 = new Float(resp.substring(0,resp.indexOf(';')));
-                    calories=f1;
+                    calories = Float.valueOf(resp.substring(0,resp.indexOf(';')));
                 } catch (NumberFormatException e) {
                     System.err.println("Неверный формат строки!");
                 }
