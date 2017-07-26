@@ -7,9 +7,9 @@
       android:layout_width="wrap_content"
       android:layout_height="match_parent">
     <include
-        android:id="@+id/toolbar"
-        layout="@layout/profiletoolbar"
-        />
+      android:id="@+id/toolbar"
+      layout="@layout/profiletoolbar"
+      />
   <TextView
       android:id="@+id/header_text"
       android:layout_width="wrap_content"
@@ -118,15 +118,15 @@
        />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:id="@+id/editProfileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@android:color/holo_blue_light"
         android:layout_alignBottom="@+id/header_text"
         android:onClick="onClickEditProfile"
         android:layout_marginLeft="280dp"
         android:layout_marginBottom="22dp"
         android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@mipmap/ic_mode_edit_white_24dp" />
   </RelativeLayout>
 </ScrollView>

@@ -168,7 +168,16 @@ public class StatActivity extends AppCompatActivity {
                                 LinearLayout.LayoutParams.WRAP_CONTENT));
                         lp.addView(calvesCheck, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT));
-
+                            massCheck.setChecked(true);
+                            eatedCheck.setChecked(true);
+                            bernCheck.setChecked(true);
+                            shouldersCheck.setChecked(true);
+                            handsCheck.setChecked(true);
+                            chestCheck.setChecked(true);
+                            waistCheck.setChecked(true);
+                            buttCheck.setChecked(true);
+                            legsCheck.setChecked(true);
+                            calvesCheck.setChecked(true);
 
                             File f = new File(getActivity().getCacheDir(), "Graph_params.txt");
                             if (f.exists()) {
@@ -178,29 +187,29 @@ public class StatActivity extends AppCompatActivity {
                                 inObject.close();
                                 JSONObject jsn = new JSONObject(text);
 
-                                if (jsn.getString("mass").equals("true"))
-                                    massCheck.setChecked(true);
-                                if (jsn.getString("eated").equals("true"))
-                                    eatedCheck.setChecked(true);
-                                if (jsn.getString("bern").equals("true"))
-                                    bernCheck.setChecked(true);
-                                if (jsn.getString("shoulders").equals("true"))
-                                    shouldersCheck.setChecked(true);
-                                if (jsn.getString("hands").equals("true"))
-                                    handsCheck.setChecked(true);
-                                if (jsn.getString("chest").equals("true"))
-                                    chestCheck.setChecked(true);
-                                if (jsn.getString("waist").equals("true"))
-                                    waistCheck.setChecked(true);
-                                if (jsn.getString("butt").equals("true"))
-                                    buttCheck.setChecked(true);
-                                if (jsn.getString("legs").equals("true"))
-                                    legsCheck.setChecked(true);
-                                if (jsn.getString("calves").equals("true"))
-                                    calvesCheck.setChecked(true);
+                                if (jsn.getString("mass").equals("false"))
+                                    massCheck.setChecked(false);
+                                if (jsn.getString("eated").equals("false"))
+                                    eatedCheck.setChecked(false);
+                                if (jsn.getString("bern").equals("false"))
+                                    bernCheck.setChecked(false);
+                                if (jsn.getString("shoulders").equals("false"))
+                                    shouldersCheck.setChecked(false);
+                                if (jsn.getString("hands").equals("false"))
+                                    handsCheck.setChecked(false);
+                                if (jsn.getString("chest").equals("false"))
+                                    chestCheck.setChecked(false);
+                                if (jsn.getString("waist").equals("false"))
+                                    waistCheck.setChecked(false);
+                                if (jsn.getString("butt").equals("false"))
+                                    buttCheck.setChecked(false);
+                                if (jsn.getString("legs").equals("false"))
+                                    legsCheck.setChecked(false);
+                                if (jsn.getString("calves").equals("false"))
+                                    calvesCheck.setChecked(false);
 
                                 f.createNewFile();
-
+                            }
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
                         builder.setTitle("Выберите отображаемые графики")
@@ -260,7 +269,7 @@ public class StatActivity extends AppCompatActivity {
                         builder.setView(lp);
                         AlertDialog alert = builder.create();
                         alert.show();
-                            }
+
                         }  catch (Exception e){
                             Toast.makeText(getActivity().getApplicationContext(), e.toString() , Toast.LENGTH_LONG).show();
                         }

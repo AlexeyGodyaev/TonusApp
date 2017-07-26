@@ -30,9 +30,9 @@
         <activity android:name=".ArchiveActivity" />
         <activity android:name=".ArchiveItemData" />
         <activity android:name=".PersonalProfileEditActivity"
-            android:theme="@style/AppTheme.NoActionBar">
 
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity android:name=".PersonalProfileActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
