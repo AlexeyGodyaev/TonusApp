@@ -5,14 +5,18 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,18 +25,20 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 
 public class PersonalProfileEditActivity extends AppCompatActivity{
-    Button ok_btn;
     Spinner spinner;
     TextView name,age,height,weight,sleep,awake;
     RadioButton male,female;
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
     String awakestr;
+    private Toolbar mToolbar;
 
     int DIALOG_TIME = 1;
     int myHour = 14;
@@ -42,9 +48,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personal_edit_layout);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ok_btn = (Button) findViewById(R.id.ok_btn);
+
         spinner = (Spinner) findViewById(R.id.activity_spinner);
         male = (RadioButton) findViewById(R.id.gender_male);
         female = (RadioButton) findViewById(R.id.gender_female);
@@ -55,10 +59,17 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         sleep = (EditText) findViewById(R.id.sleep_edit);
         awake = (TextView) findViewById(R.id.awake_edit);
 
-
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_edit_profile);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
         editor = sharedPref.edit();
-
+try {
+    setSupportActionBar(mToolbar);
+    getSupportActionBar().setDisplayShowHomeEnabled(false);
+    getSupportActionBar().setDisplayShowTitleEnabled(true);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+}catch (Exception e){
+    Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+}
         try
         {
             Post log = new Post();
@@ -118,6 +129,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         {
             Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
         }
+
        // InitPreference();
     }
     @Override

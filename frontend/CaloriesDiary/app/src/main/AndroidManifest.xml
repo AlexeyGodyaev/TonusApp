@@ -29,7 +29,8 @@
         <activity android:name=".SetAGoal" />
         <activity android:name=".ArchiveActivity" />
         <activity android:name=".ArchiveItemData" />
-        <activity android:name=".PersonalProfileEditActivity" />
+        <activity android:name=".PersonalProfileEditActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".PersonalProfileActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
