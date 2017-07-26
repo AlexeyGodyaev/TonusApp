@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/tools">
 
    <item
-        android:id="@+id/menu_refresh"
+        android:id="@+id/menu_settings"
        android:title="Сброс"
        android:icon="@mipmap/ic_cached_black_24dp"
         app:showAsAction="always"/>
+
 
     <item
         android:id="@+id/menu_search"
@@ -14,5 +15,10 @@
         android:icon="@mipmap/ic_search_black_24dp"
         appcompat:actionViewClass="android.support.v7.widget.SearchView"
         appcompat:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_refresh"
+        android:title="Сброс"
+        android:icon="@mipmap/ic_cached_black_24dp"
+        app:showAsAction="ifRoom"/>
 
 </menu>
