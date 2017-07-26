@@ -253,7 +253,7 @@ public class FoodCatalogActivity extends FragmentActivity {
     public JSONArray getFood() throws InterruptedException,
             ExecutionException{
         GetFood get = new GetFood();
-        get.execute("http://94.130.12.179/food/get_food",String.valueOf(offset));
+        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
 
         return get.get();
     }

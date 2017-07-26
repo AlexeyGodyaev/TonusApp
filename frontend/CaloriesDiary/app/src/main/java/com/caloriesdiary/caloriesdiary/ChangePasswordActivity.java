@@ -33,7 +33,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
             String args[] = new String[4];
 
-            args[0] = "http://94.130.12.179/users/change_password";  //аргументы для пост запроса
+            args[0] = "http://caloriesdiary.ru/users/change_password";  //аргументы для пост запроса
             args[1] = login.getText().toString();
             args[2] = oldpass.getText().toString();
             args[3] = newpass.getText().toString();
