@@ -4,6 +4,7 @@ package com.caloriesdiary.caloriesdiary;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,15 +12,12 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import java.util.concurrent.ExecutionException;
 
-public class RegistrationActivity extends Activity {
+public class RegistrationActivity  extends AppCompatActivity {
 
     TextView error;
     EditText name, pass, passAgain, mail;
@@ -37,27 +35,27 @@ public class RegistrationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_layout);
 
-        error = findViewById(R.id.registrationErrorView);
-        //regBtn = (Button) findViewById(R.id.registrationButton);
-        name =  findViewById(R.id.editRegLogin);
-        pass =  findViewById(R.id.editRegPassword);
-        passAgain =  findViewById(R.id.editPasswordAgain);
-        mail =  findViewById(R.id.editMail);
+        setTitle("Восстановление пароля");
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient));
+
+        error = (TextView) findViewById(R.id.registrationErrorView);
+        name = (EditText) findViewById(R.id.editRegLogin);
+        pass =  (EditText) findViewById(R.id.editRegPassword);
+        passAgain = (EditText) findViewById(R.id.editPasswordAgain);
+        mail = (EditText) findViewById(R.id.editMail);
     }
 
-    public String hashPass(String pass) throws NoSuchAlgorithmException, UnsupportedEncodingException
+
+    public void cancelRegClc(View view)
     {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hashData = digest.digest(pass.getBytes("UTF-8"));
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < hashData.length; i++) {
-            sb.append(Integer.toString((hashData[i] & 0xff) + 0x100, 16).substring(1));
-        }
-
-        Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
-
-        return sb.toString();
+        Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     public void regClc(View view) throws InterruptedException, ExecutionException {
@@ -74,9 +72,8 @@ public class RegistrationActivity extends Activity {
                         String args[] = new String[4];
                         args[0] = "http://94.130.12.179/users/register";
                         args[1] = name.getText().toString();
-                        args[2] = hashPass(pass.getText().toString());
+                        args[2] = pass.getText().toString();
                         args[3] = mail.getText().toString();
-
 
                         Post sendReg = new Post();
                         sendReg.execute(args);

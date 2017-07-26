@@ -19,6 +19,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
         oldpass = (EditText) findViewById(R.id.changepass_oldpassword);
         newpass = (EditText) findViewById(R.id.changepass_newpassword);
     }
+
+    public void cancelClc(View view)
+    {
+
+    }
+
     public void onClick(View view)
     {
         try

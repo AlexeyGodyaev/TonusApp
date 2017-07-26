@@ -220,6 +220,10 @@ public class AuthorizationActivity extends Activity {
                 startActivity(intent);
 
                 //Запуск службы ControlService (Каждые 5 часов)
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(System.currentTimeMillis());
+                calendar.set(Calendar.HOUR_OF_DAY, 14);
+
                 Intent startServiceIntent = new Intent(this,
                         ControlService.class);
                 PendingIntent startWebServicePendingIntent = PendingIntent.getService(this, 0,
@@ -228,7 +232,7 @@ public class AuthorizationActivity extends Activity {
                 AlarmManager alarmManager = (AlarmManager) this
                         .getSystemService(Context.ALARM_SERVICE);
                 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                        System.currentTimeMillis(),System.currentTimeMillis() + 1000*60*60*5,
+                        System.currentTimeMillis(),calendar.getTimeInMillis(),
                         startWebServicePendingIntent);
 
             } else if (status == 0) {
