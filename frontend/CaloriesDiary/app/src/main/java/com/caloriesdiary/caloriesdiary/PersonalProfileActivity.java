@@ -2,35 +2,24 @@ package com.caloriesdiary.caloriesdiary;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.format.Time;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -127,7 +116,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
         }
         File imgFile = new  File("/data/user/0/com.caloriesdiary.caloriesdiary/cache/avatar.png");
-        String imgPath = "/data/user/0/com.caloriesdiary.caloriesdiary/cache/avatar.png";
+        //String imgPath = "/data/user/0/com.caloriesdiary.caloriesdiary/cache/avatar.png";
 
         if(imgFile.exists()){
 
@@ -138,7 +127,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 Drawable dr = Drawable.createFromStream(imageStream,"avatar.png");
 
                 //dr.setAlpha(30);
-                ImageView imageView = (ImageView) mToolbar.findViewById(R.id.toolbar_image);
+                ImageView imageView = mToolbar.findViewById(R.id.toolbar_image);
 
 
                 imageView.setImageDrawable(dr);
@@ -215,16 +204,15 @@ public class PersonalProfileActivity extends AppCompatActivity {
                         mToolbar.setBackground(dr);
                        //final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                         //photo_view.setImageBitmap(selectedImage);
-                        SavePicture(this.getCacheDir().toString(),dr,imageUri);
+                        SavePicture(this.getCacheDir().toString(),imageUri);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
                 }
         }}
 
-    private String SavePicture(String folderToSave, Drawable drawable, Uri uri)
+    private String SavePicture(String folderToSave, Uri uri)
     {
-        OutputStream fOut = null;
 
         try {
             File file = new File(folderToSave,"avatar.png"); // создать уникальное имя для файла

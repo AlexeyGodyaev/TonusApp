@@ -1,8 +1,6 @@
 package com.caloriesdiary.caloriesdiary;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,7 +9,6 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
 
 
@@ -59,7 +56,7 @@ public class ForgetPassActivity extends AppCompatActivity {
         }
         catch (Exception e)
         {
-
+            Toast.makeText(getApplicationContext(),"Сервис не доступен",Toast.LENGTH_LONG).show();
         }
     }
 
