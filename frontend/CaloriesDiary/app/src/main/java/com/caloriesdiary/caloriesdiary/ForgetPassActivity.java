@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
 
 
@@ -19,7 +18,14 @@ public class ForgetPassActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forget_pass_layout);
-        mail_edit = (EditText) findViewById(R.id.mail_edit);
+        setTitle("Восстановление пароля");
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient));
+
+                mail_edit = (EditText) findViewById(R.id.mail_edit);
     }
     public void sendClick(View view) throws InterruptedException, ExecutionException
     {
@@ -27,17 +33,15 @@ public class ForgetPassActivity extends AppCompatActivity {
 
         String args[] = new String[3];
 
-        args[0] = "http://94.130.12.179/users/forgot_password";  //аргументы для пост запроса
+        args[0] = "http://caloriesdiary.ru/users/forgot_password";  //аргументы для пост запроса
         args[1] = mail_edit.getText().toString();
 
 
         log.execute(args); // вызываем запрос
         JSONObject JSans = log.get();
-        //Toast.makeText(getApplicationContext(), log.get().toString(),Toast.LENGTH_LONG).show();
+
         try
         {
-
-
             if(JSans.getInt("status") == 1)
             {
                 Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
@@ -52,7 +56,15 @@ public class ForgetPassActivity extends AppCompatActivity {
         }
         catch (Exception e)
         {
-
+            Toast.makeText(getApplicationContext(),"Сервис не доступен",Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void cancelClc(View view)
+    {
+        Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

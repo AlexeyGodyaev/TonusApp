@@ -32,7 +32,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
 
             String args[] = new String[3];
 
-            args[0] = "http://94.130.12.179/users/delete";  //аргументы для пост запроса
+            args[0] = "http://caloriesdiary.ru/users/delete";  //аргументы для пост запроса
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
             args[2] = pass.getText().toString();
 

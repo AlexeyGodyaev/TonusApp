@@ -108,7 +108,7 @@ public class ArchiveActivity extends AppCompatActivity {
     public  String getAction() throws InterruptedException, ExecutionException {
         Post getArchive = new Post();
         String s [] = new String[2];
-        s[0]="http://94.130.12.179/users/get_goal_archive"; s[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+        s[0]="http://caloriesdiary.ru/users/get_goal_archive"; s[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
         getArchive.execute(s);
 
         return getArchive.get().toString();

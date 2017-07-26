@@ -16,11 +16,12 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         public TextView nameview,dateview;
         public ViewHolder(View view) {
             super(view);
-            nameview = (TextView) view.findViewById(R.id.archive_item_name);
-            dateview = (TextView) view.findViewById(R.id.archive_item_date);
+            nameview =  view.findViewById(R.id.archive_item_name);
+            dateview =  view.findViewById(R.id.archive_item_date);
             view.setOnClickListener(this);
         }
         @Override
@@ -49,10 +50,10 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
     @Override
     public void onBindViewHolder(ArchiveAdapter.ViewHolder holder, int position) {
         ArchiveItem actionItem = listitem.get(position);
-        if (actionItem.getName().toString().length()>15)
-            holder.nameview.setText(actionItem.getName().toString().substring(0,15) + "...");
-        else holder.nameview.setText(actionItem.getName().toString());
-        holder.dateview.setText(actionItem.getDate().toString());
+        if (actionItem.getName().length()>15)
+            holder.nameview.setText(actionItem.getName().substring(0,15) + "...");
+        else holder.nameview.setText(actionItem.getName());
+        holder.dateview.setText(actionItem.getDate());
     }
 
     @Override

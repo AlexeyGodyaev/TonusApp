@@ -47,9 +47,7 @@ public class MainActivity extends AppCompatActivity
         currentTime = (TextView) findViewById(R.id.main_time_textview);
         calendar = Calendar.getInstance();
         currentTime.setText(calendar.get(Calendar.DAY_OF_MONTH)+" "+getMonth(calendar.get(Calendar.MONTH))+" "+calendar.get(Calendar.YEAR));
-        //id_text_view = (TextView) findViewById(R.id.id_text_view);
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
-        editor = sharedPref.edit();
         manager = getSupportFragmentManager();
         todayfragment = new MainTodayFragment();
         diaryfragment = new MainDiaryFragment();
@@ -86,8 +84,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View v = navigationView.getHeaderView(0);
-        userMail = (TextView) v.findViewById(R.id.head_usermail_text);
-        userName = (TextView) v.findViewById(R.id.head_username_text);
+        userMail =  v.findViewById(R.id.head_usermail_text);
+        userName =  v.findViewById(R.id.head_username_text);
         userMail.setText(sharedPref.getString("userMail", "Нет данных"));
         userName.setText(sharedPref.getString("userName", "Нет данных"));
 

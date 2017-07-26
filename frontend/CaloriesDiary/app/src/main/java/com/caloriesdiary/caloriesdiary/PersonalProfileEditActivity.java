@@ -2,21 +2,15 @@ package com.caloriesdiary.caloriesdiary;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,8 +19,6 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -211,8 +203,7 @@ try {
     }
     protected Dialog onCreateDialog(int id) {
         if (id == DIALOG_TIME) {
-            TimePickerDialog tpd = new TimePickerDialog(this, myCallBack, myHour, myMinute, true);
-            return tpd;
+            return  new TimePickerDialog(this, myCallBack, myHour, myMinute, true);
         }
         return super.onCreateDialog(id);
     }

@@ -15,6 +15,7 @@ import android.view.View;
 
 import android.widget.EditText;
 
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ public class TodayActivity extends AppCompatActivity {
 
     int sum, sum1;
 
-    TextView todayDate, dayOfTheWeek, countOfDays, targetText, todayFoodBtn, activityBtn, antropometry, foodCalories, sportCalories, normCalories, PFCtext;
+    TextView todayDate, targetText, todayFoodBtn, dayNote, activityBtn, antropometry, foodCalories, sportCalories, normCalories, carbs, fats, protein;
     private TodayAntropometryFragment fragment;
     private FragmentManager manager;
     FragmentTransaction transaction;
@@ -57,10 +58,10 @@ public class TodayActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
     Calendar calendar;
     EditText editMass;
-    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true;
+    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, FABFlag=false;
 
     String[] args = new String[2];
-
+    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +91,12 @@ public class TodayActivity extends AppCompatActivity {
         fragment = new TodayAntropometryFragment();
 
         editMass = (EditText) findViewById(R.id.edit_mass);
+        dayNote = (TextView) findViewById(R.id.DayNote);
 
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
 
-        args[0] = "http://94.130.12.179/calories/get_per_day";
+        args[0] = "http://caloriesdiary.ru/calories/get_per_day";
         args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
 
 
@@ -102,14 +104,15 @@ public class TodayActivity extends AppCompatActivity {
         todayFoodBtn = (TextView) findViewById(R.id.todayFoodBtn);
 
         todayDate = (TextView) findViewById(R.id.todayDate);
-        dayOfTheWeek = (TextView) findViewById(R.id.todayDayOfTheWeek);
-        countOfDays = (TextView) findViewById(R.id.dayNumber);
         targetText = (TextView) findViewById(R.id.targetTextView);
         foodCalories = (TextView) findViewById(R.id.foodCalories);
         sportCalories = (TextView) findViewById(R.id.sportCalories);
-        normCalories = (TextView) findViewById(R.id.normaCalories);
-        PFCtext = (TextView) findViewById(R.id.PFCtext);
-
+        normCalories = (TextView) findViewById(R.id.normaCaloriesText);
+        protein = (TextView) findViewById(R.id.ProteinText);
+        fats = (TextView) findViewById(R.id.FatsText);
+        carbs = (TextView) findViewById(R.id.CarbsText);
+        linearLayout = (LinearLayout) findViewById(R.id.setting_layout);
+        linearLayout.setVisibility(View.INVISIBLE);
 
         try {
             JSONObject jsn;
@@ -130,6 +133,7 @@ public class TodayActivity extends AppCompatActivity {
                                 "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
 
                     editMass.setText(todayParams.getJSONObject(todayParams.length() - 1).getString("mass"));
+                    dayNote.setText(todayParams.getJSONObject(todayParams.length() - 1).getString("note"));
                 }
             }
         } catch (Exception e) {
@@ -230,7 +234,7 @@ public class TodayActivity extends AppCompatActivity {
         try {
             Post post = new Post();
             String s[] = new String[2];
-            s[0] = "http://94.130.12.179/users/get_goal";
+            s[0] = "http://caloriesdiary.ru/users/get_goal";
             s[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
 
             post.execute(s);
@@ -243,12 +247,19 @@ public class TodayActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
 
-        todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "е " + getMonth(calendar.get(Calendar.MONTH)));
-        dayOfTheWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
-
+        todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
 
     }
 
+    public void onMainFABClc(View view){
+        if(FABFlag){
+            linearLayout.setVisibility(View.INVISIBLE);
+            FABFlag = false;
+        } else {
+            linearLayout.setVisibility(View.VISIBLE);
+            FABFlag = true;
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -258,8 +269,11 @@ public class TodayActivity extends AppCompatActivity {
 
         try {
             JSONObject resp = log.get();
-            normCalories.setText("Суточная норма: " + resp.getInt("result") + "ккал");
-            PFCtext.setText("БЖУ: " + resp.getInt("protein") + " / " + resp.getInt("fats") + " / " + resp.getInt("carbs"));
+            normCalories.setText(resp.getInt("result") + " ккал");
+
+            protein.setText(resp.getInt("protein") + " г.");
+            fats.setText(resp.getInt("fats")+ " г.");
+            carbs.setText(resp.getInt("carbs")+ " г.");
 
             File f = new File(getCacheDir(), "Food.txt");
             FileInputStream in = new FileInputStream(f);
@@ -478,40 +492,40 @@ public class TodayActivity extends AppCompatActivity {
         String s = "";
         switch (i) {
             case Calendar.JANUARY:
-                s = "Января";
+                s = "01";
                 break;
             case Calendar.FEBRUARY:
-                s = "Февраля";
+                s = "02";
                 break;
             case Calendar.MARCH:
-                s = "Марта";
+                s = "03";
                 break;
             case Calendar.APRIL:
-                s = "Апреля";
+                s = "04";
                 break;
             case Calendar.MAY:
-                s = "Мая";
+                s = "05";
                 break;
             case Calendar.JUNE:
-                s = "Июня";
+                s = "06";
                 break;
             case Calendar.JULY:
-                s = "Июля";
+                s = "07";
                 break;
             case Calendar.AUGUST:
-                s = "Августа";
+                s = "08";
                 break;
             case Calendar.SEPTEMBER:
-                s = "Сентября";
+                s = "09";
                 break;
             case Calendar.OCTOBER:
-                s = "Октября";
+                s = "10";
                 break;
             case Calendar.NOVEMBER:
-                s = "Ноября";
+                s = "11";
                 break;
             case Calendar.DECEMBER:
-                s = "Декабря";
+                s = "12";
                 break;
         }
 
@@ -540,6 +554,7 @@ public class TodayActivity extends AppCompatActivity {
             jsn.put("mass", editMass.getText().toString());
             jsn.put("eatedCalories", String.valueOf(sum));
             jsn.put("bernCalories", String.valueOf(sum1));
+            jsn.put("note", dayNote.getText().toString());
 
             jsn.put("date", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
                     "." + String.valueOf(calendar.get(Calendar.YEAR)));

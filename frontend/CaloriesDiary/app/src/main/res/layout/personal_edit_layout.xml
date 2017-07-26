@@ -112,10 +112,8 @@
         android:layout_below="@id/activity_text"
         android:layout_alignLeft="@+id/activity_text"
         android:entries="@array/activitylist"
-        >
+        />
 
-
-    </Spinner>
     <EditText
         android:id="@+id/sleep_edit"
         android:layout_width="wrap_content"
