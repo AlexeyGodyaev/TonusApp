@@ -15,6 +15,7 @@ import android.view.View;
 
 import android.widget.EditText;
 
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,10 +58,10 @@ public class TodayActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
     Calendar calendar;
     EditText editMass;
-    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true;
+    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, FABFlag=false;
 
     String[] args = new String[2];
-
+    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,8 @@ public class TodayActivity extends AppCompatActivity {
         protein = (TextView) findViewById(R.id.ProteinText);
         fats = (TextView) findViewById(R.id.FatsText);
         carbs = (TextView) findViewById(R.id.CarbsText);
-
+        linearLayout = (LinearLayout) findViewById(R.id.setting_layout);
+        linearLayout.setVisibility(View.INVISIBLE);
 
         try {
             JSONObject jsn;
@@ -247,9 +249,17 @@ public class TodayActivity extends AppCompatActivity {
 
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
 
-
     }
 
+    public void onMainFABClc(View view){
+        if(FABFlag){
+            linearLayout.setVisibility(View.INVISIBLE);
+            FABFlag = false;
+        } else {
+            linearLayout.setVisibility(View.VISIBLE);
+            FABFlag = true;
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
