@@ -40,8 +40,7 @@ public class RecycleFoodAdapter extends RecyclerView.Adapter<RecycleFoodAdapter.
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_food_list_item,parent,false);
 
-        RecycleFoodAdapter.ViewHolder vh = new RecycleFoodAdapter.ViewHolder(view);
-        return vh;
+        return new RecycleFoodAdapter.ViewHolder(view);
     }
 
     @Override

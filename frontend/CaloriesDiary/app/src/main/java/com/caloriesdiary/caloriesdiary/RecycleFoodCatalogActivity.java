@@ -87,12 +87,6 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         get = new GetFood();
         get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(-1));
 
-
-
-<<<<<<< HEAD
-
-=======
->>>>>>> Alex's-branch
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -412,7 +406,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                     BufferedReader in=new BufferedReader(
                             new InputStreamReader(
                                     conn.getInputStream(), "UTF-8"));
-                    //StringBuffer sb = new StringBuffer("");
+
                     String line;
                     try
                     {

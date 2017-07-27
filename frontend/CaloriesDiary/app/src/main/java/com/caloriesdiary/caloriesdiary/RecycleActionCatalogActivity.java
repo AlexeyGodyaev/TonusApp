@@ -79,18 +79,17 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
 
                 final TextView txtName = view.findViewById(R.id.recycler_action_item_name);
                 final TextView txtCalories = view.findViewById(R.id.recycler_action_item_calories);
-                String kcalstr = txtCalories.getText().toString().substring(0, txtCalories.getText().toString().indexOf('.'));
-                final double kcal = Double.parseDouble(kcalstr);
+                final double kcal= Double.parseDouble(txtCalories.getText().toString().substring(0, txtCalories.getText().toString().indexOf('.')));
                 final TextView kcaltextview = new TextView(RecycleActionCatalogActivity.this);
-                kcaltextview.setText(kcalstr + " kcal");
+                kcaltextview.setText(kcal + " ккал");
                 final AlertDialog.Builder builder = new AlertDialog.Builder(RecycleActionCatalogActivity.this);
                 builder.setTitle(txtName.getText().toString())
                         .setCancelable(false)
                         .setNegativeButton("Отмена",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        if ((lp).getChildCount() > 0)
-                                            (lp).removeAllViews();
+                                        if (lp.getChildCount() > 0)
+                                            lp.removeAllViews();
                                         ((ViewManager) lp.getParent()).removeView(lp);
 
                                         dialog.cancel();
@@ -154,16 +153,16 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
                         if (input.getText().length() > 0) {
                             int time = Integer.parseInt(input.getText().toString());
                             if (time < 1440) {
-                                newkcal = kcal * time / 60;
+                                newkcal = Math.round(kcal * time / 60);
                                 //Toast.makeText(getApplicationContext(),String.valueOf(newkcal),Toast.LENGTH_LONG).show();
-                                kcaltextview.setText(newkcal + " kcal");
+                                kcaltextview.setText(newkcal + " ккал");
                             } else {
                                 Toast.makeText(getApplicationContext(), "Не пизди", Toast.LENGTH_LONG).show();
                                 input.setText("");
                             }
 
                         } else {
-                            kcaltextview.setText(newkcal + " kcal");
+                            kcaltextview.setText(newkcal + " ккал");
 
                         }
 
