@@ -239,7 +239,8 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
                 int visibleItemCount = mLayoutManager.getChildCount();
                 int totalItemCount = mLayoutManager.getItemCount();
-               // int firstVisibleItems = mLayoutManager.find
+                //int firstVisibleItems =
+                errors.setText(String.valueOf(visibleItemCount)+" "+String.valueOf(totalItemCount)+" ");
             }
         });
     }
@@ -320,55 +321,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         }
     }
 
-//    public JSONArray getFood() throws InterruptedException,
-//            ExecutionException {
-//        GetFood get = new GetFood();
-//        get.execute("http://94.130.12.179/food/get_food",String.valueOf(-1));
-//
-//        return get.get();
-//    }
-//
-//    private List<FoodItem> initData() {
-//
-//        JSONArray resp = null;
-//        String foodName = null;
-//        Float b=new Float(0), j=new Float(0), u=new Float(0), calories=new Float(0);
-//        Integer id=0;
-//
-//        try {
-//            resp = getFood();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//        if (resp != null)
-//            for(int i = 0; i<resp.length(); i++){
-//                try {
-//                    Integer i1 = new Integer(resp.getJSONObject(i).getString("category_id"));
-//                    id=i1;
-//                    foodName = resp.getJSONObject(i).getString("name");
-//                    Float f1 = new Float(resp.getJSONObject(i).getString("protein"));
-//                    b = f1;
-//                    f1 = new Float(resp.getJSONObject(i).getString("fats"));
-//                    j=f1;
-//                    f1 = new Float(resp.getJSONObject(i).getString("carbs"));
-//                    u=f1;
-//                    f1 = new Float(resp.getJSONObject(i).getString("calories"));
-//                    calories=f1;
-//                } catch (NumberFormatException e) {
-//                    System.err.println("Неверный формат строки!");
-//                } catch (JSONException jEx){
-//                    Toast.makeText(getApplicationContext(),jEx.toString(), Toast.LENGTH_SHORT).show();
-//                }
-//                if(b!=0||j!=0||u!=0||calories!=0)
-//                    list.add(new FoodItem(foodName,b,j,u,id,calories));
-//            }
-//
-//        return list;
-//    }
+
 
     private class GetFood extends AsyncTask<String, Void, String>{
         @Override
