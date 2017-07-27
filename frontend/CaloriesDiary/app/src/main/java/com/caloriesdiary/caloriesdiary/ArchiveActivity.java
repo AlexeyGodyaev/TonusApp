@@ -113,55 +113,57 @@ public class ArchiveActivity extends AppCompatActivity {
     }
 
     private List<ArchiveItem> initData() {
-        List<ArchiveItem> list = new ArrayList<>();
-        String resp = null;
-        String actionName, date;
-
         try {
-            resp = getAction();
-        } catch (Exception e) {
+            List<ArchiveItem> list = new ArrayList<>();
+            String resp;
+            String actionName, date;
 
-        }
-        if (resp != null)
-            try {
+            resp = getAction();
+
+            if (resp != null) {
                 JSONObject js = new JSONObject(resp);
                 jArr = js.getJSONArray("userGoals");
                 endDate = new String[jArr.length()];
-                for (int i=0; i < jArr.length(); i++) {
+                for (int i = 0; i < jArr.length(); i++) {
 
                     Calendar calendar = Calendar.getInstance();
-                    endDate [i] = jArr.getJSONObject(i).getString("begin_date");
-                    calendar.set(Calendar.YEAR,Integer.parseInt(endDate[i].substring(0,endDate[i].indexOf('-'))));
+                    endDate[i] = jArr.getJSONObject(i).getString("begin_date");
+                    calendar.set(Calendar.YEAR, Integer.parseInt(endDate[i].substring(0, endDate[i].indexOf('-'))));
 
-                    endDate[i] = endDate[i].substring(endDate[i].indexOf('-')+1);
-                    if (endDate[i].substring(0,1).equals("0"))
+                    endDate[i] = endDate[i].substring(endDate[i].indexOf('-') + 1);
+                    if (endDate[i].substring(0, 1).equals("0"))
                         endDate[i] = endDate[i].substring(1);
-                    calendar.set(Calendar.MONTH,Integer.parseInt(endDate[i].substring(0,endDate[i].indexOf('-')))-1);
+                    calendar.set(Calendar.MONTH, Integer.parseInt(endDate[i].substring(0, endDate[i].indexOf('-'))) - 1);
 
-                    endDate[i] = endDate[i].substring(endDate[i].indexOf('-')+1);
-                    if (endDate[i].substring(0,1).equals("0"))
+                    endDate[i] = endDate[i].substring(endDate[i].indexOf('-') + 1);
+                    if (endDate[i].substring(0, 1).equals("0"))
                         endDate[i] = endDate[i].substring(1);
-                    calendar.set(Calendar.DAY_OF_MONTH,Integer.parseInt(endDate[i]));
+                    calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(endDate[i]));
 
-                    int end = calendar.get(Calendar.DAY_OF_YEAR)+Integer.parseInt(jArr.getJSONObject(i).getString("period"));
-                    calendar.set(Calendar.DAY_OF_YEAR,end);
+                    int end = calendar.get(Calendar.DAY_OF_YEAR) + Integer.parseInt(jArr.getJSONObject(i).getString("period"));
+                    calendar.set(Calendar.DAY_OF_YEAR, end);
 
-                    endDate[i] = String.valueOf(calendar.get(Calendar.YEAR))+"-";
-                    if (calendar.get(Calendar.MONTH)<10)
-                        endDate[i]+="0";
-                    endDate[i]+= String.valueOf(calendar.get(Calendar.MONTH)) +"-";
-                    if (calendar.get(Calendar.DAY_OF_MONTH)<9)
-                        endDate[i]+="0";
-                    endDate[i]+=String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)+1);
+                    endDate[i] = String.valueOf(calendar.get(Calendar.YEAR)) + "-";
+                    if (calendar.get(Calendar.MONTH) < 10)
+                        endDate[i] += "0";
+                    endDate[i] += String.valueOf(calendar.get(Calendar.MONTH)) + "-";
+                    if (calendar.get(Calendar.DAY_OF_MONTH) < 9)
+                        endDate[i] += "0";
+                    endDate[i] += String.valueOf(calendar.get(Calendar.DAY_OF_MONTH) + 1);
 
                     actionName = jArr.getJSONObject(i).getString("name");
-                    date = jArr.getJSONObject(i).getString("begin_date") + "/" +"\n" + endDate[i];
+                    date = jArr.getJSONObject(i).getString("begin_date") + "/" + "\n" + endDate[i];
                     list.add(new ArchiveItem(actionName, date));
                 }
-            } catch (Exception e){
-                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
             }
+            return list;
 
-        return list;
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            return null;
+        }
     }
-}
+
+
+
+    }

@@ -26,7 +26,7 @@ public class TodayAntropometryFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.today_antropometry_fragment, null);
         try {
-            JSONObject jsn = new JSONObject();
+            JSONObject jsn;
             File f = new File(getActivity().getCacheDir(), "Today_params.txt");
             if (f.exists()) {
                 FileInputStream in = new FileInputStream(f);
@@ -42,15 +42,15 @@ public class TodayAntropometryFragment extends Fragment{
         }catch (Exception e){
             Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
-        rLeg = (EditText) v.findViewById(R.id.edit_right_leg);
-        lLeg = (EditText) v.findViewById(R.id.edit_left_leg);
-        rHand = (EditText) v.findViewById(R.id.edit_right_hand);
-        lHand = (EditText) v.findViewById(R.id.edit_left_hand);
-        chest = (EditText) v.findViewById(R.id.edit_chest);
-        waist = (EditText) v.findViewById(R.id.edit_waist);
-        butt = (EditText) v.findViewById(R.id.edit_butt);
-        calves = (EditText) v.findViewById(R.id.edit_calves);
-        shoulders = (EditText) v.findViewById(R.id.edit_shoulders);
+        rLeg =  v.findViewById(R.id.edit_right_leg);
+        lLeg =  v.findViewById(R.id.edit_left_leg);
+        rHand =  v.findViewById(R.id.edit_right_hand);
+        lHand =  v.findViewById(R.id.edit_left_hand);
+        chest =  v.findViewById(R.id.edit_chest);
+        waist =  v.findViewById(R.id.edit_waist);
+        butt =  v.findViewById(R.id.edit_butt);
+        calves =  v.findViewById(R.id.edit_calves);
+        shoulders =  v.findViewById(R.id.edit_shoulders);
         try {
 
             if ( todayParams != null && todayParams.length() > 0 && todayParams.getJSONObject(todayParams.length() - 1).getString("date")

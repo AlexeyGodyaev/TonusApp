@@ -234,7 +234,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
             }
 
-            
+
             MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(),  file.getName()); // регистрация в фотоальбоме
             Toast.makeText(getApplicationContext(),"Сохарненик",Toast.LENGTH_LONG).show();
         }

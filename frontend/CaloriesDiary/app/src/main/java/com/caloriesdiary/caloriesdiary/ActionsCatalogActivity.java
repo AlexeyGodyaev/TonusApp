@@ -181,42 +181,39 @@ public class ActionsCatalogActivity extends FragmentActivity {
     }
 
     private List<ActionItem> initData() {
-        List<ActionItem> list = new ArrayList<>();
-        String resp = null;
-        String actionName;
-        Float calories=0.0f;
-        Integer id=0;
-
         try {
+
+            List<ActionItem> list = new ArrayList<>();
+            String resp;
+            String actionName;
+            Float calories;
+            Integer id;
+
             resp = getAction();
+
+            if (resp != null)
+                while (resp.length() > 10) {
+
+                    id = Integer.valueOf(resp.substring(0, resp.indexOf(',')));
+
+                    resp = resp.substring(resp.indexOf(',') + 1);
+
+                    actionName = resp.substring(0, resp.indexOf(','));
+                    resp = resp.substring(resp.indexOf(',') + 1);
+
+                    calories = Float.valueOf(resp.substring(0, resp.indexOf(';')));
+
+                    resp = resp.substring(resp.indexOf(';') + 1);
+
+                    if (calories != 0)
+                        list.add(new ActionItem(actionName, calories, id));
+                }
+
+            return list;
+
         } catch (Exception e) {
-
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return null;
         }
-        if (resp != null)
-            while(resp.length()>10){
-                try {
-                    id=Integer.valueOf(resp.substring(0,resp.indexOf(',')));
-
-                } catch (NumberFormatException e) {
-                    System.err.println("Неверный формат строки!");
-                }
-                resp=resp.substring(resp.indexOf(',')+1);
-
-                actionName = resp.substring(0,resp.indexOf(','));
-                resp=resp.substring(resp.indexOf(',')+1);
-
-                try {
-                    calories = Float.valueOf(resp.substring(0,resp.indexOf(';')));
-                } catch (NumberFormatException e) {
-                    System.err.println("Неверный формат строки!");
-                }
-
-                resp=resp.substring(resp.indexOf(';')+1);
-
-                if(calories!=0)
-                    list.add(new ActionItem(actionName, calories, id));
-            }
-
-        return list;
     }
 }

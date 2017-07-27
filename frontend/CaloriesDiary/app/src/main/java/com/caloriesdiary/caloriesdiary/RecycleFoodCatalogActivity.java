@@ -480,9 +480,8 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                     try
                     {
                         JSONObject js = null;
-                        while((line = in.readLine()) != null) {
+                        if((line = in.readLine()) != null) {
                             js = new JSONObject(line);
-                            break;
                         }
                         JSONArray jArr = js.getJSONArray("food");
 
