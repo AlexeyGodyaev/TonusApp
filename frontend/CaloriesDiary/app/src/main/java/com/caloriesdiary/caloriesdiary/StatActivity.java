@@ -100,12 +100,12 @@ public class StatActivity extends AppCompatActivity {
 
 
 
-                viewParams = (TextView) rootView.findViewById(R.id.graph_params_value);
-                mainLayout = (LinearLayout) rootView.findViewById(R.id.graph_layout);
+                viewParams =  rootView.findViewById(R.id.graph_params_value);
+                mainLayout =  rootView.findViewById(R.id.graph_layout);
                 final LinearLayout lp = new LinearLayout(getActivity().getApplicationContext());
                 lp.setOrientation(LinearLayout.VERTICAL);
                 int a;
-                setGraphs = (TextView) rootView.findViewById(R.id.graph_params);
+                setGraphs =  rootView.findViewById(R.id.graph_params);
 
                 try {
                     File f = new File(getActivity().getCacheDir(), "Graph_params.txt");
@@ -296,20 +296,20 @@ public class StatActivity extends AppCompatActivity {
                     Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                 }
 
-                massGraphTxt = (TextView) rootView.findViewById(R.id.mass_text);
-                eatedCaloriesGraphTxt = (TextView) rootView.findViewById(R.id.eated_text);
-                bernCaloriesGraphTxt = (TextView) rootView.findViewById(R.id.bern_text);
-                shouldersGraphTxt = (TextView) rootView.findViewById(R.id.shoulders_text);
-                rHandGraphTxt = (TextView) rootView.findViewById(R.id.rh_text);
-                lHandGraphTxt = (TextView) rootView.findViewById(R.id.lh_text);
-                lLegGraphTxt = (TextView) rootView.findViewById(R.id.ll_text);
-                rLegGraphTxt = (TextView) rootView.findViewById(R.id.rl_text);
-                calvesGraphTxt = (TextView) rootView.findViewById(R.id.calves_text);
-                buttGraphTxt = (TextView) rootView.findViewById(R.id.butt_text);
-                chestGraphTxt = (TextView) rootView.findViewById(R.id.chest_text);
-                waistGraphTxt = (TextView) rootView.findViewById(R.id.waist_text);
+                massGraphTxt =  rootView.findViewById(R.id.mass_text);
+                eatedCaloriesGraphTxt =  rootView.findViewById(R.id.eated_text);
+                bernCaloriesGraphTxt =  rootView.findViewById(R.id.bern_text);
+                shouldersGraphTxt =  rootView.findViewById(R.id.shoulders_text);
+                rHandGraphTxt =  rootView.findViewById(R.id.rh_text);
+                lHandGraphTxt =  rootView.findViewById(R.id.lh_text);
+                lLegGraphTxt =  rootView.findViewById(R.id.ll_text);
+                rLegGraphTxt =  rootView.findViewById(R.id.rl_text);
+                calvesGraphTxt =  rootView.findViewById(R.id.calves_text);
+                buttGraphTxt =  rootView.findViewById(R.id.butt_text);
+                chestGraphTxt =  rootView.findViewById(R.id.chest_text);
+                waistGraphTxt =  rootView.findViewById(R.id.waist_text);
 
-                massGraph = (GraphView) rootView.findViewById(R.id.mass_graph_container);
+                massGraph = rootView.findViewById(R.id.mass_graph_container);
                 try {
                     if(graphDraw!=null&&graphDraw.getString("mass").equals("false")) {
                         mainLayout.removeView(massGraph);
@@ -324,7 +324,7 @@ public class StatActivity extends AppCompatActivity {
 
                 }
 
-                eatedCaloriesGraph = (GraphView) rootView.findViewById(R.id.eated_calories_graph_container);
+                eatedCaloriesGraph = rootView.findViewById(R.id.eated_calories_graph_container);
                 try {
                     if (graphDraw != null && graphDraw.getString("eated").equals("false")) {
                         mainLayout.removeView(eatedCaloriesGraph);
@@ -339,7 +339,7 @@ public class StatActivity extends AppCompatActivity {
 
                 }
 
-                bernCaloriesGraph = (GraphView) rootView.findViewById(R.id.bern_calories_graph_container);
+                bernCaloriesGraph = rootView.findViewById(R.id.bern_calories_graph_container);
                 try {
                     if (graphDraw != null && graphDraw.getString("bern").equals("false")) {
                         mainLayout.removeView(bernCaloriesGraph);
@@ -354,7 +354,7 @@ public class StatActivity extends AppCompatActivity {
 
                 }
 
-                shouldersGraph = (GraphView) rootView.findViewById(R.id.shoulders_graph_container);
+                shouldersGraph = rootView.findViewById(R.id.shoulders_graph_container);
                 try {
                     if(graphDraw!=null&&graphDraw.getString("shoulders").equals("false")) {
                         mainLayout.removeView(shouldersGraph);
@@ -369,8 +369,8 @@ public class StatActivity extends AppCompatActivity {
 
                 }
 
-                rHandGraph = (GraphView) rootView.findViewById(R.id.right_hand_graph_container);
-                lHandGraph = (GraphView) rootView.findViewById(R.id.left_hand_graph_container);
+                rHandGraph = rootView.findViewById(R.id.right_hand_graph_container);
+                lHandGraph = rootView.findViewById(R.id.left_hand_graph_container);
                 try {
                     if(graphDraw!=null&&graphDraw.getString("hands").equals("false")){
                         mainLayout.removeView(rHandGraph);
@@ -392,8 +392,8 @@ public class StatActivity extends AppCompatActivity {
 
                 }
 
-                lLegGraph = (GraphView) rootView.findViewById(R.id.left_leg_graph_container);
-                rLegGraph = (GraphView) rootView.findViewById(R.id.right_leg_graph_container);
+                lLegGraph =  rootView.findViewById(R.id.left_leg_graph_container);
+                rLegGraph =  rootView.findViewById(R.id.right_leg_graph_container);
                 try {
                     if(graphDraw!=null&&graphDraw.getString("legs").equals("false")){
                         mainLayout.removeView(lLegGraph);
@@ -415,7 +415,7 @@ public class StatActivity extends AppCompatActivity {
 
                 }
 
-                calvesGraph = (GraphView) rootView.findViewById(R.id.calves_graph_container);
+                calvesGraph = rootView.findViewById(R.id.calves_graph_container);
                 try {if(graphDraw!=null&&graphDraw.getString("calves").equals("false")) {
                     mainLayout.removeView(calvesGraph);
                     mainLayout.removeView(calvesGraphTxt);
@@ -429,7 +429,7 @@ public class StatActivity extends AppCompatActivity {
 
                 }
 
-                buttGraph = (GraphView) rootView.findViewById(R.id.butt_graph_container);
+                buttGraph =  rootView.findViewById(R.id.butt_graph_container);
                 try {
                     if(graphDraw!=null&&graphDraw.getString("butt").equals("false")) {
                         mainLayout.removeView(buttGraph);
@@ -444,7 +444,7 @@ public class StatActivity extends AppCompatActivity {
 
                 }
 
-                chestGraph = (GraphView) rootView.findViewById(R.id.chest_graph_container);
+                chestGraph = rootView.findViewById(R.id.chest_graph_container);
                 try {
                     if(graphDraw!=null&&graphDraw.getString("chest").equals("false")) {
                         mainLayout.removeView(chestGraph);
@@ -459,7 +459,7 @@ public class StatActivity extends AppCompatActivity {
 
                 }
 
-                waistGraph = (GraphView) rootView.findViewById(R.id.waist_graph_container);
+                waistGraph =  rootView.findViewById(R.id.waist_graph_container);
                 try {
                     if(graphDraw!=null&&graphDraw.getString("waist").equals("false")) {
                         mainLayout.removeView(waistGraph);

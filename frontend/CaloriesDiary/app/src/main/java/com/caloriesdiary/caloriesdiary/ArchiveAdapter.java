@@ -42,8 +42,7 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.archive_item,parent,false);
 
-        ArchiveAdapter.ViewHolder vh = new ArchiveAdapter.ViewHolder(view);
-        return vh;
+        return new ArchiveAdapter.ViewHolder(view);
 
     }
 

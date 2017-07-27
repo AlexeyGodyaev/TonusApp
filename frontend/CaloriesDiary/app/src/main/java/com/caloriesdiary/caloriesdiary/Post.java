@@ -145,14 +145,14 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                     BufferedReader in=new BufferedReader(
                             new InputStreamReader(
                                     conn.getInputStream(), "UTF-8"));
-                    StringBuilder sb = new StringBuilder("");
+                    StringBuilder sb = new StringBuilder();
                     String line;
 
 
-                    while((line = in.readLine()) != null) {
+                    if((line = in.readLine()) != null) {
                         js = new JSONObject(line);
                         sb.append(js.getString("msg"));
-                        break;
+
                     }
 
                     in.close();

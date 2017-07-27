@@ -1,7 +1,6 @@
 package com.caloriesdiary.caloriesdiary;
 
 
-
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;

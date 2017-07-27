@@ -35,7 +35,6 @@ public class PersonalProfileActivity extends AppCompatActivity {
     boolean antropometryFlag = true;
     TextView name_text,age_text,weight_text,height_text,gender_text, wakeup_text, sleep_text;
     SharedPreferences sharedPref = null;
-    SharedPreferences.Editor editor;
     private Toolbar mToolbar;
     private final int reqcode = 1;
     JSONObject JSans;
@@ -48,7 +47,6 @@ public class PersonalProfileActivity extends AppCompatActivity {
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setDisplayShowHomeEnabled(true);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
-        editor = sharedPref.edit();
         name_text = (TextView) findViewById(R.id.name_text);
         age_text = (TextView) findViewById(R.id.age_text);
         sleep_text = (TextView) findViewById(R.id.sleep_time_text);
@@ -85,7 +83,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
             String args[] = new String[2];
 
-            args[0] = "http://94.130.12.179/users/get_user_chars";  //аргументы для пост запроса
+            args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
 
 
@@ -236,7 +234,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
             }
 
-            
+
             MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(),  file.getName()); // регистрация в фотоальбоме
             Toast.makeText(getApplicationContext(),"Сохарненик",Toast.LENGTH_LONG).show();
         }

@@ -43,8 +43,8 @@ public class RecycleActionAdapter extends RecyclerView.Adapter<RecycleActionAdap
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_action_list_item,parent,false);
 
-        ViewHolder vh = new ViewHolder(view);
-        return vh;
+
+        return new ViewHolder(view);
 
     }
 

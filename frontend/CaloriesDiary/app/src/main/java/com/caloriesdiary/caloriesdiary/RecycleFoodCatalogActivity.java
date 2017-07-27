@@ -89,11 +89,6 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -321,8 +316,6 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         }
     }
 
-
-
     private class GetFood extends AsyncTask<String, Void, String>{
         @Override
         protected void onPreExecute() {
@@ -420,9 +413,8 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                     try
                     {
                         JSONObject js = null;
-                        while((line = in.readLine()) != null) {
+                        if((line = in.readLine()) != null) {
                             js = new JSONObject(line);
-                            break;
                         }
                         JSONArray jArr = js.getJSONArray("food");
 

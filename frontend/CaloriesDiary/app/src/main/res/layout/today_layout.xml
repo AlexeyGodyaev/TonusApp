@@ -320,8 +320,7 @@
             android:onClick="onAddFoodClc"
             android:clickable="true"
             app:srcCompat="@mipmap/ic_mode_edit_white_24dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
+            />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/addActionsBtn"
@@ -334,8 +333,7 @@
             app:fabSize="mini"
             android:clickable="true"
             app:srcCompat="@mipmap/ic_mode_edit_white_24dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
+            />
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
