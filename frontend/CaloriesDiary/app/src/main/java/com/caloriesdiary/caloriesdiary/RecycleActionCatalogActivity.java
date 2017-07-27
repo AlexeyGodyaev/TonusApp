@@ -1,14 +1,11 @@
 package com.caloriesdiary.caloriesdiary;
 
-import android.app.Activity;
+
 import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,12 +14,9 @@ import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewManager;
 import android.widget.Button;
@@ -49,10 +43,9 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String query;
-    private Button btnActionsSortName,btnActionsSortKcal;
+    private Button btnActionsSortName;
     private boolean sortdir = true, sortkcal = true;
-    List<ActionItem> list = new ArrayList<ActionItem>();
+    List<ActionItem> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +72,13 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
                 mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, final int position) {
-                TextView textView = (TextView) view.findViewById(R.id.recycler_action_item_name);
                 //Values are passing to activity & to fragment as well
 //                Toast.makeText(getApplicationContext(), "Single Click on position :"+position + " " + textView.getText().toString(),
 //                        Toast.LENGTH_SHORT).show();
 
-                JSONObject jsn = new JSONObject();
-                final TextView txtName = (TextView) view.findViewById(R.id.recycler_action_item_name);
-                final TextView txtCalories = (TextView) view.findViewById(R.id.recycler_action_item_calories);
+
+                final TextView txtName = view.findViewById(R.id.recycler_action_item_name);
+                final TextView txtCalories = view.findViewById(R.id.recycler_action_item_calories);
                 String kcalstr = txtCalories.getText().toString().substring(0, txtCalories.getText().toString().indexOf('.'));
                 final double kcal = Double.parseDouble(kcalstr);
                 final TextView kcaltextview = new TextView(RecycleActionCatalogActivity.this);
@@ -97,8 +89,8 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
                         .setNegativeButton("Отмена",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        if (((LinearLayout) lp).getChildCount() > 0)
-                                            ((LinearLayout) lp).removeAllViews();
+                                        if ((lp).getChildCount() > 0)
+                                            (lp).removeAllViews();
                                         ((ViewManager) lp.getParent()).removeView(lp);
 
                                         dialog.cancel();
@@ -144,8 +136,8 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
 
                                         }
 
-                                        if (((LinearLayout) lp).getChildCount() > 0)
-                                            ((LinearLayout) lp).removeAllViews();
+                                        if ((lp).getChildCount() > 0)
+                                            (lp).removeAllViews();
                                         ((ViewManager) lp.getParent()).removeView(lp);
 
                                     }
@@ -200,7 +192,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
             }
         }));
         btnActionsSortName = (Button) findViewById(R.id.btnActionsSortName);
-        btnActionsSortKcal = (Button) findViewById(R.id.btnActionsSortKcal);
+
     }
 
     @Override
@@ -235,7 +227,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
            // Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
-            List<ActionItem> querylist = new ArrayList<ActionItem>();
+            List<ActionItem> querylist = new ArrayList<>();
             for(int i = 0; i < list.size() ; i++ )
             {
                 ActionItem item = list.get(i);
@@ -326,28 +318,25 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
         GetActions get = new GetActions();
         get.execute("http://caloriesdiary.ru/activities/get_activities");
 
-        return get.get().toString();
+        return get.get();
     }
 
     private List<ActionItem> initData() {
 
         String resp = null;
         String actionName;
-        Float calories=new Float(0);
-        Integer id=0;
+        Float calories = 0f;
+        Integer id = 0;
 
         try {
             resp = getAction();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (resp != null)
             while(resp.length()>10){
                 try {
-                    Integer f1 = new Integer(resp.substring(0,resp.indexOf(',')));
-                    id=f1;
+                    id = Integer.valueOf(resp.substring(0,resp.indexOf(',')));
                 } catch (NumberFormatException e) {
                     System.err.println("Неверный формат строки!");
                 }
@@ -357,8 +346,8 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
                 resp=resp.substring(resp.indexOf(',')+1);
 
                 try {
-                    Float f1 = new Float(resp.substring(0,resp.indexOf(';')));
-                    calories=f1;
+                    calories = Float.valueOf(resp.substring(0,resp.indexOf(';')));
+
                 } catch (NumberFormatException e) {
                     System.err.println("Неверный формат строки!");
                 }
