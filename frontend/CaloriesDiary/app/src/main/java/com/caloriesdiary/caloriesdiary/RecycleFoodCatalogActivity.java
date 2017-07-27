@@ -234,8 +234,9 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
                 int visibleItemCount = mLayoutManager.getChildCount();
                 int totalItemCount = mLayoutManager.getItemCount();
-                //int firstVisibleItems =
-                errors.setText(String.valueOf(visibleItemCount)+" "+String.valueOf(totalItemCount)+" ");
+                
+                int firstVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                errors.setText(String.valueOf(visibleItemCount)+" "+String.valueOf(totalItemCount)+" "+String.valueOf(firstVisibleItems));
             }
         });
     }
