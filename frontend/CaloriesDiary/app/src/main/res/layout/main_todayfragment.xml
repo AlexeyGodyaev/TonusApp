@@ -24,15 +24,13 @@
         android:background="#aa33aa"
         android:layout_toRightOf="@+id/left_side">
          <TextView
-            android:id="@+id/daylostview"
-            android:layout_width="wrap_content"
+             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Дней прошло"
 
 
             android:textSize="18sp"/>
         <TextView
-            android:id="@+id/day_lost_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5/25"

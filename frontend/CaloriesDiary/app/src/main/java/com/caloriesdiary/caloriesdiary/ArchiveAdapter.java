@@ -12,12 +12,13 @@ import java.util.List;
 public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHolder> {
 
 
-    private List<ArchiveItem> listitem;
+    private final List<ArchiveItem> listitem;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView nameview,dateview;
+        public final TextView nameview;
+        public final TextView dateview;
         public ViewHolder(View view) {
             super(view);
             nameview =  view.findViewById(R.id.archive_item_name);

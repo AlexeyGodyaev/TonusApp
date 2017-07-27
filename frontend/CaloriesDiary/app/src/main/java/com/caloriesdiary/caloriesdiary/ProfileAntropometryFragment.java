@@ -22,19 +22,19 @@ public class ProfileAntropometryFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View  v = inflater.inflate(R.layout.profile_antropometry_fragment, null);
 
-        shoulders = (TextView) v.findViewById(R.id.profile_shoulders_count);
-        rHand = (TextView) v.findViewById(R.id.profile_right_hand_count);
-        lHand = (TextView) v.findViewById(R.id.profile_left_hand_count);
-        lLeg = (TextView) v.findViewById(R.id.profile_left_leg_count);
-        rLeg = (TextView) v.findViewById(R.id.profile_right_leg_count);
-        chest = (TextView) v.findViewById(R.id.profile_chest_count);
-        waist = (TextView) v.findViewById(R.id.profile_waist_count);
-        butt = (TextView) v.findViewById(R.id.profile_butt_count);
-        calves = (TextView) v.findViewById(R.id.profile_calves_count);
+        shoulders =  v.findViewById(R.id.profile_shoulders_count);
+        rHand =  v.findViewById(R.id.profile_right_hand_count);
+        lHand =  v.findViewById(R.id.profile_left_hand_count);
+        lLeg =  v.findViewById(R.id.profile_left_leg_count);
+        rLeg =  v.findViewById(R.id.profile_right_leg_count);
+        chest =  v.findViewById(R.id.profile_chest_count);
+        waist =  v.findViewById(R.id.profile_waist_count);
+        butt =  v.findViewById(R.id.profile_butt_count);
+        calves =  v.findViewById(R.id.profile_calves_count);
 
         try {
             JSONArray jsonArray = new JSONArray();
-            JSONObject jsn = new JSONObject();
+            JSONObject jsn;
             File f = new File(getActivity().getCacheDir(), "Today_params.txt");
             if (f.exists()) {
                 FileInputStream in = new FileInputStream(f);

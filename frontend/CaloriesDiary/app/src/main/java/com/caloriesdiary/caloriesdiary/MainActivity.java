@@ -29,7 +29,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    SharedPreferences sharedPref = null;
+    SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
     TextView userName, userMail, currentTime;
     Calendar calendar;

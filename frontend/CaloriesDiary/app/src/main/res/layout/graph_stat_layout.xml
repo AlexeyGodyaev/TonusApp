@@ -13,14 +13,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Графики"
-            android:textSize="15dp"/>
+            android:textSize="15sp"/>
 
         <TextView
             android:id="@+id/graph_params"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Параметры отображения:"
-            android:textSize="15dp"/>
+            android:textSize="15sp"/>
 
         <TextView
             android:id="@+id/graph_params_value"

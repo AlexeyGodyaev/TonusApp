@@ -40,7 +40,6 @@ public class AuthorizationActivity extends Activity {
     GoogleSignInOptions gso;
     private static final int RC_SIGN_IN = 9001;
 
-    Post log;
 
     EditText login, pass;
     TextView err;
@@ -189,7 +188,7 @@ public class AuthorizationActivity extends Activity {
         startActivity(intent);
     }
 
-    public void loginClc(View view) throws InterruptedException, ExecutionException {
+    public void loginClc(View view)  {
         try {
         Post log = new Post();
 

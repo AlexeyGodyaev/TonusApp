@@ -31,8 +31,8 @@ import java.util.concurrent.ExecutionException;
 
 public class ActionsCatalogActivity extends FragmentActivity {
 
-    EditText srch;
-    ListView listView;
+    private EditText srch;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +173,7 @@ public class ActionsCatalogActivity extends FragmentActivity {
         });
     }
 
-    public  String getAction() throws InterruptedException, ExecutionException {
+    private String getAction() throws InterruptedException, ExecutionException {
         GetActions get = new GetActions();
         get.execute("http://caloriesdiary.ru/activities/get_activities");
 

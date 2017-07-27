@@ -11,7 +11,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват плеч"
@@ -20,7 +20,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/profile_shoulders_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват правой руки"
@@ -44,7 +44,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/profile_right_hand_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват левой руки"
@@ -68,7 +68,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/profile_left_hand_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват груди"
@@ -92,7 +92,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/profile_chest_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват талии"
@@ -116,7 +116,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/profile_waist_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват ягодиц"
@@ -140,7 +140,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/profile_butt_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват правого бедра"
@@ -164,7 +164,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/profile_right_leg_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -179,7 +179,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват левого бедра"
@@ -188,7 +188,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/profile_left_leg_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -203,7 +203,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват икр"
@@ -212,7 +212,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/profile_calves_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

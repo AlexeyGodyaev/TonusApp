@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent">
   <RelativeLayout
-      android:id="@+id/profile_relative"
       android:layout_width="wrap_content"
       android:layout_height="match_parent">
     <include
@@ -15,7 +14,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="Мой профиль"
-      android:textSize="30dp"
+      android:textSize="30sp"
       android:layout_marginTop="15dp"
       android:layout_centerHorizontal="true"
       android:layout_below="@+id/toolbar"/>
@@ -25,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Имя:"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_below="@id/header_text"
         android:layout_marginTop="10dp"/>
     <TextView
@@ -34,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Пол:"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_below="@id/name_text"
         android:layout_marginTop="10dp"/>
     <TextView
@@ -43,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Возраст:"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_below="@id/gender_text"
         android:layout_marginTop="10dp"/>
     <TextView
@@ -52,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Вес:"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_below="@id/age_text"
         android:layout_marginTop="10dp"/>
     <TextView
@@ -61,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Рост:"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_below="@id/weight_text"
         android:layout_marginTop="10dp"/>
     <TextView
@@ -69,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_below="@id/height_text"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -91,7 +90,7 @@
         android:paddingLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_below="@id/profile_antr_container"
         android:layout_marginTop="10dp"/>
     <TextView
@@ -99,12 +98,11 @@
         android:paddingLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_below="@id/sleep_time_text"
         android:layout_marginTop="10dp"/>
 
     <Button
-        android:id="@+id/delete_btn"
         android:textColor="@android:color/white"
         android:background="@android:color/holo_blue_light"
         android:layout_width="wrap_content"
@@ -118,7 +116,6 @@
        />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/editProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:backgroundTint="@android:color/holo_blue_light"

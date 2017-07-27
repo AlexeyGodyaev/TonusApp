@@ -86,14 +86,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
         get = new GetFood();
         get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(-1));
-<<<<<<< HEAD
-=======
 
-
-
-
-
->>>>>>> Alex's-branch
 
 
 

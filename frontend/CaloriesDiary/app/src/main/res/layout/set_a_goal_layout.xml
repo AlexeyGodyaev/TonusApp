@@ -19,16 +19,14 @@
         android:padding="3dp">
 
         <TextView
-            android:id="@+id/goalName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@android:color/holo_blue_light"
             android:text="Название:"
             android:layout_weight="0.8"/>
 
         <TextView
-            android:id="@+id/goalAlertText"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +51,7 @@
         android:id="@+id/goalTypeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textColor="#000000"
         android:text="Тип:" />
 
@@ -67,13 +65,12 @@
 
 
     <TextView
-        android:id="@+id/goalDateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:text="Продолжительность:"
         android:textColor="#000000"
-        android:textSize="18dp" />
+        android:textSize="18sp" />
 
 
     <EditText
@@ -86,10 +83,9 @@
 
     <TextView
         android:padding="5dp"
-        android:id="@+id/periodsCountView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textColor="#000000"
         android:text="Кол-во промежуточных итогов:" />
 
@@ -104,10 +100,9 @@
 
     <TextView
         android:padding="5dp"
-        android:id="@+id/todayWeightText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textColor="#000000"
         android:text="Ваш текущий вес:"/>
 
@@ -122,10 +117,9 @@
 
     <TextView
         android:padding="5dp"
-            android:id="@+id/weightGoalText"
-            android:layout_width="wrap_content"
+        android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textColor="#000000"
             android:text="Желаемый результат:"/>
 
@@ -140,12 +134,11 @@
 
         <TextView
             android:padding="5dp"
-            android:id="@+id/liveTypeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Физическая активность:"
             android:textColor="#000000"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
 
         <Spinner
             android:padding="5dp"
@@ -162,11 +155,10 @@
 
         <TextView
             android:padding="5dp"
-            android:id="@+id/avgTimeText"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textColor="#000000"
             android:text="Среднее время сна:" />
 
@@ -185,14 +177,13 @@
         android:id="@+id/awakeEditAgain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:hint="Среднее время пробуждения"
         android:padding="5dp"
         android:onClick="onAwakeTimeClk"/>
 
     <Button
         android:padding="5dp"
-        android:id="@+id/startButton"
         android:onClick="onStartRoadToGoal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

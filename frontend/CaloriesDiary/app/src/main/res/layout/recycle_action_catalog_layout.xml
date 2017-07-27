@@ -14,7 +14,6 @@
             android:text="Сортировать (А-Я)"
             android:onClick="onClickActionsSortName"/>
         <Button
-            android:id="@+id/btnActionsSortKcal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Сортировать (Ккал)"
@@ -28,7 +27,7 @@
     android:layout_gravity="right"
     android:layout_marginRight="5dp"
     android:text="Число ккал приведено за 1 час деятельности"
-    android:textSize="8dp"/>
+    android:textSize="8sp"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/action_recycler_view"
         android:scrollbars="vertical"

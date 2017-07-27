@@ -35,12 +35,12 @@ import java.util.List;
 
 public class TodayActivity extends AppCompatActivity {
 
-    List<FoodItem> list = new ArrayList<>();
-    List<ActionItem> listActive = new ArrayList<>();
+    final List<FoodItem> list = new ArrayList<>();
+    final List<ActionItem> listActive = new ArrayList<>();
 
     int sum, sum1;
 
-    TextView todayDate, targetText, todayFoodBtn, dayNote, activityBtn, antropometry, foodCalories, sportCalories, normCalories, carbs, fats, protein;
+    TextView todayDate, targetText, dayNote,  foodCalories, sportCalories, normCalories, carbs, fats, protein;
     private TodayAntropometryFragment fragment;
     private FragmentManager manager;
     FragmentTransaction transaction;
@@ -60,7 +60,7 @@ public class TodayActivity extends AppCompatActivity {
     EditText editMass;
     private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, FABFlag=false;
 
-    String[] args = new String[2];
+    final String[] args = new String[2];
     LinearLayout linearLayout;
 
     @Override
@@ -72,7 +72,6 @@ public class TodayActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        antropometry = (TextView) findViewById(R.id.today_antropometry);
         foodRecyclerView = (RecyclerView) findViewById(R.id.food_busket_recycler_view);
         foodRecyclerView.setHasFixedSize(true);
         foodLayoutManager = new LinearLayoutManager(this);
@@ -99,9 +98,6 @@ public class TodayActivity extends AppCompatActivity {
         args[0] = "http://caloriesdiary.ru/calories/get_per_day";
         args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
 
-
-        activityBtn = (TextView) findViewById(R.id.todayActiveBtn);
-        todayFoodBtn = (TextView) findViewById(R.id.todayFoodBtn);
 
         todayDate = (TextView) findViewById(R.id.todayDate);
         targetText = (TextView) findViewById(R.id.targetTextView);

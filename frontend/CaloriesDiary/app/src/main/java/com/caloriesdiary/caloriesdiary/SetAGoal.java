@@ -32,14 +32,14 @@ public class SetAGoal extends AppCompatActivity {
     Spinner goalType, liveType;
     SharedPreferences sharedPref;
     SeekBar periodsCount;
-    Calendar calendar = Calendar.getInstance();
-    String s[] = new String[8];
-    String s1 [] = new String[10];
+    final Calendar calendar = Calendar.getInstance();
+    final String[] s = new String[8];
+    final String[] s1  = new String[10];
     String awakestr = null;
-    String  saveGoal [] = new String [20];
+    final String[]  saveGoal  = new String [20];
 
-    Calendar today = Calendar.getInstance();
-    int DIALOG_TIME = 1;
+    final Calendar today = Calendar.getInstance();
+    final int DIALOG_TIME = 1;
     int myHour;
     int myMinute;
 
@@ -122,7 +122,7 @@ public class SetAGoal extends AppCompatActivity {
         return super.onCreateDialog(id);
     }
 
-    TimePickerDialog.OnTimeSetListener myCallBack = new TimePickerDialog.OnTimeSetListener() {
+    final TimePickerDialog.OnTimeSetListener myCallBack = new TimePickerDialog.OnTimeSetListener() {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             myHour = hourOfDay;
             myMinute = minute;

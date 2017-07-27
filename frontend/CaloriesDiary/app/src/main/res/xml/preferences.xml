@@ -11,7 +11,8 @@
         android:title="Удалить учетную запись" />
     <Preference
         android:key="pref_key_change_password"
-        android:title="Сменить пароль"></Preference>
+        android:title="Сменить пароль">
+    </Preference>
 
     android:title="Настройки1"
     android:summary="Текст1"

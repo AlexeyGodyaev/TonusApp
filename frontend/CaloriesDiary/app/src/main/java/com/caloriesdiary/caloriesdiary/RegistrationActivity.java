@@ -57,7 +57,7 @@ public class RegistrationActivity  extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void regClc(View view) throws InterruptedException, ExecutionException {
+    public void regClc(View view)  {
         try {
             Pattern pattern = Pattern.compile(EMAIL_PATTERN);
             Matcher emailMatcher = pattern.matcher(mail.getText().toString());

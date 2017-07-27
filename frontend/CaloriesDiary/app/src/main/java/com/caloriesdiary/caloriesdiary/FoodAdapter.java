@@ -11,8 +11,8 @@ import java.util.List;
 
 public class FoodAdapter extends BaseAdapter{
 
-    private List<FoodItem> list;
-    private LayoutInflater layoutInflater;
+    private final List<FoodItem> list;
+    private final LayoutInflater layoutInflater;
 
     public  FoodAdapter(Context context, List<FoodItem> list){
         this.list = list;
@@ -52,7 +52,7 @@ public class FoodAdapter extends BaseAdapter{
         bJU.setText(foodItem.getB().toString()+"/"+foodItem.getJ().toString()+"/"+foodItem.getU().toString());
 
         calories = view.findViewById(R.id.productCalories);
-        calories.setText(foodItem.getCalories().toString() + " ккал");
+        calories.setText(foodItem.getCalories() + " ккал");
 
         return view;
     }

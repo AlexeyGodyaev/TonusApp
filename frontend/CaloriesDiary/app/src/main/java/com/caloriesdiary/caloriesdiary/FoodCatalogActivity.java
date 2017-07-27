@@ -243,8 +243,7 @@ public class FoodCatalogActivity extends FragmentActivity {
 
 
 
-    public JSONArray getFood() throws InterruptedException,
-            ExecutionException{
+    public JSONArray getFood() {
 
         //RecycleFoodCatalogActivity.GetFood get = new RecycleFoodCatalogActivity.GetFood();
         //get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));

@@ -230,8 +230,6 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 out.close();
             } catch (Exception ex) {
 
-            } finally {
-
             }
 
 
