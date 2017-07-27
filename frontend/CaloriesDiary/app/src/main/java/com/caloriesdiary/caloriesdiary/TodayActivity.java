@@ -251,6 +251,16 @@ public class TodayActivity extends AppCompatActivity {
 
     }
 
+    public  void onAddFoodClc(View view){
+        Intent intent = new Intent(getApplicationContext(), RecycleFoodCatalogActivity.class);
+        startActivity(intent);
+    }
+
+    public  void onAddActionsClc(View view){
+        Intent intent = new Intent(getApplicationContext(), RecycleActionCatalogActivity.class);
+        startActivity(intent);
+    }
+
     public void onMainFABClc(View view){
         if(FABFlag){
             linearLayout.setVisibility(View.INVISIBLE);
