@@ -1,13 +1,12 @@
 package com.caloriesdiary.caloriesdiary;
 
-import android.app.Activity;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,18 +14,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.Layout;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,8 +45,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
-import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -61,7 +54,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    List<FoodItem> list = new ArrayList<FoodItem>();
+    List<FoodItem> list = new ArrayList<>();
     GetFood get;
     TextView errors;
 
@@ -92,7 +85,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 //        mRecyclerView.setAdapter(mAdapter);
 
         get = new GetFood();
-        get.execute("http://94.130.12.179/food/get_food",String.valueOf(-1));
+        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(-1));
 
 
 
@@ -105,9 +98,9 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, final int position) {
-                final TextView txtName = (TextView) view.findViewById(R.id.recycler_food_item_name);
-                TextView txtBJU = (TextView) view.findViewById(R.id.recycler_food_item_bju);
-                final TextView txtCalories = (TextView) view.findViewById(R.id.recycler_food_item_calories);
+                final TextView txtName = view.findViewById(R.id.recycler_food_item_name);
+                TextView txtBJU = view.findViewById(R.id.recycler_food_item_bju);
+                final TextView txtCalories = view.findViewById(R.id.recycler_food_item_calories);
                 final TextView dialogBJU = new TextView(RecycleFoodCatalogActivity.this);
                 final TextView dialogCalories = new TextView(RecycleFoodCatalogActivity.this);
 
@@ -213,7 +206,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
                         double newCount =
                                 (massCount/100)*caloriesCount;
-                        dialogCalories.setText(Double.toString(newCount));
+                        dialogCalories.setText(String.valueOf(newCount));
 
                         double protein = (massCount/100)*dialogProtein;
                         double fats = (massCount/100)*dialogFats;
@@ -311,7 +304,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
-            List<FoodItem> querylist = new ArrayList<FoodItem>();
+            List<FoodItem> querylist = new ArrayList<>();
             for(int i = 0; i < list.size() ; i++ )
             {
                 FoodItem item = list.get(i);
@@ -377,7 +370,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 //        return list;
 //    }
 
-    class GetFood extends AsyncTask<String, Void, String>{
+    private class GetFood extends AsyncTask<String, Void, String>{
         @Override
         protected void onPreExecute() {
             Toast.makeText(RecycleFoodCatalogActivity.this, "Загрузка блюд...", Toast.LENGTH_SHORT).show();
@@ -390,19 +383,15 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
             JSONArray resp = null;
             String foodName = null;
-            Float b=new Float(0), j=new Float(0), u=new Float(0), calories=new Float(0);
+            Float b=0f, j=0f, u=0f, calories=0f;
             Integer id=0;
 
             try {
-//
-//                JSONArray array = new JSONArray(get.get());
-//
-//                resp =  array;
+
                 String answer = get.get();
                 try
                 {
-                    JSONArray array = new JSONArray(answer);
-                    resp =  array;
+                    resp = new JSONArray(answer);
                 }
                 catch (Exception e)
                 {
@@ -413,23 +402,17 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             catch (Exception e)
             {
                 e.printStackTrace();
-                //errors.setText(e.toString());
                 Toast.makeText(RecycleFoodCatalogActivity.this, e.toString(), Toast.LENGTH_LONG).show();
             }
             if (resp != null)
                 for(int i = 0; i<resp.length(); i++){
                     try {
-                        Integer i1 = new Integer(resp.getJSONObject(i).getString("category_id"));
-                        id=i1;
+                        id = Integer.valueOf(resp.getJSONObject(i).getString("category_id"));
                         foodName = resp.getJSONObject(i).getString("name");
-                        Float f1 = new Float(resp.getJSONObject(i).getString("protein"));
-                        b = f1;
-                        f1 = new Float(resp.getJSONObject(i).getString("fats"));
-                        j=f1;
-                        f1 = new Float(resp.getJSONObject(i).getString("carbs"));
-                        u=f1;
-                        f1 = new Float(resp.getJSONObject(i).getString("calories"));
-                        calories=f1;
+                        b = Float.valueOf(resp.getJSONObject(i).getString("protein"));
+                        j = Float.valueOf(resp.getJSONObject(i).getString("fats"));
+                        u = Float.valueOf(resp.getJSONObject(i).getString("carbs"));
+                        calories = Float.valueOf(resp.getJSONObject(i).getString("calories"));
                     } catch (NumberFormatException e) {
                         System.err.println("Неверный формат строки!");
                     } catch (JSONException jEx){
