@@ -57,7 +57,8 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     List<FoodItem> list = new ArrayList<>();
     GetFood get;
     TextView errors;
-
+    int offset = 0;
+    boolean send = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +85,10 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 //        mAdapter = new RecycleFoodAdapter(initData());
 //        mRecyclerView.setAdapter(mAdapter);
 
+
         get = new GetFood();
-        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(-1));
+
+        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
 
 
 
@@ -234,9 +237,15 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
                 int visibleItemCount = mLayoutManager.getChildCount();
                 int totalItemCount = mLayoutManager.getItemCount();
-                
-                int firstVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                errors.setText(String.valueOf(visibleItemCount)+" "+String.valueOf(totalItemCount)+" "+String.valueOf(firstVisibleItems));
+                int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                if (totalItemCount -1 == lastVisibleItems && send){
+                    get = new GetFood();
+                    send = false;
+                    offset+=1;
+                    get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
+                }
+
+                errors.setText(String.valueOf(visibleItemCount)+" "+String.valueOf(totalItemCount)+" "+String.valueOf(lastVisibleItems));
             }
         });
     }
@@ -328,6 +337,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         protected void onPostExecute(String string) {
             super.onPostExecute(string);
 
+            send = true;
             JSONArray resp = null;
             String foodName = null;
             Float b=0f, j=0f, u=0f, calories=0f;
