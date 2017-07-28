@@ -59,6 +59,7 @@ public class AuthorizationActivity extends Activity {
         pass =  findViewById(R.id.editPassword);
         err =  findViewById(R.id.testRequestText);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
+        editor = sharedPref.edit();
 
         InitPreference();
 
@@ -129,29 +130,41 @@ public class AuthorizationActivity extends Activity {
             args[4] = FirebaseInstanceId.getInstance().getToken();
 
             log.execute(args); // вызываем запрос
-            int status = -1;
+            int status;
             JSONObject JSans = log.get();
 
             try {
-                err.setText(JSans.getString("status"));
                 status = JSans.getInt("status");
                 if (status == 1) {
                     editor = sharedPref.edit();
                     editor.putInt("PROFILE_ID", JSans.getInt("user_id"));
                     editor.putString("userName", JSans.getString("username"));
                     editor.putString("userMail", JSans.getString("email"));
-                    editor.commit();
+                    editor.apply();
 
                     Toast.makeText(getApplicationContext(), "Добро пожаловать, " + acct.getGivenName() + " " + String.valueOf(sharedPref.getInt("PROFILE_ID", 0)), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+
+                    //Запуск службы ControlService
+
+                    Intent startServiceIntent = new Intent(this,
+                            ControlService.class);
+                    PendingIntent startWebServicePendingIntent = PendingIntent.getService(this, 0,
+                            startServiceIntent, 0);
+
+                    AlarmManager alarmManager = (AlarmManager) this
+                            .getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                            System.currentTimeMillis()+ 1000*60*60*5, 1000*60*60*5,
+                            startWebServicePendingIntent);
                 }
             }
             catch(Exception e)
             {
-                Toast.makeText(this,  e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,  "Ошибка сервиса", Toast.LENGTH_SHORT).show();
             }
 
         } else {
@@ -205,28 +218,24 @@ public class AuthorizationActivity extends Activity {
         args[3] = FirebaseInstanceId.getInstance().getToken();
 
         log.execute(args); // вызываем запрос
-        int status = -1;
+        int status;
         JSONObject JSans = log.get();
 
             err.setText("Status: " + JSans.getString("status"));
             status = JSans.getInt("status");
 
             if (status == 1) {
-                editor = sharedPref.edit();
                 editor.putInt("PROFILE_ID", JSans.getInt("user_id"));
                 editor.putString("userName", JSans.getString("username"));
                 editor.putString("userMail", JSans.getString("email"));
-                editor.commit();
+                editor.apply();
                 Toast.makeText(getApplicationContext(), "Добро пожаловать, " + login.getText().toString() + " " + String.valueOf(sharedPref.getInt("PROFILE_ID", 0)), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 
-                //Запуск службы ControlService (Каждые 5 часов)
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(System.currentTimeMillis());
-                calendar.set(Calendar.HOUR_OF_DAY, 14);
+                //Запуск службы ControlService
 
                 Intent startServiceIntent = new Intent(this,
                         ControlService.class);
@@ -236,7 +245,7 @@ public class AuthorizationActivity extends Activity {
                 AlarmManager alarmManager = (AlarmManager) this
                         .getSystemService(Context.ALARM_SERVICE);
                 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                        System.currentTimeMillis()+ 1000*60*60*2,calendar.getTimeInMillis() + 1000*60*60*2,
+                        System.currentTimeMillis()+ 1000*60*60*5, 1000*60*60*5,
                         startWebServicePendingIntent);
 
             } else if (status == 0) {
@@ -244,7 +253,7 @@ public class AuthorizationActivity extends Activity {
             }
         }
         catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Сервис не доступен " + e.toString(), Toast.LENGTH_LONG ).show();
+            Toast.makeText(getApplicationContext(), "Сервис не доступен", Toast.LENGTH_LONG ).show();
         }
     }
     public void guestClc(View view)
@@ -271,7 +280,7 @@ public class AuthorizationActivity extends Activity {
             editor.putBoolean("IS_PROFILE_CREATED",false);
         }
 
-        editor.commit();
+        editor.apply();
         Map<String, ?> allEntries = sharedPref.getAll();   //Увидеть все настройки
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());

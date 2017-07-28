@@ -30,6 +30,7 @@
         android:id="@+id/custom_food_recycle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_below="@+id/custom_food_name"
         android:layout_margin="10dp">
 
@@ -42,3 +43,5 @@
         android:layout_margin="10dp"
         android:layout_below="@+id/custom_food_recycle"/>
 </LinearLayout>
+
+
