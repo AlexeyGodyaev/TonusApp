@@ -259,7 +259,7 @@ public class FoodCatalogActivity extends FragmentActivity {
         JSONArray resp = null;
         String foodName = null;
         Float b=0.0f, j=0.0f, u=0.0f, calories=0.0f;
-        Integer id=0;
+        Integer id=0, category_id = 0;
 
         try {
             resp = getFood();
@@ -269,7 +269,8 @@ public class FoodCatalogActivity extends FragmentActivity {
         if (resp != null)
             for(int i = 0; i<resp.length(); i++){
                 try {
-                    id = Integer.valueOf(resp.getJSONObject(i).getString("category_id"));
+                    id = Integer.valueOf(resp.getJSONObject(i).getString("food_id"));
+                    category_id = Integer.valueOf(resp.getJSONObject(i).getString("category_id"));
                     foodName = resp.getJSONObject(i).getString("name");
                     b = Float.valueOf(resp.getJSONObject(i).getString("protein"));
                     j= Float.valueOf(resp.getJSONObject(i).getString("fats"));
@@ -280,8 +281,8 @@ public class FoodCatalogActivity extends FragmentActivity {
                 } catch (JSONException jEx){
                     Toast.makeText(getApplicationContext(),jEx.toString(), Toast.LENGTH_SHORT).show();
                 }
-                if(b!=0||j!=0||u!=0||calories!=0)
-                    list.add(new FoodItem(foodName,b,j,u,id,calories));
+
+                    list.add(new FoodItem(id, foodName,b,j,u,category_id, calories));
             }
 
         return list;

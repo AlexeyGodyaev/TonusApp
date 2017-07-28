@@ -345,7 +345,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             JSONArray resp = null;
             String foodName = null;
             Float b=0f, j=0f, u=0f, calories=0f;
-            Integer id=0;
+            Integer id=0, category_id=0;
 
             try {
 
@@ -368,7 +368,8 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             if (resp != null)
                 for(int i = 0; i<resp.length(); i++){
                     try {
-                        id = Integer.valueOf(resp.getJSONObject(i).getString("category_id"));
+                        id = Integer.valueOf(resp.getJSONObject(i).getString("food_id"));
+                        category_id = Integer.valueOf(resp.getJSONObject(i).getString("category_id"));
                         foodName = resp.getJSONObject(i).getString("name");
                         b = Float.valueOf(resp.getJSONObject(i).getString("protein"));
                         j = Float.valueOf(resp.getJSONObject(i).getString("fats"));
@@ -380,8 +381,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),jEx.toString(), Toast.LENGTH_SHORT).show();
                         //errors.setText(jEx.toString());
                     }
-                    if(b!=0||j!=0||u!=0||calories!=0)
-                        list.add(new FoodItem(foodName,b,j,u,id,calories));
+                        list.add(new FoodItem(id,foodName,b,j,u,category_id,calories));
                 }
 
             mAdapter = new RecycleFoodAdapter(list);
