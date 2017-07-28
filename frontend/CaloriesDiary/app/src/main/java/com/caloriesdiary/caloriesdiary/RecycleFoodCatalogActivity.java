@@ -381,7 +381,6 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),jEx.toString(), Toast.LENGTH_SHORT).show();
                         //errors.setText(jEx.toString());
                     }
-                    if(b!=0||j!=0||u!=0||calories!=0)
                         list.add(new FoodItem(id,foodName,b,j,u,category_id,calories));
                 }
 

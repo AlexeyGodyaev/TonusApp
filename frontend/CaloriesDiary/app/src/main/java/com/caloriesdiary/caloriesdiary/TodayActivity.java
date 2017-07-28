@@ -407,7 +407,6 @@ public class TodayActivity extends AppCompatActivity {
                     } catch (NumberFormatException e) {
                         System.err.println("Неверный формат строки!");
                     }
-                    if (b != 0 || j != 0 || u != 0 || calories != 0)
                         list.add(new FoodItem(id, foodName, b, j, u, category_id, calories));
                 }
             } catch (JSONException jEx) {

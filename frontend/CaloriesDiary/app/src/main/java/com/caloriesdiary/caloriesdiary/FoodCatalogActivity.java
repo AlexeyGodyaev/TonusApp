@@ -281,7 +281,7 @@ public class FoodCatalogActivity extends FragmentActivity {
                 } catch (JSONException jEx){
                     Toast.makeText(getApplicationContext(),jEx.toString(), Toast.LENGTH_SHORT).show();
                 }
-                if(b!=0||j!=0||u!=0||calories!=0)
+
                     list.add(new FoodItem(id, foodName,b,j,u,category_id, calories));
             }
 
