@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:padding="10sp"
+        android:textSize="15sp"
+        android:textColor="#D81B60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+         />
+
+    <TextView
+        android:id="@+id/dialog_burn_per_hour"
+        android:padding="10sp"
+        android:textSize="15sp"
+        android:textColor="#000000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+         />
+
+    <TextView
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:textColor="#000000"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_burn_per_hour"
+        android:text="Введите время для рассчета количества затраченных калорий"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/textView6" />
+
+    <TextView
+        android:textColor="#000000"
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Время:"
+        android:layout_alignBottom="@+id/dialog_time"
+        android:paddingBottom="6sp"
+        android:paddingLeft="10sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/dialog_time"
+        android:textSize="14sp"
+        android:layout_width="40sp"
+        android:gravity="center"
+        android:textColor="#D81B60"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView6"
+        android:layout_toRightOf="@+id/textView7"
+        android:maxLength="3"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:textColor="#000000"
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="мин"
+        android:paddingBottom="6sp"
+        android:layout_alignBottom="@+id/dialog_time"
+        android:layout_toRightOf="@+id/dialog_time"
+        android:layout_toEndOf="@+id/dialog_time" />
+
+    <Button
+
+        android:id="@+id/cancel_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="35sp"
+        android:text="закрыть"
+        android:textColor="@android:color/white"
+        android:background="#D81B60"
+        android:layout_below="@+id/textView7"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10sp"
+        android:layout_marginBottom="10sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp" />
+
+    <Button
+        android:id="@+id/add_action_to_busket"
+        android:layout_width="wrap_content"
+        android:layout_height="35sp"
+        android:text="Принять"
+        android:textColor="@android:color/white"
+        android:background="#D81B60"
+        android:layout_below="@+id/textView10"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10sp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp" />
+
+    <TextView
+        android:textColor="#000000"
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Затрачено:"
+        android:layout_alignBaseline="@+id/textView10"
+        android:layout_alignBottom="@+id/textView10"
+        android:layout_toLeftOf="@+id/add_action_to_busket"
+        android:layout_toStartOf="@+id/add_action_to_busket" />
+
+    <TextView
+        android:textColor="#D81B60"
+        android:id="@+id/dialog_burn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:layout_alignBaseline="@+id/textView13"
+        android:layout_alignBottom="@+id/textView13"
+        android:layout_alignParentRight="true"
+        android:paddingRight="10sp"/>
+
+</RelativeLayout>
