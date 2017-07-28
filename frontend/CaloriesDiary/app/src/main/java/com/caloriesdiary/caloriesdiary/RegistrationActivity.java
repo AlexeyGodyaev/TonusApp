@@ -34,7 +34,7 @@ public class RegistrationActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_layout);
 
-        setTitle("Восстановление пароля");
+        setTitle("Регистрация");
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -81,14 +81,13 @@ public class RegistrationActivity  extends AppCompatActivity {
                         JSONObject js = sendReg.get();
 
                         js.getInt("status");
-                        error.setText(ans);
                         if (js.getInt("status") == 1) {
                             Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(getApplicationContext(), js.getString("msg"), Toast.LENGTH_LONG);
+                            error.setText(js.getString("msg"));
                         }
                     } else {
                         error.setText("Логин должен содержать более 6 символов и должен состоять из букв латинского алфавита или цифр!");

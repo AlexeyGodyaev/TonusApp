@@ -57,7 +57,9 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     List<FoodItem> list = new ArrayList<>();
     GetFood get;
     TextView errors;
-
+    int offset = 0;
+    boolean send = true;
+    int buff=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +86,12 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 //        mAdapter = new RecycleFoodAdapter(initData());
 //        mRecyclerView.setAdapter(mAdapter);
 
+
         get = new GetFood();
-        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(-1));
+
+        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
+
+
 
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 mRecyclerView, new RecyclerTouchListener.ClickListener() {
@@ -232,8 +238,19 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
                 int visibleItemCount = mLayoutManager.getChildCount();
                 int totalItemCount = mLayoutManager.getItemCount();
-                //int firstVisibleItems =
-                errors.setText(String.valueOf(visibleItemCount)+" "+String.valueOf(totalItemCount)+" ");
+
+                int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                if (totalItemCount -1 == lastVisibleItems && send){
+                    buff = lastVisibleItems-visibleItemCount+1;
+                    get = new GetFood();
+                    send = false;
+                    offset+=1;
+                    get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
+
+                    Toast.makeText(RecycleFoodCatalogActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
+                }
+
+                errors.setText(String.valueOf(visibleItemCount)+" "+String.valueOf(totalItemCount)+" "+String.valueOf(lastVisibleItems));
             }
         });
     }
@@ -325,6 +342,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
         protected void onPostExecute(String string) {
             super.onPostExecute(string);
 
+            send = true;
             JSONArray resp = null;
             String foodName = null;
             Float b=0f, j=0f, u=0f, calories=0f;
@@ -371,7 +389,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             mRecyclerView.setAdapter(mAdapter);
             Toast.makeText(RecycleFoodCatalogActivity.this, "Загружено элементов: " + String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
 
-
+            ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPosition(buff);
         }
 
         @Override

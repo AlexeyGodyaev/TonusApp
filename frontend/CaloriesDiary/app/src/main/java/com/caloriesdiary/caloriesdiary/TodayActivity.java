@@ -40,7 +40,8 @@ public class TodayActivity extends AppCompatActivity {
 
     int sum, sum1;
 
-    TextView todayDate, targetText, dayNote,  foodCalories, sportCalories, normCalories, carbs, fats, protein;
+    TextView todayDate, dayNote,  foodCalories, sportCalories, normCalories, carbs, fats, protein;
+    //TextView targetText;
     private TodayAntropometryFragment fragment;
     private FragmentManager manager;
     FragmentTransaction transaction;
@@ -100,7 +101,7 @@ public class TodayActivity extends AppCompatActivity {
 
 
         todayDate = (TextView) findViewById(R.id.todayDate);
-        targetText = (TextView) findViewById(R.id.targetTextView);
+        //targetText = (TextView) findViewById(R.id.targetTextView);
         foodCalories = (TextView) findViewById(R.id.foodCalories);
         sportCalories = (TextView) findViewById(R.id.sportCalories);
         normCalories = (TextView) findViewById(R.id.normaCaloriesText);
@@ -227,21 +228,21 @@ public class TodayActivity extends AppCompatActivity {
             }
         }));
 
-        try {
-            Post post = new Post();
-            String s[] = new String[2];
-            s[0] = "http://caloriesdiary.ru/users/get_goal";
-            s[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+       // try {
+           // Post post = new Post();
+            //String s[] = new String[2];
+            //s[0] = "http://caloriesdiary.ru/users/get_goal";
+            //s[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
 
-            post.execute(s);
+            //post.execute(s);
 
-            JSONObject js = post.get();
-            JSONObject jo = js.getJSONObject("userGoal");
-            targetText.setText("Твоя цель: " + jo.getString("name"));
+//            JSONObject js = post.get();
+  //          JSONObject jo = js.getJSONObject("userGoal");
+    //        targetText.setText("Твоя цель: " + jo.getString("name"));
 
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-        }
+      //  } catch (Exception e) {
+        //    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+        //}
 
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
 

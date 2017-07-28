@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +51,9 @@ public class AuthorizationActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authorization_layout);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         login =  findViewById(R.id.editLogin);
         pass =  findViewById(R.id.editPassword);
