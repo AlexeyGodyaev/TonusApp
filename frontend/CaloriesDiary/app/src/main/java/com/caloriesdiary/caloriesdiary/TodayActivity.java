@@ -378,7 +378,7 @@ public class TodayActivity extends AppCompatActivity {
         String resp = null;
         String foodName = null;
         Float b = 0.0f, j = 0.0f, u = 0.0f, calories = 0.0f;
-        Integer id = 0;
+        Integer id = 0, category_id = 0;
 
 
         try {
@@ -408,7 +408,7 @@ public class TodayActivity extends AppCompatActivity {
                         System.err.println("Неверный формат строки!");
                     }
                     if (b != 0 || j != 0 || u != 0 || calories != 0)
-                        list.add(new FoodItem(foodName, b, j, u, id, calories));
+                        list.add(new FoodItem(id, foodName, b, j, u, category_id, calories));
                 }
             } catch (JSONException jEx) {
                 Toast.makeText(getApplicationContext(), "3 +" + jEx.toString(), Toast.LENGTH_SHORT).show();

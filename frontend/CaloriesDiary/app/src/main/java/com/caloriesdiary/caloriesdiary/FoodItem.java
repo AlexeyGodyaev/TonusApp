@@ -4,10 +4,11 @@ package com.caloriesdiary.caloriesdiary;
 public class FoodItem {
     String name;
     Float b, j, u, calories;
-    int categoryId;
+    int categoryId, id;
 
-    FoodItem(String name, Float b, Float j, Float u, int categoryId, Float calories){
+    FoodItem(int id, String name, Float b, Float j, Float u, int categoryId, Float calories){
         this.name = name;
+        this.id = id;
         this.b = b;
         this.j = j;
         this.u = u;
@@ -64,5 +65,13 @@ public class FoodItem {
 
     public void setCalories(Float calories) {
         this.calories = calories;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
