@@ -59,6 +59,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     TextView errors;
     int offset = 0;
     boolean send = true;
+    int buff=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,10 +240,13 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 int totalItemCount = mLayoutManager.getItemCount();
                 int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
                 if (totalItemCount -1 == lastVisibleItems && send){
+                    buff = lastVisibleItems-visibleItemCount+1;
                     get = new GetFood();
                     send = false;
                     offset+=1;
                     get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
+
+                    Toast.makeText(RecycleFoodCatalogActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
                 }
 
                 errors.setText(String.valueOf(visibleItemCount)+" "+String.valueOf(totalItemCount)+" "+String.valueOf(lastVisibleItems));
@@ -384,7 +388,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             mRecyclerView.setAdapter(mAdapter);
             Toast.makeText(RecycleFoodCatalogActivity.this, "Загружено элементов: " + String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
 
-
+            ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPosition(buff);
         }
 
         @Override
