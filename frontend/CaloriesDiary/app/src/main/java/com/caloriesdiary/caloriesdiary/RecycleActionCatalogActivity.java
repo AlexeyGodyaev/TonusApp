@@ -3,7 +3,6 @@ package com.caloriesdiary.caloriesdiary;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -19,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -76,13 +74,17 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
                 mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, final int position) {
-                final View content = LayoutInflater.from(getApplicationContext()).inflate(R.layout.add_action_busket_layput, null);
+
+                final View content = LayoutInflater.from(getApplicationContext()).inflate(R.layout.add_action_busket_layout, null);
 
                 final TextView txtName = view.findViewById(R.id.recycler_action_item_name);
                 final TextView dialogName = content.findViewById(R.id.dialog_title);
-                final TextView dialogCalories = view.findViewById(R.id.dialog_burn_per_hour);
+                dialogName.setText(txtName.getText());
+                final TextView dialogCalories = content.findViewById(R.id.dialog_burn_per_hour);
                 final TextView txtCalories = view.findViewById(R.id.recycler_action_item_calories);
                 String kcalstr = txtCalories.getText().toString().substring(0, txtCalories.getText().toString().indexOf('.'));
+                String s = kcalstr + "ккал/ час";
+                dialogCalories.setText(s);
                 final double kcal = Double.parseDouble(kcalstr);
                 final TextView kcaltextview = content.findViewById(R.id.dialog_burn);
 
@@ -91,11 +93,9 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
 
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(RecycleActionCatalogActivity.this);
-                builder.setTitle(txtName.getText().toString())
-                        .setCancelable(false);
+
 
                 final EditText input = content.findViewById(R.id.dialog_time);
-
 
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
                 input.addTextChangedListener(new TextWatcher() {
@@ -103,6 +103,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         double newkcal = kcal;
                         if (input.getText().length() > 0) {
+                            OKBtn.setClickable(true);
                             int time = Integer.parseInt(input.getText().toString());
                             if (time < 1440) {
                                 newkcal = kcal * time / 60;
@@ -114,8 +115,8 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
                             }
 
                         } else {
-                            kcaltextview.setText(newkcal + " kcal");
-
+                            kcaltextview.setText("");
+                            OKBtn.setClickable(false);
                         }
 
                     }
@@ -130,10 +131,11 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
 
                     }
                 });
-
                 builder.setView(content);
                 final AlertDialog alert = builder.create();
                 alert.show();
+
+
 
                 cancelBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
