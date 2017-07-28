@@ -14,6 +14,7 @@ import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -75,79 +76,26 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
                 mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, final int position) {
-                //Values are passing to activity & to fragment as well
-//                Toast.makeText(getApplicationContext(), "Single Click on position :"+position + " " + textView.getText().toString(),
-//                        Toast.LENGTH_SHORT).show();
-
+                final View content = LayoutInflater.from(getApplicationContext()).inflate(R.layout.add_action_busket_layput, null);
 
                 final TextView txtName = view.findViewById(R.id.recycler_action_item_name);
+                final TextView dialogName = content.findViewById(R.id.dialog_title);
+                final TextView dialogCalories = view.findViewById(R.id.dialog_burn_per_hour);
                 final TextView txtCalories = view.findViewById(R.id.recycler_action_item_calories);
                 String kcalstr = txtCalories.getText().toString().substring(0, txtCalories.getText().toString().indexOf('.'));
                 final double kcal = Double.parseDouble(kcalstr);
-                final TextView kcaltextview = new TextView(RecycleActionCatalogActivity.this);
-                kcaltextview.setText(kcalstr + " kcal");
+                final TextView kcaltextview = content.findViewById(R.id.dialog_burn);
+
+                final Button cancelBtn = content.findViewById(R.id.cancel_dialog);
+                final Button OKBtn = content.findViewById(R.id.add_action_to_busket);
+
+
                 final AlertDialog.Builder builder = new AlertDialog.Builder(RecycleActionCatalogActivity.this);
                 builder.setTitle(txtName.getText().toString())
-                        .setCancelable(false)
-                        .setNegativeButton("Отмена",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        if ((lp).getChildCount() > 0)
-                                            (lp).removeAllViews();
-                                        ((ViewManager) lp.getParent()).removeView(lp);
+                        .setCancelable(false);
 
-                                        dialog.cancel();
-                                    }
-                                })
-                        .setPositiveButton("ОК",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        JSONObject jObject = new JSONObject();
-                                        try {
-                                            JSONArray jsonArray = new JSONArray();
-                                            JSONObject jsn = new JSONObject();
-                                            File f = new File(getCacheDir(), "Actions.txt");
-                                            if (f.exists()) {
-                                                FileInputStream in = new FileInputStream(f);
-                                                ObjectInputStream inObject = new ObjectInputStream(in);
-                                                String text = inObject.readObject().toString();
-                                                inObject.close();
+                final EditText input = content.findViewById(R.id.dialog_time);
 
-
-                                                jsn = new JSONObject(text);
-                                                jsonArray = jsn.getJSONArray("active");
-                                                jsn.remove("active");
-                                            }
-
-                                            jsn.put("name", txtName.getText().toString());
-                                            jsn.put("calories", kcaltextview.getText().toString()
-                                                    .substring(0, kcaltextview.getText().toString().indexOf('.')));
-                                            jsonArray.put(jsn);
-                                            jObject.put("active", jsonArray);
-
-                                            FileOutputStream out = new FileOutputStream(f);
-                                            ObjectOutputStream outObject = new ObjectOutputStream(out);
-                                            outObject.writeObject(jObject.toString());
-                                            outObject.flush();
-                                            out.getFD().sync();
-                                            outObject.close();
-
-                                            //Toast.makeText(getApplicationContext(), jObject.toString() , Toast.LENGTH_LONG).show();
-                                        } catch (Exception iEx) {
-                                            Toast.makeText(getApplicationContext(), iEx.toString(), Toast.LENGTH_LONG).show();
-
-
-                                        }
-
-                                        if ((lp).getChildCount() > 0)
-                                            (lp).removeAllViews();
-                                        ((ViewManager) lp.getParent()).removeView(lp);
-
-                                    }
-                                });
-
-                final EditText input = new EditText(RecycleActionCatalogActivity.this);
-                input.setHint("Введите время (в минутах)");
 
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
                 input.addTextChangedListener(new TextWatcher() {
@@ -182,11 +130,59 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
 
                     }
                 });
-                lp.addView(kcaltextview, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                lp.addView(input, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                builder.setView(lp);
-                AlertDialog alert = builder.create();
+
+                builder.setView(content);
+                final AlertDialog alert = builder.create();
                 alert.show();
+
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alert.cancel();
+                    }
+                });
+
+                OKBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        JSONObject jObject = new JSONObject();
+                        try {
+                            JSONArray jsonArray = new JSONArray();
+                            JSONObject jsn = new JSONObject();
+                            File f = new File(getCacheDir(), "Actions.txt");
+                            if (f.exists()) {
+                                FileInputStream in = new FileInputStream(f);
+                                ObjectInputStream inObject = new ObjectInputStream(in);
+                                String text = inObject.readObject().toString();
+                                inObject.close();
+
+
+                                jsn = new JSONObject(text);
+                                jsonArray = jsn.getJSONArray("active");
+                                jsn.remove("active");
+                            }
+
+                            jsn.put("name", dialogName.getText().toString());
+                            jsn.put("calories", kcaltextview.getText().toString()
+                                    .substring(0, kcaltextview.getText().toString().indexOf('.')));
+                            jsonArray.put(jsn);
+                            jObject.put("active", jsonArray);
+
+                            FileOutputStream out = new FileOutputStream(f);
+                            ObjectOutputStream outObject = new ObjectOutputStream(out);
+                            outObject.writeObject(jObject.toString());
+                            outObject.flush();
+                            out.getFD().sync();
+                            outObject.close();
+
+                            alert.dismiss();
+                            //Toast.makeText(getApplicationContext(), jObject.toString() , Toast.LENGTH_LONG).show();
+                        } catch (Exception iEx) {
+                            Toast.makeText(getApplicationContext(), iEx.toString(), Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+                });
             }
 
             @Override
