@@ -59,7 +59,7 @@ public class AuthorizationActivity extends Activity {
         pass =  findViewById(R.id.editPassword);
         err =  findViewById(R.id.testRequestText);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
-        editor = sharedPref.edit();
+
         InitPreference();
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -136,6 +136,7 @@ public class AuthorizationActivity extends Activity {
                 err.setText(JSans.getString("status"));
                 status = JSans.getInt("status");
                 if (status == 1) {
+                    editor = sharedPref.edit();
                     editor.putInt("PROFILE_ID", JSans.getInt("user_id"));
                     editor.putString("userName", JSans.getString("username"));
                     editor.putString("userMail", JSans.getString("email"));
@@ -154,7 +155,7 @@ public class AuthorizationActivity extends Activity {
             }
 
         } else {
-            Toast.makeText(this, result.getStatus().toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Проблема с подключением к сервисам Google. Проверьте подключение к Интернету", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -211,6 +212,7 @@ public class AuthorizationActivity extends Activity {
             status = JSans.getInt("status");
 
             if (status == 1) {
+                editor = sharedPref.edit();
                 editor.putInt("PROFILE_ID", JSans.getInt("user_id"));
                 editor.putString("userName", JSans.getString("username"));
                 editor.putString("userMail", JSans.getString("email"));
@@ -263,6 +265,7 @@ public class AuthorizationActivity extends Activity {
         if(sharedPref.getBoolean("IS_FIRST_LAUNCH",true))
         {
             Toast.makeText(getApplicationContext(),"Вы в приложении в первый раз ",Toast.LENGTH_LONG).show();
+            editor = sharedPref.edit();
             editor.putBoolean("IS_FIRST_LAUNCH",false);
             editor.putInt("PROFILE_ID",0);
             editor.putBoolean("IS_PROFILE_CREATED",false);

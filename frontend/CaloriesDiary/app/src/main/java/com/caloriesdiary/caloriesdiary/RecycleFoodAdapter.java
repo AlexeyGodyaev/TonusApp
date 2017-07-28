@@ -48,6 +48,7 @@ public class RecycleFoodAdapter extends RecyclerView.Adapter<RecycleFoodAdapter.
         FoodItem foodItem = listitem.get(position);
         holder.nameview.setText(foodItem.getName());
         holder.caloriesview.setText(foodItem.getCalories().toString());
+
         holder.bjuview.setText(foodItem.getB().toString()+"/"+foodItem.getJ().toString()+"/"+foodItem.getU().toString());
     }
 

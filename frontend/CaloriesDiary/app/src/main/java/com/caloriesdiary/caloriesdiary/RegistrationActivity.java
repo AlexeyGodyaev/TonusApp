@@ -101,7 +101,7 @@ public class RegistrationActivity  extends AppCompatActivity {
         }
         catch(Exception e)
         {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Сервис не доступен", Toast.LENGTH_LONG).show();
         }
     }
 }

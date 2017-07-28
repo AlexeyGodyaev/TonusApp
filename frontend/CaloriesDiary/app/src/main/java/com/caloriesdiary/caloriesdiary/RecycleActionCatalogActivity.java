@@ -68,6 +68,9 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
         mAdapter = new RecycleActionAdapter(initData());
         mRecyclerView.setAdapter(mAdapter);
 
+
+
+
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
