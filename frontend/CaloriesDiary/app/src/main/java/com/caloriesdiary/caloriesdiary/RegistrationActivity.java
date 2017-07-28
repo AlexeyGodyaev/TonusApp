@@ -69,7 +69,7 @@ public class RegistrationActivity  extends AppCompatActivity {
                     if (name.getText().toString().length() > 3 && valid(name.getText().toString())) {
 
                         String args[] = new String[4];
-                        args[0] = "http://94.130.12.179/users/register";
+                        args[0] = "http://caloriesdiary.ru/users/register";
                         args[1] = name.getText().toString();
                         args[2] = pass.getText().toString();
                         args[3] = mail.getText().toString();

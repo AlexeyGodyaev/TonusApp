@@ -15,34 +15,34 @@ public class ArchiveAntropometryFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.archive_antropometry_fragment, container, false);
-            rLeg = (TextView) v.findViewById(R.id.right_leg_count);
+            rLeg = v.findViewById(R.id.right_leg_count);
             rLeg.setText(getActivity().getIntent().getStringExtra("rLeg"));
 
-            shoulders = (TextView) v.findViewById(R.id.shoulders_count);
+            shoulders = v.findViewById(R.id.shoulders_count);
             shoulders.setText(getActivity().getIntent().getStringExtra("shoulders"));
 
-            lLeg = (TextView) v.findViewById(R.id.left_leg_count);
+            lLeg = v.findViewById(R.id.left_leg_count);
             lLeg.setText(getActivity().getIntent().getStringExtra("lLeg"));
 
-            rHand = (TextView) v.findViewById(R.id.right_hand_count);
+            rHand =  v.findViewById(R.id.right_hand_count);
             rHand.setText(getActivity().getIntent().getStringExtra("rHand"));
 
-            lHand = (TextView) v.findViewById(R.id.left_hand_count);
+            lHand = v.findViewById(R.id.left_hand_count);
             lHand.setText(getActivity().getIntent().getStringExtra("lHand"));
 
-            butt = (TextView) v.findViewById(R.id.butt_count);
+            butt =  v.findViewById(R.id.butt_count);
             butt.setText(getActivity().getIntent().getStringExtra("butt"));
 
-            mass = (TextView) v.findViewById(R.id.mass_count);
+            mass =  v.findViewById(R.id.mass_count);
             mass.setText(getActivity().getIntent().getStringExtra("mass"));
 
-            chest = (TextView) v.findViewById(R.id.chest_count);
+            chest = v.findViewById(R.id.chest_count);
             chest.setText(getActivity().getIntent().getStringExtra("chest"));
 
-            waist = (TextView) v.findViewById(R.id.waist_count);
+            waist = v.findViewById(R.id.waist_count);
             waist.setText(getActivity().getIntent().getStringExtra("waist"));
 
-            calves = (TextView) v.findViewById(R.id.calves_count);
+            calves = v.findViewById(R.id.calves_count);
             calves.setText(getActivity().getIntent().getStringExtra("calves"));
 
         return v;

@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -232,7 +231,7 @@ public class AuthorizationActivity extends Activity {
                 AlarmManager alarmManager = (AlarmManager) this
                         .getSystemService(Context.ALARM_SERVICE);
                 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                        System.currentTimeMillis(),calendar.getTimeInMillis(),
+                        System.currentTimeMillis()+ 1000*60*60*2,calendar.getTimeInMillis() + 1000*60*60*2,
                         startWebServicePendingIntent);
 
             } else if (status == 0) {

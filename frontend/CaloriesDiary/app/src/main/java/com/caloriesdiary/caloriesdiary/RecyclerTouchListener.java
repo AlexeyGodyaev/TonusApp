@@ -9,9 +9,9 @@ import android.view.View;
 
 class RecyclerTouchListener implements RecyclerView.OnItemTouchListener{
 
-    public static interface ClickListener{
-        public void onClick(View view, int position);
-        public void onLongClick(View view, int position);
+    public  interface ClickListener{
+        void onClick(View view, int position);
+        void onLongClick(View view, int position);
     }
 
     private ClickListener clicklistener;

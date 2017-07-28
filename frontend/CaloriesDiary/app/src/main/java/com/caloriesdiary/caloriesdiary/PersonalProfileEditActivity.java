@@ -53,22 +53,22 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_edit_profile);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
-        editor = sharedPref.edit();
-try {
-    setSupportActionBar(mToolbar);
-    getSupportActionBar().setDisplayShowHomeEnabled(false);
-    getSupportActionBar().setDisplayShowTitleEnabled(true);
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-}catch (Exception e){
+
+        try {
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }catch (Exception e){
     Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
-}
+    }
         try
         {
             Post log = new Post();
 
             String args[] = new String[3];
 
-            args[0] = "http://94.130.12.179/users/get_user_chars";  //аргументы для пост запроса
+            args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
 
 
@@ -135,9 +135,7 @@ try {
     }
 
     private boolean isEmpty(TextView text) {
-        if(text.getText().toString() == "")
-            return true;
-        return (text.getText().toString().length()==0)?true:false;
+        return (text.getText().toString().equals("") || text.getText().toString().length()==0);
     }
 
     public void onClick(View view) throws InterruptedException, ExecutionException {
@@ -166,7 +164,7 @@ try {
 
                     String args[] = new String[10];
 
-                    args[0] = "http://94.130.12.179/users/save_user_chars";  //аргументы для пост запроса
+                    args[0] = "http://caloriesdiary.ru/users/save_user_chars";  //аргументы для пост запроса
                     args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
                     args[2] = name.getText().toString();
                     args[3] = weight.getText().toString();
@@ -180,8 +178,9 @@ try {
                     log.execute(args); // вызываем запрос
 
                     Toast.makeText(getApplicationContext(), log.get().toString(), Toast.LENGTH_LONG).show();
+                    editor = sharedPref.edit();
                     editor.putBoolean("IS_PROFILE_CREATED", true);
-                    editor.commit();
+                    editor.apply();
                     Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
                     startActivity(intent);
                 } else {

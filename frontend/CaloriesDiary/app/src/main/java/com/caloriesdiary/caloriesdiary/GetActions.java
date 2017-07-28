@@ -43,7 +43,7 @@ public class GetActions extends AsyncTask<String, Void, String>{
                 String line;
 
 
-                while((line = in.readLine()) != null) {
+                if((line = in.readLine()) != null) {
                     JSONObject js = new JSONObject(line);
                     JSONArray jArr = js.getJSONArray("activities");
                     for(int i=0;i<jArr.length();i++) {
@@ -54,7 +54,6 @@ public class GetActions extends AsyncTask<String, Void, String>{
                         sb.append(jArr.getJSONObject(i).getString("calories"));
                         sb.append(';');
                     }
-                    break;
                 }
 
 
@@ -63,11 +62,11 @@ public class GetActions extends AsyncTask<String, Void, String>{
 
             }
             else {
-                return new String("false : "+responseCode);
+                return "false : "+ responseCode;
             }
         }
         catch(Exception e){
-            return new String("Exception: " + e.getMessage());
+            return "Exception: " + e.getMessage();
         }
 
     }
