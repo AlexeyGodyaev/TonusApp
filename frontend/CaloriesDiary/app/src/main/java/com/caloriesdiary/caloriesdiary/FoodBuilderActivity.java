@@ -219,6 +219,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
             String foodName = null;
             Float b=0f, j=0f, u=0f, calories=0f;
             Integer id=0;
+            Integer food_id = 0;
 
             try {
 
@@ -242,6 +243,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
                 for(int i = 0; i<resp.length(); i++){
                     try {
                         id = Integer.valueOf(resp.getJSONObject(i).getString("category_id"));
+                        food_id = Integer.valueOf(resp.getJSONObject(i).getString("food_id"));
                         foodName = resp.getJSONObject(i).getString("name");
                         b = Float.valueOf(resp.getJSONObject(i).getString("protein"));
                         j = Float.valueOf(resp.getJSONObject(i).getString("fats"));
@@ -254,7 +256,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
                         //errors.setText(jEx.toString());
                     }
                     if(b!=0||j!=0||u!=0||calories!=0)
-                        list.add(new FoodItem(foodName,b,j,u,id,calories));
+                        list.add(new FoodItem(food_id,foodName,b,j,u,id,calories));
                 }
 
             mAdapter = new RecycleFoodAdapter(list);
