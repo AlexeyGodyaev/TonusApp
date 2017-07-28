@@ -12,7 +12,7 @@
         android:layout_marginStart="10dp"
         android:text="Поиск"/>
     <EditText
-        android:id="@+id/custom_food_name"
+        android:id="@+id/custom_food_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"

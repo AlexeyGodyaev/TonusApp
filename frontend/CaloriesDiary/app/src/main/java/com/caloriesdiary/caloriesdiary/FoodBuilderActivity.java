@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
@@ -47,6 +49,9 @@ public class FoodBuilderActivity extends AppCompatActivity {
 
     List<FoodItem> list = new ArrayList<>();
     GetFood get;
+    int offset = 0;
+    boolean send = true;
+    int buff=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,14 +95,35 @@ public class FoodBuilderActivity extends AppCompatActivity {
 //        mRecyclerView.setAdapter(mAdapter);
 
         get = new FoodBuilderActivity.GetFood();
-        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(-1));
+        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = mLayoutManager.getChildCount();
+                int totalItemCount = mLayoutManager.getItemCount();
+                int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                if (totalItemCount -1 == lastVisibleItems && send){
+                    buff = lastVisibleItems-visibleItemCount+1;
+                    get = new GetFood();
+                    send = false;
+                    offset+=1;
+                    get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
+
+                    Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
 
     }
     public void onAddFood (View view)
     {
         View content = LayoutInflater.from(getApplicationContext()).inflate(R.layout.add_food_dialoglayout,null);
-        final EditText edittext = (EditText) content.findViewById(R.id.custom_food_name);
+        final EditText edittext = (EditText) content.findViewById(R.id.custom_food_search);
+
 
         dialogRecyclerView = (RecyclerView) content.findViewById(R.id.custom_food_recycle);
         dialogRecyclerView.setHasFixedSize(true);
@@ -105,10 +131,59 @@ public class FoodBuilderActivity extends AppCompatActivity {
         dialogLayoutManager = new LinearLayoutManager(this);
         dialogRecyclerView.setLayoutManager(dialogLayoutManager);
 
+        dialogRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = dialogLayoutManager.getChildCount();
+                int totalItemCount = dialogLayoutManager.getItemCount();
+                int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                edittext.setText(String.valueOf(visibleItemCount) + ":" +String.valueOf(totalItemCount) + ":"+String.valueOf(lastVisibleItems));
+                if (totalItemCount -1 == lastVisibleItems && send){
+                    buff = lastVisibleItems-visibleItemCount+1;
+                    get = new GetFood();
+                    send = false;
+                    offset+=1;
+                    get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
+
+                    dialogAdapter = new CustomFoodAdapter(list);
+                    dialogRecyclerView.setAdapter(dialogAdapter);
+                    ((LinearLayoutManager)dialogRecyclerView.getLayoutManager()).scrollToPosition(buff);
+                    Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
+        send = true;
+//        get = new FoodBuilderActivity.GetFood();
+//        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
+
         dialogAdapter = new CustomFoodAdapter(list);
         dialogRecyclerView.setAdapter(dialogAdapter);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(FoodBuilderActivity.this);
+        dialogRecyclerView.addOnItemTouchListener( new RecyclerTouchListener(this, dialogRecyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                final CheckBox checkbox = (CheckBox) view.findViewById(R.id.add_food_checkbox);
+                if(!checkbox.isChecked())
+                {
+                    Toast.makeText(FoodBuilderActivity.this, checkbox.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+
+
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(FoodBuilderActivity.this);
         builder.setTitle("Добавление блюда")
                 .setView(content)
                 .setPositiveButton("Принять", new DialogInterface.OnClickListener() {
@@ -139,6 +214,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
         protected void onPostExecute(String string) {
             super.onPostExecute(string);
 
+            send = true;
             JSONArray resp = null;
             String foodName = null;
             Float b=0f, j=0f, u=0f, calories=0f;
@@ -184,6 +260,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
             mAdapter = new RecycleFoodAdapter(list);
             mRecyclerView.setAdapter(mAdapter);
             Toast.makeText(FoodBuilderActivity.this, "Загружено элементов: " + String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
+            ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPosition(buff);
 
 
         }
