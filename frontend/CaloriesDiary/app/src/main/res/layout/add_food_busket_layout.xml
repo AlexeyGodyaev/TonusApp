@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/dialog_title"
+        android:id="@+id/dialog_food_title"
         android:padding="10sp"
         android:textSize="15sp"
         android:textColor="@android:color/holo_blue_light"
@@ -16,7 +16,7 @@
         />
 
     <TextView
-        android:id="@+id/dialog_burn_per_hour"
+        android:id="@+id/dialog_cal_per_gr"
         android:padding="10sp"
         android:textSize="15sp"
         android:textColor="#000000"
@@ -28,14 +28,25 @@
         />
 
     <TextView
+        android:id="@+id/dialog_protein_text"
+        android:layout_below="@+id/dialog_food_title"
+        android:textColor="#000000"
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp"
+        android:paddingLeft="10sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Белки:" />
+
+    <TextView
         android:paddingLeft="10sp"
         android:paddingRight="10sp"
         android:textColor="#000000"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dialog_burn_per_hour"
-        android:text="Введите время для рассчета количества затраченных калорий"
+        android:layout_below="@+id/dialog_protein_text"
+        android:text="Укажите порцию для рассчета количества потребленных калорий"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/textView6" />
@@ -45,23 +56,23 @@
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Время:"
-        android:layout_alignBottom="@+id/dialog_time"
+        android:text="Порция:"
+        android:layout_alignBottom="@+id/dialog_gr"
         android:paddingBottom="6sp"
         android:paddingLeft="10sp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <EditText
-        android:id="@+id/dialog_time"
+        android:id="@+id/dialog_gr"
         android:textSize="14sp"
         android:layout_width="40sp"
         android:gravity="center"
-        android:textColor="#D81B60"
+        android:textColor="@android:color/holo_blue_light"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView6"
         android:layout_toRightOf="@+id/textView7"
-        android:maxLength="3"
+        android:maxLength="4"
         android:inputType="textPersonName" />
 
     <TextView
@@ -69,15 +80,15 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="мин"
+        android:text="г"
         android:paddingBottom="6sp"
-        android:layout_alignBottom="@+id/dialog_time"
-        android:layout_toRightOf="@+id/dialog_time"
-        android:layout_toEndOf="@+id/dialog_time" />
+        android:layout_alignBottom="@+id/dialog_gr"
+        android:layout_toRightOf="@+id/dialog_gr"
+        android:layout_toEndOf="@+id/dialog_gr" />
 
     <Button
 
-        android:id="@+id/cancel_dialog"
+        android:id="@+id/cancel_dialog_food"
         android:layout_width="wrap_content"
         android:layout_height="35sp"
         android:text="закрыть"
@@ -92,7 +103,7 @@
         android:layout_marginStart="10dp" />
 
     <Button
-        android:id="@+id/add_action_to_busket"
+        android:id="@+id/add_food_to_busket"
         android:layout_width="wrap_content"
         android:layout_height="35sp"
         android:text="Принять"
@@ -110,20 +121,82 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Затрачено:"
+        android:text="Калорийность:"
         android:layout_alignBaseline="@+id/textView10"
         android:layout_alignBottom="@+id/textView10"
-        android:layout_toLeftOf="@+id/add_action_to_busket"
-        android:layout_toStartOf="@+id/add_action_to_busket" />
+        android:layout_toRightOf="@+id/textView10"
+        android:layout_marginLeft="10dp"
+         />
 
     <TextView
         android:textColor="@android:color/holo_blue_light"
-        android:id="@+id/dialog_burn"
+        android:id="@+id/dialog_cal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView13"
         android:layout_alignBottom="@+id/textView13"
         android:layout_alignParentRight="true"
         android:paddingRight="10sp"/>
+
+    <TextView
+        android:id="@+id/dialog_protein_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp"
+        android:layout_above="@+id/textView6"
+        android:layout_toRightOf="@+id/dialog_protein_text"
+        android:layout_toEndOf="@+id/dialog_protein_text" />
+
+    <TextView
+        android:id="@+id/dialog_fats_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120sp"
+        android:textColor="#000000"
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp"
+        android:text="Жиры:"
+        android:layout_above="@+id/textView6"
+        />
+
+    <TextView
+        android:id="@+id/dialog_fats_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp"
+        android:layout_above="@+id/textView6"
+        android:layout_toEndOf="@+id/dialog_fats_text"
+        android:layout_toRightOf="@+id/dialog_fats_text"
+        />
+
+    <TextView
+        android:id="@+id/dialog_carbs_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp"
+        android:paddingRight="10sp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/dialog_fats_value"
+         />
+
+    <TextView
+        android:id="@+id/dialog_carbs_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp"
+        android:layout_alignTop="@+id/dialog_carbs_value"
+        android:layout_toLeftOf="@+id/dialog_carbs_value"
+        android:layout_toStartOf="@+id/dialog_carbs_value"
+        android:text="Углеводы:" />
+
 
 </RelativeLayout>
