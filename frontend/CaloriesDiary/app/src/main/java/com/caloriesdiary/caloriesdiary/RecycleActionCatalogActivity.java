@@ -84,7 +84,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
                 final TextView txtCalories = view.findViewById(R.id.recycler_action_item_calories);
 
                 String kcalstr = txtCalories.getText().toString().substring(0, txtCalories.getText().toString().indexOf('.'));
-                String s = kcalstr + "ккал/ час";
+                String s = kcalstr + "ккал/час";
                 dialogCalories.setText(s);
                 final double kcal = Double.parseDouble(kcalstr);
                 final TextView kcaltextview = content.findViewById(R.id.dialog_burn);
