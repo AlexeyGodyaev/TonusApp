@@ -6,38 +6,51 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Обхват плеч" />
+        android:layout_gravity="end"
+        android:text="Обхват плеч"
+        android:paddingStart="18sp"
+        android:paddingLeft="10sp"/>
 
     <EditText
         android:id="@+id/edit_shoulders"
-        android:layout_width="match_parent"
+        android:layout_width="331dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:ems="10"
-        android:inputType="number"
-        android:hint="см" />
+        android:hint="см"
+        android:inputType="number" />
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Обхват левой руки" />
+        android:layout_gravity="end"
+        android:text="Обхват левой руки"
+        android:paddingStart="18sp"
+        android:paddingLeft="10sp"/>
 
     <EditText
         android:id="@+id/edit_left_hand"
-        android:layout_width="match_parent"
+        android:layout_width="334dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:ems="10"
-        android:inputType="number"
-        android:hint="см" />
+        android:hint="см"
+        android:inputType="number" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Обхват правой руки" />
+        android:layout_gravity="end"
+        android:text="Обхват правой руки"
+        android:paddingStart="18sp"
+        android:paddingLeft="10sp"/>
 
     <EditText
         android:id="@+id/edit_right_hand"
-        android:layout_width="match_parent"
+        android:layout_width="332dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:ems="10"
         android:inputType="number"
         android:hint="см" />
@@ -45,12 +58,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Обхват груди" />
+        android:layout_gravity="end"
+        android:text="Обхват груди"
+        android:paddingStart="18sp"
+        android:paddingLeft="10sp"/>
 
     <EditText
         android:id="@+id/edit_chest"
-        android:layout_width="match_parent"
+        android:layout_width="335dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:ems="10"
         android:inputType="number"
         android:hint="см" />
@@ -58,12 +75,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Обхват талии" />
+        android:layout_gravity="end"
+        android:text="Обхват талии"
+        android:paddingStart="18sp"
+        android:paddingLeft="10sp"/>
 
     <EditText
         android:id="@+id/edit_waist"
-        android:layout_width="match_parent"
+        android:layout_width="336dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:ems="10"
         android:inputType="number"
         android:hint="см" />
@@ -71,12 +92,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Обхват ягодиц" />
+        android:layout_gravity="end"
+        android:text="Обхват ягодиц"
+        android:paddingStart="18sp"
+        android:paddingLeft="10sp"/>
 
     <EditText
         android:id="@+id/edit_butt"
-        android:layout_width="match_parent"
+        android:layout_width="341dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:ems="10"
         android:inputType="number"
         android:hint="см"/>
@@ -84,24 +109,32 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Обхват правого бедра" />
+        android:layout_gravity="end"
+        android:text="Обхват правого бедра"
+        android:paddingStart="18sp"
+        android:paddingLeft="10sp"/>
 
     <EditText
         android:id="@+id/edit_right_leg"
-        android:layout_width="match_parent"
+        android:layout_width="340dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:ems="10"
-        android:inputType="number"
-        android:hint="см" />
+        android:hint="см"
+        android:inputType="number" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Обхват левого бедра" />
+        android:layout_gravity="end"
+        android:text="Обхват левого бедра"
+        android:paddingStart="18sp"
+        android:paddingLeft="10sp"/>
 
     <EditText
         android:id="@+id/edit_left_leg"
-        android:layout_width="match_parent"
+        android:layout_width="346dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="number"
@@ -110,12 +143,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Обхват икр" />
+        android:layout_gravity="end"
+        android:text="Обхват икр"
+        android:paddingStart="18sp"
+        android:paddingLeft="10sp"/>
 
     <EditText
         android:id="@+id/edit_calves"
-        android:layout_width="match_parent"
+        android:layout_width="344dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:ems="10"
         android:inputType="number"
         android:hint="см" />

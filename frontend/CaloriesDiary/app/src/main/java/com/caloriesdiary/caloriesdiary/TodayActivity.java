@@ -41,7 +41,6 @@ public class TodayActivity extends AppCompatActivity {
     int sum, sum1;
 
     TextView todayDate, dayNote,  foodCalories, sportCalories, normCalories, carbs, fats, protein;
-    //TextView targetText;
     private TodayAntropometryFragment fragment;
     private FragmentManager manager;
     FragmentTransaction transaction;
@@ -275,6 +274,7 @@ public class TodayActivity extends AppCompatActivity {
         log.execute(args);
 
         try {
+
             JSONObject resp = log.get();
             normCalories.setText(resp.getInt("result") + " ккал");
 
@@ -297,6 +297,7 @@ public class TodayActivity extends AppCompatActivity {
 
             foodCalories.setText(sum + " ккал");
 
+
             f = new File(getCacheDir(), "Actions.txt");
             in = new FileInputStream(f);
             inObject = new ObjectInputStream(in);
@@ -313,11 +314,27 @@ public class TodayActivity extends AppCompatActivity {
 
             sportCalories.setText(sum1 + " ккал");
 
-        } catch (Exception e) {
-            sportCalories.setText("");
-            foodCalories.setText("");
-        }
+            }
+            catch (Exception e)
+            {
+               if(foodCalories.getText() != "")
+               {
+                   foodCalories.setText(sum + " ккал");
+               }
+               else
+               {
+                   foodCalories.setText("");
+               }
 
+               if(sportCalories.getText() != "")
+               {
+                   sportCalories.setText(sum1 + " ккал");
+               }
+               else
+               {
+                   foodCalories.setText("");
+               }
+            }
     }
 
     @Override
@@ -356,13 +373,7 @@ public class TodayActivity extends AppCompatActivity {
 
     }
 
-    public void onStatsClc (View v)
-    {
-        Intent intent = new Intent(getApplicationContext(),StatActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
+
 
     public void onTodayActivityBtnClc(View v) {
         initActiveData();
@@ -465,34 +476,6 @@ public class TodayActivity extends AppCompatActivity {
         return listActive;
     }
 
-    private String getDayOfWeek(int i) {
-        String s = "";
-
-        switch (i) {
-            case Calendar.SUNDAY:
-                s = "Воскресенье";
-                break;
-            case Calendar.MONDAY:
-                s = "Понедельник";
-                break;
-            case Calendar.TUESDAY:
-                s = "Вторник";
-                break;
-            case Calendar.WEDNESDAY:
-                s = "Среда";
-                break;
-            case Calendar.THURSDAY:
-                s = "Четверг";
-                break;
-            case Calendar.FRIDAY:
-                s = "Пятница";
-                break;
-            case Calendar.SATURDAY:
-                s = "Суббота";
-                break;
-        }
-        return s;
-    }
 
     private String getMonth(int i) {
         String s = "";
