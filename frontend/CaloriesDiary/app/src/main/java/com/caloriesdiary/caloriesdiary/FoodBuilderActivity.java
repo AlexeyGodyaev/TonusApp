@@ -72,10 +72,9 @@ public class FoodBuilderActivity extends AppCompatActivity {
         tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec("tag2");
-        // указываем название и картинку
-        // в нашем случае вместо картинки идет xml-файл,
+
         tabSpec.setIndicator("Холодильник");
-        // который определяет картинку по состоянию вкладки
+
         tabSpec.setContent(R.id.tab2);
         tabHost.addTab(tabSpec);
 
@@ -167,9 +166,18 @@ public class FoodBuilderActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 final CheckBox checkbox = (CheckBox) view.findViewById(R.id.add_food_checkbox);
+                final TextView textB = (TextView) view.findViewById(R.id.viewB);
+                final TextView textJ = (TextView) view.findViewById(R.id.viewJ);
+                final TextView textU = (TextView) view.findViewById(R.id.viewU);
+                final TextView textKc = (TextView) view.findViewById(R.id.viewKc);
+
                 if(!checkbox.isChecked())
                 {
-                    Toast.makeText(FoodBuilderActivity.this, checkbox.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FoodBuilderActivity.this, "Добавить " + checkbox.getText().toString() + "(" + textB.getText().toString() + textJ.getText().toString() + textU.getText().toString()+ ")", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(FoodBuilderActivity.this,"Удалить " + checkbox.getText().toString(), Toast.LENGTH_SHORT).show();
                 }
 
             }
