@@ -15,11 +15,13 @@ import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -97,102 +99,49 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, final int position) {
+                final View content = LayoutInflater.from(getApplicationContext()).inflate(R.layout.add_food_busket_layout, null);
+
                 final TextView txtName = view.findViewById(R.id.recycler_food_item_name);
-                TextView txtBJU = view.findViewById(R.id.recycler_food_item_bju);
+                final TextView dialogName = content.findViewById(R.id.dialog_food_title);
+                dialogName.setText(txtName.getText());
+                final TextView txtBJU = view.findViewById(R.id.recycler_food_item_bju);
                 final TextView txtCalories = view.findViewById(R.id.recycler_food_item_calories);
-                final TextView dialogBJU = new TextView(RecycleFoodCatalogActivity.this);
-                final TextView dialogCalories = new TextView(RecycleFoodCatalogActivity.this);
+                final TextView dialogCalories = content.findViewById(R.id.dialog_cal);
+                final TextView caloriesPerGr = content.findViewById(R.id.dialog_cal_per_gr);
+                caloriesPerGr.setText(txtCalories.getText().toString() + "ккал/ 100г");
+                dialogCalories.setText(txtCalories.getText().toString() + "ккал");
+                final TextView dialogProteins = content.findViewById(R.id.dialog_protein_value);
+                final TextView dialogFats = content.findViewById(R.id.dialog_fats_value);
+                final TextView dialogCarbs = content.findViewById(R.id.dialog_carbs_value);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(RecycleFoodCatalogActivity.this);
-                builder.setTitle(txtName.getText())
-                        .setCancelable(false)
-                        .setNegativeButton("Отмена",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        if (lp.getChildCount() > 0)
-                                            lp.removeAllViews();
-                                        ((ViewManager) lp.getParent()).removeView(lp);
-                                        dialog.cancel();
-                                    }
-                                })
-                        .setPositiveButton("OK",
-                                new
-                                        DialogInterface.OnClickListener() {
-
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                JSONObject jObject = new JSONObject();
-                                                try {
-                                                    JSONArray jsonArray = new JSONArray();
-                                                    JSONObject jsn=new JSONObject();
-                                                    File f = new File(getCacheDir(), "Food.txt");
-                                                    if (f.exists()) {
-                                                        FileInputStream in = new FileInputStream(f);
-                                                        ObjectInputStream inObject = new ObjectInputStream(in);
-                                                        String text = inObject.readObject().toString();
-                                                        inObject.close();
+                builder.setCancelable(false);
 
 
-                                                        jsn = new JSONObject(text);
-                                                        jsonArray = jsn.getJSONArray("food");
-                                                        jsn.remove("food");
-                                                    }
-
-                                                    jsn.put("name", txtName.getText().toString());
-                                                    String s = dialogBJU.getText().toString();
-                                                    jsn.put("protein", s.substring(0, s.indexOf('/')));
-                                                    s = s.substring(s.indexOf('/') + 1);
-                                                    jsn.put("fats", s.substring(0, s.indexOf('/')));
-                                                    s = s.substring(s.indexOf('/') + 1);
-                                                    jsn.put("carbs", s);
-                                                    jsn.put("calories", dialogCalories.getText().toString()
-                                                            .substring(0, dialogCalories.getText().toString().indexOf('.')));
-                                                    jsonArray.put(jsn);
-                                                    jObject.put("food", jsonArray);
-
-                                                    FileOutputStream out = new FileOutputStream(f);
-                                                    ObjectOutputStream outObject = new ObjectOutputStream(out);
-                                                    outObject.writeObject(jObject.toString());
-                                                    outObject.flush();
-                                                    out.getFD().sync();
-                                                    outObject.close();
-
-                                                }
-                                                catch (Exception iEx){
-                                                    Toast.makeText(getApplicationContext(), iEx.toString() , Toast.LENGTH_LONG).show();
-
-                                                }
-                                                if (lp.getChildCount() > 0)
-                                                    lp.removeAllViews();
-                                                ((ViewManager) lp.getParent()).removeView(lp);
-                                            }
-                                        });
-
-
-                final EditText input = new EditText(RecycleFoodCatalogActivity.this);
+                final EditText input = content.findViewById(R.id.dialog_gr);
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-                dialogBJU.setText(txtBJU.getText().toString());
-                dialogCalories.setText(txtCalories.getText().toString());
-
-                lp.addView(dialogCalories, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
-                lp.addView(dialogBJU, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
-                lp.addView(input, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
 
                 final double caloriesCount = Double.parseDouble(txtCalories.getText().toString().
-                        substring(0,dialogCalories.getText().toString().indexOf('.')));
+                        substring(0, txtCalories.getText().toString().indexOf('.')));
                 String parsBJU = txtBJU.getText().toString();
-                final double dialogProtein = Double.parseDouble(parsBJU.
-                        substring(0, parsBJU.indexOf('/')));
-                parsBJU = parsBJU.substring(parsBJU.indexOf('/')+1);
-                final double dialogFats = Double.parseDouble(parsBJU.
-                        substring(0,parsBJU.indexOf('/')));
-                parsBJU = parsBJU.substring(parsBJU.indexOf('/')+1);
-                final double dialogCarbs = Double.parseDouble(parsBJU);
 
+
+                final double dialogProteinValue = Double.parseDouble(parsBJU.
+                        substring(0, parsBJU.indexOf('/')));
+                dialogProteins.setText(String.valueOf(dialogProteinValue) + "г");
+
+                parsBJU = parsBJU.substring(parsBJU.indexOf('/') + 1);
+                final double dialogFatsValue = Double.parseDouble(parsBJU.
+                        substring(0, parsBJU.indexOf('/')));
+                dialogFats.setText(String.valueOf(dialogFatsValue) + "г");
+                parsBJU = parsBJU.substring(parsBJU.indexOf('/') + 1);
+                final double dialogCarbsValue = Double.parseDouble(parsBJU);
+                dialogCarbs.setText(String.valueOf(dialogCarbsValue) + "г");
+
+                final Button OKBtn = content.findViewById(R.id.add_food_to_busket);
+                final Button cancelBtn = content.findViewById(R.id.cancel_dialog_food);
+                input.setText("100");
                 input.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -201,18 +150,29 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        double massCount = Double.parseDouble(input.getText().toString());
 
-                        double newCount =
-                                (massCount/100)*caloriesCount;
-                        dialogCalories.setText(String.valueOf(newCount));
 
-                        double protein = (massCount/100)*dialogProtein;
-                        double fats = (massCount/100)*dialogFats;
-                        double carbs = (massCount/100)*dialogCarbs;
+                        if (input.getText().length() > 0) {
+                            double massCount = Double.parseDouble(input.getText().toString());
+                            OKBtn.setClickable(true);
+                            double newCount =
+                                    (massCount / 100) * caloriesCount;
+                            dialogCalories.setText(String.valueOf(newCount)+"ккал");
 
-                        dialogBJU.setText(Double.toString(protein)+"/"+Double.toString(fats)+"/"+Double.toString(carbs));
+                            double protein = (massCount / 100) * dialogProteinValue;
+                            double fats = (massCount / 100) * dialogFatsValue;
+                            double carbs = (massCount / 100) * dialogCarbsValue;
 
+                            dialogProteins.setText(String.valueOf(protein) + "г");
+                            dialogFats.setText(String.valueOf(fats) + "г");
+                            dialogCarbs.setText(String.valueOf(carbs) + "г");
+                        } else {
+                                OKBtn.setClickable(false);
+                                dialogProteins.setText("");
+                                dialogFats.setText("");
+                                dialogCarbs.setText("");
+                                dialogCalories.setText("");
+                        }
                     }
 
                     @Override
@@ -220,10 +180,65 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
                     }
                 });
-                builder.setView(lp);
-                AlertDialog alert = builder.create();
+
+
+                builder.setView(content);
+                final AlertDialog alert = builder.create();
                 alert.show();
 
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alert.cancel();
+                    }
+                });
+
+                OKBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        JSONObject jObject = new JSONObject();
+                        try {
+                            JSONArray jsonArray = new JSONArray();
+                            JSONObject jsn = new JSONObject();
+                            File f = new File(getCacheDir(), "Food.txt");
+                            if (f.exists()) {
+                                FileInputStream in = new FileInputStream(f);
+                                ObjectInputStream inObject = new ObjectInputStream(in);
+                                String text = inObject.readObject().toString();
+                                inObject.close();
+
+
+                                jsn = new JSONObject(text);
+                                jsonArray = jsn.getJSONArray("food");
+                                jsn.remove("food");
+                            }
+
+                            jsn.put("name", txtName.getText().toString());
+                            String s = dialogProteins.getText().toString();
+                            jsn.put("protein", s.substring(0, s.indexOf('г')));
+                            s = dialogFats.getText().toString();
+                            jsn.put("fats", s.substring(0, s.indexOf('г')));
+                            s = dialogCarbs.getText().toString();
+                            jsn.put("carbs", s.substring(0, s.indexOf('г')));
+                            jsn.put("calories", dialogCalories.getText().toString()
+                                    .substring(0, dialogCalories.getText().toString().indexOf('.')));
+                            jsonArray.put(jsn);
+                            jObject.put("food", jsonArray);
+
+                            FileOutputStream out = new FileOutputStream(f);
+                            ObjectOutputStream outObject = new ObjectOutputStream(out);
+                            outObject.writeObject(jObject.toString());
+                            outObject.flush();
+                            out.getFD().sync();
+                            outObject.close();
+
+                            alert.dismiss();
+
+                        } catch (Exception iEx) {
+                            Toast.makeText(getApplicationContext(), iEx.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
             }
 
             @Override

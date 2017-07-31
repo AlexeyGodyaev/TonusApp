@@ -121,8 +121,6 @@
         android:id="@+id/dialog_burn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-
         android:layout_alignBaseline="@+id/textView13"
         android:layout_alignBottom="@+id/textView13"
         android:layout_alignParentRight="true"
