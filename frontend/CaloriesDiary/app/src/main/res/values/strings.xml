@@ -1,12 +1,9 @@
 <resources>
     <string name="app_name">CaloriesDiary</string>
     <string name="search_hint">Поисковик</string>
-    <string name="search_title">Заглавие</string>
     <string name="menu_search">Search</string>
-    <string name="search_result">Search Result!</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_settings">Settings</string>
     <string-array name="activitylist">
         <item>Практически нет</item>
         <item>Легкий (2-3 дня в неделю)</item>
@@ -24,7 +21,7 @@
     </string-array>
 
     <string-array name="categories">
-        <item></item>
+
         <item>Легкий (2-3 дня в неделю)</item>
         <item>Умеренный (3-5 дней в неделю) </item>
         <item>Тяжелый (6-7 дней в неделю)</item>

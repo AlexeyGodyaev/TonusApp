@@ -82,6 +82,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
                 dialogName.setText(txtName.getText());
                 final TextView dialogCalories = content.findViewById(R.id.dialog_burn_per_hour);
                 final TextView txtCalories = view.findViewById(R.id.recycler_action_item_calories);
+
                 String kcalstr = txtCalories.getText().toString().substring(0, txtCalories.getText().toString().indexOf('.'));
                 String s = kcalstr + "ккал/ час";
                 dialogCalories.setText(s);
@@ -106,15 +107,16 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
                             OKBtn.setClickable(true);
                             int time = Integer.parseInt(input.getText().toString());
                             if (time < 1440) {
-                                newkcal = kcal * time / 60;
+                                newkcal = Math.round(kcal * time / 60);
                                 //Toast.makeText(getApplicationContext(),String.valueOf(newkcal),Toast.LENGTH_LONG).show();
-                                kcaltextview.setText(newkcal + " kcal");
+                                kcaltextview.setText(newkcal + " ккал");
                             } else {
                                 Toast.makeText(getApplicationContext(), "Не пизди", Toast.LENGTH_LONG).show();
                                 input.setText("");
                             }
 
                         } else {
+
                             kcaltextview.setText("");
                             OKBtn.setClickable(false);
                         }

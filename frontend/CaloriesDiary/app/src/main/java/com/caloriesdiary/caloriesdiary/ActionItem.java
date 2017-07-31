@@ -1,11 +1,11 @@
 package com.caloriesdiary.caloriesdiary;
 
-public class ActionItem {
-    String name;
-    Float calories;
-    int id;
+class ActionItem {
+    private String name;
+    private Float calories;
+    private int id;
 
-    public ActionItem(String name, Float calories, int id) {
+    ActionItem(String name, Float calories, int id) {
         this.name = name;
         this.calories = calories;
         this.id = id;

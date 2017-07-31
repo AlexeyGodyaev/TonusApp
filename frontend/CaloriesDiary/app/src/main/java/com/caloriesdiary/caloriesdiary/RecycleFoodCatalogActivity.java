@@ -253,6 +253,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
                 int visibleItemCount = mLayoutManager.getChildCount();
                 int totalItemCount = mLayoutManager.getItemCount();
+
                 int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
                 if (totalItemCount -1 == lastVisibleItems && send){
                     buff = lastVisibleItems-visibleItemCount+1;
@@ -438,7 +439,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                     BufferedReader in=new BufferedReader(
                             new InputStreamReader(
                                     conn.getInputStream(), "UTF-8"));
-                    //StringBuffer sb = new StringBuffer("");
+
                     String line;
                     try
                     {

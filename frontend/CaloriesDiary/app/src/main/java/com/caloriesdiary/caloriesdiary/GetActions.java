@@ -13,7 +13,7 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class GetActions extends AsyncTask<String, Void, String>{
+class GetActions extends AsyncTask<String, Void, String>{
 
         @Override
         protected void onPostExecute(String s) {

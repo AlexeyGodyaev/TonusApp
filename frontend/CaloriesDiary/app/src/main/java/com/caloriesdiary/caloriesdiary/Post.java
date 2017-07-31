@@ -19,7 +19,7 @@ import java.util.Iterator;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class Post extends AsyncTask<String, Void, JSONObject> {
+class Post extends AsyncTask<String, Void, JSONObject> {
 
         protected void onPreExecute(){}
 

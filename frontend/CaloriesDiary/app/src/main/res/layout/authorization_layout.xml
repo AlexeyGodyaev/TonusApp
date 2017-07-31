@@ -2,14 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@mipmap/loginform_blue_red">
-<TextView
-    android:id="@+id/main_label"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="ДИЕТА"
-    android:layout_centerHorizontal="true"
-    android:textSize="48dp"
-    android:layout_marginTop="75dp"/>
+
+    <TextView
+        android:id="@+id/main_label"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:text="ДИЕТА"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="65sp"
+        android:textStyle="bold" />
 
 
     <EditText
@@ -45,55 +49,60 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Забыли пароль?"
-        android:layout_below="@id/editPassword"
         android:layout_alignLeft="@id/editPassword"
+        android:layout_below="@id/editPassword"
+        android:layout_marginTop="20dp"
         android:onClick="forgetpassClick"
-        android:layout_marginTop="20dp"/>
+        android:text="Забыли пароль?"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/googleAccountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Google+"
-        android:layout_below="@id/editPassword"
         android:layout_alignRight="@id/editPassword"
+        android:layout_below="@id/editPassword"
+        android:layout_marginTop="20dp"
         android:onClick="googleClc"
-        android:layout_marginTop="20dp"/>
+        android:text="Google+"
+        android:textColor="@android:color/white"
+        android:textSize="17sp" />
 
     <Button
-        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Вход"
-        android:onClick="loginClc"
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/editPassword"
+        android:layout_height="50dp"
         android:layout_alignRight="@+id/editPassword"
-         />
+        android:layout_below="@+id/editPassword"
+        android:layout_marginTop="50dp"
+        android:layout_toEndOf="@+id/testRequestText"
+        android:layout_toRightOf="@+id/testRequestText"
+        android:onClick="loginClc"
+        android:text="Вход" />
 
     <Button
         android:id="@+id/registrationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Регистрация"
-        android:textColor="#ffffff"
-        android:onClick="registrationClc"
-        android:background="@android:color/transparent"
-
-        android:layout_below="@+id/editPassword"
         android:layout_alignLeft="@+id/editPassword"
-        android:layout_marginTop="50dp"  />
+        android:layout_below="@+id/editPassword"
+        android:layout_marginTop="50dp"
+
+        android:background="@android:color/transparent"
+        android:onClick="registrationClc"
+        android:text="Регистрация"
+        android:textColor="#ffffff" />
+
     <TextView
         android:id="@+id/guest_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Войти как Гость"
         android:layout_below="@+id/registrationButton"
         android:layout_centerHorizontal="true"
-        android:onClick="guestClc"
         android:layout_marginTop="45dp"
-        android:textSize="20dp"/>
+        android:onClick="guestClc"
+        android:text="Войти как Гость"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
 
 
     <TextView

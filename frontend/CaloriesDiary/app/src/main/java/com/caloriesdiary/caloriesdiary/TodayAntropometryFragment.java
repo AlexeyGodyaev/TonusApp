@@ -20,7 +20,7 @@ import java.util.Calendar;
 public class TodayAntropometryFragment extends Fragment{
     private EditText rLeg, lLeg, rHand, lHand, chest, waist, butt, calves, shoulders;
     private Calendar calendar = Calendar.getInstance();
-    JSONArray todayParams= null;
+    private JSONArray todayParams= null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

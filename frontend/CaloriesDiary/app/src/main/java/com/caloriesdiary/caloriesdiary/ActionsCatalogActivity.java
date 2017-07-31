@@ -31,8 +31,8 @@ import java.util.concurrent.ExecutionException;
 
 public class ActionsCatalogActivity extends FragmentActivity {
 
-    EditText srch;
-    ListView listView;
+    private EditText srch;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +64,10 @@ public class ActionsCatalogActivity extends FragmentActivity {
 
                 final TextView txtName =  view.findViewById(R.id.productName);
                 final TextView txtCalories = view.findViewById(R.id.productCalories);
-                String kcalstr = txtCalories.getText().toString().substring(0, txtCalories.getText().toString().indexOf('.'));
-                final double kcal = Double.parseDouble(kcalstr);
+                final double kcal =  Double.parseDouble(txtCalories.getText().toString().substring(0, txtCalories.getText().toString().indexOf('.')));
                 final TextView kcaltextview = new TextView(ActionsCatalogActivity.this);
-                kcaltextview.setText(kcalstr + " ккал");
+                kcaltextview.setText(kcal + " ккал");
+
                 final AlertDialog.Builder builder = new AlertDialog.Builder(ActionsCatalogActivity.this);
                 builder.setTitle(txtName.getText().toString())
                         .setCancelable(false)
@@ -139,7 +139,7 @@ public class ActionsCatalogActivity extends FragmentActivity {
                         if (input.getText().length() > 0) {
                             int time = Integer.parseInt(input.getText().toString());
                             if (time < 1440) {
-                                newkcal = kcal * time / 60;
+                                newkcal = Math.round(kcal * time / 60);
                                 //Toast.makeText(getApplicationContext(),String.valueOf(newkcal),Toast.LENGTH_LONG).show();
                                 kcaltextview.setText(newkcal + " ккал");
                             } else {
@@ -173,7 +173,7 @@ public class ActionsCatalogActivity extends FragmentActivity {
         });
     }
 
-    public  String getAction() throws InterruptedException, ExecutionException {
+    private String getAction() throws InterruptedException, ExecutionException {
         GetActions get = new GetActions();
         get.execute("http://caloriesdiary.ru/activities/get_activities");
 

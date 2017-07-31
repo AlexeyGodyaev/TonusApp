@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 
 public class ArchiveItemData extends AppCompatActivity{
-    TextView goalName, goalType, desiredWeight, goalState, beginDate, endDate, liveType,  antropometryText;
+    TextView goalName, goalType, desiredWeight, goalState, beginDate, endDate, liveType;
     String typeText;
     boolean flag = true;
     private ArchiveAntropometryFragment fragment;
@@ -29,7 +29,6 @@ public class ArchiveItemData extends AppCompatActivity{
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setTitle("ПРОСМОТР ЦЕЛИ");
 
-        antropometryText = (TextView) findViewById(R.id.archive_antropometry_text);
         goalState = (TextView) findViewById(R.id.state_count);
         switch (getIntent().getStringExtra("state")){
             case "false":

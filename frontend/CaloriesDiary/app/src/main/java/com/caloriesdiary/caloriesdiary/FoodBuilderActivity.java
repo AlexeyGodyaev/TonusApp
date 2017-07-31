@@ -2,6 +2,7 @@ package com.caloriesdiary.caloriesdiary;
 
 
 import android.content.DialogInterface;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -122,10 +123,11 @@ public class FoodBuilderActivity extends AppCompatActivity {
     public void onAddFood (View view)
     {
         View content = LayoutInflater.from(getApplicationContext()).inflate(R.layout.add_food_dialoglayout,null);
-        final EditText edittext = (EditText) content.findViewById(R.id.custom_food_search);
+
+        final EditText edittext =  content.findViewById(R.id.custom_food_search);
 
 
-        dialogRecyclerView = (RecyclerView) content.findViewById(R.id.custom_food_recycle);
+        dialogRecyclerView =  content.findViewById(R.id.custom_food_recycle);
         dialogRecyclerView.setHasFixedSize(true);
 
         dialogLayoutManager = new LinearLayoutManager(this);
@@ -219,6 +221,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
             String foodName = null;
             Float b=0f, j=0f, u=0f, calories=0f;
             Integer id=0;
+
             Integer food_id = 0;
 
             try {
@@ -243,7 +246,9 @@ public class FoodBuilderActivity extends AppCompatActivity {
                 for(int i = 0; i<resp.length(); i++){
                     try {
                         id = Integer.valueOf(resp.getJSONObject(i).getString("category_id"));
+
                         food_id = Integer.valueOf(resp.getJSONObject(i).getString("food_id"));
+
                         foodName = resp.getJSONObject(i).getString("name");
                         b = Float.valueOf(resp.getJSONObject(i).getString("protein"));
                         j = Float.valueOf(resp.getJSONObject(i).getString("fats"));
@@ -256,7 +261,8 @@ public class FoodBuilderActivity extends AppCompatActivity {
                         //errors.setText(jEx.toString());
                     }
                     if(b!=0||j!=0||u!=0||calories!=0)
-                        list.add(new FoodItem(food_id,foodName,b,j,u,id,calories));
+             list.add(new FoodItem(food_id,foodName,b,j,u,id,calories));
+
                 }
 
             mAdapter = new RecycleFoodAdapter(list);
@@ -341,6 +347,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
 
                 String key= itr.next();
                 Object value = params.get(key);
+
 
                 if (first)
                     first = false;

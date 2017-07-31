@@ -11,7 +11,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Масса до/после:"
@@ -20,7 +20,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/mass_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват плеч до/после:"
@@ -44,7 +44,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/shoulders_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват правой руки до/после:"
@@ -68,7 +68,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/right_hand_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват левой руки до/после:"
@@ -92,7 +92,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/left_hand_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват груди до/после:"
@@ -116,7 +116,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/chest_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват талии до/после:"
@@ -140,7 +140,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/waist_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват ягодиц до/после:"
@@ -164,7 +164,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/butt_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -179,7 +179,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват правого бедра до/после:"
@@ -188,7 +188,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/right_leg_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -203,7 +203,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват левого бедра до/после:"
@@ -212,7 +212,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/left_leg_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -227,7 +227,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Обхват икр до/после:"
@@ -236,7 +236,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/calves_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
