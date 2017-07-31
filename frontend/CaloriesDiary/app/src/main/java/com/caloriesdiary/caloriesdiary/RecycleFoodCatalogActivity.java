@@ -101,7 +101,9 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
                 final TextView txtName = view.findViewById(R.id.recycler_food_item_name);
                 final TextView dialogName = content.findViewById(R.id.dialog_food_title);
-                dialogName.setText(txtName.getText());
+                if(txtName.getText().toString().length()>20)
+                    dialogName.setText(txtName.getText().toString().substring(0, 20) + "...");
+                 else dialogName.setText(txtName.getText());
                 final TextView txtBJU = view.findViewById(R.id.recycler_food_item_bju);
                 final TextView txtCalories = view.findViewById(R.id.recycler_food_item_calories);
                 final TextView dialogCalories = content.findViewById(R.id.dialog_cal);
