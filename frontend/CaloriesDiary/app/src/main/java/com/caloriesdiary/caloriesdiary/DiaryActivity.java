@@ -2,6 +2,7 @@ package com.caloriesdiary.caloriesdiary;
 
 
 
+import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -54,6 +56,7 @@ public class DiaryActivity extends AppCompatActivity {
     EditText editMass;
     private boolean foodFlag = false, activeFlag = false, antropometryFlag = true;
 
+    Calendar minDate = Calendar.getInstance(), maxDate = Calendar.getInstance();
     final String[] args = new String[2];
 
     @Override
@@ -107,19 +110,57 @@ public class DiaryActivity extends AppCompatActivity {
                 todayParams = jsn.getJSONArray("today_params");
                 jsn.remove("today_params");
 
-                position=todayParams.length()-1;
+                position = todayParams.length() - 1;
 
-                if (todayParams.length() > 0 && todayParams.getJSONObject(todayParams.length() - 1).getString("date")
-                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                                "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
+                if (todayParams.length() > 0) {
 
-                    editMass.setText(todayParams.getJSONObject(todayParams.length() - 1).getString("mass"));
-                    dayNote.setText(todayParams.getJSONObject(todayParams.length() - 1).getString("note"));
+                    editMass.setText(todayParams.getJSONObject(position).getString("mass"));
+                    dayNote.setText(todayParams.getJSONObject(position).getString("note"));
+
+                    String s;
+                    int day, month, year;
+                    s = todayParams.getJSONObject(0).getString("date");
+
+                    day = Integer.valueOf(s.substring(0, s.indexOf('.')));
+                    s = s.substring(s.indexOf('.') + 1);
+
+                    month = Integer.valueOf(s.substring(0, s.indexOf('.')));
+                    s = s.substring(s.indexOf('.') + 1);
+
+                    year = Integer.valueOf(s);
+                    minDate.set(year, month - 1, day);
+
+                    s = todayParams.getJSONObject(todayParams.length() - 1).getString("date");
+
+                    day = Integer.valueOf(s.substring(0, s.indexOf('.')));
+                    s = s.substring(s.indexOf('.') + 1);
+
+                    month = Integer.valueOf(s.substring(0, s.indexOf('.')));
+                    s = s.substring(s.indexOf('.') + 1);
+
+                    year = Integer.valueOf(s);
+                    maxDate.set(year, month - 1, day);
                 }
             }
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
+        todayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog dpd = new DatePickerDialog(getApplicationContext());
+                dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        datePicker.setMaxDate(maxDate.getTimeInMillis());
+                        datePicker.setMinDate(minDate.getTimeInMillis());
+
+                    }
+                });
+                dpd.show();
+            }
+        });
     }
 
 
@@ -128,17 +169,16 @@ public class DiaryActivity extends AppCompatActivity {
         super.onResume();
 
         try {
-            JSONObject jsn = todayParams.getJSONObject(todayParams.length()-1);
+            JSONObject jsn = todayParams.getJSONObject(position);
 
             todayDate.setText(jsn.getString("date"));
             foodCalories.setText(jsn.getString("food_sum") + " ккал");
 
             sportCalories.setText(jsn.getString("active_sum") + " ккал");
-
         }
         catch (Exception e)
         {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
