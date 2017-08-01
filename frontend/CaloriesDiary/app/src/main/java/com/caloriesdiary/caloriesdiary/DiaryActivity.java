@@ -153,8 +153,8 @@ public class DiaryActivity extends AppCompatActivity {
                 dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        datePicker.setMaxDate(maxDate.getTimeInMillis());
-                        datePicker.setMinDate(minDate.getTimeInMillis());
+//                        datePicker.setMaxDate(maxDate.getTimeInMillis());
+//                        datePicker.setMinDate(minDate.getTimeInMillis());
 
                     }
                 });
@@ -291,51 +291,6 @@ public class DiaryActivity extends AppCompatActivity {
             activeFlag = true;
         }
         return listActive;
-    }
-
-
-    private String getMonth(int i) {
-        String s = "";
-        switch (i) {
-            case Calendar.JANUARY:
-                s = "01";
-                break;
-            case Calendar.FEBRUARY:
-                s = "02";
-                break;
-            case Calendar.MARCH:
-                s = "03";
-                break;
-            case Calendar.APRIL:
-                s = "04";
-                break;
-            case Calendar.MAY:
-                s = "05";
-                break;
-            case Calendar.JUNE:
-                s = "06";
-                break;
-            case Calendar.JULY:
-                s = "07";
-                break;
-            case Calendar.AUGUST:
-                s = "08";
-                break;
-            case Calendar.SEPTEMBER:
-                s = "09";
-                break;
-            case Calendar.OCTOBER:
-                s = "10";
-                break;
-            case Calendar.NOVEMBER:
-                s = "11";
-                break;
-            case Calendar.DECEMBER:
-                s = "12";
-                break;
-        }
-
-        return s;
     }
 }
 
