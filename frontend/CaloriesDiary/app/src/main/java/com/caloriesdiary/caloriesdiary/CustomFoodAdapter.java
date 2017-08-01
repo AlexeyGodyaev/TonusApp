@@ -16,7 +16,7 @@ public class CustomFoodAdapter extends RecyclerView.Adapter<CustomFoodAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
 
         public CheckBox checkBox;
-        public TextView b,j,u,kcal;
+        public TextView b,j,u,kcal,id;
         public ViewHolder(View view) {
             super(view);
             checkBox = (CheckBox) view.findViewById(R.id.add_food_checkbox);
@@ -24,6 +24,7 @@ public class CustomFoodAdapter extends RecyclerView.Adapter<CustomFoodAdapter.Vi
             j = (TextView) view.findViewById(R.id.viewJ);
             u = (TextView) view.findViewById(R.id.viewU);
             kcal = (TextView) view.findViewById(R.id.viewKc);
+            id = (TextView) view.findViewById(R.id.viewID);
             view.setOnClickListener(this);
         }
         @Override
@@ -55,7 +56,7 @@ public class CustomFoodAdapter extends RecyclerView.Adapter<CustomFoodAdapter.Vi
         holder.j.setText(String.valueOf(foodItem.getJ()));
         holder.u.setText(String.valueOf(foodItem.getU()));
         holder.kcal.setText(String.valueOf(foodItem.getCalories()));
-
+        holder.id.setText(String.valueOf(foodItem.getId()));
 
     }
 
