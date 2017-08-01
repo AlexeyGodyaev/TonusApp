@@ -1,7 +1,7 @@
 package com.caloriesdiary.caloriesdiary;
 
 
-import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -22,9 +22,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -34,9 +32,9 @@ public class DiaryActivity extends AppCompatActivity {
     final List<FoodItem> list = new ArrayList<>();
     final List<ActionItem> listActive = new ArrayList<>();
 
-    int sum, sum1;
+    int position;
 
-    TextView todayDate, dayNote,  foodCalories, sportCalories, normCalories, carbs, fats, protein;
+    TextView todayDate, dayNote,  foodCalories, sportCalories, normCalories;
     private TodayAntropometryFragment fragment;
     private FragmentManager manager;
     FragmentTransaction transaction;
@@ -54,10 +52,9 @@ public class DiaryActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
     Calendar calendar;
     EditText editMass;
-    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, FABFlag=false;
+    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true;
 
     final String[] args = new String[2];
-    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +87,7 @@ public class DiaryActivity extends AppCompatActivity {
 
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
-
-        args[0] = "http://caloriesdiary.ru/calories/get_per_day";
-        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-
-
         todayDate = (TextView) findViewById(R.id.diaryDate);
-        //targetText = (TextView) findViewById(R.id.targetTextView);
         foodCalories = (TextView) findViewById(R.id.diaryFoodCalories);
         sportCalories = (TextView) findViewById(R.id.diarySportCalories);
         normCalories = (TextView) findViewById(R.id.diaryCaloriesNormText);
@@ -116,8 +107,10 @@ public class DiaryActivity extends AppCompatActivity {
                 todayParams = jsn.getJSONArray("today_params");
                 jsn.remove("today_params");
 
+                position=todayParams.length()-1;
+
                 if (todayParams.length() > 0 && todayParams.getJSONObject(todayParams.length() - 1).getString("date")
-                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
+                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
                                 "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
 
                     editMass.setText(todayParams.getJSONObject(todayParams.length() - 1).getString("mass"));
@@ -127,117 +120,6 @@ public class DiaryActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
-        actionRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
-                actionRecyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, final int i) {
-                JSONObject jObject = new JSONObject();
-                try {
-                    JSONArray jsonArray;
-                    JSONObject jsn;
-                    File f = new File(getCacheDir(), "Actions.txt");
-                    FileInputStream in = new FileInputStream(f);
-                    ObjectInputStream inObject = new ObjectInputStream(in);
-                    String text = inObject.readObject().toString();
-                    inObject.close();
-
-                    jsn = new JSONObject(text);
-                    jsonArray = jsn.getJSONArray("active");
-                    JSONArray jArray = new JSONArray();
-                    jsn.remove("active");
-                    for (int j = 0; j < jsonArray.length(); j++) {
-                        if (j != i)
-                            jArray.put(jsonArray.getJSONObject(j));
-                    }
-                    jObject.put("active", jArray);
-
-                    FileOutputStream out = new FileOutputStream(f);
-                    ObjectOutputStream outObject = new ObjectOutputStream(out);
-                    outObject.writeObject(jObject.toString());
-                    outObject.flush();
-                    out.getFD().sync();
-                    outObject.close();
-
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "1 +" + e.toString(), Toast.LENGTH_SHORT).show();
-                }
-                listActive.remove(i);
-                actionAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), "Long press on position :" + position,
-                        Toast.LENGTH_LONG).show();
-            }
-        }));
-
-        foodRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
-                foodRecyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, final int i) {
-                JSONObject jObject = new JSONObject();
-                try {
-                    JSONArray jsonArray;
-                    JSONObject jsn;
-                    File f = new File(getCacheDir(), "Food.txt");
-                    FileInputStream in = new FileInputStream(f);
-                    ObjectInputStream inObject = new ObjectInputStream(in);
-                    String text = inObject.readObject().toString();
-                    inObject.close();
-
-                    jsn = new JSONObject(text);
-                    jsonArray = jsn.getJSONArray("food");
-                    JSONArray jArray = new JSONArray();
-                    jsn.remove("food");
-                    for (int j = 0; j < jsonArray.length(); j++) {
-                        if (j != i)
-                            jArray.put(jsonArray.getJSONObject(j));
-                    }
-                    jObject.put("food", jArray);
-
-                    FileOutputStream out = new FileOutputStream(f);
-                    ObjectOutputStream outObject = new ObjectOutputStream(out);
-                    outObject.writeObject(jObject.toString());
-                    outObject.flush();
-                    out.getFD().sync();
-                    outObject.close();
-
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "1 +" + e.toString(), Toast.LENGTH_SHORT).show();
-                }
-                list.remove(i);
-                foodAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), "Long press on position :" + position,
-                        Toast.LENGTH_LONG).show();
-            }
-        }));
-
-        // try {
-        // Post post = new Post();
-        //String s[] = new String[2];
-        //s[0] = "http://caloriesdiary.ru/users/get_goal";
-        //s[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-
-        //post.execute(s);
-
-//            JSONObject js = post.get();
-        //          JSONObject jo = js.getJSONObject("userGoal");
-        //        targetText.setText("Твоя цель: " + jo.getString("name"));
-
-        //  } catch (Exception e) {
-        //    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-        //}
-
-        todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
-
     }
 
 
@@ -245,70 +127,18 @@ public class DiaryActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Post log = new Post();
-        log.execute(args);
-
         try {
+            JSONObject jsn = todayParams.getJSONObject(todayParams.length()-1);
 
-            JSONObject resp = log.get();
-            normCalories.setText(resp.getInt("result") + " ккал");
+            todayDate.setText(jsn.getString("date"));
+            foodCalories.setText(jsn.getString("food_sum") + " ккал");
 
-            protein.setText(resp.getInt("protein") + " г.");
-            fats.setText(resp.getInt("fats")+ " г.");
-            carbs.setText(resp.getInt("carbs")+ " г.");
-
-            File f = new File(getCacheDir(), "Food.txt");
-            FileInputStream in = new FileInputStream(f);
-            ObjectInputStream inObject = new ObjectInputStream(in);
-            String text = inObject.readObject().toString();
-            inObject.close();
-
-            JSONObject jsn = new JSONObject(text);
-            JSONArray jsonArray = jsn.getJSONArray("food");
-
-            for (int j = 0; j < jsonArray.length(); j++) {
-                sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
-            }
-
-            foodCalories.setText(sum + " ккал");
-
-
-            f = new File(getCacheDir(), "Actions.txt");
-            in = new FileInputStream(f);
-            inObject = new ObjectInputStream(in);
-            text = inObject.readObject().toString();
-            inObject.close();
-
-            jsn = new JSONObject(text);
-            jsonArray = jsn.getJSONArray("active");
-
-
-            for (int j = 0; j < jsonArray.length(); j++) {
-                sum1 += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
-            }
-
-            sportCalories.setText(sum1 + " ккал");
+            sportCalories.setText(jsn.getString("active_sum") + " ккал");
 
         }
         catch (Exception e)
         {
-            if(foodCalories.getText() != "")
-            {
-                foodCalories.setText(sum + " ккал");
-            }
-            else
-            {
-                foodCalories.setText("");
-            }
-
-            if(sportCalories.getText() != "")
-            {
-                sportCalories.setText(sum1 + " ккал");
-            }
-            else
-            {
-                foodCalories.setText("");
-            }
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -358,27 +188,13 @@ public class DiaryActivity extends AppCompatActivity {
     }
 
     private List<FoodItem> initFoodData() {
-        String resp = null;
         String foodName = null;
         Float b = 0.0f, j = 0.0f, u = 0.0f, calories = 0.0f;
         Integer id = 0, category_id = 0;
 
-
-        try {
-            File f = new File(getCacheDir(), "Food.txt");
-            if (f.exists()) {
-                FileInputStream in = new FileInputStream(f);
-                ObjectInputStream inObject = new ObjectInputStream(in);
-                resp = inObject.readObject().toString();
-                inObject.close();
-            }
-        } catch (Exception ex) {
-            Toast.makeText(getApplicationContext(), "2 +" + ex.toString(), Toast.LENGTH_SHORT).show();
-        }
-
-        if (resp != null && foodFlag) {
+        if (foodFlag) {
             try {
-                JSONObject jOb = new JSONObject(resp);
+                JSONObject jOb = todayParams.getJSONObject(position);
                 JSONArray jArr = jOb.getJSONArray("food");
                 for (int i = 0; i < jArr.length(); i++) {
                     try {
@@ -406,26 +222,12 @@ public class DiaryActivity extends AppCompatActivity {
     }
 
     private List<ActionItem> initActiveData() {
-        String resp = null;
         String actionName = null;
         Float calories = 0.0f;
 
-
-        try {
-            File f = new File(getCacheDir(), "Actions.txt");
-            if (f.exists()) {
-                FileInputStream in = new FileInputStream(f);
-                ObjectInputStream inObject = new ObjectInputStream(in);
-                resp = inObject.readObject().toString();
-                inObject.close();
-            }
-        } catch (Exception ex) {
-            Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
-        }
-
-        if (resp != null && activeFlag) {
+        if (activeFlag) {
             try {
-                JSONObject jOb = new JSONObject(resp);
+                JSONObject jOb = todayParams.getJSONObject(position);
                 JSONArray jArr = jOb.getJSONArray("active");
                 for (int i = 0; i < jArr.length(); i++) {
                     try {

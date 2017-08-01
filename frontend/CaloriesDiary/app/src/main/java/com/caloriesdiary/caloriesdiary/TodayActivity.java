@@ -40,7 +40,8 @@ public class TodayActivity extends AppCompatActivity {
 
     int sum, sum1;
 
-    TextView todayDate, dayNote,  foodCalories, sportCalories, normCalories, carbs, fats, protein;
+    TextView todayDate, foodCalories, sportCalories, normCalories, carbs, fats, protein;
+    EditText dayNote;
     private TodayAntropometryFragment fragment;
     private FragmentManager manager;
     FragmentTransaction transaction;
@@ -62,6 +63,8 @@ public class TodayActivity extends AppCompatActivity {
 
     final String[] args = new String[2];
     LinearLayout linearLayout;
+
+    JSONArray jsonAction, jsonFood;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +93,9 @@ public class TodayActivity extends AppCompatActivity {
         fragment = new TodayAntropometryFragment();
 
         editMass = (EditText) findViewById(R.id.edit_mass);
-        dayNote = (TextView) findViewById(R.id.DayNote);
+        dayNote = (EditText) findViewById(R.id.DayNote);
 
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
-
 
         args[0] = "http://caloriesdiary.ru/calories/get_per_day";
         args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
@@ -125,7 +127,7 @@ public class TodayActivity extends AppCompatActivity {
                 jsn.remove("today_params");
 
                 if (todayParams.length() > 0 && todayParams.getJSONObject(todayParams.length() - 1).getString("date")
-                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
+                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
                                 "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
 
                     editMass.setText(todayParams.getJSONObject(todayParams.length() - 1).getString("mass"));
@@ -227,22 +229,6 @@ public class TodayActivity extends AppCompatActivity {
             }
         }));
 
-       // try {
-           // Post post = new Post();
-            //String s[] = new String[2];
-            //s[0] = "http://caloriesdiary.ru/users/get_goal";
-            //s[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-
-            //post.execute(s);
-
-//            JSONObject js = post.get();
-  //          JSONObject jo = js.getJSONObject("userGoal");
-    //        targetText.setText("Твоя цель: " + jo.getString("name"));
-
-      //  } catch (Exception e) {
-        //    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-        //}
-
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
 
     }
@@ -289,10 +275,10 @@ public class TodayActivity extends AppCompatActivity {
             inObject.close();
 
             JSONObject jsn = new JSONObject(text);
-            JSONArray jsonArray = jsn.getJSONArray("food");
+            jsonFood = jsn.getJSONArray("food");
 
-            for (int j = 0; j < jsonArray.length(); j++) {
-                sum += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
+            for (int j = 0; j < jsonFood.length(); j++) {
+                sum += Integer.parseInt(jsonFood.getJSONObject(j).get("calories").toString());
             }
 
             foodCalories.setText(sum + " ккал");
@@ -305,11 +291,11 @@ public class TodayActivity extends AppCompatActivity {
             inObject.close();
 
             jsn = new JSONObject(text);
-            jsonArray = jsn.getJSONArray("active");
+            jsonAction = jsn.getJSONArray("active");
 
 
-            for (int j = 0; j < jsonArray.length(); j++) {
-                sum1 += Integer.parseInt(jsonArray.getJSONObject(j).get("calories").toString());
+            for (int j = 0; j < jsonAction.length(); j++) {
+                sum1 += Integer.parseInt(jsonAction.getJSONObject(j).get("calories").toString());
             }
 
             sportCalories.setText(sum1 + " ккал");
@@ -540,12 +526,17 @@ public class TodayActivity extends AppCompatActivity {
                 jsn.remove("today_params");
             }
 
+            f.createNewFile();
+
             jsn.put("mass", editMass.getText().toString());
             jsn.put("eatedCalories", String.valueOf(sum));
             jsn.put("bernCalories", String.valueOf(sum1));
             jsn.put("note", dayNote.getText().toString());
-
-            jsn.put("date", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
+            jsn.put("active", jsonAction);
+            jsn.put("food", jsonFood);
+            jsn.put("active_sum",  String.valueOf(sum1));
+            jsn.put("food_sum",  String.valueOf(sum));
+            jsn.put("date", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
                     "." + String.valueOf(calendar.get(Calendar.YEAR)));
             if (fragment.getView() != null) {
                 jsn.put("rLeg", fragment.getrLeg().getText().toString());
@@ -559,7 +550,7 @@ public class TodayActivity extends AppCompatActivity {
                 jsn.put("chest", fragment.getChest().getText().toString());
             } else {
                 if (jsonArray != null && jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
-                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
+                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
                                 "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
                     jsn.put("rLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("rLeg"));
                     jsn.put("lLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("lLeg"));
@@ -583,7 +574,7 @@ public class TodayActivity extends AppCompatActivity {
                 }
             }
             if (jsonArray != null && jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
-                    .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)) +
+                    .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
                             "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
                 JSONArray jArray = new JSONArray();
                 for (int i = 0; i < jsonArray.length() - 1; i++)
@@ -594,6 +585,15 @@ public class TodayActivity extends AppCompatActivity {
                 jsonArray.put(jsn);
                 jObject.put("today_params", jsonArray);
             }
+
+            Post saveBackUp = new Post();
+            String backUpArgs[] = new String[3];
+            backUpArgs[0]="http://caloriesdiary.ru/users/save_backup";
+            backUpArgs[1]=String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+            backUpArgs[2]=jObject.toString();
+            saveBackUp.execute(backUpArgs);
+
+            Toast.makeText(this, saveBackUp.get().toString(), Toast.LENGTH_SHORT).show();
 
             FileOutputStream out = new FileOutputStream(f);
             ObjectOutputStream outObject = new ObjectOutputStream(out);
