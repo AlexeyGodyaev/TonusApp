@@ -50,6 +50,7 @@
         <activity android:name=".SettingsActivity" android:screenOrientation="portrait" />
         <activity android:name=".DeleteAccountActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ChangePasswordActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".DiaryActivity" android:screenOrientation="portrait"/>
         <activity android:name=".AuthorizationActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

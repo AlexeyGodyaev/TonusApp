@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<android.support.v4.widget.NestedScrollView
-    android:fillViewport="true"
+    <android.support.v4.widget.NestedScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,7 +22,7 @@
 
 
             <TextView
-                android:id="@+id/todayDate"
+                android:id="@+id/diaryDate"
                 android:layout_width="333dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
@@ -41,10 +40,11 @@
 
 
                 <EditText
-                    android:id="@+id/DayNote"
+                    android:id="@+id/diaryDayNote"
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
                     android:layout_gravity="center"
+                    android:clickable="false"
                     android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
                     android:maxLength="30"
                     android:textAlignment="center" />
@@ -68,7 +68,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/normaCaloriesText"
+                    android:id="@+id/diaryCaloriesNormText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -79,76 +79,10 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/targetTextView"
+                android:id="@+id/diaryTargetTextView"
                 android:layout_width="378dp"
                 android:layout_height="3dp"
                 android:layout_gravity="right" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <TextView
-            android:layout_width="101dp"
-            android:layout_height="27dp"
-            android:gravity="center"
-            android:text="Белки:"
-            android:textAlignment="center"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:layout_width="156dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Жиры:"
-            android:textAlignment="center"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Углеводы:"
-            android:textAlignment="center"
-            android:textColor="@android:color/black" />
-
-    </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <TextView
-                    android:id="@+id/ProteinText"
-                    android:layout_width="103dp"
-                    android:layout_height="43dp"
-                    android:textAlignment="center"
-                    android:textSize="28sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/FatsText"
-                    android:layout_width="155dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="28sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/CarbsText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right"
-                    android:textAlignment="center"
-                    android:textSize="28sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -156,7 +90,7 @@
                 android:background="#F2F2F2">
 
                 <TextView
-                    android:id="@+id/todayFoodBtn"
+                    android:id="@+id/diaryFoodBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -164,7 +98,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_gravity="center"
                     android:elevation="0dp"
-                    android:onClick="onTodayFoodBtnClc"
+                    android:onClick="onDiaryFoodBtnClc"
                     android:paddingBottom="10dp"
 
                     android:paddingLeft="35dp"
@@ -173,13 +107,13 @@
                     android:textColor="?attr/colorControlNormal"
                     android:textSize="32sp" />
 
-           <!--     <ListView
-                android:id="@+id/my_food_basket"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                <!--     <ListView
+                     android:id="@+id/my_food_basket"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
 
 
-                  />  -->
+                       />  -->
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
@@ -192,21 +126,21 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginLeft="11dp"
                     android:layout_marginStart="11dp"
-                    android:layout_above="@+id/food_busket_recycler_view" />
+                    android:layout_above="@+id/diary_food_busket_recycler_view" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/food_busket_recycler_view"
+                    android:id="@+id/diary_food_busket_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="vertical"
-                    android:layout_below="@+id/todayFoodBtn"
+                    android:layout_below="@+id/diaryFoodBtn"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true">
 
                 </android.support.v7.widget.RecyclerView>
 
                 <TextView
-                    android:id="@+id/foodCalories"
+                    android:id="@+id/diaryFoodCalories"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/food_busket_recycler_view"
@@ -227,12 +161,12 @@
                 android:background="#F2F2F2">
 
                 <TextView
-                    android:id="@+id/todayActiveBtn"
+                    android:id="@+id/diaryActiveBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:elevation="20dp"
-                    android:onClick="onTodayActivityBtnClc"
+                    android:onClick="onDiaryActivityBtnClc"
                     android:paddingBottom="10dp"
                     android:paddingLeft="35dp"
                     android:paddingTop="10dp"
@@ -241,7 +175,7 @@
                     android:textSize="32sp" />
 
                 <TextView
-                    android:id="@+id/sportCalories"
+                    android:id="@+id/diarySportCalories"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/action_busket_recycler_view"
@@ -255,12 +189,12 @@
                     android:textSize="18sp" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/action_busket_recycler_view"
+                    android:id="@+id/diary_action_busket_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/todayActiveBtn"
+                    android:layout_below="@+id/diaryActiveBtn"
                     android:scrollbars="vertical">
 
                 </android.support.v7.widget.RecyclerView>
@@ -269,7 +203,7 @@
                     android:id="@+id/imageView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/action_busket_recycler_view"
+                    android:layout_above="@+id/diary_action_busket_recycler_view"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
@@ -277,11 +211,11 @@
                     android:layout_marginStart="10dp"
                     app:srcCompat="@mipmap/ic_timer_black_24px" />
             </RelativeLayout>
-              <!--  <ListView
-                android:id="@+id/my_active_basket"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-                -->
+            <!--  <ListView
+              android:id="@+id/my_active_basket"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" />
+              -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -289,23 +223,24 @@
                 android:text="Вес" />
 
             <EditText
-                android:id="@+id/edit_mass"
+                android:id="@+id/diary_mass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/holo_blue_bright"
                 android:ems="10"
                 android:hint="кг"
+                android:clickable="false"
                 android:gravity="end"
                 android:inputType="number"
                 android:selectAllOnFocus="false" />
 
             <TextView
-                android:id="@+id/today_antropometry"
+                android:id="@+id/diary_antropometry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="#F2F2F2"
-                android:onClick="todayAntrClc"
+                android:onClick="diaryAntrClc"
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
                 android:text="Антропометрия"
@@ -313,62 +248,14 @@
                 android:textSize="25sp" />
 
             <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/antropometry_today"
-        android:orientation="vertical">
-    </LinearLayout>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/antropometry_diary"
+                android:orientation="vertical">
+            </LinearLayout>
 
         </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
-
-    <LinearLayout
-        android:id="@+id/setting_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentRight="true"
-        android:layout_above="@+id/today_options_button">
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/floatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginRight="20dp"
-            android:clickable="true"
-            android:onClick="onAddActionsClc"
-            app:backgroundTint="@android:color/holo_blue_light"
-            app:fabSize="mini"
-            app:srcCompat="@mipmap/ic_timer_white_actionbutton" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginRight="20dp"
-            android:clickable="true"
-            android:onClick="onAddFoodClc"
-            app:fabSize="mini"
-            app:srcCompat="@mipmap/ic_local_dining_actionbutton" />
-    </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/today_options_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:clickable="true"
-        android:onClick="onMainFABClc"
-        android:tint="@android:color/white"
-        app:backgroundTint="#14BFA2"
-        app:elevation="0dp"
-        app:fabSize="normal"
-        app:rippleColor="@android:color/transparent"
-        app:srcCompat="@mipmap/ic_add_black_24dp" />
+    </android.support.v4.widget.NestedScrollView>
 
 </RelativeLayout>
