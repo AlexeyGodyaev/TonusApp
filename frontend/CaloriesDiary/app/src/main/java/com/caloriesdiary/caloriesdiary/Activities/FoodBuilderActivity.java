@@ -73,78 +73,87 @@ public class FoodBuilderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.food_builder_layout);
-        TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
-        // инициализация
-        tabHost.setup();
-        TabHost.TabSpec tabSpec;
+        try {
 
-        // создаем вкладку и указываем тег
-        tabSpec = tabHost.newTabSpec("tag1");
-        // название вкладки
-        tabSpec.setIndicator("Справочник");
-        // указываем id компонента из FrameLayout, он и станет содержимым
-        tabSpec.setContent(R.id.tab1);
-        // добавляем в корневой элемент
-        tabHost.addTab(tabSpec);
 
-        tabSpec = tabHost.newTabSpec("tag2");
+            setContentView(R.layout.food_builder_layout);
 
-        tabSpec.setIndicator("Холодильник");
+            TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
+            // инициализация
+            tabHost.setup();
+            TabHost.TabSpec tabSpec;
 
-        tabSpec.setContent(R.id.tab2);
-        tabHost.addTab(tabSpec);
+            // создаем вкладку и указываем тег
+            tabSpec = tabHost.newTabSpec("tag1");
+            // название вкладки
+            tabSpec.setIndicator("Справочник");
+            // указываем id компонента из FrameLayout, он и станет содержимым
+            tabSpec.setContent(R.id.tab1);
+            // добавляем в корневой элемент
+            tabHost.addTab(tabSpec);
 
-        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            public void onTabChanged(String tabId) {
-                Toast.makeText(getBaseContext(), "tabId = " + tabId, Toast.LENGTH_SHORT).show();
-            }
-        });
+            tabSpec = tabHost.newTabSpec("tag2");
 
-        mRecyclerView =  (RecyclerView) findViewById(R.id.food_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
+            tabSpec.setIndicator("Холодильник");
 
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+            tabSpec.setContent(R.id.tab2);
+            tabHost.addTab(tabSpec);
 
-        ingRecyclerView =  (RecyclerView) findViewById(R.id.recycle_ingredients);
-        ingRecyclerView.setHasFixedSize(true);
+            tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+                public void onTabChanged(String tabId) {
+                    Toast.makeText(getBaseContext(), "tabId = " + tabId, Toast.LENGTH_SHORT).show();
+                }
+            });
 
-        ingLayoutManager = new LinearLayoutManager(this);
-        ingRecyclerView.setLayoutManager(ingLayoutManager);
+            mRecyclerView = (RecyclerView) findViewById(R.id.food_recycler_view);
+            mRecyclerView.setHasFixedSize(true);
 
-        sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
-        editor = sharedPref.edit();
+            mLayoutManager = new LinearLayoutManager(this);
+            mRecyclerView.setLayoutManager(mLayoutManager);
 
-        nameedit = (EditText) findViewById(R.id.custom_food_name);
+            ingRecyclerView = (RecyclerView) findViewById(R.id.recycle_ingredients);
+            ingRecyclerView.setHasFixedSize(true);
+
+            ingLayoutManager = new LinearLayoutManager(this);
+            ingRecyclerView.setLayoutManager(ingLayoutManager);
+
+            sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
+            editor = sharedPref.edit();
+
+            nameedit = (EditText) findViewById(R.id.custom_food_name);
 //        mAdapter = new RecycleFoodAdapter(initData());
 //        mRecyclerView.setAdapter(mAdapter);
 
-        get = new FoodBuilderActivity.GetFood();
-        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
+            get = new FoodBuilderActivity.GetFood();
+            get.execute("http://caloriesdiary.ru/food/get_food", String.valueOf(offset));
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleItemCount = mLayoutManager.getChildCount();
-                int totalItemCount = mLayoutManager.getItemCount();
-                int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                if (totalItemCount -1 == lastVisibleItems && send){
-                    buff = lastVisibleItems-visibleItemCount+1;
-                    get = new GetFood();
-                    send = false;
-                    offset+=1;
-                    get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
+            mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int visibleItemCount = mLayoutManager.getChildCount();
+                    int totalItemCount = mLayoutManager.getItemCount();
+                    int lastVisibleItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                    if (totalItemCount - 1 == lastVisibleItems && send) {
+                        buff = lastVisibleItems - visibleItemCount + 1;
+                        get = new GetFood();
+                        send = false;
+                        offset += 1;
+                        get.execute("http://caloriesdiary.ru/food/get_food", String.valueOf(offset));
 
-                    Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
+                    }
+
                 }
-
-            }
-        });
-
-
+            });
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
     }
+
+
     public void onAddFood (View view)
     {
         View content = LayoutInflater.from(getApplicationContext()).inflate(R.layout.add_food_dialoglayout,null);
