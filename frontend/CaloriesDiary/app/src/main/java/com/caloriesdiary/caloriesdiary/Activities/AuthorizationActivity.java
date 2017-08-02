@@ -107,8 +107,8 @@ public class AuthorizationActivity extends Activity {
                 Calendar c = Calendar.getInstance();
 
                 if(jsonArray.length()>0 && !jsonArray.getJSONObject(jsonArray.length()-1).getString("date")
-                        .equals( String.valueOf(c.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(c.get(Calendar.MONTH)) +
-                                "." + String.valueOf(c.get(Calendar.YEAR)))){
+                        .equals(String.valueOf(c.get(Calendar.YEAR)) + "-" + String.valueOf(c.get(Calendar.MONTH)+1) +
+                                "-" + String.valueOf(c.get(Calendar.DAY_OF_MONTH)))){
                     File food = new File(getCacheDir(), "Food.txt");
                     if(food.exists())
                         food.delete();

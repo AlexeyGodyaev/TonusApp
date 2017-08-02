@@ -23,10 +23,12 @@ import com.caloriesdiary.caloriesdiary.Adapters.RecycleActionAdapter;
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
 import com.caloriesdiary.caloriesdiary.Items.ActionItem;
 import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.Posts.SaveTodayParams;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleFoodAdapter;
 import com.caloriesdiary.caloriesdiary.RecyclerTouchListener;
 import com.caloriesdiary.caloriesdiary.Fragments.TodayAntropometryFragment;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -136,8 +138,8 @@ public class TodayActivity extends AppCompatActivity {
                 jsn.remove("today_params");
 
                 if (todayParams.length() > 0 && todayParams.getJSONObject(todayParams.length() - 1).getString("date")
-                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                                "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
+                        .equals(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
+                                "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)))) {
 
                     editMass.setText(todayParams.getJSONObject(todayParams.length() - 1).getString("mass"));
                     dayNote.setText(todayParams.getJSONObject(todayParams.length() - 1).getString("note"));
@@ -537,14 +539,19 @@ public class TodayActivity extends AppCompatActivity {
 
             f.createNewFile();
 
+            jsn.put("id", String.valueOf(sharedPref.getInt("PROFILE_ID",0)));
             jsn.put("mass", editMass.getText().toString());
             jsn.put("note", dayNote.getText().toString());
             jsn.put("active", jsonAction);
             jsn.put("food", jsonFood);
             jsn.put("active_sum",  String.valueOf(sum1));
             jsn.put("food_sum",  String.valueOf(sum));
-            jsn.put("date", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                    "." + String.valueOf(calendar.get(Calendar.YEAR)));
+            jsn.put("carbs", carbs.getText().toString());
+            jsn.put("protein", protein.getText().toString());
+            jsn.put("fats", fats.getText().toString());
+            jsn.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
+            jsn.put("date", String.valueOf(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
+                    "-" + calendar.get(Calendar.DAY_OF_MONTH)));
             if (fragment.getView() != null) {
                 jsn.put("rLeg", fragment.getrLeg().getText().toString());
                 jsn.put("lLeg", fragment.getlLeg().getText().toString());
@@ -557,8 +564,8 @@ public class TodayActivity extends AppCompatActivity {
                 jsn.put("chest", fragment.getChest().getText().toString());
             } else {
                 if (jsonArray != null && jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
-                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                                "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
+                        .equals(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
+                                "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)))) {
                     jsn.put("rLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("rLeg"));
                     jsn.put("lLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("lLeg"));
                     jsn.put("rHand", jsonArray.getJSONObject(jsonArray.length() - 1).getString("rHand"));
@@ -581,8 +588,8 @@ public class TodayActivity extends AppCompatActivity {
                 }
             }
             if (jsonArray != null && jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
-                    .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                            "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
+                    .equals(String.valueOf(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
+                            "-" + calendar.get(Calendar.DAY_OF_MONTH)))) {
                 JSONArray jArray = new JSONArray();
                 for (int i = 0; i < jsonArray.length() - 1; i++)
                     jArray.put(jsonArray.getJSONObject(i));
@@ -593,14 +600,12 @@ public class TodayActivity extends AppCompatActivity {
                 jObject.put("today_params", jsonArray);
             }
 
-            Post saveBackUp = new Post();
-            String backUpArgs[] = new String[3];
-            backUpArgs[0]="http://caloriesdiary.ru/users/save_backup";
-            backUpArgs[1]=String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-            backUpArgs[2]=jObject.toString();
-            saveBackUp.execute(backUpArgs);
+            SaveTodayParams saveBackUp = new SaveTodayParams();
 
-            Toast.makeText(this, saveBackUp.get().toString(), Toast.LENGTH_SHORT).show();
+            saveBackUp.execute(jsn);
+
+            //JSONObject response = new JSONObject(saveBackUp.get());
+            Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
 
             FileOutputStream out = new FileOutputStream(f);
             ObjectOutputStream outObject = new ObjectOutputStream(out);
