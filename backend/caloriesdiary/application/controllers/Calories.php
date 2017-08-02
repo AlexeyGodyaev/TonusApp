@@ -7,26 +7,41 @@ class Calories extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('CaloriesCalc');
-
 	}
 
-    public function get_calories_per_day()
+    public function get_per_day()
     {
-        if($this->input->post(array('weight','height','sex','age','activityType')))
+        if($this->input->post('id'))
         {
-            $weight = $this->input->post('weight');
-            $height = $this->input->post('height');
-            $sex = $this->input->post('sex');
-            $age = $this->input->post('age');
-            $activityType = $this->input->post('activityType');
+            $id = $this->input->post('id');
 
-            $response = $this->CaloriesCalc->caloriesPerday($weight, $height, $sex, $activityType, $age);
+            $response = $this->CaloriesCalc->caloriesPerday($id);
         }
         else
         {
             $response['status'] = 0;
             $response['msg'] = 'Invalid params';
         }
+        
+        echo json_encode($response, TRUE);
+
+    }
+
+    //TODO: Также в отдельный скрипт
+
+    public function get_random_food_acts()
+    {
+        if($this->input->post('number_of_elements'))
+        {
+            $number = $this->input->post('number_of_elements');
+            $response = $this->CaloriesCalc->getRandom($number);
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Invalid params';
+        }
+        
         echo json_encode($response, TRUE);
 
     }

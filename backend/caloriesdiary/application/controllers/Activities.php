@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Activities extends CI_Controller {
 
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -31,4 +32,19 @@ class Activities extends CI_Controller {
     	echo json_encode($activities, TRUE);
 	}
 
+	public function get_activities_by_id()
+	{
+		if($this->input->post('id'))
+		{
+			$id = $this->input->post('id');
+			$response = $this->Action->getById($id);
+		}
+		else
+		{
+			$response['status'] = 0;
+			$response['msg'] = 'Invalid params';
+		}
+
+    	echo json_encode($response, TRUE);
+	}
 }

@@ -8,6 +8,8 @@ class Action extends CI_Model {
         $this->load->database();
     }
 
+    //Получение даты последнего обновления БД активностей
+
     public function getTimestamp()
     {
         $q = $this->db->query('SELECT * FROM updates ORDER BY timestamp DESC LIMIT 1');
@@ -20,6 +22,31 @@ class Action extends CI_Model {
         }
     }
 
+    //Получение активностей по id (не используется)
+
+    public function getById($id)
+    {
+        $this->db->where('id', $id);
+        $query = $this->db->get('Activities');
+
+        if($query)
+        {
+            $response['status'] = 1;
+            $response['activities'] = $query->result();
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Error occured';
+            $response['activities'] = array();
+        }
+
+        return $response;
+    }
+
+    //Получение имён активностей (не используется). Предпологалось, что будет autocompleteTextView для удобства поиска,
+    //но поиск просто осуществляется на устройстве
+    
     public function get_act_names($timestamp)
     {
         $actNames = array();
@@ -27,7 +54,7 @@ class Action extends CI_Model {
 
         if($this->getTimestamp() > $timestamp)
         {
-            $this->db->select('name');
+            $this->db->select('name', TRUE);
             $query = $this->db->get('Activities');
             
             $i = 0;
@@ -50,6 +77,7 @@ class Action extends CI_Model {
         return $response;
     }
 
+    //Даёт список активностей (GET)
     public function get_activities()
     {
         $query = $this->db->get('Activities');

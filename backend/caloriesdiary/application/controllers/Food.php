@@ -25,20 +25,33 @@ class Food extends CI_Controller {
     	echo json_encode($response, TRUE);
 	}
 
+    public function get_food_by_id()
+    {
+        if($this->input->post('id'))
+        {
+            $id = $this->input->post('id');
+            $response = $this->Product->getById($id);
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Invalid params';
+        }
+        echo json_encode($response, TRUE);
+    }
+
 	public function get_food()
 	{
         if($this->input->post())
         {
-            if($this->input->post('offset') == 0)
-            {
-                $offset = 0;
-            }
-            else
-            {
-                $offset = $this->input->post('offset'); 
-            }
+            $user_id = $this->input->post('id');
+            $query = $this->input->post('query');
+            $category_id = $this->input->post('categ_id');
+            $offset = $this->input->post('offset');
+            $sort_names = $this->input->post('sort_names');
+            $sort_calories = $this->input->post('sort_calories');
 
-            $response = $this->Product->get_food($offset);
+            $response = $this->Product->getfood($user_id, $query, $category_id, $offset, $sort_names, $sort_calories);
         }
         else
         {
@@ -48,6 +61,25 @@ class Food extends CI_Controller {
 
     	echo json_encode($response, TRUE);
 	}
+
+    public function save_custom_dish()
+    {
+        if($this->input->post())
+        {
+            $user_id = $this->input->post('id');
+            $name = $this->input->post('name');
+            $ingredients = $this->input->post('ingredients');
+
+            $response = $this->Product->saveCustomDish($user_id, $name, $ingredients);
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Invalid params';
+        }
+
+        echo json_encode($response, TRUE);
+    }
 
     public function get_food_categories()
     {

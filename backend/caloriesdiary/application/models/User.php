@@ -1,5 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+//Ключ для отправки push-ведомлений
+define( 'API_ACCESS_KEY', 'AAAArq32y8U:APA91bGu4Q2dWi2gt0a44Bh07bgg_yq2hV-dsZNCIQJgRS-fncogzgJJjAkU5Z--LG6gL5CwXUZC344eL0JHa_9OnvfFGsRHL5346fotJNwnFyrTRHPHRo3JMxsm2S2GFmPa4t5Hof75' );
+
+//Работа с пользователем
+
 class User extends CI_Model {
 
     public function __construct()
@@ -8,19 +13,24 @@ class User extends CI_Model {
 
         $config = Array(
         'protocol' => 'smtp',
-        'smtp_host' => 'ssl://smtp.mail.ru',
+        'smtp_host' => 'ssl://smtp.yandex.ru',
         'smtp_port' => 465,
-        'smtp_user' => 'ml-98@mail.ru', 
-        'smtp_pass' => 'ubuntu', 
+        'smtp_user' => 'noreply@caloriesdiary.ru', 
+        'smtp_pass' => 'Nakamuram390', 
         'mailtype' => 'text',
         'charset' => 'utf-8',
-        'wordwrap' => TRUE
+        'wordwrap' => TRUE,
+        'newline' => "\r\n",
+		'crlf' => "\r\n",
+        'mailtype' => 'html'
         );
 
         $this->load->library('email', $config);
         $this->load->helper('email');
         $this->load->database();
     }
+
+    //Генерация пароля
 
     public function generatePassword($length = 8)
     {
@@ -36,7 +46,101 @@ class User extends CI_Model {
         return $result;
     }
 
-    public function check($username, $password)
+    //Отправка push-уведомлений
+
+    public function sendPush($id, $title, $body)
+    {
+        $this->db->select('instanceToken');
+        $this->db->where('user_id', $id);
+        $query = $this->db->get('Users');
+
+        if ($query->num_rows() > 0)
+        {
+            $msg = array(
+                'body'   => $body,
+                'title'  => $title,
+            );
+
+            foreach ($query->result() as $k) {
+                $to = $k->instanceToken;
+            }
+
+
+            $notification= array('title' => $title,'body' => $body );
+
+            $fields = array(
+                'to' => $to,
+                'notification' => $notification
+            );
+ 
+            $headers = array
+            (
+                'Authorization: key=' . API_ACCESS_KEY,
+                'Content-Type: application/json'
+            );
+ 
+            $ch = curl_init();
+            curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+            curl_setopt( $ch,CURLOPT_POST, true );
+            curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+            curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+            curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+            curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+            $result = curl_exec($ch );
+            curl_close( $ch );
+
+            return $result;
+        }
+    }
+
+    //Вход через google
+    public function google_check($id, $username, $email, $instanceToken)
+    {
+        $query = $this->db->get_where('Users', array('ga_id' => $id, 'email' => $email));
+
+        if ($query->num_rows() > 0)
+        {
+            $data = array('email' => $email, 'username' => $username);
+            $this->db->where('ga_id', $id);
+            $query = $this->db->update('Users', $data);
+        }
+        else
+        {
+            $query = $this->db->insert('Users', array('ga_id' => $id, 'email' => $email, 'username' => $username, 'password' => $this->generatePassword()));
+        }
+
+        if($query)
+        {
+            $response['status'] = 1;
+
+            $query = $this->db->get_where('Users', array('ga_id' => $id, 'email' => $email));
+
+            $data = array("instanceToken" => $instanceToken);
+        
+            foreach ($query->result() as $row) 
+            {
+                $response["user_id"] = $row->user_id;
+                $response['email'] = $row->email;
+                $response['username'] = $row->username;
+
+                $this->db->where('user_id', $row->user_id);
+                $this->db->update('Users', $data);
+            }
+
+            $response['msg'] = 'OK';
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Error occured';
+        }
+
+        return $response;
+    }
+
+    //Класическая авторизация
+
+    public function check($username, $password, $instanceToken)
     {
         if(valid_email($username))
         {
@@ -55,9 +159,17 @@ class User extends CI_Model {
         {  
             $response['status'] = 1;
             $response['msg'] = 'OK';
+
+            $data = array("instanceToken" => $instanceToken);
+
             foreach ($query->result() as $row) 
             {
-                $response["user_id"] = $row->user_id;                
+                $response["user_id"] = $row->user_id;
+                $response['email'] = $row->email;
+                $response['username'] = $row->username;
+
+                $this->db->where('user_id', $row->user_id);
+            	$this->db->update('Users', $data);
             }
         }
         else
@@ -68,6 +180,8 @@ class User extends CI_Model {
 
         return $response;
     }
+
+    //Классическая регистрация 
 
     public function reg($username, $email, $password)
     {
@@ -89,19 +203,27 @@ class User extends CI_Model {
             }
             else
             {
-                $data = array("username" => $username, "email" => $email, "password" => $password);
-                $query = $this->db->insert("Users", $data);
-                $this->db->cache_delete();
-
-                if($query)
+                if(preg_match("/[^A-Za-z0-9]/", $username))
                 {
-                    $response['status'] = 1;
-                    $response['msg'] = 'OK';
+                    $response['status'] = 0;
+                    $response['msg'] = 'Логин не может содержать буквы кирилицы';
                 }
                 else
                 {
-                    $response['status'] = 0;
-                    $response['msg'] = 'Error occured';
+                    $data = array("username" => $username, "email" => $email, "password" => $password);
+                    $query = $this->db->insert("Users", $data);
+                    $this->db->cache_delete();
+
+                    if($query)
+                    {
+                        $response['status'] = 1;
+                        $response['msg'] = 'OK';
+                    }
+                    else
+                    {
+                        $response['status'] = 0;
+                        $response['msg'] = 'Error occured';
+                    }
                 }
             }
 
@@ -109,6 +231,8 @@ class User extends CI_Model {
 
         return $response;
     }
+
+    //Удаление аккаунта
 
     public function del($id, $password)
     {
@@ -118,8 +242,11 @@ class User extends CI_Model {
         {
             $response['status'] = 1;
             $response['msg'] = 'OK';
-            $this->db->delete('Users', array('user_id' => $id, 'password' =>$password));
-            $this->db->delete('user_chars', array('id' => $id ));
+            
+            $tables = array('user_chars','user_goal', 'user_goal_archive','user_human_chars');
+            $this->db->where('user_id', $id);
+            $this->db->delete($tables);
+            $this->db->delete('Users', array('user_id' => $id, 'password' => $password));
             $this->db->cache_delete();
             
         }
@@ -131,6 +258,8 @@ class User extends CI_Model {
 
         return $response;
     }
+
+    //Смена пароля
 
     public function changePassword($username, $oldpassword, $newpassword)
     {
@@ -155,12 +284,16 @@ class User extends CI_Model {
         return $response;
     }
 
+    //Запрос на "Забыли пароль" (высылает новый пароль на почту)
     public function forgot($email)
     {
         $query = $this->db->get_where('Users', array('email' => $email));
         
         if($query->num_rows() > 0)
         {
+        	$response['status'] = 1;
+            $response['msg'] = 'OK';
+
             $newpassword = $this->generatePassword();
 
             $data = array('password' => $newpassword);
@@ -169,15 +302,12 @@ class User extends CI_Model {
             $this->db->update('Users', $data);
             $this->db->cache_delete();
 
-            $this->email->from('ml-98@mail.ru', 'noreply');
+            $this->email->from('noreply@caloriesdiary.ru', 'noreply');
             $this->email->to($email);
 
             $this->email->subject('Ваш новый пароль для аккаунта');
 
-            $this->email->message('Ваш новый пароль: '. $newpassword);
-
-            $response['status'] = 1;
-            $response['msg'] = 'OK';
+            $this->email->message($this->setLetter($newpassword));
 
             $this->email->send();
 
@@ -186,6 +316,326 @@ class User extends CI_Model {
         {
             $response['status'] = 0;
             $response['msg'] = 'Нет пользователя с таким email';
+        }
+
+        return $response;
+    }
+
+    //Само письмо
+
+    public function setLetter($newpassword)
+    {
+        return '<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title></title>
+    <style type="text/css">
+    /* -------------------------------------
+        INLINED WITH https://putsmail.com/inliner
+    ------------------------------------- */
+    /* -------------------------------------
+        RESPONSIVE AND MOBILE FRIENDLY STYLES
+    ------------------------------------- */
+    @media only screen and (max-width: 620px) {
+      table[class=body] h1 {
+        font-size: 28px !important;
+        margin-bottom: 10px !important; }
+      table[class=body] p,
+      table[class=body] ul,
+      table[class=body] ol,
+      table[class=body] td,
+      table[class=body] span,
+      table[class=body] a {
+        font-size: 16px !important; }
+      table[class=body] .wrapper,
+      table[class=body] .article {
+        padding: 10px !important; }
+      table[class=body] .content {
+        padding: 0 !important; }
+      table[class=body] .container {
+        padding: 0 !important;
+        width: 100% !important; }
+      table[class=body] .main {
+        border-left-width: 0 !important;
+        border-radius: 0 !important;
+        border-right-width: 0 !important; }
+      table[class=body] .btn table {
+        width: 100% !important; }
+      table[class=body] .btn a {
+        width: 100% !important; }
+      table[class=body] .img-responsive {
+        height: auto !important;
+        max-width: 100% !important;
+        width: auto !important; }}
+    /* -------------------------------------
+        PRESERVE THESE STYLES IN THE HEAD
+    ------------------------------------- */
+    @media all {
+      .ExternalClass {
+        width: 100%; }
+      .ExternalClass,
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass font,
+      .ExternalClass td,
+      .ExternalClass div {
+        line-height: 100%; }
+      .apple-link a {
+        color: inherit !important;
+        font-family: inherit !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+        text-decoration: none !important; }
+      .btn-primary table td:hover {
+        background-color: #34495e !important; }
+      .btn-primary a:hover {
+        background-color: #34495e !important;
+        border-color: #34495e !important; } }
+    </style>
+  </head>
+  <body class="" style="background-color:#f6f6f6;font-family:sans-serif;-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.4;margin:0;padding:0;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;">
+    <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#f6f6f6;width:100%;">
+      <tr>
+        <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">&nbsp;</td>
+        <td class="container" style="font-family:sans-serif;font-size:14px;vertical-align:top;display:block;max-width:580px;padding:10px;width:580px;Margin:0 auto !important;">
+          <div class="content" style="box-sizing:border-box;display:block;Margin:0 auto;max-width:580px;padding:10px;">
+            <!-- START CENTERED WHITE CONTAINER -->
+            <span class="preheader" style="color:transparent;display:none;height:0;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;visibility:hidden;width:0;">This is preheader text. Some clients will show this text as a preview.</span>
+            <table class="main" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;background:#fff;border-radius:3px;width:100%;">
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td class="wrapper" style="font-family:sans-serif;font-size:14px;vertical-align:top;box-sizing:border-box;padding:20px;">
+                  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
+                    <tr>
+                      <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">
+                        <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Здравствуйте,</p>
+                        <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Ваш пароль для аккаунта: '. $newpassword .' </p>
+                        <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;box-sizing:border-box;width:100%;">
+                          
+                        </table>
+                        <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;"></p>
+                        <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;"></p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!-- END MAIN CONTENT AREA -->
+            </table>
+            <!-- START FOOTER -->
+            <div class="footer" style="clear:both;padding-top:10px;text-align:center;width:100%;">
+              <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
+                <tr>
+                  <td class="content-block" style="font-family:sans-serif;font-size:14px;vertical-align:top;color:#999999;font-size:12px;text-align:center;">
+                    <span class="apple-link" style="color:#999999;font-size:12px;text-align:center;">ООО "Инвольта"</span>
+                    <br>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="content-block powered-by" style="font-family:sans-serif;font-size:14px;vertical-align:top;color:#999999;font-size:12px;text-align:center;">
+                    Powered by <a href="http://htmlemail.io" style="color:#3498db;text-decoration:underline;color:#999999;font-size:12px;text-align:center;text-decoration:none;">HTMLemail</a>.
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- END FOOTER -->
+            <!-- END CENTERED WHITE CONTAINER -->
+          </div>
+        </td>
+        <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>';
+    }
+
+
+    //Функционал работы с днями (WIP)
+
+    //save_days_backup и get_days_backup - старый способ хранения (на удаление)
+
+    public function save_days_backup($user_id, $day_json)
+    {
+
+        $this->db->select('*');
+        $this->db->from('user_days_backup');
+        $this->db->where('user_id', $user_id);
+        $query = $this->db->get();
+
+        $response['status'] = 1;
+        $response['msg'] = "OK";
+        
+        if($query->num_rows() > 0)
+        {
+            $this->db->where('user_id', $user_id);
+            $this->db->update('user_days_backup', array('day_json' => $day_json));
+        }
+        else
+        {
+            $this->db->insert('user_days_backup', array('user_id' => $user_id,'day_json' => $day_json));
+        }
+
+        return $response;
+    }
+
+    public function get_days_backup($user_id)
+    {
+        
+        $this->db->select('day_json');
+        $this->db->from('user_days_backup');
+        $this->db->where('user_id', $user_id);
+        $query = $this->db->get();
+        
+        if($query->num_rows() > 0)
+        {
+            $response['status'] = 1;
+
+            foreach ($query->result() as $k) {
+                $backup = array(
+                    "day_json" => $k->day_json
+                    );
+            }
+
+            $response['day_json'] = $backup;
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Error occured';
+        }
+
+        return $response;
+    }
+
+    //Сохранение информации на сегодня.  
+
+    public function save_day($id, $mass, $active_sum, $food_sum, $note, $activities, $food, $date, $protein, $fats, $carbs, $left_hand, $right_hand, $breast, $waist, $hiney, $left_thigh, $right_thigh, $calfs, $shoulders)
+    {
+    	
+    	$this->db->from('user_days');
+        $this->db->where('user_id', $id);
+        $this->db->where('date', $date);
+
+        $query = $this->db->get();
+        
+        if($query->num_rows() > 0)
+        {
+        	$human_chars = array(
+            'user_id' => $id,
+            'day_id' => $k->id,
+            'left_hand' => $left_hand,
+            'right_hand' => $right_hand,
+            'breast' => $breast,
+            'waist' => $waist,
+            'hiney' => $hiney,
+            'left_thigh' => $left_thigh,
+            'right_thigh' => $right_thigh,
+            'calfs' => $calfs,
+            'shoulders' => $shoulders
+            );
+
+            $day = array(
+            "user_id" => $id,
+            "mass" => $mass,
+            "active_sum" => $active_sum,
+            "food_sum" => $food_sum,
+            "note" => $note,
+            "activities" => $activities,
+            "food" => $food,
+            "date" => $date,
+            "protein" => $protein,
+            "fats" => $fats,
+            "carbs" => $carbs
+            );
+
+    
+            $this->db->where('user_id', $id);
+            $this->db->update('user_days', $day);
+
+            $this->db->where('user_id', $id);
+            $this->db->update('user_human_chars', $human_chars);
+
+            $response['status'] = 1;
+            $response['msg'] = 'OK'; 
+        }
+        else
+        {
+        	$this->db->insert('user_human_chars', $human_chars);
+        	$this->db->insert('user_days', $day);
+
+            $response['status'] = 1;
+            $response['msg'] = 'OK';
+        }
+
+        return $response;
+    }
+
+    //Получение списка дней от начала и до сегодня
+
+    public function get_days($id)
+    {
+    	$this->db->from('user_days');
+        $this->db->where('user_id', $id);
+        $query = $this->db->get();
+
+        $days = array();
+        $human_chars = array();
+        
+        if($query->num_rows() > 0)
+        {
+            $response['status'] = 1;
+
+            $i = 0;
+            foreach ($query->result() as $k) {
+
+    			$this->db->from('user_human_chars');
+        		$this->db->where('user_id', $id);
+        		$this->db->where('day_id', $k->id);
+        		$queryHuman = $this->db->get();
+
+
+        		foreach ($queryHuman->result() as $a)
+        		 {
+
+        		 	$human_chars = array(
+            		'left_hand' => $a->left_hand,
+            		'right_hand' => $a->right_hand,
+            		'breast' => $a->breast,
+            		'waist' => $a->waist,
+            		'hiney' => $a->hiney,
+            		'left_thigh' => $a->left_thigh,
+            		'right_thigh' => $a->right_thigh,
+            		'calfs' => $a->calfs,
+            		'shoulders' => $a->shoulders
+            		);
+            	 }
+
+                    $days[$i] = array(
+                    "mass" => $k->mass,
+                    "active_sum" => $k->active_sum,
+                    "food_sum" => $k->food_sum,
+                    "note" => $k->note,
+                    "activities" => $k->activities,
+                    "food" => $k->food,
+                    "date" => date_format( date_create($k->date), 'Y-m-d'),
+                    "protein" => $k->protein,
+                    "fats" => $k->fats,
+                    "carbs" => $k->carbs,
+                    "human_chars" => $human_chars
+                    );
+
+                $i++;
+            }
+
+            $response['days'] = $days;
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Error occured';
         }
 
         return $response;
