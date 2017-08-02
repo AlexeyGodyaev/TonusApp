@@ -29,44 +29,44 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".SetAGoal" android:screenOrientation="portrait" />
-        <activity android:name=".ArchiveActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ArchiveItemData" android:screenOrientation="portrait" />
-        <activity android:name=".PersonalProfileEditActivity" android:screenOrientation="portrait"
+        <activity android:name=".Activities.SetAGoal" android:screenOrientation="portrait" />
+        <activity android:name=".Activities.ArchiveActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Activities.ArchiveItemDataActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Activities.PersonalProfileEditActivity" android:screenOrientation="portrait"
 
             android:theme="@style/AppTheme.NoActionBar"/>
 
 
-        <activity android:name=".PersonalProfileActivity" android:screenOrientation="portrait"
+        <activity android:name=".Activities.PersonalProfileActivity" android:screenOrientation="portrait"
 
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity android:name=".FoodCatalogActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ActionsCatalogActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".GuestMainActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".StatActivity" android:screenOrientation="portrait"
+        <activity android:name=".Activities.FoodCatalogActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ActionsCatalogActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.GuestMainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.StatActivity" android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".SettingsActivity" android:screenOrientation="portrait" />
-        <activity android:name=".DeleteAccountActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ChangePasswordActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".DiaryActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".AuthorizationActivity" android:screenOrientation="portrait">
+        <activity android:name=".Activities.SettingsActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Activities.DeleteAccountActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ChangePasswordActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.DiaryActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.AuthorizationActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TodayActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".RegistrationActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.TodayActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.RegistrationActivity" android:screenOrientation="portrait"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" android:screenOrientation="portrait" />
-        <activity android:name=".ForgetPassActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ForgetPassActivity" android:screenOrientation="portrait"/>
         <activity
-            android:name=".RecycleActionCatalogActivity"
+            android:name=".Activities.RecycleActionCatalogActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <meta-data
@@ -84,7 +84,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".RecycleFoodCatalogActivity"
+            android:name=".Activities.RecycleFoodCatalogActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop">
             <meta-data
@@ -101,7 +101,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".FoodBuilderActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activities.FoodBuilderActivity" android:screenOrientation="portrait"></activity>
 
         <service
             android:name=".ControlService"
