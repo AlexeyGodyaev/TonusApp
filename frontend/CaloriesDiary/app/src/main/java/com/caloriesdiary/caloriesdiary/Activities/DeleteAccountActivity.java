@@ -22,6 +22,13 @@ public class DeleteAccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delete_layout);
+
+        InitObjects();
+
+    }
+
+    public void InitObjects()
+    {
         pass = (EditText) findViewById(R.id.confirm_pass);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
     }

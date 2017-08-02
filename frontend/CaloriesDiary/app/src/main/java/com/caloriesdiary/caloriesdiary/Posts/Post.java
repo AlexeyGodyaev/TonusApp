@@ -4,6 +4,8 @@ package com.caloriesdiary.caloriesdiary.Posts;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -126,6 +128,7 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("id",arg0[1]);
                         postDataParams.put("name",arg0[2]);
                         postDataParams.put("ingredients",arg0[3]);
+                        postDataParams.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
                         break;
                 }
 
