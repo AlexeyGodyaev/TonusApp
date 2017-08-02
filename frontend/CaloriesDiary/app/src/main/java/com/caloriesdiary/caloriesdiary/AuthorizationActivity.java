@@ -63,6 +63,8 @@ public class AuthorizationActivity extends Activity {
 
         InitPreference();
 
+        clearFiles();
+
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -71,6 +73,19 @@ public class AuthorizationActivity extends Activity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+    }
+
+    public void googleClc(View view)
+    {
+        switch (view.getId()) {
+            case R.id.googleAccountTextView:
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(m);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+                break;
+        }
+    }
+
+    private void clearFiles(){
         try {
             JSONArray jsonArray;
             JSONObject jsn;
@@ -93,25 +108,15 @@ public class AuthorizationActivity extends Activity {
                                 "." + String.valueOf(c.get(Calendar.YEAR)))){
                     File food = new File(getCacheDir(), "Food.txt");
                     if(food.exists())
-                    food.delete();
+                        food.delete();
 
                     File active = new File(getCacheDir(), "Actions.txt");
                     if(active.exists())
-                    active.delete();
+                        active.delete();
                 }
             }
         }catch (Exception e){
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void googleClc(View view)
-    {
-        switch (view.getId()) {
-            case R.id.googleAccountTextView:
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(m);
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-                break;
         }
     }
 
