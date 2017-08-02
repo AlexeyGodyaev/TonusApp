@@ -2,6 +2,7 @@ package com.caloriesdiary.caloriesdiary;
 
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,7 +50,17 @@ public class FoodBuilderActivity extends AppCompatActivity {
     private RecyclerView.Adapter dialogAdapter;
     private RecyclerView.LayoutManager dialogLayoutManager;
 
+    private RecyclerView ingRecyclerView;
+    private RecyclerView.Adapter ingAdapter;
+    private RecyclerView.LayoutManager ingLayoutManager;
+
+    SharedPreferences sharedPref = null;
+    SharedPreferences.Editor editor;
+
+    EditText nameedit;
+
     List<FoodItem> list = new ArrayList<>();
+    List<FoodItem> item = new ArrayList<>();
     GetFood get;
     int offset = 0;
     boolean send = true;
@@ -73,10 +85,9 @@ public class FoodBuilderActivity extends AppCompatActivity {
         tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec("tag2");
-        // указываем название и картинку
-        // в нашем случае вместо картинки идет xml-файл,
+
         tabSpec.setIndicator("Холодильник");
-        // который определяет картинку по состоянию вкладки
+
         tabSpec.setContent(R.id.tab2);
         tabHost.addTab(tabSpec);
 
@@ -92,6 +103,16 @@ public class FoodBuilderActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        ingRecyclerView =  (RecyclerView) findViewById(R.id.recycle_ingredients);
+        ingRecyclerView.setHasFixedSize(true);
+
+        ingLayoutManager = new LinearLayoutManager(this);
+        ingRecyclerView.setLayoutManager(ingLayoutManager);
+
+        sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
+        editor = sharedPref.edit();
+
+        nameedit = (EditText) findViewById(R.id.custom_food_name);
 //        mAdapter = new RecycleFoodAdapter(initData());
 //        mRecyclerView.setAdapter(mAdapter);
 
@@ -169,9 +190,31 @@ public class FoodBuilderActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 final CheckBox checkbox = (CheckBox) view.findViewById(R.id.add_food_checkbox);
+                final TextView textB = (TextView) view.findViewById(R.id.viewB);
+                final TextView textJ = (TextView) view.findViewById(R.id.viewJ);
+                final TextView textU = (TextView) view.findViewById(R.id.viewU);
+                final TextView textKc = (TextView) view.findViewById(R.id.viewKc);
+                final TextView textId = (TextView) view.findViewById(R.id.viewID);
+
                 if(!checkbox.isChecked())
                 {
-                    Toast.makeText(FoodBuilderActivity.this, checkbox.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FoodBuilderActivity.this, "Добавить " + checkbox.getText().toString() , Toast.LENGTH_SHORT).show();
+                    item.add(new FoodItem(Integer.valueOf(textId.getText().toString()),checkbox.getText().toString(),Float.valueOf(textB.getText().toString()),Float.valueOf(textJ.getText().toString()),Float.valueOf(textU.getText().toString()),0,Float.valueOf(textKc.getText().toString())));
+                    ingAdapter = new RecycleFoodAdapter(item);
+                    ingRecyclerView.setAdapter(ingAdapter);
+                }
+                else
+                {
+                    Toast.makeText(FoodBuilderActivity.this,"Удалить " + checkbox.getText().toString(), Toast.LENGTH_SHORT).show();
+                    for (int i = 0; i < item.size(); i++ )
+                    {
+                        if( item.get(i).getName().equals(checkbox.getText().toString()))
+                        {
+                            item.remove(i);
+                        }
+                    }
+                    ingAdapter = new RecycleFoodAdapter(item);
+                    ingRecyclerView.setAdapter(ingAdapter);
                 }
 
             }
@@ -192,6 +235,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Toast.makeText(FoodBuilderActivity.this, edittext.getText().toString(), Toast.LENGTH_SHORT).show();
+
                     }
                 })
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
@@ -203,6 +247,38 @@ public class FoodBuilderActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void onAddinDB(View view)
+    {
+
+        try
+        {
+            JSONArray jsnArray = new JSONArray();
+            JSONObject jsn = new JSONObject();
+            for (int i = 0;i < item.size(); i++) {
+                jsnArray.put(String.valueOf(item.get(i).getId()));
+            }
+            jsn.put("ingredients",jsnArray);
+           // Toast.makeText(this, jsn.toString(), Toast.LENGTH_LONG).show();
+        Post post = new Post();
+
+        String args[] = new String[4];
+        args[0] = "http://caloriesdiary.ru/food/save_custom_dish";
+        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+        args[2] = nameedit.getText().toString();
+        args[3] = jsn.toString();
+            post.execute(args);
+            String ans = post.get().toString();
+            Toast.makeText(this, ans, Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e)
+        {
+
+        }
+
+
+
     }
 
     private class GetFood extends AsyncTask<String, Void, String> {
@@ -260,8 +336,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),jEx.toString(), Toast.LENGTH_SHORT).show();
                         //errors.setText(jEx.toString());
                     }
-                    if(b!=0||j!=0||u!=0||calories!=0)
-             list.add(new FoodItem(food_id,foodName,b,j,u,id,calories));
+                        list.add(new FoodItem(food_id,foodName,b,j,u,id,calories));
 
                 }
 

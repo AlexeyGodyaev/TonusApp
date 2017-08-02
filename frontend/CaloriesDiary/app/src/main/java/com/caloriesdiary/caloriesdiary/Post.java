@@ -122,6 +122,11 @@ class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("calfs", arg0[18]);
                         postDataParams.put("shoulders", arg0[19]);
                         break;
+                    case "http://caloriesdiary.ru/food/save_custom_dish":
+                        postDataParams.put("id",arg0[1]);
+                        postDataParams.put("name",arg0[2]);
+                        postDataParams.put("ingredients",arg0[3]);
+                        break;
                 }
 
 

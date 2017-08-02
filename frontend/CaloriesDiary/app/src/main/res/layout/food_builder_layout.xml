@@ -22,6 +22,8 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
+
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -29,11 +31,15 @@
                         android:text="Название блюда:" />
 
                     <EditText
+                        android:id="@+id/custom_food_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:ems="18" />
 
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -47,6 +53,7 @@
                             android:text="Ингредиенты" />
 
                         <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycle_ingredients"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -59,7 +66,7 @@
                             android:text="+"
                             android:onClick="onAddFood"/>
                     </LinearLayout>
-
+                        </ScrollView>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -70,6 +77,13 @@
                             android:layout_margin="10dp"
                             android:text="Калорийность блюда" />
                     </LinearLayout>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Добавить"
+                        android:onClick="onAddinDB"/>
+
+
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/tab1"
