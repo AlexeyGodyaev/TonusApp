@@ -11,6 +11,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
+import com.caloriesdiary.caloriesdiary.Activities.MainActivity;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 

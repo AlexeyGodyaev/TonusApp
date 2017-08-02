@@ -8,6 +8,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
+import com.caloriesdiary.caloriesdiary.Activities.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
