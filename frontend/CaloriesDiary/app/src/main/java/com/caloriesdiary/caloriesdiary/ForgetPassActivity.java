@@ -25,17 +25,16 @@ public class ForgetPassActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient));
 
-                mail_edit = (EditText) findViewById(R.id.mail_edit);
+        mail_edit = (EditText) findViewById(R.id.mail_edit);
     }
     public void sendClick(View view) throws InterruptedException, ExecutionException
     {
         Post log = new Post();
 
-        String args[] = new String[3];
+        String args[] = new String[2];
 
         args[0] = "http://caloriesdiary.ru/users/forgot_password";  //аргументы для пост запроса
         args[1] = mail_edit.getText().toString();
-
 
         log.execute(args); // вызываем запрос
         JSONObject JSans = log.get();
@@ -44,6 +43,7 @@ public class ForgetPassActivity extends AppCompatActivity {
         {
             if(JSans.getInt("status") == 1)
             {
+                Toast.makeText(getApplicationContext(), "Новый пароль отправлен на почту " + mail_edit.getText() ,Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -51,12 +51,12 @@ public class ForgetPassActivity extends AppCompatActivity {
             }
             else
             {
-                Toast.makeText(getApplicationContext(),JSans.getString("msg"),Toast.LENGTH_LONG).show();
+                Toast.makeText(this,JSans.getString("msg"),Toast.LENGTH_LONG).show();
             }
         }
         catch (Exception e)
         {
-            Toast.makeText(getApplicationContext(),"Сервис не доступен",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Сервис не доступен" ,Toast.LENGTH_LONG).show();
         }
     }
 

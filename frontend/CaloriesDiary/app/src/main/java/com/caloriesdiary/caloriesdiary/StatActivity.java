@@ -502,17 +502,17 @@ public class StatActivity extends AppCompatActivity {
                             else
                                 massData[i] = new DataPoint(i, Double.parseDouble(graphArr.getJSONObject(i).getString("mass")));
 
-                            if (graphArr.getJSONObject(i).getString("eatedCalories").equals(""))
+                            if (graphArr.getJSONObject(i).getString("food_sum").equals(""))
                                 if(i==0) eatedData[i] = new DataPoint(i, 0); else
                                     eatedData[i] = new DataPoint(i, eatedData[i-1].getY());
                             else
-                                eatedData[i] = new DataPoint(i, Double.parseDouble(graphArr.getJSONObject(i).getString("eatedCalories")));
+                                eatedData[i] = new DataPoint(i, Double.parseDouble(graphArr.getJSONObject(i).getString("food_sum")));
 
-                            if (graphArr.getJSONObject(i).getString("bernCalories").equals(""))
+                            if (graphArr.getJSONObject(i).getString("active_sum").equals(""))
                                 if(i==0) bernData[i] = new DataPoint(i, 0); else
                                     bernData[i] = new DataPoint(i, bernData[i-1].getY());
                             else
-                                bernData[i] = new DataPoint(i, Double.parseDouble(graphArr.getJSONObject(i).getString("bernCalories")));
+                                bernData[i] = new DataPoint(i, Double.parseDouble(graphArr.getJSONObject(i).getString("active_sum")));
 
                             if (graphArr.getJSONObject(i).getString("rLeg").equals(""))
                                 if(i==0) rLegData[i] = new DataPoint(i, 0); else

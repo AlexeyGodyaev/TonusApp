@@ -4,9 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -21,8 +19,8 @@ public class RecycleActionAdapter extends RecyclerView.Adapter<RecycleActionAdap
     public  TextView nameview,caloriesview;
         public ViewHolder(View view) {
             super(view);
-            nameview = (TextView) view.findViewById(R.id.recycler_action_item_name);
-            caloriesview = (TextView) view.findViewById(R.id.recycler_action_item_calories);
+            nameview = view.findViewById(R.id.recycler_action_item_name);
+            caloriesview =  view.findViewById(R.id.recycler_action_item_calories);
             view.setOnClickListener(this);
         }
         @Override
@@ -51,7 +49,7 @@ public class RecycleActionAdapter extends RecyclerView.Adapter<RecycleActionAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ActionItem actionItem = listitem.get(position);
-        holder.nameview.setText(actionItem.getName().toString());
+        holder.nameview.setText(actionItem.getName());
         holder.caloriesview.setText(actionItem.getCalories().toString());
     }
 

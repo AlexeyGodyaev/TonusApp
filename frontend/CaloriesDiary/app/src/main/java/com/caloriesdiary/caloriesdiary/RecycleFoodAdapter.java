@@ -10,15 +10,17 @@ import java.util.List;
 
 
 public class RecycleFoodAdapter extends RecyclerView.Adapter<RecycleFoodAdapter.ViewHolder>  {
-    private List<FoodItem> listitem;
+    private final List<FoodItem> listitem;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
-        public TextView nameview,caloriesview,bjuview;
+        public final TextView nameview;
+        public final TextView caloriesview;
+        public final TextView bjuview;
         public ViewHolder(View view) {
             super(view);
-            nameview = (TextView) view.findViewById(R.id.recycler_food_item_name);
-            caloriesview = (TextView) view.findViewById(R.id.recycler_food_item_calories);
-            bjuview = (TextView) view.findViewById(R.id.recycler_food_item_bju);
+            nameview =  view.findViewById(R.id.recycler_food_item_name);
+            caloriesview =  view.findViewById(R.id.recycler_food_item_calories);
+            bjuview =  view.findViewById(R.id.recycler_food_item_bju);
             view.setOnClickListener(this);
         }
         @Override
@@ -38,14 +40,13 @@ public class RecycleFoodAdapter extends RecyclerView.Adapter<RecycleFoodAdapter.
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_food_list_item,parent,false);
 
-        RecycleFoodAdapter.ViewHolder vh = new RecycleFoodAdapter.ViewHolder(view);
-        return vh;
+        return new RecycleFoodAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecycleFoodAdapter.ViewHolder holder, int position) {
         FoodItem foodItem = listitem.get(position);
-        holder.nameview.setText(foodItem.getName().toString());
+        holder.nameview.setText(foodItem.getName());
         holder.caloriesview.setText(foodItem.getCalories().toString());
 
         holder.bjuview.setText(foodItem.getB().toString()+"/"+foodItem.getJ().toString()+"/"+foodItem.getU().toString());

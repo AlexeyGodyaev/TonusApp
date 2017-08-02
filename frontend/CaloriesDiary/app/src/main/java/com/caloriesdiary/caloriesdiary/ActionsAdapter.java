@@ -11,10 +11,10 @@ import android.widget.TextView;
 import java.util.List;
 
 
-public class ActionsAdapter extends BaseAdapter {
+class ActionsAdapter extends BaseAdapter {
 
-    private List<ActionItem> list;
-    private LayoutInflater layoutInflater;
+    private final List<ActionItem> list;
+    private final LayoutInflater layoutInflater;
 
     public  ActionsAdapter(Context context, List<ActionItem> list){
         this.list = list;
@@ -51,7 +51,7 @@ public class ActionsAdapter extends BaseAdapter {
         productName.setText(actionItem.getName());
 
         calories = view.findViewById(R.id.productCalories);
-        calories.setText(actionItem.getCalories().toString() +" ккал");
+        calories.setText(actionItem.getCalories() +" ккал");
 
         return view;
     }

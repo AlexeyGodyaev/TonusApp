@@ -12,14 +12,13 @@ import org.json.JSONObject;
 
 
 public class DeleteAccountActivity extends AppCompatActivity {
-    EditText login,pass;
+    EditText pass;
     SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delete_layout);
-        login = (EditText) findViewById(R.id.confirm_login);
         pass = (EditText) findViewById(R.id.confirm_pass);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
     }

@@ -29,7 +29,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    SharedPreferences sharedPref = null;
+    SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
     TextView userName, userMail, currentTime;
     Calendar calendar;
@@ -222,42 +222,9 @@ public class MainActivity extends AppCompatActivity
 
     public void onDiaryClick (View view)
     {
-        try
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("Важное сообщение!")
-                    .setMessage("Покормите кота!")
-                     .setCancelable(false)
-                    .setNegativeButton("ОК, иду на кухню",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-//            InputStream inputStream = getApplicationContext().openFileInput("text.txt");
-//
-//            if ( inputStream != null ) {
-//                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-//                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-//                String receiveString = "";
-//                StringBuilder stringBuilder = new StringBuilder();
-//
-//                while ( (receiveString = bufferedReader.readLine()) != null ) {
-//                    stringBuilder.append(receiveString);
-//                }
-//
-//                inputStream.close();
-//                Toast.makeText(getApplicationContext(),stringBuilder.toString(),Toast.LENGTH_LONG).show();
+       Intent intent = new Intent(getApplicationContext(), DiaryActivity.class);
 
-        //    }
-
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
-        }
+        startActivity(intent);
     }
     @Override
     public boolean onTouchEvent(MotionEvent event){

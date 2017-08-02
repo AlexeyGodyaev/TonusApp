@@ -138,7 +138,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         return (text.getText().toString().equals("") || text.getText().toString().length()==0);
     }
 
-    public void onClick(View view) throws InterruptedException, ExecutionException {
+    public void onClick(View view)  {
 
         try {
             String selected_activity = String.valueOf(spinner.getSelectedItemPosition() + 1);

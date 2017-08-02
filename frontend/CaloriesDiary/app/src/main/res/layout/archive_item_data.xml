@@ -13,7 +13,6 @@
 
     <TextView
         android:paddingBottom="3dp"
-        android:id="@+id/state_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Состояние:" />
@@ -28,7 +27,6 @@
 
     <TextView
         android:paddingBottom="3dp"
-        android:id="@+id/archive_goal_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Название:" />
@@ -43,7 +41,6 @@
 
     <TextView
         android:paddingBottom="3dp"
-        android:id="@+id/archive_goal_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Тип:" />
@@ -58,7 +55,6 @@
 
     <TextView
         android:paddingBottom="3dp"
-        android:id="@+id/archive_begin_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Дата начала:" />
@@ -73,7 +69,6 @@
 
     <TextView
         android:paddingBottom="3dp"
-        android:id="@+id/archive_end_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Дата окончания:" />
@@ -88,7 +83,6 @@
 
         <TextView
             android:paddingBottom="3dp"
-            android:id="@+id/archive_weight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Желаемый результат:" />
@@ -103,7 +97,6 @@
 
         <TextView
             android:paddingBottom="3dp"
-            android:id="@+id/live_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Уровень активности" />
@@ -121,7 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:textColor="#A5CDCD"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"

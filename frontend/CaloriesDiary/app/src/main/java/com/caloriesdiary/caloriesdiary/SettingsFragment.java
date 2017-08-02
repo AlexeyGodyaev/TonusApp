@@ -16,7 +16,7 @@ public class SettingsFragment extends PreferenceFragment {
 
         addPreferencesFromResource(R.xml.preferences);
 
-        Preference DeletePref = (Preference) findPreference("pref_key_delete_account");
+        Preference DeletePref = findPreference("pref_key_delete_account");
         DeletePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 //open browser or intent here
@@ -25,7 +25,7 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });
-        Preference ChangePref = (Preference) findPreference("pref_key_change_password");
+        Preference ChangePref = findPreference("pref_key_change_password");
         ChangePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 //open browser or intent here

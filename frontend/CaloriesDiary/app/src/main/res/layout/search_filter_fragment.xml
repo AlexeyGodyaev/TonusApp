@@ -4,7 +4,6 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/categoryText"
         android:layout_column="0"
         android:layout_row="0"
         android:text="Категория:  "
@@ -12,7 +11,6 @@
         />
 
     <Spinner
-        android:id="@+id/categoriesSpinner"
         android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:entries="@array/categories"
@@ -20,7 +18,6 @@
         android:layout_row="0" />
 
     <TextView
-        android:id="@+id/sortText"
         android:layout_column="0"
         android:layout_row="1"
         android:text="Сортировать по:  "
@@ -28,7 +25,6 @@
         />
 
     <Spinner
-        android:id="@+id/sortSpinner"
         android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:entries="@array/sortList"

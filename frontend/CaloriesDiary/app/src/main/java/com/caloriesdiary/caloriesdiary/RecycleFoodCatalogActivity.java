@@ -3,7 +3,6 @@ package com.caloriesdiary.caloriesdiary;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -103,7 +101,9 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
 
                 final TextView txtName = view.findViewById(R.id.recycler_food_item_name);
                 final TextView dialogName = content.findViewById(R.id.dialog_food_title);
-                dialogName.setText(txtName.getText());
+                if(txtName.getText().toString().length()>20)
+                    dialogName.setText(txtName.getText().toString().substring(0, 20) + "...");
+                 else dialogName.setText(txtName.getText());
                 final TextView txtBJU = view.findViewById(R.id.recycler_food_item_bju);
                 final TextView txtCalories = view.findViewById(R.id.recycler_food_item_calories);
                 final TextView dialogCalories = content.findViewById(R.id.dialog_cal);
@@ -155,17 +155,17 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                         if (input.getText().length() > 0) {
                             double massCount = Double.parseDouble(input.getText().toString());
                             OKBtn.setClickable(true);
-                            double newCount =
-                                    (massCount / 100) * caloriesCount;
-                            dialogCalories.setText(String.valueOf(newCount)+"ккал");
+                            double newCount = Math.round(
+                                    (massCount / 100) * caloriesCount);
+                            dialogCalories.setText(String.valueOf(newCount)+" ккал");
 
                             double protein = (massCount / 100) * dialogProteinValue;
                             double fats = (massCount / 100) * dialogFatsValue;
                             double carbs = (massCount / 100) * dialogCarbsValue;
 
-                            dialogProteins.setText(String.valueOf(protein) + "г");
-                            dialogFats.setText(String.valueOf(fats) + "г");
-                            dialogCarbs.setText(String.valueOf(carbs) + "г");
+                            dialogProteins.setText(Math.round(protein*100.0)/100.0 + " г");
+                            dialogFats.setText(Math.round(fats*100.0)/100.0 + " г");
+                            dialogCarbs.setText(Math.round(carbs*100.0)/100.0 + " г");
                         } else {
                                 OKBtn.setClickable(false);
                                 dialogProteins.setText("");
@@ -253,6 +253,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
                 int visibleItemCount = mLayoutManager.getChildCount();
                 int totalItemCount = mLayoutManager.getItemCount();
+
                 int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
                 if (totalItemCount -1 == lastVisibleItems && send){
                     buff = lastVisibleItems-visibleItemCount+1;
@@ -403,7 +404,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             mRecyclerView.setAdapter(mAdapter);
             Toast.makeText(RecycleFoodCatalogActivity.this, "Загружено элементов: " + String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
 
-            ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPosition(buff);
+            mRecyclerView.getLayoutManager().scrollToPosition(buff);
         }
 
         @Override
@@ -438,7 +439,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                     BufferedReader in=new BufferedReader(
                             new InputStreamReader(
                                     conn.getInputStream(), "UTF-8"));
-                    //StringBuffer sb = new StringBuffer("");
+
                     String line;
                     try
                     {

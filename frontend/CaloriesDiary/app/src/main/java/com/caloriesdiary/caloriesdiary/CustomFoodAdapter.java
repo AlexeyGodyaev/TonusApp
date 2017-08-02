@@ -17,6 +17,7 @@ public class CustomFoodAdapter extends RecyclerView.Adapter<CustomFoodAdapter.Vi
 
         public CheckBox checkBox;
         public TextView b,j,u,kcal,id;
+
         public ViewHolder(View view) {
             super(view);
             checkBox = (CheckBox) view.findViewById(R.id.add_food_checkbox);
