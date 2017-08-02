@@ -19,10 +19,12 @@ import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
 import com.caloriesdiary.caloriesdiary.Items.ActionItem;
+import com.caloriesdiary.caloriesdiary.Posts.GetDays;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleActionAdapter;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleFoodAdapter;
 import com.caloriesdiary.caloriesdiary.Fragments.TodayAntropometryFragment;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,15 +108,25 @@ public class DiaryActivity extends AppCompatActivity {
             JSONObject jsn;
             File f = new File(getCacheDir(), "Today_params.txt");
             if (f.exists()) {
-                FileInputStream in = new FileInputStream(f);
-                ObjectInputStream inObject = new ObjectInputStream(in);
-                String text = inObject.readObject().toString();
-                inObject.close();
+//                FileInputStream in = new FileInputStream(f);
+//                ObjectInputStream inObject = new ObjectInputStream(in);
+//                String text = inObject.readObject().toString();
+//                inObject.close();
+//                jsn = new JSONObject(text);
+//                todayParams = jsn.getJSONArray("today_params");
+//                jsn.remove("today_params");
+                GetDays getDays = new GetDays();
 
+                String args[] = new String[2];
 
-                jsn = new JSONObject(text);
-                todayParams = jsn.getJSONArray("today_params");
-                jsn.remove("today_params");
+                args[0] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+                args[1] = FirebaseInstanceId.getInstance().getToken();
+                getDays.execute(args);
+                Toast.makeText(this, getDays.get(), Toast.LENGTH_SHORT).show();
+                jsn = new JSONObject(getDays.get());
+            todayParams = jsn.getJSONArray("days");
+            jsn.remove("days");
+
 
                 position = todayParams.length() - 1;
 

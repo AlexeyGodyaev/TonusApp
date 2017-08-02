@@ -525,17 +525,17 @@ public class TodayActivity extends AppCompatActivity {
             JSONArray jsonArray = new JSONArray();
             JSONObject jsn = new JSONObject();
             File f = new File(getCacheDir(), "Today_params.txt");
-            if (f.exists()) {
-                FileInputStream in = new FileInputStream(f);
-                ObjectInputStream inObject = new ObjectInputStream(in);
-                String text = inObject.readObject().toString();
-                inObject.close();
-
-
-                jsn = new JSONObject(text);
-                jsonArray = jsn.getJSONArray("today_params");
-                jsn.remove("today_params");
-            }
+//            if (f.exists()) {
+//                FileInputStream in = new FileInputStream(f);
+//                ObjectInputStream inObject = new ObjectInputStream(in);
+//                String text = inObject.readObject().toString();
+//                inObject.close();
+//
+//
+//                jsn = new JSONObject(text);
+//                jsonArray = jsn.getJSONArray("today_params");
+//                jsn.remove("today_params");
+//            }
 
             f.createNewFile();
 
@@ -606,6 +606,7 @@ public class TodayActivity extends AppCompatActivity {
 
             //JSONObject response = new JSONObject(saveBackUp.get());
             Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
+
 
             FileOutputStream out = new FileOutputStream(f);
             ObjectOutputStream outObject = new ObjectOutputStream(out);
