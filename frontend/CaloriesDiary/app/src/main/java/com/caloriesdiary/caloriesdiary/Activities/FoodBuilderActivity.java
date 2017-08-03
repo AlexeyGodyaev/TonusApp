@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +66,9 @@ public class FoodBuilderActivity extends AppCompatActivity {
     private RecyclerView.Adapter ingAdapter;
     private RecyclerView.LayoutManager ingLayoutManager;
 
+    public CheckBox buildercheck1,buildercheck2;
+    public Spinner spinner1,spinner2;
+
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
 
@@ -76,7 +80,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
     int offset = 0;
     boolean send = true;
     int buff=0;
-
+    String searchquery = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,15 +142,19 @@ public class FoodBuilderActivity extends AppCompatActivity {
     }
     private void handleIntent(Intent intent) {
 
+        Toast.makeText(this, intent.getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
+            searchquery = query;
            // Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
+            list = new ArrayList<>();
+
             get = new FoodBuilderActivity.GetFood();
             offset = 0;
             String args[] = new String[10];
             args[0] = "http://caloriesdiary.ru/food/get_food";
             args[1] = String.valueOf(offset);
-            args[2] = query; //строка поиска
+            args[2] = searchquery; //строка поиска
             args[3] = ""; //id категории
             args[4] = ""; //сорт имени
             args[5] = ""; //сорт ккал
@@ -159,6 +167,11 @@ public class FoodBuilderActivity extends AppCompatActivity {
 
     public void initObjects()
     {
+        buildercheck1 = (CheckBox) findViewById(R.id.builder_checkbox1);
+        buildercheck2 = (CheckBox) findViewById(R.id.builder_checkbox2);
+        spinner1 = (Spinner) findViewById(R.id.builder_spinner1);
+        spinner2 = (Spinner) findViewById(R.id.builder_spinner2);
+
         mRecyclerView = (RecyclerView) findViewById(R.id.food_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
@@ -189,7 +202,19 @@ public class FoodBuilderActivity extends AppCompatActivity {
                     get = new GetFood();
                     send = false;
                     offset += 1;
-                    get.execute("http://caloriesdiary.ru/food/get_food", String.valueOf(offset));
+
+                    String args[] = new String[10];
+                    args[0] = "http://caloriesdiary.ru/food/get_food";
+                    args[1] = String.valueOf(offset);
+                    args[2] = searchquery; //строка поиска
+                    args[3] = ""; //id категории
+                    args[4] = ""; //сорт имени
+                    args[5] = ""; //сорт ккал
+                    args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+                    args[7] = FirebaseInstanceId.getInstance().getToken();
+                    get.execute(args);
+
+                    //get.execute("http://caloriesdiary.ru/food/get_food", String.valueOf(offset));
 
                     Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
                 }

@@ -26,6 +26,55 @@
                 android:layout_height="match_parent">
 
 
+
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@xml/border">
+                        <CheckBox
+                            android:id="@+id/builder_checkbox1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Категории"/>
+                        <CheckBox
+                            android:id="@+id/builder_checkbox2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Калории"
+                            android:layout_below="@+id/builder_checkbox1"/>
+                        <Spinner
+                            android:id="@+id/builder_spinner1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/builder_checkbox1"
+                            android:layout_alignParentRight="true">
+
+                        </Spinner>
+                        <Spinner
+                            android:id="@+id/builder_spinner2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/builder_checkbox2"
+                            android:layout_below="@+id/builder_checkbox1"
+                            android:layout_alignParentRight="true">
+
+                        </Spinner>
+                    </RelativeLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/food_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="vertical" />
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/tab2"
                     android:layout_width="match_parent"
@@ -47,36 +96,36 @@
                         android:layout_margin="10dp"
                         android:ems="18" />
 
-                        <ScrollView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                    <LinearLayout
+                    <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#efefef"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="Ингредиенты" />
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycle_ingredients"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                        </android.support.v7.widget.RecyclerView>
-
-                        <Button
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:text="+"
-                            android:onClick="onAddFood"/>
-                    </LinearLayout>
-                        </ScrollView>
+                            android:background="#efefef"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Ингредиенты" />
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recycle_ingredients"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            </android.support.v7.widget.RecyclerView>
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:text="+"
+                                android:onClick="onAddFood"/>
+                        </LinearLayout>
+                    </ScrollView>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -94,17 +143,6 @@
                         android:onClick="onAddinDB"/>
 
 
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/tab1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/food_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollbars="vertical" />
                 </LinearLayout>
             </FrameLayout>
             </LinearLayout>
