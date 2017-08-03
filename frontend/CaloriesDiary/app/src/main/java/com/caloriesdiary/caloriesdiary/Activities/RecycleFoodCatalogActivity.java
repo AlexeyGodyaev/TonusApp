@@ -276,19 +276,6 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         try {
             MenuInflater inflater = getMenuInflater();
@@ -315,21 +302,24 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.menu_refresh:
-//                mAdapter = new RecycleFoodAdapter(initData());
-//                mRecyclerView.setAdapter(mAdapter);
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void onClickFoodBuilder(View view)
     {
             Intent intent = new Intent(getApplicationContext(),FoodBuilderActivity.class);
             startActivity(intent);
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
     }
+
+
     private void handleIntent(Intent intent) {
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {

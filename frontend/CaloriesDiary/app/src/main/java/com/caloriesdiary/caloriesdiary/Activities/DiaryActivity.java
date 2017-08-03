@@ -116,7 +116,17 @@ public class DiaryActivity extends AppCompatActivity {
         sportCalories = (TextView) findViewById(R.id.diarySportCalories);
         normCalories = (TextView) findViewById(R.id.diaryCaloriesNormText);
 
+        initDiaryData();
 
+        todayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog(dialogId);
+            }
+        });
+    }
+
+    private void initDiaryData(){
         try {
             JSONObject jsn;
             GetDays getDays = new GetDays();
@@ -171,14 +181,8 @@ public class DiaryActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
-        todayDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDialog(dialogId);
-            }
-        });
     }
+
 
     @Override
     protected Dialog onCreateDialog(int id) {

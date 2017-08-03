@@ -258,7 +258,7 @@ public class TodayActivity extends AppCompatActivity {
             FABFlag = true;
         }
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
