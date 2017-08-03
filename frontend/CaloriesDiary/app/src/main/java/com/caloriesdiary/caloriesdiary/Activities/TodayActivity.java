@@ -553,15 +553,24 @@ public class TodayActivity extends AppCompatActivity {
             jsn.put("date", String.valueOf(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
                     "-" + calendar.get(Calendar.DAY_OF_MONTH)));
             if (fragment.getView() != null) {
-                jsn.put("rLeg", fragment.getrLeg().getText().toString());
-                jsn.put("lLeg", fragment.getlLeg().getText().toString());
-                jsn.put("rHand", fragment.getrHand().getText().toString());
-                jsn.put("lHand", fragment.getlHand().getText().toString());
-                jsn.put("calves", fragment.getCalves().getText().toString());
-                jsn.put("shoulders", fragment.getShoulders().getText().toString());
-                jsn.put("butt", fragment.getButt().getText().toString());
-                jsn.put("waist", fragment.getWaist().getText().toString());
-                jsn.put("chest", fragment.getChest().getText().toString());
+                if(!fragment.getrLeg().getText().toString().equals(""))
+                jsn.put("rLeg", fragment.getrLeg().getText().toString()); else  jsn.put("rLeg", "0");
+                if(!fragment.getlLeg().getText().toString().equals(""))
+                jsn.put("lLeg", fragment.getlLeg().getText().toString()); else  jsn.put("lLeg", "0");
+                if(!fragment.getrHand().getText().toString().equals(""))
+                jsn.put("rHand", fragment.getrHand().getText().toString()); else  jsn.put("rHand", "0");
+                if(!fragment.getlHand().getText().toString().equals(""))
+                jsn.put("lHand", fragment.getlHand().getText().toString()); else  jsn.put("lHand", "0");
+                if(!fragment.getCalves().getText().toString().equals(""))
+                jsn.put("calves", fragment.getCalves().getText().toString()); else  jsn.put("calves", "0");
+                if(!fragment.getShoulders().getText().toString().equals(""))
+                jsn.put("shoulders", fragment.getShoulders().getText().toString()); else  jsn.put("shoulders", "0");
+                if(!fragment.getButt().getText().toString().equals(""))
+                jsn.put("butt", fragment.getButt().getText().toString()); else  jsn.put("butt", "0");
+                if(!fragment.getWaist().getText().toString().equals(""))
+                jsn.put("waist", fragment.getWaist().getText().toString()); else  jsn.put("waist", "0");
+                if(!fragment.getChest().getText().toString().equals(""))
+                jsn.put("chest", fragment.getChest().getText().toString()); else  jsn.put("chest", "0");
             } else {
                 if (jsonObject.getString("date")
                         .equals(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
@@ -576,15 +585,15 @@ public class TodayActivity extends AppCompatActivity {
                     jsn.put("waist", jsonObject.getString("waist"));
                     jsn.put("chest", jsonObject.getString("chest"));
                 } else {
-                    jsn.put("rLeg", "");
-                    jsn.put("lLeg", "");
-                    jsn.put("rHand", "");
-                    jsn.put("lHand", "");
-                    jsn.put("calves", "");
-                    jsn.put("shoulders", "");
-                    jsn.put("butt", "");
-                    jsn.put("waist", "");
-                    jsn.put("chest", "");
+                    jsn.put("rLeg", "0");
+                    jsn.put("lLeg", "0");
+                    jsn.put("rHand", "0");
+                    jsn.put("lHand", "0");
+                    jsn.put("calves", "0");
+                    jsn.put("shoulders", "0");
+                    jsn.put("butt", "0");
+                    jsn.put("waist", "0");
+                    jsn.put("chest", "0");
                 }
             }
 
@@ -593,7 +602,7 @@ public class TodayActivity extends AppCompatActivity {
             saveBackUp.execute(jsn);
 
 
-            //Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
 
 
             FileOutputStream out = new FileOutputStream(f);
