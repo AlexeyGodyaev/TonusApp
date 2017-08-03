@@ -1,9 +1,6 @@
 package com.caloriesdiary.caloriesdiary.Posts;
 
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -17,25 +14,18 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
 
-
-public class SaveTodayParams extends AsyncTask<JSONObject, Void, String> {
+public class GetDays extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
     }
 
     @Override
-    protected void onPostExecute(String s) {
-
-        super.onPostExecute(s);
-    }
-
-    @Override
-    protected String doInBackground(JSONObject... jsonObjects) {
+    protected String doInBackground(String... strings) {
 
         try {
             String resp = "";
-            URL url = new URL("http://caloriesdiary.ru/users/save_day");
+            URL url = new URL("http://caloriesdiary.ru/users/get_days");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setReadTimeout(15000 /* milliseconds */);
@@ -44,11 +34,14 @@ public class SaveTodayParams extends AsyncTask<JSONObject, Void, String> {
             connection.setDoInput(true);
             connection.setDoOutput(true);
 
+            JSONObject postDataParams = new JSONObject();
+
+            postDataParams.put("id", strings[0]);
+            postDataParams.put("instanceToken", strings[1]);
             OutputStream os = connection.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
-            writer.write(getPostDataString(jsonObjects[0])); // преобразуем json объект в строку параметров запроса
-            Log.e("gjc",(jsonObjects[0].toString()));
+            writer.write(getPostDataString(postDataParams)); // преобразуем json объект в строку параметров запроса
 
             writer.flush();
             writer.close();
@@ -60,8 +53,9 @@ public class SaveTodayParams extends AsyncTask<JSONObject, Void, String> {
                 BufferedReader in=new BufferedReader(
                         new InputStreamReader(
                                 connection.getInputStream(), "UTF-8"));
-                StringBuilder sb = new StringBuilder();
+
                 String line;
+                StringBuilder sb = new StringBuilder();
 
 
                 if((line = in.readLine()) != null) {
@@ -70,7 +64,8 @@ public class SaveTodayParams extends AsyncTask<JSONObject, Void, String> {
 
                 in.close();
 
-                resp = sb.toString();
+                resp = line;
+                return resp;
             }
             else resp = connection.getResponseMessage();
 
@@ -103,7 +98,6 @@ public class SaveTodayParams extends AsyncTask<JSONObject, Void, String> {
             result.append(URLEncoder.encode(value.toString(), "UTF-8"));
 
         }
-
         return result.toString();
     }
 }

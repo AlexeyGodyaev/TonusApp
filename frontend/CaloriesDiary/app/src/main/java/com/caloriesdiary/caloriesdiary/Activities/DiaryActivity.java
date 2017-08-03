@@ -19,10 +19,12 @@ import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
 import com.caloriesdiary.caloriesdiary.Items.ActionItem;
+import com.caloriesdiary.caloriesdiary.Posts.GetDays;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleActionAdapter;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleFoodAdapter;
 import com.caloriesdiary.caloriesdiary.Fragments.TodayAntropometryFragment;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -104,50 +106,51 @@ public class DiaryActivity extends AppCompatActivity {
 
         try {
             JSONObject jsn;
-            File f = new File(getCacheDir(), "Today_params.txt");
-            if (f.exists()) {
-                FileInputStream in = new FileInputStream(f);
-                ObjectInputStream inObject = new ObjectInputStream(in);
-                String text = inObject.readObject().toString();
-                inObject.close();
+            GetDays getDays = new GetDays();
+
+            String args[] = new String[2];
+
+            args[0] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+            args[1] = FirebaseInstanceId.getInstance().getToken();
+            getDays.execute(args);
+            Toast.makeText(this, getDays.get(), Toast.LENGTH_SHORT).show();
+            jsn = new JSONObject(getDays.get());
+            todayParams = jsn.getJSONArray("days");
+            jsn.remove("days");
 
 
-                jsn = new JSONObject(text);
-                todayParams = jsn.getJSONArray("today_params");
-                jsn.remove("today_params");
+            position = todayParams.length() - 1;
 
-                position = todayParams.length() - 1;
+            if (todayParams.length() > 0) {
 
-                if (todayParams.length() > 0) {
+                editMass.setText(todayParams.getJSONObject(position).getString("mass"));
+                dayNote.setText(todayParams.getJSONObject(position).getString("note"));
 
-                    editMass.setText(todayParams.getJSONObject(position).getString("mass"));
-                    dayNote.setText(todayParams.getJSONObject(position).getString("note"));
+                String s;
+                int day, month, year;
+                s = todayParams.getJSONObject(0).getString("date");
 
-                    String s;
-                    int day, month, year;
-                    s = todayParams.getJSONObject(0).getString("date");
+                year = Integer.valueOf(s.substring(0, s.indexOf('-')));
+                s = s.substring(s.indexOf('-') + 1);
 
-                    day = Integer.valueOf(s.substring(0, s.indexOf('.')));
-                    s = s.substring(s.indexOf('.') + 1);
+                month = Integer.valueOf(s.substring(0, s.indexOf('-')));
+                s = s.substring(s.indexOf('-') + 1);
 
-                    month = Integer.valueOf(s.substring(0, s.indexOf('.')));
-                    s = s.substring(s.indexOf('.') + 1);
+                day = Integer.valueOf(s);
+                minDate.set(year, month - 1, day);
 
-                    year = Integer.valueOf(s);
-                    minDate.set(year, month - 1, day);
+                s = todayParams.getJSONObject(todayParams.length() - 1).getString("date");
 
-                    s = todayParams.getJSONObject(todayParams.length() - 1).getString("date");
+                year = Integer.valueOf(s.substring(0, s.indexOf('-')));
+                s = s.substring(s.indexOf('-') + 1);
 
-                    day = Integer.valueOf(s.substring(0, s.indexOf('.')));
-                    s = s.substring(s.indexOf('.') + 1);
+                month = Integer.valueOf(s.substring(0, s.indexOf('-')));
+                s = s.substring(s.indexOf('-') + 1);
 
-                    month = Integer.valueOf(s.substring(0, s.indexOf('.')));
-                    s = s.substring(s.indexOf('.') + 1);
-
-                    year = Integer.valueOf(s);
-                    maxDate.set(year, month - 1, day);
-                }
+                day = Integer.valueOf(s);
+                maxDate.set(year, month - 1, day);
             }
+
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -241,7 +244,7 @@ public class DiaryActivity extends AppCompatActivity {
         if (foodFlag) {
             try {
                 JSONObject jOb = todayParams.getJSONObject(position);
-                JSONArray jArr = jOb.getJSONArray("food");
+                JSONArray jArr = new JSONArray(jOb.getString("food"));
                 for (int i = 0; i < jArr.length(); i++) {
                     try {
                         foodName = jArr.getJSONObject(i).getString("name");
@@ -274,7 +277,7 @@ public class DiaryActivity extends AppCompatActivity {
         if (activeFlag) {
             try {
                 JSONObject jOb = todayParams.getJSONObject(position);
-                JSONArray jArr = jOb.getJSONArray("active");
+                JSONArray jArr = new JSONArray(jOb.getString("active"));
                 for (int i = 0; i < jArr.length(); i++) {
                     try {
                         actionName = jArr.getJSONObject(i).getString("name");

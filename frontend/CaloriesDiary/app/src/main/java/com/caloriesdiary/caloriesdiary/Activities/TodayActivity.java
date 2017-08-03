@@ -23,10 +23,12 @@ import com.caloriesdiary.caloriesdiary.Adapters.RecycleActionAdapter;
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
 import com.caloriesdiary.caloriesdiary.Items.ActionItem;
 import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.Posts.SaveTodayParams;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleFoodAdapter;
 import com.caloriesdiary.caloriesdiary.RecyclerTouchListener;
 import com.caloriesdiary.caloriesdiary.Fragments.TodayAntropometryFragment;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,8 +64,6 @@ public class TodayActivity extends AppCompatActivity {
     private RecyclerView actionRecyclerView;
     private RecyclerView.Adapter actionAdapter;
     RecyclerView.LayoutManager actionLayoutManager;
-
-    JSONArray todayParams;
 
     SharedPreferences sharedPref;
     Calendar calendar;
@@ -130,17 +130,14 @@ public class TodayActivity extends AppCompatActivity {
                 String text = inObject.readObject().toString();
                 inObject.close();
 
-
                 jsn = new JSONObject(text);
-                todayParams = jsn.getJSONArray("today_params");
-                jsn.remove("today_params");
 
-                if (todayParams.length() > 0 && todayParams.getJSONObject(todayParams.length() - 1).getString("date")
-                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                                "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
+                if (jsn.getString("date").equals(String.valueOf(calendar.get(Calendar.YEAR)) + "-"
+                        + String.valueOf(calendar.get(Calendar.MONTH)+1) +
+                                "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)))) {
 
-                    editMass.setText(todayParams.getJSONObject(todayParams.length() - 1).getString("mass"));
-                    dayNote.setText(todayParams.getJSONObject(todayParams.length() - 1).getString("note"));
+                    editMass.setText(jsn.getString("mass"));
+                    dayNote.setText(jsn.getString("note"));
                 }
             }
         } catch (Exception e) {
@@ -519,8 +516,7 @@ public class TodayActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         try {
-            JSONObject jObject = new JSONObject();
-            JSONArray jsonArray = new JSONArray();
+            JSONObject jsonObject = new JSONObject();
             JSONObject jsn = new JSONObject();
             File f = new File(getCacheDir(), "Today_params.txt");
             if (f.exists()) {
@@ -528,23 +524,23 @@ public class TodayActivity extends AppCompatActivity {
                 ObjectInputStream inObject = new ObjectInputStream(in);
                 String text = inObject.readObject().toString();
                 inObject.close();
-
-
-                jsn = new JSONObject(text);
-                jsonArray = jsn.getJSONArray("today_params");
-                jsn.remove("today_params");
+                jsonObject = new JSONObject(text);
             }
-
             f.createNewFile();
 
+            jsn.put("id", String.valueOf(sharedPref.getInt("PROFILE_ID",0)));
             jsn.put("mass", editMass.getText().toString());
             jsn.put("note", dayNote.getText().toString());
             jsn.put("active", jsonAction);
             jsn.put("food", jsonFood);
             jsn.put("active_sum",  String.valueOf(sum1));
             jsn.put("food_sum",  String.valueOf(sum));
-            jsn.put("date", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                    "." + String.valueOf(calendar.get(Calendar.YEAR)));
+            jsn.put("carbs", carbs.getText().toString());
+            jsn.put("protein", protein.getText().toString());
+            jsn.put("fats", fats.getText().toString());
+            jsn.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
+            jsn.put("date", String.valueOf(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
+                    "-" + calendar.get(Calendar.DAY_OF_MONTH)));
             if (fragment.getView() != null) {
                 jsn.put("rLeg", fragment.getrLeg().getText().toString());
                 jsn.put("lLeg", fragment.getlLeg().getText().toString());
@@ -556,18 +552,18 @@ public class TodayActivity extends AppCompatActivity {
                 jsn.put("waist", fragment.getWaist().getText().toString());
                 jsn.put("chest", fragment.getChest().getText().toString());
             } else {
-                if (jsonArray != null && jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
-                        .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                                "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
-                    jsn.put("rLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("rLeg"));
-                    jsn.put("lLeg", jsonArray.getJSONObject(jsonArray.length() - 1).getString("lLeg"));
-                    jsn.put("rHand", jsonArray.getJSONObject(jsonArray.length() - 1).getString("rHand"));
-                    jsn.put("lHand", jsonArray.getJSONObject(jsonArray.length() - 1).getString("lHand"));
-                    jsn.put("calves", jsonArray.getJSONObject(jsonArray.length() - 1).getString("calves"));
-                    jsn.put("shoulders", jsonArray.getJSONObject(jsonArray.length() - 1).getString("shoulders"));
-                    jsn.put("butt", jsonArray.getJSONObject(jsonArray.length() - 1).getString("butt"));
-                    jsn.put("waist", jsonArray.getJSONObject(jsonArray.length() - 1).getString("waist"));
-                    jsn.put("chest", jsonArray.getJSONObject(jsonArray.length() - 1).getString("chest"));
+                if (jsonObject.getString("date")
+                        .equals(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
+                                "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)))) {
+                    jsn.put("rLeg", jsonObject.getString("rLeg"));
+                    jsn.put("lLeg", jsonObject.getString("lLeg"));
+                    jsn.put("rHand", jsonObject.getString("rHand"));
+                    jsn.put("lHand", jsonObject.getString("lHand"));
+                    jsn.put("calves", jsonObject.getString("calves"));
+                    jsn.put("shoulders", jsonObject.getString("shoulders"));
+                    jsn.put("butt", jsonObject.getString("butt"));
+                    jsn.put("waist", jsonObject.getString("waist"));
+                    jsn.put("chest", jsonObject.getString("chest"));
                 } else {
                     jsn.put("rLeg", "");
                     jsn.put("lLeg", "");
@@ -580,31 +576,18 @@ public class TodayActivity extends AppCompatActivity {
                     jsn.put("chest", "");
                 }
             }
-            if (jsonArray != null && jsonArray.length() > 0 && jsonArray.getJSONObject(jsonArray.length() - 1).getString("date")
-                    .equals(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                            "." + String.valueOf(calendar.get(Calendar.YEAR)))) {
-                JSONArray jArray = new JSONArray();
-                for (int i = 0; i < jsonArray.length() - 1; i++)
-                    jArray.put(jsonArray.getJSONObject(i));
-                jArray.put(jsn);
-                jObject.put("today_params", jArray);
-            } else {
-                jsonArray.put(jsn);
-                jObject.put("today_params", jsonArray);
-            }
 
-            Post saveBackUp = new Post();
-            String backUpArgs[] = new String[3];
-            backUpArgs[0]="http://caloriesdiary.ru/users/save_backup";
-            backUpArgs[1]=String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-            backUpArgs[2]=jObject.toString();
-            saveBackUp.execute(backUpArgs);
+            SaveTodayParams saveBackUp = new SaveTodayParams();
 
-            Toast.makeText(this, saveBackUp.get().toString(), Toast.LENGTH_SHORT).show();
+            saveBackUp.execute(jsn);
+
+
+            //Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
+
 
             FileOutputStream out = new FileOutputStream(f);
             ObjectOutputStream outObject = new ObjectOutputStream(out);
-            outObject.writeObject(jObject.toString());
+            outObject.writeObject(jsn.toString());
             outObject.flush();
             out.getFD().sync();
             outObject.close();
