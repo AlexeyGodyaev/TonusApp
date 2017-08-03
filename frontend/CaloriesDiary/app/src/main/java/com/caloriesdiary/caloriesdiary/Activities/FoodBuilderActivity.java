@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Adapters.CustomFoodAdapter;
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
+import com.caloriesdiary.caloriesdiary.Posts.GetCategories;
 import com.caloriesdiary.caloriesdiary.Posts.Post;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleFoodAdapter;
@@ -171,6 +172,18 @@ public class FoodBuilderActivity extends AppCompatActivity {
         buildercheck2 = (CheckBox) findViewById(R.id.builder_checkbox2);
         spinner1 = (Spinner) findViewById(R.id.builder_spinner1);
         spinner2 = (Spinner) findViewById(R.id.builder_spinner2);
+        try
+        {
+            GetCategories getcategories = new GetCategories();
+            getcategories.execute("http://caloriesdiary.ru/food/get_food_categories");
+            String ans = getcategories.get();
+            buildercheck1.setText(ans);
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.food_recycler_view);
         mRecyclerView.setHasFixedSize(true);
