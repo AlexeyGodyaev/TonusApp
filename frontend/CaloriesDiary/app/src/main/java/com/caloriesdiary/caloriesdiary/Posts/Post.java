@@ -44,6 +44,7 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         break;
                     case "http://caloriesdiary.ru/calories/get_per_day":
                         postDataParams.put("id",arg0[1]);
+                        postDataParams.put("instanceToken",arg0[2]);
                         break;
                     case "http://caloriesdiary.ru/users/save_goal":
                         postDataParams.put("id",arg0[1]);

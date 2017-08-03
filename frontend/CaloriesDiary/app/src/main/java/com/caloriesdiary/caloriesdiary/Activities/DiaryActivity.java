@@ -3,15 +3,21 @@ package com.caloriesdiary.caloriesdiary.Activities;
 
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,6 +35,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,7 +51,7 @@ public class DiaryActivity extends AppCompatActivity {
 
     int position;
 
-    TextView todayDate, dayNote,  foodCalories, sportCalories, normCalories;
+    TextView todayDate, dayNote,  foodCalories, sportCalories, normCalories, protein, carbs, fats;
     private TodayAntropometryFragment fragment;
     private FragmentManager manager;
     FragmentTransaction transaction;
@@ -62,10 +69,12 @@ public class DiaryActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
     Calendar calendar;
     EditText editMass;
-    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true;
+    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, dateFlag = false;
 
     Calendar minDate = Calendar.getInstance(), maxDate = Calendar.getInstance();
     final String[] args = new String[2];
+    final int dialogId = 1;
+    int dialogDay, dialogMonth, dialogYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +84,10 @@ public class DiaryActivity extends AppCompatActivity {
         setTitle("Дневник");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        protein = (TextView) findViewById(R.id.ProteinText);
+        fats = (TextView) findViewById(R.id.FatsText);
+        carbs = (TextView) findViewById(R.id.CarbsText);
 
         foodRecyclerView = (RecyclerView) findViewById(R.id.diary_food_busket_recycler_view);
         foodRecyclerView.setHasFixedSize(true);
@@ -113,19 +126,22 @@ public class DiaryActivity extends AppCompatActivity {
             args[0] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
             args[1] = FirebaseInstanceId.getInstance().getToken();
             getDays.execute(args);
-            Toast.makeText(this, getDays.get(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, getDays.get(), Toast.LENGTH_LONG).show();
             jsn = new JSONObject(getDays.get());
             todayParams = jsn.getJSONArray("days");
             jsn.remove("days");
 
-
-            position = todayParams.length() - 1;
-
+            position = todayParams.length()-1;
             if (todayParams.length() > 0) {
 
                 editMass.setText(todayParams.getJSONObject(position).getString("mass"));
                 dayNote.setText(todayParams.getJSONObject(position).getString("note"));
-
+                todayDate.setText(todayParams.getJSONObject(position).getString("date"));
+                foodCalories.setText(todayParams.getJSONObject(position).getString("food_sum") + " ккал");
+                sportCalories.setText(todayParams.getJSONObject(position).getString("active_sum") + " ккал");
+                protein.setText(todayParams.getJSONObject(position).getString("protein"));
+                fats.setText(todayParams.getJSONObject(position).getString("fats"));
+                carbs.setText(todayParams.getJSONObject(position).getString("carbs"));
                 String s;
                 int day, month, year;
                 s = todayParams.getJSONObject(0).getString("date");
@@ -148,6 +164,7 @@ public class DiaryActivity extends AppCompatActivity {
                 s = s.substring(s.indexOf('-') + 1);
 
                 day = Integer.valueOf(s);
+                dialogDay = day;  dialogMonth = month-1; dialogYear = year;
                 maxDate.set(year, month - 1, day);
             }
 
@@ -158,32 +175,70 @@ public class DiaryActivity extends AppCompatActivity {
         todayDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatePickerDialog dpd = new DatePickerDialog(getApplicationContext());
-                dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-//                        datePicker.setMaxDate(maxDate.getTimeInMillis());
-//                        datePicker.setMinDate(minDate.getTimeInMillis());
-
-                    }
-                });
-                dpd.show();
+                showDialog(dialogId);
             }
         });
     }
 
-
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case dialogId:
+                DatePickerDialog dialog = new DatePickerDialog(this, datePickerListener,
+                        dialogYear, dialogMonth, dialogDay);
+                dialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+                dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+                //Настраиваем на текущую дату:
+                return dialog;
+        }
+        return null;
+    }
+    //Делаем выбор желаемой даты:
+    private DatePickerDialog.OnDateSetListener datePickerListener
+            = new DatePickerDialog.OnDateSetListener() {
 
+        public void onDateSet(DatePicker view, int selectedYear,int selectedMonth, int selectedDay) {
+            try {
+                String date = String.valueOf(selectedYear);
+                if (selectedMonth<9)
+                    date+="-0"+String.valueOf(selectedMonth+1); else date+=String.valueOf(selectedMonth+1);
+                if (selectedDay<10)
+                    date+="-0"+String.valueOf(selectedDay); else date+=String.valueOf(selectedDay);
+
+                for (int i = 0; i < todayParams.length(); i++) {
+                    if (todayParams.getJSONObject(i).getString("date")
+                            .equals(date))
+                        position = i;
+                    Toast.makeText(DiaryActivity.this, date+"..."+todayParams.getJSONObject(i).getString("date"), Toast.LENGTH_LONG).show();
+                }
+
+                onChangeDiaryData();
+                dateFlag = !dateFlag;
+                initActiveData();
+                initFoodData();
+                actionRecyclerView.setAdapter(actionAdapter);
+                foodRecyclerView.setAdapter(foodAdapter);
+                dateFlag = !dateFlag;
+
+            }catch (Exception e){
+                Toast.makeText(DiaryActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    };
+
+    protected void onChangeDiaryData() {
         try {
             JSONObject jsn = todayParams.getJSONObject(position);
 
+            editMass.setText(jsn.getString("mass"));
+            dayNote.setText(jsn.getString("note"));
             todayDate.setText(jsn.getString("date"));
             foodCalories.setText(jsn.getString("food_sum") + " ккал");
-
             sportCalories.setText(jsn.getString("active_sum") + " ккал");
+            protein.setText(jsn.getString("protein"));
+            fats.setText(jsn.getString("fats"));
+            carbs.setText(jsn.getString("carbs"));
         }
         catch (Exception e)
         {
@@ -232,8 +287,6 @@ public class DiaryActivity extends AppCompatActivity {
     public void onDiaryActivityBtnClc(View v) {
         initActiveData();
         actionRecyclerView.setAdapter(actionAdapter);
-        onContentChanged();
-
     }
 
     private List<FoodItem> initFoodData() {
@@ -241,7 +294,14 @@ public class DiaryActivity extends AppCompatActivity {
         Float b = 0.0f, j = 0.0f, u = 0.0f, calories = 0.0f;
         Integer id = 0, category_id = 0;
 
+        if(dateFlag){
+            while (!list.isEmpty())
+                list.remove(0);
+            foodFlag =!foodFlag;
+        }
+
         if (foodFlag) {
+
             try {
                 JSONObject jOb = todayParams.getJSONObject(position);
                 JSONArray jArr = new JSONArray(jOb.getString("food"));
@@ -273,8 +333,14 @@ public class DiaryActivity extends AppCompatActivity {
     private List<ActionItem> initActiveData() {
         String actionName = null;
         Float calories = 0.0f;
+        if(dateFlag){
+            while (!listActive.isEmpty())
+                listActive.remove(0);
+            activeFlag = !activeFlag;
+        }
 
         if (activeFlag) {
+
             try {
                 JSONObject jOb = todayParams.getJSONObject(position);
                 JSONArray jArr = new JSONArray(jOb.getString("active"));
@@ -302,4 +368,5 @@ public class DiaryActivity extends AppCompatActivity {
         return listActive;
     }
 }
+
 

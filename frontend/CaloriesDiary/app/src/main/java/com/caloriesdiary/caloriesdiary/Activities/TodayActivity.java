@@ -70,7 +70,7 @@ public class TodayActivity extends AppCompatActivity {
     EditText editMass;
     private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, FABFlag=false;
 
-    final String[] args = new String[2];
+    final String[] args = new String[3];
     LinearLayout linearLayout;
 
     JSONArray jsonAction, jsonFood;
@@ -106,12 +106,7 @@ public class TodayActivity extends AppCompatActivity {
 
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
-        args[0] = "http://caloriesdiary.ru/calories/get_per_day";
-        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-
-
         todayDate = (TextView) findViewById(R.id.todayDate);
-        //targetText = (TextView) findViewById(R.id.targetTextView);
         foodCalories = (TextView) findViewById(R.id.foodCalories);
         sportCalories = (TextView) findViewById(R.id.sportCalories);
         normCalories = (TextView) findViewById(R.id.normaCaloriesText);
@@ -143,6 +138,14 @@ public class TodayActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
+        addRcyclerOnClickListeners();
+
+        todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
+
+    }
+
+    private void addRcyclerOnClickListeners(){
         actionRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 actionRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -234,9 +237,6 @@ public class TodayActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         }));
-
-        todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
-
     }
 
     public  void onAddFoodClc(View view){
@@ -258,11 +258,15 @@ public class TodayActivity extends AppCompatActivity {
             FABFlag = true;
         }
     }
+    
     @Override
     protected void onResume() {
         super.onResume();
 
         Post log = new Post();
+        args[0] = "http://caloriesdiary.ru/calories/get_per_day";
+        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+        args[2] = FirebaseInstanceId.getInstance().getToken();
         log.execute(args);
 
         try {
@@ -271,8 +275,14 @@ public class TodayActivity extends AppCompatActivity {
             normCalories.setText(resp.getInt("result") + " ккал");
 
             protein.setText(resp.getInt("protein") + " г.");
-            fats.setText(resp.getInt("fats")+ " г.");
-            carbs.setText(resp.getInt("carbs")+ " г.");
+            fats.setText(resp.getInt("fats") + " г.");
+            carbs.setText(resp.getInt("carbs") + " г.");
+
+        }catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+        try{
 
             File f = new File(getCacheDir(), "Food.txt");
             FileInputStream in = new FileInputStream(f);
