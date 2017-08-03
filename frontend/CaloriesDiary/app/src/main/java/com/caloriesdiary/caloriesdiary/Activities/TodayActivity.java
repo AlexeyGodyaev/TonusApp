@@ -539,6 +539,7 @@ public class TodayActivity extends AppCompatActivity {
             f.createNewFile();
 
             jsn.put("id", String.valueOf(sharedPref.getInt("PROFILE_ID",0)));
+            jsn.put("day_calories", normCalories.getText().toString());
             jsn.put("mass", editMass.getText().toString());
             jsn.put("note", dayNote.getText().toString());
             jsn.put("active", jsonAction);

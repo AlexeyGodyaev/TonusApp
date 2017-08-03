@@ -144,6 +144,7 @@ public class DiaryActivity extends AppCompatActivity {
             position = todayParams.length()-1;
             if (todayParams.length() > 0) {
 
+                normCalories.setText(todayParams.getJSONObject(position).getString("day_calories"));
                 editMass.setText(todayParams.getJSONObject(position).getString("mass"));
                 dayNote.setText(todayParams.getJSONObject(position).getString("note"));
                 todayDate.setText(todayParams.getJSONObject(position).getString("date"));
@@ -213,7 +214,7 @@ public class DiaryActivity extends AppCompatActivity {
                     if (todayParams.getJSONObject(i).getString("date")
                             .equals(date))
                         position = i;
-                    Toast.makeText(DiaryActivity.this, date+"..."+todayParams.getJSONObject(i).getString("date"), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(DiaryActivity.this, date+"..."+todayParams.getJSONObject(i).getString("date"), Toast.LENGTH_LONG).show();
                 }
 
                 onChangeDiaryData();
@@ -235,6 +236,7 @@ public class DiaryActivity extends AppCompatActivity {
         try {
             JSONObject jsn = todayParams.getJSONObject(position);
 
+            normCalories.setText(jsn.getString("day_calories"));
             editMass.setText(jsn.getString("mass"));
             dayNote.setText(jsn.getString("note"));
             todayDate.setText(jsn.getString("date"));
