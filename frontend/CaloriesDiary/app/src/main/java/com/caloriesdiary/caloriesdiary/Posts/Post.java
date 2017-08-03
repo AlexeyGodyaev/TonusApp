@@ -85,12 +85,14 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("activityType",arg0[7]);
                         postDataParams.put("avg_dream",arg0[8]);
                         postDataParams.put("wokeup_time",arg0[9]);
+                        postDataParams.put("instanceToken",arg0[10]);
                         break;
                     case "http://caloriesdiary.ru/users/forgot_password":
                         postDataParams.put("email",arg0[1]);
                         break;
                     case "http://caloriesdiary.ru/users/get_user_chars":
                         postDataParams.put("id",arg0[1]);
+                        postDataParams.put("instanceToken",arg0[2]);
                         break;
                     case "http://caloriesdiary.ru/users/delete":
                         postDataParams.put("id",arg0[1]);
