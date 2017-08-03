@@ -38,6 +38,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
     int DIALOG_TIME = 1;
     int myHour = 14;
     int myMinute = 35;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -62,9 +63,16 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
             getSupportActionBar().setDisplayShowHomeEnabled(false);
             getSupportActionBar().setDisplayShowTitleEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }catch (Exception e){
-    Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        initProfile();
+
+       // InitPreference();
     }
+
+    private void initProfile(){
         try
         {
             Post log = new Post();
@@ -124,8 +132,6 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         {
             Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
         }
-
-       // InitPreference();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -198,12 +204,14 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
     }
+
     public void onAwakeTimeClick(View view)
     {
         showDialog(DIALOG_TIME);
     }
+
+
     protected Dialog onCreateDialog(int id) {
         if (id == DIALOG_TIME) {
             return  new TimePickerDialog(this, myCallBack, myHour, myMinute, true);

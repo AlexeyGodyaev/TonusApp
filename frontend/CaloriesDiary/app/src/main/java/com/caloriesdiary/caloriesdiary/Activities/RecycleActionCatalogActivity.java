@@ -76,7 +76,6 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
         addRecyclerClickListener();
 
         btnActionsSortName = (Button) findViewById(R.id.btnActionsSortName);
-
     }
 
     private void addRecyclerClickListener(){
