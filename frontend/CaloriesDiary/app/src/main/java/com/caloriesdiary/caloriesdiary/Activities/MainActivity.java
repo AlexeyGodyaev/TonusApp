@@ -137,8 +137,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onFoodCatalogClc(View view){
-        Intent intent = new Intent(getApplicationContext(),RecycleFoodCatalogActivity.class);
+//        Intent intent = new Intent(getApplicationContext(),RecycleFoodCatalogActivity.class);
+//
+//        startActivity(intent);
 
+        Intent intent = new Intent(getApplicationContext(),FoodBuilderActivity.class);
         startActivity(intent);
     }
 

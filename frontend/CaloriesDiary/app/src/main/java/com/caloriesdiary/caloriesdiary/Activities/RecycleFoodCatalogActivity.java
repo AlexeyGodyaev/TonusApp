@@ -312,6 +312,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
     {
             Intent intent = new Intent(getApplicationContext(),FoodBuilderActivity.class);
             startActivity(intent);
+
     }
 
     @Override
