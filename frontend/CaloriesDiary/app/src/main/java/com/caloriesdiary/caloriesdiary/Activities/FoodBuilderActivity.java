@@ -177,7 +177,12 @@ public class FoodBuilderActivity extends AppCompatActivity {
             GetCategories getcategories = new GetCategories();
             getcategories.execute("http://caloriesdiary.ru/food/get_food_categories");
             String ans = getcategories.get();
-            buildercheck1.setText(ans);
+            JSONArray jsarray = new JSONArray(ans);
+            for(int i = 0; i < jsarray.length(); i++)
+            {
+
+            }
+            
         }
         catch (Exception e)
         {
