@@ -102,7 +102,7 @@
         android:layout_below="@id/sleep_time_text"
         android:layout_marginTop="10dp"/>
 
-    <Button
+ <!--   <Button
         android:textColor="@android:color/white"
         android:background="@android:color/holo_blue_light"
         android:layout_width="wrap_content"
@@ -113,7 +113,7 @@
         android:onClick="onClickDeleteProfile"
         android:layout_below="@+id/wakeup_time_text"
         android:layout_marginLeft="230dp"
-       />
+       /> -->
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"

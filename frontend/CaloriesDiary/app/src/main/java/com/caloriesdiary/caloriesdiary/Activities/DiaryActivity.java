@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.caloriesdiary.caloriesdiary.Fragments.DiaryAntrFragment;
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
 import com.caloriesdiary.caloriesdiary.Items.ActionItem;
 import com.caloriesdiary.caloriesdiary.Posts.GetDays;
@@ -39,7 +40,9 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -52,7 +55,7 @@ public class DiaryActivity extends AppCompatActivity {
     int position;
 
     TextView todayDate, dayNote,  foodCalories, sportCalories, normCalories, protein, carbs, fats;
-    private TodayAntropometryFragment fragment;
+    private DiaryAntrFragment fragment;
     private FragmentManager manager;
     FragmentTransaction transaction;
 
@@ -104,7 +107,7 @@ public class DiaryActivity extends AppCompatActivity {
         calendar = Calendar.getInstance();
 
         manager = getSupportFragmentManager();
-        fragment = new TodayAntropometryFragment();
+        fragment = new DiaryAntrFragment();
 
         editMass = (EditText) findViewById(R.id.diary_mass);
         dayNote = (TextView) findViewById(R.id.diaryDayNote);
@@ -177,6 +180,27 @@ public class DiaryActivity extends AppCompatActivity {
                 day = Integer.valueOf(s);
                 dialogDay = day;  dialogMonth = month-1; dialogYear = year;
                 maxDate.set(year, month - 1, day);
+
+                JSONObject historyAntr = new JSONObject();
+
+                historyAntr.put("chest", todayParams.getJSONObject(position).getString("chest"));
+                historyAntr.put("waist", todayParams.getJSONObject(position).getString("waist"));
+                historyAntr.put("butt", todayParams.getJSONObject(position).getString("butt"));
+                historyAntr.put("calves", todayParams.getJSONObject(position).getString("calves"));
+                historyAntr.put("shoulders", todayParams.getJSONObject(position).getString("shoulders"));
+                historyAntr.put("rLeg", todayParams.getJSONObject(position).getString("rLeg"));
+                historyAntr.put("lLeg", todayParams.getJSONObject(position).getString("lLeg"));
+                historyAntr.put("rHand", todayParams.getJSONObject(position).getString("rHand"));
+                historyAntr.put("lHand", todayParams.getJSONObject(position).getString("lHand"));
+
+                File f = new File(getCacheDir(), "History_antr.txt");
+                if (f.exists()) f.createNewFile();
+                FileOutputStream out = new FileOutputStream(f);
+                ObjectOutputStream outObject = new ObjectOutputStream(out);
+                outObject.writeObject(historyAntr.toString());
+                outObject.flush();
+                out.getFD().sync();
+                outObject.close();
             }
 
         } catch (Exception e) {
@@ -206,16 +230,17 @@ public class DiaryActivity extends AppCompatActivity {
             try {
                 String date = String.valueOf(selectedYear);
                 if (selectedMonth<9)
-                    date+="-0"+String.valueOf(selectedMonth+1); else date+=String.valueOf(selectedMonth+1);
+                    date+="-0"+String.valueOf(selectedMonth+1); else date+="-"+String.valueOf(selectedMonth+1);
                 if (selectedDay<10)
-                    date+="-0"+String.valueOf(selectedDay); else date+=String.valueOf(selectedDay);
+                    date+="-0"+String.valueOf(selectedDay); else date+="-"+String.valueOf(selectedDay);
 
                 for (int i = 0; i < todayParams.length(); i++) {
                     if (todayParams.getJSONObject(i).getString("date")
-                            .equals(date))
+                            .equals(date)) {
                         position = i;
-                   // Toast.makeText(DiaryActivity.this, date+"..."+todayParams.getJSONObject(i).getString("date"), Toast.LENGTH_LONG).show();
-                }
+                    }
+                    Toast.makeText(DiaryActivity.this, date + "..." + todayParams.getJSONObject(i).getString("date"), Toast.LENGTH_LONG).show();                }
+
 
                 onChangeDiaryData();
                 dateFlag = !dateFlag;
@@ -245,6 +270,28 @@ public class DiaryActivity extends AppCompatActivity {
             protein.setText(jsn.getString("protein"));
             fats.setText(jsn.getString("fats"));
             carbs.setText(jsn.getString("carbs"));
+
+            JSONObject historyAntr = new JSONObject();
+
+            historyAntr.put("chest", jsn.getString("chest"));
+            historyAntr.put("waist", jsn.getString("waist"));
+            historyAntr.put("butt", jsn.getString("butt"));
+            historyAntr.put("calves", jsn.getString("calves"));
+            historyAntr.put("shoulders", jsn.getString("shoulders"));
+            historyAntr.put("rLeg", jsn.getString("rLeg"));
+            historyAntr.put("lLeg", jsn.getString("lLeg"));
+            historyAntr.put("rHand", jsn.getString("rHand"));
+            historyAntr.put("lHand", jsn.getString("lHand"));
+
+            File f = new File(getCacheDir(), "History_antr.txt");
+            if (f.exists()) f.createNewFile();
+            FileOutputStream out = new FileOutputStream(f);
+            ObjectOutputStream outObject = new ObjectOutputStream(out);
+            outObject.writeObject(historyAntr.toString());
+            outObject.flush();
+            out.getFD().sync();
+            outObject.close();
+
         }
         catch (Exception e)
         {
@@ -281,6 +328,7 @@ public class DiaryActivity extends AppCompatActivity {
             }
 
             transaction.commit();
+
 
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();

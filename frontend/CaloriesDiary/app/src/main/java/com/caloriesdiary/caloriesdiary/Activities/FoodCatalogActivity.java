@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Adapters.FoodAdapter;
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
-import com.caloriesdiary.caloriesdiary.Fragments.FilterFragment;
 import com.caloriesdiary.caloriesdiary.R;
 
 import org.json.JSONArray;
@@ -42,7 +41,6 @@ public class FoodCatalogActivity extends FragmentActivity {
     boolean flag = true;
     ListView listView;
     EditText srch;
-    private FilterFragment filterFragment;
     List<FoodItem> list;
     int offset;
 
@@ -57,7 +55,7 @@ public class FoodCatalogActivity extends FragmentActivity {
         final LinearLayout lp = new LinearLayout(this);
         lp.setOrientation(LinearLayout.VERTICAL);
 
-        filterFragment = new FilterFragment();
+
         manager = getSupportFragmentManager();
 
         srch = findViewById(R.id.srchFood);
@@ -233,16 +231,6 @@ public class FoodCatalogActivity extends FragmentActivity {
 
             }
         });
-    }
-
-    public void onClcFilterButton(View view){
-        transaction = manager.beginTransaction();
-
-        if(flag){
-            transaction.add(R.id.filterFragmentFood, filterFragment); flag = false;}
-        else {transaction.remove(filterFragment); flag = true;}
-
-        transaction.commit();
     }
 
 

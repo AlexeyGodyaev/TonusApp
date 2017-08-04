@@ -139,13 +139,13 @@ public class TodayActivity extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-        addRcyclerOnClickListeners();
+        addRecyclerOnClickListeners();
 
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
 
     }
 
-    private void addRcyclerOnClickListeners(){
+    private void addRecyclerOnClickListeners(){
         actionRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 actionRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -452,7 +452,21 @@ public class TodayActivity extends AppCompatActivity {
 
         if (resp != null && activeFlag) {
             try {
-                JSONObject jOb = new JSONObject(resp);
+
+                Post log = new Post();
+                args[0] = "http://caloriesdiary.ru/calories/get_per_day";
+                args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+                args[2] = FirebaseInstanceId.getInstance().getToken();
+                log.execute(args);
+                JSONObject jOb;
+                try {
+                    jOb = log.get();
+                    listActive.add(new ActionItem("Сон", Float.valueOf(jOb.getString("dreamCalories")), 5));
+                }catch (Exception e){
+
+                }
+
+                jOb = new JSONObject(resp);
                 JSONArray jArr = jOb.getJSONArray("active");
                 for (int i = 0; i < jArr.length(); i++) {
                     try {

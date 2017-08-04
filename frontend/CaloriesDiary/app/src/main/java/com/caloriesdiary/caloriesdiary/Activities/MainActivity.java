@@ -27,6 +27,7 @@ import com.caloriesdiary.caloriesdiary.Fragments.MainStatFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainTodayFragment;
 import com.caloriesdiary.caloriesdiary.Posts.Post;
 import com.caloriesdiary.caloriesdiary.R;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
@@ -177,6 +178,7 @@ public class MainActivity extends AppCompatActivity
 
             args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+            args[2] = FirebaseInstanceId.getInstance().getToken();
 
 
             log.execute(args); // вызываем запрос
