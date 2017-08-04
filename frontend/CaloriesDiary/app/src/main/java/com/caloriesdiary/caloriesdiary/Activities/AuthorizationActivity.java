@@ -180,7 +180,7 @@ public class AuthorizationActivity extends Activity {
             }
 
         } else {
-            Toast.makeText(this, "Проблема с подключением к сервисам Google. Проверьте подключение к Интернету", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Проблема с подключением к сервисам Google. Проверьте подключение к Интернету" + result.getStatus().toString(), Toast.LENGTH_LONG).show();
         }
     }
 

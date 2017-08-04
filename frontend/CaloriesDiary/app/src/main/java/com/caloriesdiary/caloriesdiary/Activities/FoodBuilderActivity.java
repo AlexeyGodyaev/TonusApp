@@ -18,6 +18,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -172,22 +174,72 @@ public class FoodBuilderActivity extends AppCompatActivity {
         buildercheck2 = (CheckBox) findViewById(R.id.builder_checkbox2);
         spinner1 = (Spinner) findViewById(R.id.builder_spinner1);
         spinner2 = (Spinner) findViewById(R.id.builder_spinner2);
+        final ArrayList<String> categories = new ArrayList<>();
+
         try
         {
             GetCategories getcategories = new GetCategories();
             getcategories.execute("http://caloriesdiary.ru/food/get_food_categories");
             String ans = getcategories.get();
-            JSONArray jsarray = new JSONArray(ans);
+            final JSONArray jsarray = new JSONArray(ans);
+
+            categories.add("-");
             for(int i = 0; i < jsarray.length(); i++)
             {
-
+                    categories.add(jsarray.getJSONObject(i).getString("categ_name"));
             }
-            
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+            spinner1.setAdapter(adapter);
+
+            spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    String text = spinner1.getSelectedItem().toString();
+                    Toast.makeText(FoodBuilderActivity.this, text, Toast.LENGTH_LONG).show();
+                    for(int k = 0; k< jsarray.length() ;k++)
+                    {
+                        try
+                        {
+                            if(jsarray.getJSONObject(k).getString("categ_name").equals(text))
+                            {
+                                list = new ArrayList<>();
+                                get = new FoodBuilderActivity.GetFood();
+                                offset = 0;
+                                String args[] = new String[10];
+                                args[0] = "http://caloriesdiary.ru/food/get_food";
+                                args[1] = String.valueOf(offset);
+                                args[2] = searchquery; //строка поиска
+                                args[3] = jsarray.getJSONObject(k).getString("id"); //id категории
+                                args[4] = ""; //сорт имени
+                                args[5] = ""; //сорт ккал
+                                args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+                                args[7] = FirebaseInstanceId.getInstance().getToken();
+                                get.execute(args);
+                            }
+                        }
+                        catch(Exception e2)
+                        {
+
+                        }
+
+
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    Toast.makeText(FoodBuilderActivity.this, "Пустота", Toast.LENGTH_LONG).show();
+                }
+            });
         }
         catch (Exception e)
         {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
+
+
+
 
 
         mRecyclerView = (RecyclerView) findViewById(R.id.food_recycler_view);
