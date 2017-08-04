@@ -39,16 +39,16 @@ public class GetCategories extends AsyncTask<String, Void, String> {
                                 conn.getInputStream(), "UTF-8"));
                 StringBuilder sb = new StringBuilder("");
                 String line;
-
+                String ans = "emp";
 
                 if((line = in.readLine()) != null) {
                     JSONObject js = new JSONObject(line);
                     JSONArray jArr = js.getJSONArray("categories");
-
+                    ans = jArr.toString();
                 }
 
                 in.close();
-                return null;
+                return ans;
             }
             else {
                 return "false : "+ responseCode;
