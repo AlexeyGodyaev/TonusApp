@@ -193,6 +193,7 @@ public class MainActivity extends AppCompatActivity
             else if(JSans.getString("status").equals("1"))
             {
                 Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
             }
         }
