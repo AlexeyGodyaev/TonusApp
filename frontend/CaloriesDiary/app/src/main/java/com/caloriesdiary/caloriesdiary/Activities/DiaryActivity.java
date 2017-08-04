@@ -239,7 +239,8 @@ public class DiaryActivity extends AppCompatActivity {
                             .equals(date)) {
                         position = i;
                     }
-                    Toast.makeText(DiaryActivity.this, date + "..." + todayParams.getJSONObject(i).getString("date"), Toast.LENGTH_LONG).show();                }
+                   // Toast.makeText(DiaryActivity.this, date + "..." + todayParams.getJSONObject(i).getString("date"), Toast.LENGTH_LONG).show();
+                }
 
 
                 onChangeDiaryData();
@@ -283,6 +284,8 @@ public class DiaryActivity extends AppCompatActivity {
             historyAntr.put("rHand", jsn.getString("rHand"));
             historyAntr.put("lHand", jsn.getString("lHand"));
 
+            Toast.makeText(this, historyAntr.toString(), Toast.LENGTH_LONG).show();
+
             File f = new File(getCacheDir(), "History_antr.txt");
             if (f.exists()) f.createNewFile();
             FileOutputStream out = new FileOutputStream(f);
@@ -292,6 +295,8 @@ public class DiaryActivity extends AppCompatActivity {
             out.getFD().sync();
             outObject.close();
 
+            if(fragment.getView()!=null)
+                fragment.updateFragmentData();
         }
         catch (Exception e)
         {
@@ -319,11 +324,13 @@ public class DiaryActivity extends AppCompatActivity {
         transaction = manager.beginTransaction();
         try {
             if (antropometryFlag) {
+                if(fragment.getView()==null)
                 transaction.add(R.id.antropometry_diary, fragment);
+                else transaction.show(fragment);
                 antropometryFlag = false;
 
             } else {
-                transaction.remove(fragment);
+                transaction.hide(fragment);
                 antropometryFlag = true;
             }
 
