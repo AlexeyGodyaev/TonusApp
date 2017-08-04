@@ -1,7 +1,10 @@
 package com.caloriesdiary.caloriesdiary.Activities;
 
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.os.AsyncTask;
@@ -10,10 +13,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +31,7 @@ import com.caloriesdiary.caloriesdiary.Posts.Post;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleFoodAdapter;
 import com.caloriesdiary.caloriesdiary.RecyclerTouchListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,6 +66,9 @@ public class FoodBuilderActivity extends AppCompatActivity {
     private RecyclerView.Adapter ingAdapter;
     private RecyclerView.LayoutManager ingLayoutManager;
 
+    public CheckBox buildercheck1,buildercheck2;
+    public Spinner spinner1,spinner2;
+
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
 
@@ -69,11 +80,151 @@ public class FoodBuilderActivity extends AppCompatActivity {
     int offset = 0;
     boolean send = true;
     int buff=0;
-
+    String searchquery = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.food_builder_layout);
+        try {
+
+
+            setContentView(R.layout.food_builder_layout);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            handleIntent(getIntent());
+            initTabs();
+            initObjects();
+
+            get = new FoodBuilderActivity.GetFood();
+            String args[] = new String[6];
+            args[0] = "http://caloriesdiary.ru/food/get_food";
+            args[1] = String.valueOf(offset);
+            args[2] = ""; //строка поиска
+            args[3] = ""; //id категории
+            args[4] = ""; //сорт имени
+            args[5] = ""; //сорт ккал
+            get.execute(args);
+            //get.execute("http://caloriesdiary.ru/food/get_food", String.valueOf(offset),"","","","");
+
+
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        try {
+            MenuInflater inflater = getMenuInflater();
+
+            inflater.inflate(R.menu.menu_main, menu);
+
+            SearchManager searchManager =
+                    (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView =
+                    (SearchView) menu.findItem(R.id.menu_search).getActionView();
+            searchView.setSearchableInfo(
+                    searchManager.getSearchableInfo(getComponentName()));
+
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+    private void handleIntent(Intent intent) {
+
+        Toast.makeText(this, intent.getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            searchquery = query;
+           // Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
+            list = new ArrayList<>();
+
+            get = new FoodBuilderActivity.GetFood();
+            offset = 0;
+            String args[] = new String[10];
+            args[0] = "http://caloriesdiary.ru/food/get_food";
+            args[1] = String.valueOf(offset);
+            args[2] = searchquery; //строка поиска
+            args[3] = ""; //id категории
+            args[4] = ""; //сорт имени
+            args[5] = ""; //сорт ккал
+            args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+            args[7] = FirebaseInstanceId.getInstance().getToken();
+            get.execute(args);
+
+        }
+    }
+
+    public void initObjects()
+    {
+        buildercheck1 = (CheckBox) findViewById(R.id.builder_checkbox1);
+        buildercheck2 = (CheckBox) findViewById(R.id.builder_checkbox2);
+        spinner1 = (Spinner) findViewById(R.id.builder_spinner1);
+        spinner2 = (Spinner) findViewById(R.id.builder_spinner2);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.food_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        ingRecyclerView = (RecyclerView) findViewById(R.id.recycle_ingredients);
+        ingRecyclerView.setHasFixedSize(true);
+
+        ingLayoutManager = new LinearLayoutManager(this);
+        ingRecyclerView.setLayoutManager(ingLayoutManager);
+
+        sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
+        editor = sharedPref.edit();
+
+        nameedit = (EditText) findViewById(R.id.custom_food_name);
+//        mAdapter = new RecycleFoodAdapter(initData());
+//        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = mLayoutManager.getChildCount();
+                int totalItemCount = mLayoutManager.getItemCount();
+                int lastVisibleItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                if (totalItemCount - 1 == lastVisibleItems && send) {
+                    buff = lastVisibleItems - visibleItemCount + 1;
+                    get = new GetFood();
+                    send = false;
+                    offset += 1;
+
+                    String args[] = new String[10];
+                    args[0] = "http://caloriesdiary.ru/food/get_food";
+                    args[1] = String.valueOf(offset);
+                    args[2] = searchquery; //строка поиска
+                    args[3] = ""; //id категории
+                    args[4] = ""; //сорт имени
+                    args[5] = ""; //сорт ккал
+                    args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+                    args[7] = FirebaseInstanceId.getInstance().getToken();
+                    get.execute(args);
+
+                    //get.execute("http://caloriesdiary.ru/food/get_food", String.valueOf(offset));
+
+                    Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+    }
+    public void initTabs()
+    {
         TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
         // инициализация
         tabHost.setup();
@@ -101,50 +252,8 @@ public class FoodBuilderActivity extends AppCompatActivity {
             }
         });
 
-        mRecyclerView =  (RecyclerView) findViewById(R.id.food_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        ingRecyclerView =  (RecyclerView) findViewById(R.id.recycle_ingredients);
-        ingRecyclerView.setHasFixedSize(true);
-
-        ingLayoutManager = new LinearLayoutManager(this);
-        ingRecyclerView.setLayoutManager(ingLayoutManager);
-
-        sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
-        editor = sharedPref.edit();
-
-        nameedit = (EditText) findViewById(R.id.custom_food_name);
-//        mAdapter = new RecycleFoodAdapter(initData());
-//        mRecyclerView.setAdapter(mAdapter);
-
-        get = new FoodBuilderActivity.GetFood();
-        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleItemCount = mLayoutManager.getChildCount();
-                int totalItemCount = mLayoutManager.getItemCount();
-                int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                if (totalItemCount -1 == lastVisibleItems && send){
-                    buff = lastVisibleItems-visibleItemCount+1;
-                    get = new GetFood();
-                    send = false;
-                    offset+=1;
-                    get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
-
-                    Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
-
     }
+
     public void onAddFood (View view)
     {
         View content = LayoutInflater.from(getApplicationContext()).inflate(R.layout.add_food_dialoglayout,null);
@@ -204,8 +313,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
                 {
                     Toast.makeText(FoodBuilderActivity.this, "Добавить " + checkbox.getText().toString() , Toast.LENGTH_SHORT).show();
                     item.add(new FoodItem(Integer.valueOf(textId.getText().toString()),checkbox.getText().toString(),Float.valueOf(textB.getText().toString()),Float.valueOf(textJ.getText().toString()),Float.valueOf(textU.getText().toString()),0,Float.valueOf(textKc.getText().toString())));
-                    ingAdapter = new RecycleFoodAdapter(item);
-                    ingRecyclerView.setAdapter(ingAdapter);
+
                 }
                 else
                 {
@@ -217,8 +325,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
                             item.remove(i);
                         }
                     }
-                    ingAdapter = new RecycleFoodAdapter(item);
-                    ingRecyclerView.setAdapter(ingAdapter);
+
                 }
 
             }
@@ -239,7 +346,8 @@ public class FoodBuilderActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Toast.makeText(FoodBuilderActivity.this, edittext.getText().toString(), Toast.LENGTH_SHORT).show();
-
+                        ingAdapter = new RecycleFoodAdapter(item);
+                        ingRecyclerView.setAdapter(ingAdapter);
                     }
                 })
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
@@ -361,6 +469,12 @@ public class FoodBuilderActivity extends AppCompatActivity {
                 JSONObject postDataParams = new JSONObject();
 
                 postDataParams.put("offset",strings[1]);
+                postDataParams.put("query",strings[2]);
+                postDataParams.put("categ_id",strings[3]);
+                postDataParams.put("sort_names",strings[4]);
+                postDataParams.put("sort_calories",strings[5]);
+                postDataParams.put("id", String.valueOf(sharedPref.getInt("PROFILE_ID",0)));
+                postDataParams.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(150000 /* milliseconds */);

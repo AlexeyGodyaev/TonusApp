@@ -4,6 +4,8 @@ package com.caloriesdiary.caloriesdiary.Posts;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -44,6 +46,7 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         break;
                     case "http://caloriesdiary.ru/calories/get_per_day":
                         postDataParams.put("id",arg0[1]);
+                        postDataParams.put("instanceToken",arg0[2]);
                         break;
                     case "http://caloriesdiary.ru/users/save_goal":
                         postDataParams.put("id",arg0[1]);
@@ -85,12 +88,14 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("activityType",arg0[7]);
                         postDataParams.put("avg_dream",arg0[8]);
                         postDataParams.put("wokeup_time",arg0[9]);
+                        postDataParams.put("instanceToken",arg0[10]);
                         break;
                     case "http://caloriesdiary.ru/users/forgot_password":
                         postDataParams.put("email",arg0[1]);
                         break;
                     case "http://caloriesdiary.ru/users/get_user_chars":
                         postDataParams.put("id",arg0[1]);
+                        postDataParams.put("instanceToken",arg0[2]);
                         break;
                     case "http://caloriesdiary.ru/users/delete":
                         postDataParams.put("id",arg0[1]);
@@ -126,6 +131,7 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("id",arg0[1]);
                         postDataParams.put("name",arg0[2]);
                         postDataParams.put("ingredients",arg0[3]);
+                        postDataParams.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
                         break;
                 }
 

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Posts.Post;
 import com.caloriesdiary.caloriesdiary.R;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
@@ -37,6 +38,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
     int DIALOG_TIME = 1;
     int myHour = 14;
     int myMinute = 35;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -61,9 +63,16 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
             getSupportActionBar().setDisplayShowHomeEnabled(false);
             getSupportActionBar().setDisplayShowTitleEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }catch (Exception e){
-    Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        initProfile();
+
+       // InitPreference();
     }
+
+    private void initProfile(){
         try
         {
             Post log = new Post();
@@ -72,7 +81,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
 
             args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
-
+            args[2] = FirebaseInstanceId.getInstance().getToken();
 
             log.execute(args); // вызываем запрос
             JSONObject JSans = log.get();
@@ -123,8 +132,6 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         {
             Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
         }
-
-       // InitPreference();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -164,7 +171,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
 
                     Post log = new Post();
 
-                    String args[] = new String[10];
+                    String args[] = new String[11];
 
                     args[0] = "http://caloriesdiary.ru/users/save_user_chars";  //аргументы для пост запроса
                     args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
@@ -176,6 +183,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
                     args[7] = selected_activity;
                     args[8] = sleep.getText().toString();
                     args[9] = awakestr;
+                    args[10] = FirebaseInstanceId.getInstance().getToken();
 
                     log.execute(args); // вызываем запрос
 
@@ -196,12 +204,14 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
     }
+
     public void onAwakeTimeClick(View view)
     {
         showDialog(DIALOG_TIME);
     }
+
+
     protected Dialog onCreateDialog(int id) {
         if (id == DIALOG_TIME) {
             return  new TimePickerDialog(this, myCallBack, myHour, myMinute, true);

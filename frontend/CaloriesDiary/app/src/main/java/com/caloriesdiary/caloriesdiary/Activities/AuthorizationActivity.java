@@ -58,16 +58,21 @@ public class AuthorizationActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        login =  findViewById(R.id.editLogin);
-        pass =  findViewById(R.id.editPassword);
-        err =  findViewById(R.id.testRequestText);
-        sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
-        editor = sharedPref.edit();
+        InitObjects();
 
         InitPreference();
 
         clearFiles();
 
+    }
+
+    public void InitObjects()
+    {
+        login =  findViewById(R.id.editLogin);
+        pass =  findViewById(R.id.editPassword);
+        err =  findViewById(R.id.testRequestText);
+        sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
+        editor = sharedPref.edit();
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -75,7 +80,6 @@ public class AuthorizationActivity extends Activity {
         m = new GoogleApiClient.Builder(this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
     }
 
     public void googleClc(View view)
@@ -107,8 +111,8 @@ public class AuthorizationActivity extends Activity {
                 Calendar c = Calendar.getInstance();
 
                 if(jsonArray.length()>0 && !jsonArray.getJSONObject(jsonArray.length()-1).getString("date")
-                        .equals( String.valueOf(c.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(c.get(Calendar.MONTH)) +
-                                "." + String.valueOf(c.get(Calendar.YEAR)))){
+                        .equals(String.valueOf(c.get(Calendar.YEAR)) + "-" + String.valueOf(c.get(Calendar.MONTH)+1) +
+                                "-" + String.valueOf(c.get(Calendar.DAY_OF_MONTH)))){
                     File food = new File(getCacheDir(), "Food.txt");
                     if(food.exists())
                         food.delete();

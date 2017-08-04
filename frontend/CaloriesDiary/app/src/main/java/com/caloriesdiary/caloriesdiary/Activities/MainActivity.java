@@ -27,6 +27,7 @@ import com.caloriesdiary.caloriesdiary.Fragments.MainStatFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainTodayFragment;
 import com.caloriesdiary.caloriesdiary.Posts.Post;
 import com.caloriesdiary.caloriesdiary.R;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
@@ -105,39 +106,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            try
-            {
-                Post log = new Post();
-
-                String args[] = new String[3];
-
-                args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
-                args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
-
-
-                log.execute(args); // вызываем запрос
-                JSONObject JSans = log.get();
-
-
-                if(JSans.getString("status").equals("0")) {
-                    Intent intent = new Intent(getApplicationContext(), PersonalProfileEditActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    startActivity(intent);
-                }
-                else if(JSans.getString("status").equals("1"))
-                {
-                    Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
-                    startActivity(intent);
-                }
-            }
-            catch (Exception e)
-            {
-                Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
-            }
-
+            onProfileClick();
         } else if (id == R.id.nav_rar) {
-            Intent intent = new Intent(getApplicationContext(),ArchiveActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(getApplicationContext(),ArchiveActivity.class);
+//            startActivity(intent);
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
             startActivity(intent);
@@ -166,8 +138,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onFoodCatalogClc(View view){
-        Intent intent = new Intent(getApplicationContext(),RecycleFoodCatalogActivity.class);
+//        Intent intent = new Intent(getApplicationContext(),RecycleFoodCatalogActivity.class);
+//
+//        startActivity(intent);
 
+        Intent intent = new Intent(getApplicationContext(),FoodBuilderActivity.class);
         startActivity(intent);
     }
 
@@ -194,7 +169,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void onProfileClick(View view){
+    protected void onProfileClick(){
         try
         {
             Post log = new Post();
@@ -203,6 +178,7 @@ public class MainActivity extends AppCompatActivity
 
             args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+            args[2] = FirebaseInstanceId.getInstance().getToken();
 
 
             log.execute(args); // вызываем запрос

@@ -17,9 +17,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.caloriesdiary.caloriesdiary.FirebaseNotify;
 import com.caloriesdiary.caloriesdiary.Posts.Post;
 import com.caloriesdiary.caloriesdiary.Fragments.ProfileAntropometryFragment;
 import com.caloriesdiary.caloriesdiary.R;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
@@ -77,48 +79,49 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-      //  getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        try
-        {
+        initProfile();
+        setAvatar();
+    }
+
+
+    private void initProfile() {
+        try {
             Post log = new Post();
 
-            String args[] = new String[2];
+            String args[] = new String[3];
 
             args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
-            args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
-
+            args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+            args[2] = FirebaseInstanceId.getInstance().getToken();
 
             log.execute(args); // вызываем запрос
             JSans = log.get();
 
-           // Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
 
-            Toast.makeText(getApplicationContext(),JSans.getJSONArray("userChars").getJSONObject(0).getString("realName"),Toast.LENGTH_LONG).show();
-                name_text.setText("Имя: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("realName"));
-            if(JSans.getJSONArray("userChars").getJSONObject(0).getString("sex").equals("1"))
-            {
+            Toast.makeText(getApplicationContext(), JSans.getJSONArray("userChars").getJSONObject(0).getString("realName"), Toast.LENGTH_LONG).show();
+            name_text.setText("Имя: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("realName"));
+            if (JSans.getJSONArray("userChars").getJSONObject(0).getString("sex").equals("1")) {
                 gender_text.setText("Пол: мужской");
-            }
-            else
-            {
+            } else {
                 gender_text.setText("Пол: женский");
             }
-                age_text.setText("Возраст: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("age"));
-                weight_text.setText("Вес: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("weight"));
-                height_text.setText("Рост: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("height"));
-            wakeup_text.setText("Время пробуждения: "+JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup").substring(0,5));
-            sleep_text.setText("Среднее время сна: "+JSans.getJSONArray("userChars").getJSONObject(0).getString("avgdream"));
+            age_text.setText("Возраст: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("age"));
+            weight_text.setText("Вес: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("weight"));
+            height_text.setText("Рост: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("height"));
+            wakeup_text.setText("Время пробуждения: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup").substring(0, 5));
+            sleep_text.setText("Среднее время сна: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("avgdream"));
 
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
-        catch (Exception e)
-        {
-            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
-        }
+
+    }
+
+    private void setAvatar(){
         File imgFile = new  File("/data/user/0/com.caloriesdiary.caloriesdiary/cache/avatar.png");
-        //String imgPath = "/data/user/0/com.caloriesdiary.caloriesdiary/cache/avatar.png";
 
         if(imgFile.exists()){
 
@@ -139,18 +142,16 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
 
 
-               // mToolbar.setBackground(dr);
+                // mToolbar.setBackground(dr);
             }
             catch(Exception e)
             {
                 Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
             }
-
-
         }
-
-
     }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
