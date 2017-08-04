@@ -37,6 +37,12 @@ public class DiaryAntrFragment extends Fragment {
         calves =  v.findViewById(R.id.edit_calves);
         shoulders =  v.findViewById(R.id.edit_shoulders);
 
+        updateFragmentData();
+
+        return v;
+    }
+
+    public void updateFragmentData(){
         try {
             JSONObject jsn;
             File f = new File(getActivity().getCacheDir(), "History_antr.txt");
@@ -63,7 +69,5 @@ public class DiaryAntrFragment extends Fragment {
         } catch (Exception e){
             Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
-
-        return v;
     }
 }
