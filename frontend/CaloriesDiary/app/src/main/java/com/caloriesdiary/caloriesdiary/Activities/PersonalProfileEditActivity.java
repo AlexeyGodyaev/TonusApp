@@ -192,6 +192,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
                     editor.putBoolean("IS_PROFILE_CREATED", true);
                     editor.apply();
                     Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Некоторые поля введены некорректно", Toast.LENGTH_LONG).show();
