@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +27,6 @@ import com.caloriesdiary.caloriesdiary.Posts.SaveTodayParams;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleFoodAdapter;
 import com.caloriesdiary.caloriesdiary.RecyclerTouchListener;
-import com.caloriesdiary.caloriesdiary.Fragments.TodayAntropometryFragment;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
@@ -51,11 +50,12 @@ public class TodayActivity extends AppCompatActivity {
 
     int sum, sum1;
 
+    LinearLayout antropometry;
+    NestedScrollView skrlView;
+
+    private EditText rLeg, lLeg, rHand, lHand, chest, waist, butt, calves, shoulders;
     TextView todayDate, foodCalories, sportCalories, normCalories, carbs, fats, protein;
     EditText dayNote;
-    private TodayAntropometryFragment fragment;
-    private FragmentManager manager;
-    FragmentTransaction transaction;
 
     private RecyclerView foodRecyclerView;
     private RecyclerView.Adapter foodAdapter;
@@ -84,36 +84,23 @@ public class TodayActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        foodRecyclerView = (RecyclerView) findViewById(R.id.food_busket_recycler_view);
+        addViews();
+
         foodRecyclerView.setHasFixedSize(true);
         foodLayoutManager = new LinearLayoutManager(this);
         foodRecyclerView.setLayoutManager(foodLayoutManager);
         foodAdapter = new RecycleFoodAdapter(initFoodData());
 
-        actionRecyclerView = (RecyclerView) findViewById(R.id.action_busket_recycler_view);
         actionRecyclerView.setHasFixedSize(true);
         actionLayoutManager = new LinearLayoutManager(this);
         actionRecyclerView.setLayoutManager(actionLayoutManager);
         actionAdapter = new RecycleActionAdapter(initActiveData());
 
         calendar = Calendar.getInstance();
-
-        manager = getSupportFragmentManager();
-        fragment = new TodayAntropometryFragment();
-
-        editMass = (EditText) findViewById(R.id.edit_mass);
-        dayNote = (EditText) findViewById(R.id.DayNote);
+        antropometry.setVisibility(View.GONE);
 
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
-        todayDate = (TextView) findViewById(R.id.todayDate);
-        foodCalories = (TextView) findViewById(R.id.foodCalories);
-        sportCalories = (TextView) findViewById(R.id.sportCalories);
-        normCalories = (TextView) findViewById(R.id.normaCaloriesText);
-        protein = (TextView) findViewById(R.id.ProteinText);
-        fats = (TextView) findViewById(R.id.FatsText);
-        carbs = (TextView) findViewById(R.id.CarbsText);
-        linearLayout = (LinearLayout) findViewById(R.id.setting_layout);
         linearLayout.setVisibility(View.INVISIBLE);
 
         try {
@@ -139,10 +126,72 @@ public class TodayActivity extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+        initAntropometry();
         addRecyclerOnClickListeners();
 
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
 
+    }
+
+    private void initAntropometry(){
+        try {
+            JSONObject jsn;
+            File f = new File(getCacheDir(), "Today_params.txt");
+            if (f.exists()) {
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                String text = inObject.readObject().toString();
+                inObject.close();
+
+
+                jsn = new JSONObject(text);
+
+                if (jsn.getString("date")
+                        .equals(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
+                                "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)))) {
+
+                    rLeg.setText(jsn.getString("rLeg"));
+                    rHand.setText(jsn.getString("rHand"));
+                    lLeg.setText(jsn.getString("lLeg"));
+                    chest.setText(jsn.getString("chest"));
+                    lHand.setText(jsn.getString("lHand"));
+                    waist.setText(jsn.getString("waist"));
+                    butt.setText(jsn.getString("butt"));
+                    calves.setText(jsn.getString("calves"));
+                    shoulders.setText(jsn.getString("shoulders"));
+                }
+            }
+        } catch (Exception e){
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addViews(){
+        rLeg = (EditText) findViewById(R.id.edit_right_leg);
+        lLeg = (EditText) findViewById(R.id.edit_left_leg);
+        rHand = (EditText) findViewById(R.id.edit_right_hand);
+        lHand = (EditText) findViewById(R.id.edit_left_hand);
+        chest = (EditText) findViewById(R.id.edit_chest);
+        waist = (EditText) findViewById(R.id.edit_waist);
+        butt = (EditText) findViewById(R.id.edit_butt);
+        calves = (EditText) findViewById(R.id.edit_calves);
+        shoulders = (EditText) findViewById(R.id.edit_shoulders);
+
+        foodRecyclerView = (RecyclerView) findViewById(R.id.food_busket_recycler_view);
+        antropometry = (LinearLayout) findViewById(R.id.antropometry_today);
+        actionRecyclerView = (RecyclerView) findViewById(R.id.action_busket_recycler_view);
+        skrlView = (NestedScrollView) findViewById(R.id.today_scroll_view);
+
+        editMass = (EditText) findViewById(R.id.edit_mass);
+        dayNote = (EditText) findViewById(R.id.DayNote);
+        todayDate = (TextView) findViewById(R.id.todayDate);
+        foodCalories = (TextView) findViewById(R.id.foodCalories);
+        sportCalories = (TextView) findViewById(R.id.sportCalories);
+        normCalories = (TextView) findViewById(R.id.normaCaloriesText);
+        protein = (TextView) findViewById(R.id.ProteinText);
+        fats = (TextView) findViewById(R.id.FatsText);
+        carbs = (TextView) findViewById(R.id.CarbsText);
+        linearLayout = (LinearLayout) findViewById(R.id.setting_layout);
     }
 
     private void addRecyclerOnClickListeners(){
@@ -253,6 +302,7 @@ public class TodayActivity extends AppCompatActivity {
         if(FABFlag){
             linearLayout.setVisibility(View.INVISIBLE);
             FABFlag = false;
+
         } else {
             linearLayout.setVisibility(View.VISIBLE);
             FABFlag = true;
@@ -354,23 +404,15 @@ public class TodayActivity extends AppCompatActivity {
     }
 
     public void todayAntrClc(View view) {
-        transaction = manager.beginTransaction();
-        try {
-            if (antropometryFlag) {
-                transaction.add(R.id.antropometry_today, fragment);
-                antropometryFlag = false;
 
-            } else {
-                transaction.remove(fragment);
-                antropometryFlag = true;
-            }
-
-            transaction.commit();
-
-        } catch (Exception e) {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        if (antropometryFlag) {
+            antropometry.setVisibility(View.VISIBLE);
+            antropometryFlag = false;
+        } else {
+            antropometry.setVisibility(View.GONE);
+            antropometryFlag = true;
         }
-
+        skrlView.smoothScrollBy(0, 200);
     }
 
 
@@ -538,76 +580,52 @@ public class TodayActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         try {
-            JSONObject jsonObject = new JSONObject();
             JSONObject jsn = new JSONObject();
             File f = new File(getCacheDir(), "Today_params.txt");
-            if (f.exists()) {
-                FileInputStream in = new FileInputStream(f);
-                ObjectInputStream inObject = new ObjectInputStream(in);
-                String text = inObject.readObject().toString();
-                inObject.close();
-                jsonObject = new JSONObject(text);
-            }
             f.createNewFile();
 
-            jsn.put("id", String.valueOf(sharedPref.getInt("PROFILE_ID",0)));
+            jsn.put("id", String.valueOf(sharedPref.getInt("PROFILE_ID", 0)));
             jsn.put("day_calories", normCalories.getText().toString());
             jsn.put("mass", editMass.getText().toString());
             jsn.put("note", dayNote.getText().toString());
             jsn.put("active", jsonAction);
             jsn.put("food", jsonFood);
-            jsn.put("active_sum",  String.valueOf(sum1));
-            jsn.put("food_sum",  String.valueOf(sum));
+            jsn.put("active_sum", String.valueOf(sum1));
+            jsn.put("food_sum", String.valueOf(sum));
             jsn.put("carbs", carbs.getText().toString());
             jsn.put("protein", protein.getText().toString());
             jsn.put("fats", fats.getText().toString());
             jsn.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
-            jsn.put("date", String.valueOf(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
+            jsn.put("date", String.valueOf(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1) +
                     "-" + calendar.get(Calendar.DAY_OF_MONTH)));
-            if (fragment.getView() != null) {
-                if(!fragment.getrLeg().getText().toString().equals(""))
-                jsn.put("rLeg", fragment.getrLeg().getText().toString()); else  jsn.put("rLeg", "0");
-                if(!fragment.getlLeg().getText().toString().equals(""))
-                jsn.put("lLeg", fragment.getlLeg().getText().toString()); else  jsn.put("lLeg", "0");
-                if(!fragment.getrHand().getText().toString().equals(""))
-                jsn.put("rHand", fragment.getrHand().getText().toString()); else  jsn.put("rHand", "0");
-                if(!fragment.getlHand().getText().toString().equals(""))
-                jsn.put("lHand", fragment.getlHand().getText().toString()); else  jsn.put("lHand", "0");
-                if(!fragment.getCalves().getText().toString().equals(""))
-                jsn.put("calves", fragment.getCalves().getText().toString()); else  jsn.put("calves", "0");
-                if(!fragment.getShoulders().getText().toString().equals(""))
-                jsn.put("shoulders", fragment.getShoulders().getText().toString()); else  jsn.put("shoulders", "0");
-                if(!fragment.getButt().getText().toString().equals(""))
-                jsn.put("butt", fragment.getButt().getText().toString()); else  jsn.put("butt", "0");
-                if(!fragment.getWaist().getText().toString().equals(""))
-                jsn.put("waist", fragment.getWaist().getText().toString()); else  jsn.put("waist", "0");
-                if(!fragment.getChest().getText().toString().equals(""))
-                jsn.put("chest", fragment.getChest().getText().toString()); else  jsn.put("chest", "0");
-            } else {
-                if (jsonObject.getString("date")
-                        .equals(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                                "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)))) {
-                    jsn.put("rLeg", jsonObject.getString("rLeg"));
-                    jsn.put("lLeg", jsonObject.getString("lLeg"));
-                    jsn.put("rHand", jsonObject.getString("rHand"));
-                    jsn.put("lHand", jsonObject.getString("lHand"));
-                    jsn.put("calves", jsonObject.getString("calves"));
-                    jsn.put("shoulders", jsonObject.getString("shoulders"));
-                    jsn.put("butt", jsonObject.getString("butt"));
-                    jsn.put("waist", jsonObject.getString("waist"));
-                    jsn.put("chest", jsonObject.getString("chest"));
-                } else {
-                    jsn.put("rLeg", "0");
-                    jsn.put("lLeg", "0");
-                    jsn.put("rHand", "0");
-                    jsn.put("lHand", "0");
-                    jsn.put("calves", "0");
-                    jsn.put("shoulders", "0");
-                    jsn.put("butt", "0");
-                    jsn.put("waist", "0");
-                    jsn.put("chest", "0");
-                }
-            }
+
+            if (!rLeg.getText().toString().equals(""))
+                jsn.put("rLeg", rLeg.getText().toString());
+            else jsn.put("rLeg", "0");
+            if (!lLeg.getText().toString().equals(""))
+                jsn.put("lLeg", lLeg.getText().toString());
+            else jsn.put("lLeg", "0");
+            if (!rHand.getText().toString().equals(""))
+                jsn.put("rHand", rHand.getText().toString());
+            else jsn.put("rHand", "0");
+            if (!lHand.getText().toString().equals(""))
+                jsn.put("lHand", lHand.getText().toString());
+            else jsn.put("lHand", "0");
+            if (!calves.getText().toString().equals(""))
+                jsn.put("calves", calves.getText().toString());
+            else jsn.put("calves", "0");
+            if (!shoulders.getText().toString().equals(""))
+                jsn.put("shoulders", shoulders.getText().toString());
+            else jsn.put("shoulders", "0");
+            if (!butt.toString().equals(""))
+                jsn.put("butt", butt.getText().toString());
+            else jsn.put("butt", "0");
+            if (!waist.getText().toString().equals(""))
+                jsn.put("waist", waist.getText().toString());
+            else jsn.put("waist", "0");
+            if (!chest.getText().toString().equals(""))
+                jsn.put("chest", chest.getText().toString());
+            else jsn.put("chest", "0");
 
             SaveTodayParams saveBackUp = new SaveTodayParams();
 
