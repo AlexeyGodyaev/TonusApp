@@ -123,9 +123,36 @@ public class MainActivity extends AppCompatActivity
     }
 
     public  void onTodayClc(View view){
-        Intent intent = new Intent(getApplicationContext(),TodayActivity.class);
 
-        startActivity(intent);
+        try {
+            Post log = new Post();
+
+            String args[] = new String[3];
+
+            args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
+            args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+            args[2] = FirebaseInstanceId.getInstance().getToken();
+
+
+            log.execute(args); // вызываем запрос
+            JSONObject JSans = log.get();
+
+
+            if(JSans.getString("status").equals("0")) {
+                Intent intent = new Intent(getApplicationContext(), PersonalProfileEditActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent);
+            }
+            else if(JSans.getString("status").equals("1"))
+            {
+                Intent intent = new Intent(getApplicationContext(), TodayActivity.class);
+
+                startActivity(intent);
+            }
+
+        } catch (Exception e){
+
+        }
     }
 
     public void onExitClc(View view){
@@ -193,7 +220,6 @@ public class MainActivity extends AppCompatActivity
             else if(JSans.getString("status").equals("1"))
             {
                 Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
             }
         }

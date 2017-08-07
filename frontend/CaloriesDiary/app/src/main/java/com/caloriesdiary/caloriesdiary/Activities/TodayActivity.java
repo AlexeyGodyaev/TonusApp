@@ -270,14 +270,12 @@ public class TodayActivity extends AppCompatActivity {
         log.execute(args);
 
         try {
-
             JSONObject resp = log.get();
-            normCalories.setText(resp.getInt("result") + " ккал");
+                normCalories.setText(resp.getInt("result") + " ккал");
 
-            protein.setText(resp.getInt("protein") + " г.");
-            fats.setText(resp.getInt("fats") + " г.");
-            carbs.setText(resp.getInt("carbs") + " г.");
-
+                protein.setText(resp.getInt("protein") + " г.");
+                fats.setText(resp.getInt("fats") + " г.");
+                carbs.setText(resp.getInt("carbs") + " г.");
         }catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
@@ -613,10 +611,11 @@ public class TodayActivity extends AppCompatActivity {
 
             SaveTodayParams saveBackUp = new SaveTodayParams();
 
+
             saveBackUp.execute(jsn);
 
 
-            Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
 
 
             FileOutputStream out = new FileOutputStream(f);
