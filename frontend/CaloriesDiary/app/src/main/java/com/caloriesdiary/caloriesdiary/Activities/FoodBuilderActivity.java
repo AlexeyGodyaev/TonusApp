@@ -466,7 +466,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
     private class GetFood extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
-            Toast.makeText(FoodBuilderActivity.this, "Загрузка блюд...", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(FoodBuilderActivity.this, "Загрузка блюд...", Toast.LENGTH_SHORT).show();
             super.onPreExecute();
         }
 
@@ -487,6 +487,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
                 String answer = get.get();
                 try
                 {
+                    Toast.makeText(FoodBuilderActivity.this, "ans = " + answer, Toast.LENGTH_SHORT).show();
                     resp = new JSONArray(answer);
                 }
                 catch (Exception e)
