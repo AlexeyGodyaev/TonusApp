@@ -73,9 +73,12 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
         mAdapter = new RecycleActionAdapter(initData());
         mRecyclerView.setAdapter(mAdapter);
 
+        addRecyclerClickListener();
 
+        btnActionsSortName = (Button) findViewById(R.id.btnActionsSortName);
+    }
 
-
+    private void addRecyclerClickListener(){
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -200,8 +203,6 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
 
             }
         }));
-        btnActionsSortName = (Button) findViewById(R.id.btnActionsSortName);
-
     }
 
     @Override
@@ -227,10 +228,12 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
         }
         return true;
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
     }
+
     private void handleIntent(Intent intent) {
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -295,6 +298,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
             sortdir = true;
         }
     }
+
     public void onClickActionsSortKcal(View view)
     {
         if(sortkcal)

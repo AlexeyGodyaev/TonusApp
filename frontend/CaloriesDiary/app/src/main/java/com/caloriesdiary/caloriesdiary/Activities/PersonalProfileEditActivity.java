@@ -38,6 +38,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
     int DIALOG_TIME = 1;
     int myHour = 14;
     int myMinute = 35;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -62,9 +63,16 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
             getSupportActionBar().setDisplayShowHomeEnabled(false);
             getSupportActionBar().setDisplayShowTitleEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }catch (Exception e){
-    Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        initProfile();
+
+       // InitPreference();
     }
+
+    private void initProfile(){
         try
         {
             Post log = new Post();
@@ -80,24 +88,19 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
 
             // Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
 
-            Toast.makeText(getApplicationContext(),JSans.toString(),Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(),JSans.toString(),Toast.LENGTH_LONG).show();
 
-            if(JSans.getString("status").equals("1"))
-            {
+            if(JSans.getString("status").equals("1")) {
                 name.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("realName"));
                 age.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("age"));
                 height.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("height"));
                 weight.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("weight"));
-                if(JSans.getJSONArray("userChars").getJSONObject(0).getString("sex").equals("1"))
-                {
+                if (JSans.getJSONArray("userChars").getJSONObject(0).getString("sex").equals("1")) {
                     male.setChecked(true);
-                }
-                else
-                {
+                } else {
                     female.setChecked(true);
                 }
-                switch (JSans.getJSONArray("userChars").getJSONObject(0).getString("activityType"))
-                {
+                switch (JSans.getJSONArray("userChars").getJSONObject(0).getString("activityType")) {
                     case "1":
                         spinner.setSelection(0);
                         break;
@@ -115,17 +118,14 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
                         break;
                 }
                 sleep.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("avgdream"));
-                awake.setText("Ср. время пробуждения: "+JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup"));
-                awakestr =JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup");
+                awake.setText("Ср. время пробуждения: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup"));
+                awakestr = JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup");
             }
-
         }
         catch (Exception e)
         {
             Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
         }
-
-       // InitPreference();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -186,6 +186,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
                     editor.putBoolean("IS_PROFILE_CREATED", true);
                     editor.apply();
                     Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Некоторые поля введены некорректно", Toast.LENGTH_LONG).show();
@@ -198,12 +199,14 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
     }
+
     public void onAwakeTimeClick(View view)
     {
         showDialog(DIALOG_TIME);
     }
+
+
     protected Dialog onCreateDialog(int id) {
         if (id == DIALOG_TIME) {
             return  new TimePickerDialog(this, myCallBack, myHour, myMinute, true);

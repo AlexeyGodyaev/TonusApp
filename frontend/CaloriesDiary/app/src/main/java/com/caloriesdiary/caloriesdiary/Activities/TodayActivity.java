@@ -70,7 +70,7 @@ public class TodayActivity extends AppCompatActivity {
     EditText editMass;
     private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, FABFlag=false;
 
-    final String[] args = new String[2];
+    final String[] args = new String[3];
     LinearLayout linearLayout;
 
     JSONArray jsonAction, jsonFood;
@@ -106,12 +106,7 @@ public class TodayActivity extends AppCompatActivity {
 
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
-        args[0] = "http://caloriesdiary.ru/calories/get_per_day";
-        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-
-
         todayDate = (TextView) findViewById(R.id.todayDate);
-        //targetText = (TextView) findViewById(R.id.targetTextView);
         foodCalories = (TextView) findViewById(R.id.foodCalories);
         sportCalories = (TextView) findViewById(R.id.sportCalories);
         normCalories = (TextView) findViewById(R.id.normaCaloriesText);
@@ -143,6 +138,14 @@ public class TodayActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
+        addRecyclerOnClickListeners();
+
+        todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
+
+    }
+
+    private void addRecyclerOnClickListeners(){
         actionRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 actionRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -234,9 +237,6 @@ public class TodayActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         }));
-
-        todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
-
     }
 
     public  void onAddFoodClc(View view){
@@ -258,21 +258,29 @@ public class TodayActivity extends AppCompatActivity {
             FABFlag = true;
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
 
         Post log = new Post();
+        args[0] = "http://caloriesdiary.ru/calories/get_per_day";
+        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+        args[2] = FirebaseInstanceId.getInstance().getToken();
         log.execute(args);
 
         try {
-
             JSONObject resp = log.get();
-            normCalories.setText(resp.getInt("result") + " ккал");
+                normCalories.setText(resp.getInt("result") + " ккал");
 
-            protein.setText(resp.getInt("protein") + " г.");
-            fats.setText(resp.getInt("fats")+ " г.");
-            carbs.setText(resp.getInt("carbs")+ " г.");
+                protein.setText(resp.getInt("protein") + " г.");
+                fats.setText(resp.getInt("fats") + " г.");
+                carbs.setText(resp.getInt("carbs") + " г.");
+        }catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+        try{
 
             File f = new File(getCacheDir(), "Food.txt");
             FileInputStream in = new FileInputStream(f);
@@ -442,7 +450,21 @@ public class TodayActivity extends AppCompatActivity {
 
         if (resp != null && activeFlag) {
             try {
-                JSONObject jOb = new JSONObject(resp);
+
+                Post log = new Post();
+                args[0] = "http://caloriesdiary.ru/calories/get_per_day";
+                args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+                args[2] = FirebaseInstanceId.getInstance().getToken();
+                log.execute(args);
+                JSONObject jOb;
+                try {
+                    jOb = log.get();
+                    listActive.add(new ActionItem("Сон", Float.valueOf(jOb.getString("dreamCalories")), 5));
+                }catch (Exception e){
+
+                }
+
+                jOb = new JSONObject(resp);
                 JSONArray jArr = jOb.getJSONArray("active");
                 for (int i = 0; i < jArr.length(); i++) {
                     try {
@@ -529,6 +551,7 @@ public class TodayActivity extends AppCompatActivity {
             f.createNewFile();
 
             jsn.put("id", String.valueOf(sharedPref.getInt("PROFILE_ID",0)));
+            jsn.put("day_calories", normCalories.getText().toString());
             jsn.put("mass", editMass.getText().toString());
             jsn.put("note", dayNote.getText().toString());
             jsn.put("active", jsonAction);
@@ -542,15 +565,24 @@ public class TodayActivity extends AppCompatActivity {
             jsn.put("date", String.valueOf(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
                     "-" + calendar.get(Calendar.DAY_OF_MONTH)));
             if (fragment.getView() != null) {
-                jsn.put("rLeg", fragment.getrLeg().getText().toString());
-                jsn.put("lLeg", fragment.getlLeg().getText().toString());
-                jsn.put("rHand", fragment.getrHand().getText().toString());
-                jsn.put("lHand", fragment.getlHand().getText().toString());
-                jsn.put("calves", fragment.getCalves().getText().toString());
-                jsn.put("shoulders", fragment.getShoulders().getText().toString());
-                jsn.put("butt", fragment.getButt().getText().toString());
-                jsn.put("waist", fragment.getWaist().getText().toString());
-                jsn.put("chest", fragment.getChest().getText().toString());
+                if(!fragment.getrLeg().getText().toString().equals(""))
+                jsn.put("rLeg", fragment.getrLeg().getText().toString()); else  jsn.put("rLeg", "0");
+                if(!fragment.getlLeg().getText().toString().equals(""))
+                jsn.put("lLeg", fragment.getlLeg().getText().toString()); else  jsn.put("lLeg", "0");
+                if(!fragment.getrHand().getText().toString().equals(""))
+                jsn.put("rHand", fragment.getrHand().getText().toString()); else  jsn.put("rHand", "0");
+                if(!fragment.getlHand().getText().toString().equals(""))
+                jsn.put("lHand", fragment.getlHand().getText().toString()); else  jsn.put("lHand", "0");
+                if(!fragment.getCalves().getText().toString().equals(""))
+                jsn.put("calves", fragment.getCalves().getText().toString()); else  jsn.put("calves", "0");
+                if(!fragment.getShoulders().getText().toString().equals(""))
+                jsn.put("shoulders", fragment.getShoulders().getText().toString()); else  jsn.put("shoulders", "0");
+                if(!fragment.getButt().getText().toString().equals(""))
+                jsn.put("butt", fragment.getButt().getText().toString()); else  jsn.put("butt", "0");
+                if(!fragment.getWaist().getText().toString().equals(""))
+                jsn.put("waist", fragment.getWaist().getText().toString()); else  jsn.put("waist", "0");
+                if(!fragment.getChest().getText().toString().equals(""))
+                jsn.put("chest", fragment.getChest().getText().toString()); else  jsn.put("chest", "0");
             } else {
                 if (jsonObject.getString("date")
                         .equals(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
@@ -565,19 +597,20 @@ public class TodayActivity extends AppCompatActivity {
                     jsn.put("waist", jsonObject.getString("waist"));
                     jsn.put("chest", jsonObject.getString("chest"));
                 } else {
-                    jsn.put("rLeg", "");
-                    jsn.put("lLeg", "");
-                    jsn.put("rHand", "");
-                    jsn.put("lHand", "");
-                    jsn.put("calves", "");
-                    jsn.put("shoulders", "");
-                    jsn.put("butt", "");
-                    jsn.put("waist", "");
-                    jsn.put("chest", "");
+                    jsn.put("rLeg", "0");
+                    jsn.put("lLeg", "0");
+                    jsn.put("rHand", "0");
+                    jsn.put("lHand", "0");
+                    jsn.put("calves", "0");
+                    jsn.put("shoulders", "0");
+                    jsn.put("butt", "0");
+                    jsn.put("waist", "0");
+                    jsn.put("chest", "0");
                 }
             }
 
             SaveTodayParams saveBackUp = new SaveTodayParams();
+
 
             saveBackUp.execute(jsn);
 

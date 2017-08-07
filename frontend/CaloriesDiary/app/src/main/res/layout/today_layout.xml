@@ -24,163 +24,145 @@
 
             <TextView
                 android:id="@+id/todayDate"
-                android:layout_width="333dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:gravity="center_vertical"
+                android:paddingTop="33dp"
+                android:paddingLeft="32dp"
+                android:paddingBottom="19dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@android:color/darker_gray"
-                android:textSize="22sp" />
+                android:textSize="48px" />
 
             <LinearLayout
-                android:layout_width="230dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:drawable/arrow_up_float"
-                android:layout_gravity="center"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
                 >
 
 
                 <EditText
                     android:id="@+id/DayNote"
                     android:layout_width="match_parent"
-                    android:layout_height="85dp"
-                    android:layout_gravity="center"
+                    android:layout_height="66dp"
+                    android:textSize="24px"
+                    android:layout_gravity="center_horizontal"
                     android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
                     android:maxLength="30"
                     android:textAlignment="center" />
-
-
             </LinearLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                >
 
                 <TextView
                     android:layout_width="201dp"
-                    android:layout_height="57dp"
-                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="26dp"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="32dp"
                     android:text="Суточная норма:"
                     android:textColor="@android:color/background_dark"
-                    android:textSize="18sp" />
+                    android:textSize="31px" />
 
                 <TextView
                     android:id="@+id/normaCaloriesText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:maxLength="30"
+                    android:paddingRight="32dp"
+                    android:paddingTop="26dp"
+                    android:paddingBottom="26dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="18sp" />
+                    android:textSize="31px" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/targetTextView"
-                android:layout_width="378dp"
-                android:layout_height="3dp"
-                android:layout_gravity="right" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <TextView
-            android:layout_width="101dp"
-            android:layout_height="27dp"
-            android:gravity="center"
-            android:text="Белки:"
-            android:textAlignment="center"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:layout_width="156dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Жиры:"
-            android:textAlignment="center"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Углеводы:"
-            android:textAlignment="center"
-            android:textColor="@android:color/black" />
-
-    </LinearLayout>
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="32dp"
+                    android:paddingBottom="19dp"
+                    android:textSize="24px"
+                    android:text="Белки:"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="19dp"
+                    android:text="Жиры:"
+                    android:textSize="24px"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="32dp"
+                    android:paddingBottom="19dp"
+                    android:textSize="24px"
+                    android:layout_alignParentRight="true"
+                    android:text="Углеводы:"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
 
                 <TextView
                     android:id="@+id/ProteinText"
-                    android:layout_width="103dp"
-                    android:layout_height="43dp"
-                    android:textAlignment="center"
-                    android:textSize="28sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="23dp"
+                    android:paddingLeft="35dp"
+                    android:textSize="36px"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/FatsText"
-                    android:layout_width="155dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:textAlignment="center"
-                    android:textSize="28sp"
+                    android:textSize="36px"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/CarbsText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="35dp"
                     android:textAlignment="center"
-                    android:textSize="28sp"
+                    android:textSize="36px"
                     android:textStyle="bold" />
+            </RelativeLayout>
 
-            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#F2F2F2">
 
-                <TextView
-                    android:id="@+id/todayFoodBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_gravity="center"
-                    android:elevation="0dp"
-                    android:onClick="onTodayFoodBtnClc"
-                    android:paddingBottom="10dp"
-
-                    android:paddingLeft="35dp"
-                    android:paddingTop="10dp"
-                    android:text="Питание"
-                    android:textColor="?attr/colorControlNormal"
-                    android:textSize="32sp" />
-
-           <!--     <ListView
-                android:id="@+id/my_food_basket"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-
-                  />  -->
                 <ImageView
+                    android:paddingRight="16dp"
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -193,6 +175,20 @@
                     android:layout_marginLeft="11dp"
                     android:layout_marginStart="11dp"
                     android:layout_above="@+id/food_busket_recycler_view" />
+
+                <TextView
+                    android:id="@+id/todayFoodBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/imageView"
+                    android:layout_gravity="center"
+                    android:elevation="0dp"
+                    android:onClick="onTodayFoodBtnClc"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="Питание"
+                    android:textColor="?attr/colorControlNormal"
+                    android:textSize="44px" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/food_busket_recycler_view"
@@ -226,19 +222,32 @@
                 android:layout_height="wrap_content"
                 android:background="#F2F2F2">
 
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/action_busket_recycler_view"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:paddingRight="16dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    app:srcCompat="@mipmap/ic_timer_black_24px" />
+
                 <TextView
                     android:id="@+id/todayActiveBtn"
+                    android:paddingBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:elevation="20dp"
                     android:onClick="onTodayActivityBtnClc"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="35dp"
-                    android:paddingTop="10dp"
+                    android:layout_toRightOf="@id/imageView2"
                     android:text="Активность"
                     android:textColor="?attr/colorControlNormal"
-                    android:textSize="32sp" />
+                    android:textSize="44px" />
+
 
                 <TextView
                     android:id="@+id/sportCalories"
@@ -264,24 +273,8 @@
                     android:scrollbars="vertical">
 
                 </android.support.v7.widget.RecyclerView>
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/action_busket_recycler_view"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    app:srcCompat="@mipmap/ic_timer_black_24px" />
             </RelativeLayout>
-              <!--  <ListView
-                android:id="@+id/my_active_basket"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-                -->
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

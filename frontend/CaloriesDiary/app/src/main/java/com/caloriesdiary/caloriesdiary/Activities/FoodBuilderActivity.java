@@ -108,7 +108,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
             get.execute(args);
             //get.execute("http://caloriesdiary.ru/food/get_food", String.valueOf(offset),"","","","");
 
-
+            Toast.makeText(this, get.get().toString(), Toast.LENGTH_LONG).show();
         }
         catch (Exception e)
         {
