@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
 <android.support.v4.widget.NestedScrollView
+    android:id="@+id/today_scroll_view"
     android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -288,7 +289,6 @@
                 android:backgroundTint="@android:color/holo_blue_bright"
                 android:ems="10"
                 android:hint="кг"
-                android:gravity="end"
                 android:inputType="number"
                 android:selectAllOnFocus="false" />
 
@@ -310,7 +310,161 @@
         android:layout_height="wrap_content"
         android:id="@+id/antropometry_today"
         android:orientation="vertical">
-    </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Обхват плеч"
+                    android:paddingStart="18sp"
+                    android:paddingLeft="10sp"/>
+
+                <EditText
+                    android:id="@+id/edit_shoulders"
+                    android:layout_width="331dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:hint="см"
+                    android:inputType="number" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Обхват левой руки"
+                    android:paddingStart="18sp"
+                    android:paddingLeft="10sp"/>
+
+                <EditText
+                    android:id="@+id/edit_left_hand"
+                    android:layout_width="334dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:hint="см"
+                    android:inputType="number" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Обхват правой руки"
+                    android:paddingStart="18sp"
+                    android:paddingLeft="10sp"/>
+
+                <EditText
+                    android:id="@+id/edit_right_hand"
+                    android:layout_width="332dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:hint="см" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Обхват груди"
+                    android:paddingStart="18sp"
+                    android:paddingLeft="10sp"/>
+
+                <EditText
+                    android:id="@+id/edit_chest"
+                    android:layout_width="335dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:hint="см" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Обхват талии"
+                    android:paddingStart="18sp"
+                    android:paddingLeft="10sp"/>
+
+                <EditText
+                    android:id="@+id/edit_waist"
+                    android:layout_width="336dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:hint="см" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Обхват ягодиц"
+                    android:paddingStart="18sp"
+                    android:paddingLeft="10sp"/>
+
+                <EditText
+                    android:id="@+id/edit_butt"
+                    android:layout_width="341dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:hint="см"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Обхват правого бедра"
+                    android:paddingStart="18sp"
+                    android:paddingLeft="10sp"/>
+
+                <EditText
+                    android:id="@+id/edit_right_leg"
+                    android:layout_width="340dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:hint="см"
+                    android:inputType="number" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Обхват левого бедра"
+                    android:paddingStart="18sp"
+                    android:paddingLeft="10sp"/>
+
+                <EditText
+                    android:id="@+id/edit_left_leg"
+                    android:layout_width="346dp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:hint="см" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Обхват икр"
+                    android:paddingStart="18sp"
+                    android:paddingLeft="10sp"/>
+
+                <EditText
+                    android:id="@+id/edit_calves"
+                    android:layout_width="344dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:hint="см" />
+
+        </LinearLayout>
 
         </LinearLayout>
 
