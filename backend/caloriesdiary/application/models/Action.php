@@ -8,84 +8,52 @@ class Action extends CI_Model {
         $this->load->database();
     }
 
-    //Получение даты последнего обновления БД активностей
-
-    public function getTimestamp()
+    //Даёт список активностей
+    public function getActivities($name, $sort_alphabetical, $sort_calories)
     {
-        $q = $this->db->query('SELECT * FROM updates ORDER BY timestamp DESC LIMIT 1');
-        if($q->num_rows() > 0)
-        {
-            foreach ($q->result() as $row)
-            {
-                return strtotime($row->timestamp);
-            }
+        $this->db->from('Activities');
+
+        switch ($sort_alphabetical) {
+            case 1:
+                $this->db->order_by('name', 'ASC');
+                break;
+
+            case 2:
+                $this->db->order_by('name', 'DESC');
+                break;
         }
-    }
 
-    //Получение активностей по id (не используется)
+        switch ($sort_calories) {
+            case 1:
+                $this->db->order_by('calories', 'ASC');
+                break;
 
-    public function getById($id)
-    {
-        $this->db->where('id', $id);
-        $query = $this->db->get('Activities');
+            case 2:
+                $this->db->order_by('calories', 'DESC');
+                break;
+        }
 
-        if($query)
+
+        if($name != "")
         {
-            $response['status'] = 1;
-            $response['activities'] = $query->result();
+            $this->db->like('name', mb_convert_case($name, MB_CASE_TITLE, 'utf-8'), "after");
+            $queryCapital = $this->db->get();
+            $this->db->or_like('name', mb_strtolower($name));
+            $queryLow = $this->db->get('Activities');
+
+            $query = $queryCapital->result() + $queryLow->result();
         }
         else
         {
-            $response['status'] = 0;
-            $response['msg'] = 'Error occured';
-            $response['activities'] = array();
+            $query = $this->db->get()->result();
         }
 
-        return $response;
-    }
 
-    //Получение имён активностей (не используется). Предпологалось, что будет autocompleteTextView для удобства поиска,
-    //но поиск просто осуществляется на устройстве
-    
-    public function get_act_names($timestamp)
-    {
-        $actNames = array();
-        $response['status'] = 1;
-
-        if($this->getTimestamp() > $timestamp)
-        {
-            $this->db->select('name', TRUE);
-            $query = $this->db->get('Activities');
-            
-            $i = 0;
-            foreach ($query->result() as $act)
-            {
-                $actNames[$i] = $act->name;
-                $i++;
-            }
-
-            $response['update'] = true;
-            $response['actNames'] = $actNames;
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['update'] = false;
-            $response['actNames'] = $actNames;
-        }
-
-        return $response;
-    }
-
-    //Даёт список активностей (GET)
-    public function get_activities()
-    {
-        $query = $this->db->get('Activities');
-
+        
         if($query)
         {
             $response['status'] = 1;
-            $response['activities'] = $query->result();
+            $response['activities'] = $query;
         }
         else
         {

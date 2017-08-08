@@ -65,7 +65,6 @@ class User extends CI_Model {
                 $to = $k->instanceToken;
             }
 
-
             $notification= array('title' => $title,'body' => $body );
 
             $fields = array(
@@ -206,7 +205,7 @@ class User extends CI_Model {
                 if(preg_match("/[^A-Za-z0-9]/", $username))
                 {
                     $response['status'] = 0;
-                    $response['msg'] = 'Логин не может содержать буквы кирилицы';
+                    $response['msg'] = 'Логин может содержать только буквы латинского алфавита или цифры';
                 }
                 else
                 {
@@ -243,7 +242,7 @@ class User extends CI_Model {
             $response['status'] = 1;
             $response['msg'] = 'OK';
             
-            $tables = array('user_chars','user_goal', 'user_goal_archive','user_human_chars');
+            $tables = array('user_chars','user_days','user_human_chars');
             $this->db->where('user_id', $id);
             $this->db->delete($tables);
             $this->db->delete('Users', array('user_id' => $id, 'password' => $password));
@@ -453,91 +452,12 @@ class User extends CI_Model {
     }
 
 
-    //Функционал работы с днями (WIP)
-
-    //save_days_backup и get_days_backup - старый способ хранения (на удаление)
-
-    public function save_days_backup($user_id, $day_json)
-    {
-
-        $this->db->select('*');
-        $this->db->from('user_days_backup');
-        $this->db->where('user_id', $user_id);
-        $query = $this->db->get();
-
-        $response['status'] = 1;
-        $response['msg'] = "OK";
-        
-        if($query->num_rows() > 0)
-        {
-            $this->db->where('user_id', $user_id);
-            $this->db->update('user_days_backup', array('day_json' => $day_json));
-        }
-        else
-        {
-            $this->db->insert('user_days_backup', array('user_id' => $user_id,'day_json' => $day_json));
-        }
-
-        return $response;
-    }
-
-    public function get_days_backup($user_id)
-    {
-        
-        $this->db->select('day_json');
-        $this->db->from('user_days_backup');
-        $this->db->where('user_id', $user_id);
-        $query = $this->db->get();
-        
-        if($query->num_rows() > 0)
-        {
-            $response['status'] = 1;
-
-            foreach ($query->result() as $k) {
-                $backup = array(
-                    "day_json" => $k->day_json
-                    );
-            }
-
-            $response['day_json'] = $backup;
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Error occured';
-        }
-
-        return $response;
-    }
-
     //Сохранение информации на сегодня.  
 
-    public function save_day($id, $mass, $active_sum, $food_sum, $note, $activities, $food, $date, $protein, $fats, $carbs, $left_hand, $right_hand, $breast, $waist, $hiney, $left_thigh, $right_thigh, $calfs, $shoulders)
+    public function save_day($instanceToken, $id, $mass, $active_sum, $food_sum, $note, $activities, $food, $date, $protein, $fats, $carbs, $day_calories, $left_hand, $right_hand, $breast, $waist, $hiney, $left_thigh, $right_thigh, $calfs, $shoulders)
     {
-    	
-    	$this->db->from('user_days');
-        $this->db->where('user_id', $id);
-        $this->db->where('date', $date);
 
-        $query = $this->db->get();
-        
-        if($query->num_rows() > 0)
-        {
-        	$human_chars = array(
-            'user_id' => $id,
-            'day_id' => $k->id,
-            'left_hand' => $left_hand,
-            'right_hand' => $right_hand,
-            'breast' => $breast,
-            'waist' => $waist,
-            'hiney' => $hiney,
-            'left_thigh' => $left_thigh,
-            'right_thigh' => $right_thigh,
-            'calfs' => $calfs,
-            'shoulders' => $shoulders
-            );
-
-            $day = array(
+        $day = array(
             "user_id" => $id,
             "mass" => $mass,
             "active_sum" => $active_sum,
@@ -548,96 +468,166 @@ class User extends CI_Model {
             "date" => $date,
             "protein" => $protein,
             "fats" => $fats,
-            "carbs" => $carbs
+            "carbs" => $carbs,
+            "day_calories" => $day_calories
             );
 
-    
-            $this->db->where('user_id', $id);
-            $this->db->update('user_days', $day);
+        $this->db->from('Users');
+        $this->db->where('user_id', $id);
+        $this->db->where('instanceToken', $instanceToken);
+        $q = $this->db->get();
 
-            $this->db->where('user_id', $id);
-            $this->db->update('user_human_chars', $human_chars);
-
-            $response['status'] = 1;
-            $response['msg'] = 'OK'; 
-        }
-        else
+        if($q->num_rows() > 0)
         {
-        	$this->db->insert('user_human_chars', $human_chars);
-        	$this->db->insert('user_days', $day);
+            
+            $this->db->from('user_days');
+            $this->db->where(array('user_id' => $id, 'date' => $date));
 
-            $response['status'] = 1;
-            $response['msg'] = 'OK';
-        }
+            $query = $this->db->get();
+        
+            if($query->num_rows() > 0)
+            {
+                foreach ($query->result() as $k) {
+                    $day_id = $k->id;
+                }
+
+                $human_chars = array(
+                    'user_id' => $id,
+                    'day_id' => $day_id,
+                    'left_hand' => $left_hand,
+                    'right_hand' => $right_hand,
+                    'breast' => $breast,
+                    'waist' => $waist,
+                    'hiney' => $hiney,
+                    'left_thigh' => $left_thigh,
+                    'right_thigh' => $right_thigh,
+                    'calfs' => $calfs,
+                    'shoulders' => $shoulders
+                    );
+
+                $this->db->where('user_id', $id);
+                $this->db->where('id', $day_id);
+                $this->db->update('user_days', $day);
+
+
+                $this->db->where('user_id', $id);
+                $this->db->where('day_id', $day_id);
+                $this->db->update('user_human_chars', $human_chars);
+
+                $response['status'] = 1;
+                $response['msg'] = 'OK'; 
+            }
+            else
+            {
+                $this->db->insert('user_days', $day);
+                $day_id = $this->db->insert_id('user_days_id_seq');
+
+                $human_chars = array(
+                    'user_id' => $id,
+                    'day_id' => $day_id,
+                    'left_hand' => $left_hand,
+                    'right_hand' => $right_hand,
+                    'breast' => $breast,
+                    'waist' => $waist,
+                    'hiney' => $hiney,
+                    'left_thigh' => $left_thigh,
+                    'right_thigh' => $right_thigh,
+                    'calfs' => $calfs,
+                    'shoulders' => $shoulders
+                    );
+
+        	   $this->db->insert('user_human_chars', $human_chars);
+        	   
+                $response['status'] = 1;
+                $response['msg'] = 'OK';
+            }
+    }
+    else
+    {
+        $response['status'] = 0;
+        $response['msg'] = 'Доступ запрещён';
+    }
 
         return $response;
     }
 
     //Получение списка дней от начала и до сегодня
 
-    public function get_days($id)
+    public function get_days($instanceToken, $id)
     {
-    	$this->db->from('user_days');
+        $this->db->from('Users');
         $this->db->where('user_id', $id);
-        $query = $this->db->get();
+        $this->db->where('instanceToken', $instanceToken);
+        $q = $this->db->get();
 
         $days = array();
         $human_chars = array();
-        
-        if($query->num_rows() > 0)
+
+        if($q->num_rows() > 0)
         {
-            $response['status'] = 1;
 
-            $i = 0;
-            foreach ($query->result() as $k) {
+    	    $this->db->from('user_days');
+            $this->db->where('user_id', $id);
+            $this->db->order_by('date', 'ASC');
+            $query = $this->db->get();
 
-    			$this->db->from('user_human_chars');
-        		$this->db->where('user_id', $id);
-        		$this->db->where('day_id', $k->id);
-        		$queryHuman = $this->db->get();
+            if($query->num_rows() > 0)
+            {
+                $response['status'] = 1;
 
+                foreach ($query->result() as $k)
+                {
 
-        		foreach ($queryHuman->result() as $a)
-        		 {
+    		      $this->db->from('user_human_chars');
+        	      $this->db->where('user_id', $id);
+        	      $this->db->where('day_id', $k->id);
+        	      $queryHuman = $this->db->get();
 
-        		 	$human_chars = array(
-            		'left_hand' => $a->left_hand,
-            		'right_hand' => $a->right_hand,
-            		'breast' => $a->breast,
-            		'waist' => $a->waist,
-            		'hiney' => $a->hiney,
-            		'left_thigh' => $a->left_thigh,
-            		'right_thigh' => $a->right_thigh,
-            		'calfs' => $a->calfs,
-            		'shoulders' => $a->shoulders
-            		);
-            	 }
+        	       foreach ($queryHuman->result() as $a)
+        	       {
+            		
+                        $days[] =
+                        array(
+                        "mass" => $k->mass,
+                        "active_sum" => $k->active_sum,
+                        "food_sum" => $k->food_sum,
+                        "note" => $k->note,
+                        "active" => $k->activities,
+                        "food" => $k->food,
+                        "date" => date_format( date_create($k->date), 'Y-m-d'),
+                        "protein" => $k->protein,
+                        "fats" => $k->fats,
+                        "carbs" => $k->carbs,
+                        "day_calories" => $k->day_calories,
 
-                    $days[$i] = array(
-                    "mass" => $k->mass,
-                    "active_sum" => $k->active_sum,
-                    "food_sum" => $k->food_sum,
-                    "note" => $k->note,
-                    "activities" => $k->activities,
-                    "food" => $k->food,
-                    "date" => date_format( date_create($k->date), 'Y-m-d'),
-                    "protein" => $k->protein,
-                    "fats" => $k->fats,
-                    "carbs" => $k->carbs,
-                    "human_chars" => $human_chars
-                    );
+                        'lHand' => $a->left_hand,
+                        'rHand' => $a->right_hand,
+                        'chest' => $a->breast,
+                        'waist' => $a->waist,
+                        'butt' => $a->hiney,
+                        'lLeg' => $a->left_thigh,
+                        'rLeg' => $a->right_thigh,
+                        'calves' => $a->calfs,
+                        'shoulders' => $a->shoulders
+                        );
+                    }
 
-                $i++;
             }
 
-            $response['days'] = $days;
+                $response['days'] = $days;
+            }
+            else
+            {
+                $response['status'] = 0;
+                $response['msg'] = 'Error occured';
+            }
         }
         else
         {
             $response['status'] = 0;
-            $response['msg'] = 'Error occured';
+            $response['msg'] = 'Доступ запрещён';
         }
 
-        return $response;
-    }
+    return $response;
+  }
 }

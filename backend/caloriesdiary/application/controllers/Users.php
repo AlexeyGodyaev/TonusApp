@@ -3,17 +3,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Users extends CI_Controller {
 
+
 	public function __construct()
 	{
 		parent::__construct();
 
+        $this->load->library('form_validation');
+
 		$this->load->model('User');
         $this->load->model('CaloriesCalc');
+
 	}
+
+	public function is_json($string) {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
 
 	public function send_push()
 	{
-		if($this->input->post(array('title', 'body', 'id')))
+        $this->form_validation->set_rules('title', 'Title', 'required');
+        $this->form_validation->set_rules('body', 'Body', 'required');
+
+		if($this->form_validation->run())
         {
             $id = $this->input->post('id');
             $title = $this->input->post('title');
@@ -30,76 +42,69 @@ class Users extends CI_Controller {
         echo json_encode($response, TRUE);
 	}
 
-
-
-    public function save_backup()
-    {
-        if($this->input->post())
-        {
-            $id = $this->input->post('user_id');
-            $day_json = $this->input->post('day_json');
-
-            $response = $this->User->save_days_backup($id, $day_json);
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Invalid params';
-        }
-       
-        echo json_encode($response, TRUE);
-    }
-
-    public function get_backup()
-    {
-        if($this->input->post('user_id'))
-        {
-            $id = $this->input->post('user_id');
-            $response = $this->User->get_days_backup($id);
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Invalid params';
-        }
-       
-        echo json_encode($response, TRUE);
-    }
-
     public function save_day()
     {
-        if($this->input->post())
+        $this->form_validation->set_rules('id', 'Id', 'required|integer');
+        $this->form_validation->set_rules('instanceToken', 'instanceToken', 'required');
+
+        $this->form_validation->set_rules('mass', 'Mass', 'required|integer');
+        $this->form_validation->set_rules('active_sum', 'Active_sum', 'required|integer');
+        $this->form_validation->set_rules('food_sum', 'Food_sum', 'required|integer');
+        $this->form_validation->set_rules('protein', 'Protein', 'required');
+        $this->form_validation->set_rules('day_calories', 'dayCalories', 'required');
+        $this->form_validation->set_rules('fats', 'Fats', 'required');
+        $this->form_validation->set_rules('carbs', 'Carbs', 'required');
+        $this->form_validation->set_rules('note', 'Note', 'required');
+        $this->form_validation->set_rules('date', 'Date', 'required|regex_match[/^\d{4}-\d{1}-\d{1}$/]');
+
+        $this->form_validation->set_rules('active', 'Active', 'required');
+        $this->form_validation->set_rules('food', 'Food', 'required');
+
+        $this->form_validation->set_rules('lHand', 'LHand', 'required|integer');
+        $this->form_validation->set_rules('rHand', 'RHand', 'required|integer');
+        $this->form_validation->set_rules('chest', 'Chest', 'required|integer');
+        $this->form_validation->set_rules('waist', 'Waist', 'required|integer');
+        $this->form_validation->set_rules('butt', 'Butt', 'required|integer');
+        $this->form_validation->set_rules('rLeg', 'RLeg', 'required|integer');
+        $this->form_validation->set_rules('lLeg', 'LLeg', 'required|integer');
+        $this->form_validation->set_rules('calves', 'Calfs', 'required|integer');
+        $this->form_validation->set_rules('shoulders', 'Shoulders', 'required|integer');
+
+        
+
+        if($this->form_validation->run() && $this->is_json($this->input->post('active')) && $this->is_json($this->input->post('food')))
         {
             $id = $this->input->post('id');
+            $instanceToken = $this->input->post('instanceToken');
             $mass = $this->input->post('mass');
             $active_sum = $this->input->post('active_sum');
             $food_sum = $this->input->post('food_sum');
             $note = $this->input->post('note');
-            $activities = $this->input->post('activities');
+            $activities = $this->input->post('active');
             $food = $this->input->post('food');
             $date = $this->input->post('date');
             $protein = $this->input->post('protein');
             $fats = $this->input->post('fats');
-            $carbs = $this->input->post('date');
+            $carbs = $this->input->post('carbs');
+            $day_calories = $this->input->post('day_calories');
 
-
-            $left_hand = $this->input->post('left_hand');
-            $right_hand = $this->input->post('right_hand');
-            $breast = $this->input->post('breast');
+            $left_hand = $this->input->post('lHand');
+            $right_hand = $this->input->post('rHand');
+            $breast = $this->input->post('chest');
             $waist = $this->input->post('waist');
-            $hiney = $this->input->post('hiney');
-            $left_thigh = $this->input->post('left_thigh');
-            $right_thigh = $this->input->post('right_thigh');
-            $calfs = $this->input->post('calfs');
+            $hiney = $this->input->post('butt');
+            $left_thigh = $this->input->post('rLeg');
+            $right_thigh = $this->input->post('lLeg');
+            $calfs = $this->input->post('calves');
             $shoulders = $this->input->post('shoulders');
 
 
-            $response = $this->User->save_day($id, $mass, $active_sum, $food_sum, $note, $activities, $food, $date, $protein, $fats, $carbs, $left_hand, $right_hand, $breast, $waist, $hiney, $left_thigh, $right_thigh, $calfs, $shoulders);
+            $response = $this->User->save_day($instanceToken, $id, $mass, $active_sum, $food_sum, $note, $activities, $food, $date, $protein, $fats, $carbs, $day_calories, $left_hand, $right_hand, $breast, $waist, $hiney, $left_thigh, $right_thigh, $calfs, $shoulders);
         }
         else
         {
             $response['status'] = 0;
-            $response['msg'] = 'Invalid params';
+            $response['msg'] = validation_errors();
         }
        
         echo json_encode($response, TRUE);
@@ -107,11 +112,15 @@ class Users extends CI_Controller {
 
     public function get_days()
     {
-        if($this->input->post('id'))
+        $this->form_validation->set_rules('id', 'Id', 'required|integer');
+        $this->form_validation->set_rules('instanceToken', 'instanceToken', 'required');
+
+        if ($this->form_validation->run())
         {
             $id = $this->input->post('id');
+            $instanceToken = $this->input->post('instanceToken');
             
-            $response = $this->User->get_days($id);
+            $response = $this->User->get_days($instanceToken, $id);
         }
         else
         {
@@ -119,12 +128,16 @@ class Users extends CI_Controller {
             $response['msg'] = 'Invalid params';
         }
        
-        echo json_encode($response, TRUE);
+        echo json_encode($response, TRUE); 
     }
 
     public function google_auth()
     {
-        if($this->input->post(array('ga_id', 'email', 'username', 'instanceToken')))
+        $this->form_validation->set_rules('ga_id', 'GA_ID', 'required');
+        $this->form_validation->set_rules('email', 'email', 'required');
+        $this->form_validation->set_rules('username', 'Username', 'required');
+
+        if($this->form_validation->run())
         {
             $id = $this->input->post('ga_id');
             $email = $this->input->post('email');
@@ -142,11 +155,71 @@ class Users extends CI_Controller {
         echo json_encode($response, TRUE);
     }
 
-	public function auth()
-	{
-        if($this->input->post(array('username', 'password', 'instanceToken')))
+    public function save_user_chars()
+    {
+        $this->form_validation->set_rules('realName', 'Real Name', 'required');
+        $this->form_validation->set_rules('weight', 'Weight', 'required|integer');
+        $this->form_validation->set_rules('height', 'Height', 'required|integer');
+        $this->form_validation->set_rules('sex', 'Sex', 'required|integer');
+        $this->form_validation->set_rules('age', 'Age', 'required|integer');
+        $this->form_validation->set_rules('activityType', 'activityType', 'required|integer');
+        $this->form_validation->set_rules('avg_dream', 'Avg Dream', 'required|integer');
+        //TODO: решить вопрос с форматом времени
+        $this->form_validation->set_rules('wokeup_time', 'Wokeup time', 'required');
+
+        if($this->form_validation->run())
         {
-		    $username = $this->input->post('username');
+            $id = $this->input->post('id');
+            $instanceToken = $this->input->post('instanceToken');
+            $realName = $this->input->post('realName');
+            $weight = $this->input->post('weight');
+            $height = $this->input->post('height');
+            $sex = $this->input->post('sex');
+            $age = $this->input->post('age');
+            $activityType = $this->input->post('activityType');
+            $avgdream = $this->input->post('avg_dream');
+            $wokeup = $this->input->post('wokeup_time');
+
+            $response = $this->CaloriesCalc->saveUserChars($instanceToken, $id, $realName, $weight, $height, $sex, $activityType, $age, $avgdream, $wokeup);
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = validation_errors();
+        }
+
+        echo json_encode($response, TRUE);
+    }
+
+    public function get_user_chars()
+    {
+        $this->form_validation->set_rules('id', 'Id', 'required|integer');
+        $this->form_validation->set_rules('instanceToken', 'instanceToken', 'required');
+
+        if($this->form_validation->run())
+        {
+            $id = $this->input->post('id');
+            $instanceToken = $this->input->post('instanceToken');
+            $response = $this->CaloriesCalc->getUserChars($id, $instanceToken);
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Invalid params';
+        }
+
+        echo json_encode($response, TRUE);
+    }
+
+    public function auth()
+    {
+        $this->form_validation->set_rules('username', 'username', 'required');
+        $this->form_validation->set_rules('password', 'password', 'required');
+        $this->form_validation->set_rules('instanceToken', 'instanceToken', 'required');
+
+        if($this->form_validation->run())
+        {
+            $username = $this->input->post('username');
             $password = $this->input->post('password');
             $instanceToken = $this->input->post('instanceToken');
 
@@ -158,31 +231,16 @@ class Users extends CI_Controller {
             $response['msg'] = 'Invalid params';
         }
        
-    	echo json_encode($response, TRUE);
-	}
-
-	public function register()
-	{
-        if($this->input->post(array('username', 'email', 'password')))
-        {
-		  $username = $this->input->post('username');
-		  $email = $this->input->post('email');
-          $password = $this->input->post('password');
-
-          $response = $this->User->reg($username, $email, $password);
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Invalid params';
-        }
-
-    	echo json_encode($response, TRUE);
-	}
+        echo json_encode($response, TRUE);
+    }
 
     public function change_password()
     {
-        if($this->input->post(array('username', 'oldpassword', 'newpassword')))
+        $this->form_validation->set_rules('username', 'username', 'required');
+        $this->form_validation->set_rules('password', 'password', 'required');
+        $this->form_validation->set_rules('oldpassword', 'oldpassword', 'required');
+
+        if($this->form_validation->run())
         {
             $username = $this->input->post('username');
             $oldpassword = $this->input->post('oldpassword');
@@ -201,7 +259,10 @@ class Users extends CI_Controller {
 
     public function delete()
     {
-        if($this->input->post(array('id', 'password')))
+        $this->form_validation->set_rules('id', 'Id', 'required|integer');
+        $this->form_validation->set_rules('password', 'password', 'required');
+
+        if($this->form_validation->run())
         {
             $id = $this->input->post('id');
             $password = $this->input->post('password');
@@ -216,162 +277,11 @@ class Users extends CI_Controller {
         echo json_encode($response, TRUE);
     }
 
-    public function save_user_chars()
-    {
-        if($this->input->post())
-        {
-            $id = $this->input->post('id');
-            $realName = $this->input->post('realName');
-            $weight = $this->input->post('weight');
-            $height = $this->input->post('height');
-            $sex = $this->input->post('sex');
-            $age = $this->input->post('age');
-            $activityType = $this->input->post('activityType');
-            $avgdream = $this->input->post('avg_dream');
-            $wokeup = $this->input->post('wokeup_time');
-
-            $response = $this->CaloriesCalc->saveUserChars($id, $realName, $weight, $height, $sex, $activityType, $age, $avgdream, $wokeup);
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Invalid params';
-        }
-
-        echo json_encode($response, TRUE);
-    }
-
-    public function get_user_chars()
-    {
-        if($this->input->post('id'))
-        {
-            $id = $this->input->post('id');
-            $response = $this->CaloriesCalc->getUserChars($id);
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Invalid params';
-        }
-
-        echo json_encode($response, TRUE);
-    }
-
-    public function save_goal()
-    {
-        if($this->input->post(array('id', 'desired_weight', 'activityType', 'period', 'goal', 'name', 'begin_date')))
-        { 
-            $id = $this->input->post('id');
-            $desiredWeight = $this->input->post('desired_weight');
-            $activityType = $this->input->post('activityType');
-            $period = $this->input->post('period');
-            $goal = $this->input->post('goal');
-            $name = $this->input->post('name');
-            $begin_date = $this->input->post('begin_date');
-            
-            
-            $response = $this->CaloriesCalc->saveUserGoal($id, $desiredWeight, $activityType, $period, $goal, $name, $begin_date);
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Invalid params';
-        }
-	
-		echo json_encode($response, TRUE);
-    }
-
-    public function get_goal()
-    {
-    	if($this->input->post('id'))
-        { 
-            $id = $this->input->post('id');
-
-            $response = $this->CaloriesCalc->getUserGoal($id);
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Invalid params';
-        }
-
-        echo json_encode($response, TRUE);
-    }
-
-    public function get_goal_archive()
-    {
-
-        if($this->input->post('id'))
-        { 
-            $id = $this->input->post('id');
-
-            $response = $this->CaloriesCalc->get_archive($id);
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Invalid params';
-        }
-
-        echo json_encode($response, TRUE);
-    }
-
-    public function save_goal_archive()
-    {
-        if($this->input->post())
-        { 
-            $id = $this->input->post('id');
-            $desired_weight = $this->input->post('desired_weight');
-            $period = $this->input->post('period');
-            $begin_date = $this->input->post('begin_date');
-            $goal = $this->input->post('goal');
-            $name = $this->input->post('name');
-            $endup_weight = $this->input->post('endup_weight');
-            $active = $this->input->post('active');
-            $activityType = $this->input->post('activityType');
-            $weight = $this->input->post('weight');
-            $left_hand = $this->input->post('left_hand');
-            $right_hand = $this->input->post('right_hand');
-            $breast = $this->input->post('breast');
-            $waist = $this->input->post('waist');
-            $hiney = $this->input->post('hiney');
-            $left_thigh = $this->input->post('left_thigh');
-            $right_thigh = $this->input->post('right_thigh');
-            $calfs = $this->input->post('calfs');
-            $shoulders = $this->input->post('shoulders');
-
-            $response = $this->CaloriesCalc->save_archive($id, $desired_weight, $period, $begin_date, $goal, $endup_weight, $activityType, $active, $name, $weight, $left_hand, $right_hand, $breast, $waist, $hiney, $left_thigh, $right_thigh, $calfs, $shoulders);
-            
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Invalid params';
-        }
-
-        echo json_encode($response, TRUE);
-    }
-
-    public function get_human_chars()
-    {
-        if($this->input->post('id'))
-        {
-            $id = $this->input->post('id');
-            $response = $this->CaloriesCalc->getHumanChars($id);
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Invalid params';
-        }
-
-        echo json_encode($response, TRUE);
-    }
-
-   
     public function forgot_password()
     {
-        if($this->input->post('email'))
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+
+        if($this->form_validation->run())
         { 
             $email = $this->input->post('email');
             $response = $this->User->forgot($email);
