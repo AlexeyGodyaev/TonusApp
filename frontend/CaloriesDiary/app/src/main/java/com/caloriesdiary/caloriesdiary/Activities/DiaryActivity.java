@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.caloriesdiary.caloriesdiary.Fragments.DiaryAntrFragment;
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
 import com.caloriesdiary.caloriesdiary.Items.ActionItem;
-import com.caloriesdiary.caloriesdiary.Posts.GetDays;
+import com.caloriesdiary.caloriesdiary.HTTP.GetDays;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleActionAdapter;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleFoodAdapter;

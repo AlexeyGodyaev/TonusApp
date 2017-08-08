@@ -29,8 +29,8 @@ import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Adapters.CustomFoodAdapter;
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
-import com.caloriesdiary.caloriesdiary.Posts.GetCategories;
-import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.HTTP.GetCategories;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleFoodAdapter;
 import com.caloriesdiary.caloriesdiary.RecyclerTouchListener;

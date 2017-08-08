@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.R;
 
 import org.json.JSONArray;

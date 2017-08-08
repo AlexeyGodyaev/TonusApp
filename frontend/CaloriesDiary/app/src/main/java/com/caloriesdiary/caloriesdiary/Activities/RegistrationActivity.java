@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.R;
 
 import org.json.JSONObject;

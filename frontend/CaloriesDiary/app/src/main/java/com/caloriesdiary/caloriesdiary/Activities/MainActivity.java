@@ -25,8 +25,7 @@ import com.caloriesdiary.caloriesdiary.Fragments.MainDiaryFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainFoodFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainStatFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainTodayFragment;
-import com.caloriesdiary.caloriesdiary.Posts.Get;
-import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 

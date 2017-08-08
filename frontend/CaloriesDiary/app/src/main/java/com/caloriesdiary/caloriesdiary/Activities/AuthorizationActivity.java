@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import com.caloriesdiary.caloriesdiary.ControlService;
-import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;

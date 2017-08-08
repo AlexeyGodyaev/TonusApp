@@ -17,8 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.caloriesdiary.caloriesdiary.FirebaseNotify;
-import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.Fragments.ProfileAntropometryFragment;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.firebase.iid.FirebaseInstanceId;
