@@ -18,14 +18,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleActionAdapter;
-import com.caloriesdiary.caloriesdiary.Posts.GetActions;
+import com.caloriesdiary.caloriesdiary.HTTP.Get;
+import com.caloriesdiary.caloriesdiary.HTTP.GetActions;
 import com.caloriesdiary.caloriesdiary.Items.ActionItem;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.RecyclerTouchListener;
@@ -50,6 +56,9 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private Button btnActionsSortName;
     private boolean sortdir = true, sortkcal = true;
+    Spinner spinner1;
+    CheckBox checkbox1;
+    ProgressBar progressbar1;
     List<ActionItem> list = new ArrayList<>();
 
     @Override
@@ -70,12 +79,48 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecycleActionAdapter(initData());
+        mAdapter = new RecycleActionAdapter(initData2());
         mRecyclerView.setAdapter(mAdapter);
 
         addRecyclerClickListener();
 
         btnActionsSortName = (Button) findViewById(R.id.btnActionsSortName);
+
+        progressbar1 = (ProgressBar) findViewById(R.id.activity_progress_bar);
+
+        initFiltres();
+        initData();
+    }
+
+    private void initData() {
+        Get get = new Get();
+    }
+
+    private void initFiltres() {
+        spinner1 = (Spinner) findViewById(R.id.activity_spinner1);
+        checkbox1 = (CheckBox) findViewById(R.id.activity_checkbox1);
+        String values[] = {"По возрастанию", "По убыванию"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, values);
+        spinner1.setAdapter(adapter);
+
+        if (!checkbox1.isChecked())
+        {
+            spinner1.setEnabled(false);
+        }
+
+        checkbox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                {
+                    spinner1.setEnabled(true);
+                }
+                else
+                {
+                    spinner1.setEnabled(false);
+                }
+            }
+        });
     }
 
     private void addRecyclerClickListener(){
@@ -334,7 +379,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
         return get.get();
     }
 
-    private List<ActionItem> initData() {
+    private List<ActionItem> initData2() {
 
         String resp = null;
         String actionName;

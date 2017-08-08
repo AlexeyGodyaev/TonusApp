@@ -1,8 +1,7 @@
-package com.caloriesdiary.caloriesdiary.Posts;
+package com.caloriesdiary.caloriesdiary.HTTP;
 
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONObject;
 
