@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity
     MainFoodFragment foodfragment;
     MainActivityFragment activityfragment;
     FragmentTransaction fragmentTransaction;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +99,21 @@ public class MainActivity extends AppCompatActivity
         userName.setText(sharedPref.getString("userName", "Нет данных"));
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Post getRandomFood = new Post();
+
+        getRandomFood.execute("http://caloriesdiary.ru/calories/get_random_food_acts");
+
+        try{
+            Toast.makeText(this, getRandomFood.get().toString(), Toast.LENGTH_SHORT).show();
+        } catch (Exception e){
+
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

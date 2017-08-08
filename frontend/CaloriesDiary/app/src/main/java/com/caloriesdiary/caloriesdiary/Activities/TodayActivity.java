@@ -51,7 +51,7 @@ public class TodayActivity extends AppCompatActivity {
     int sum, sum1;
 
     LinearLayout antropometry;
-    NestedScrollView skrlView;
+    NestedScrollView scrlView;
 
     private EditText rLeg, lLeg, rHand, lHand, chest, waist, butt, calves, shoulders;
     TextView todayDate, foodCalories, sportCalories, normCalories, carbs, fats, protein;
@@ -131,6 +131,7 @@ public class TodayActivity extends AppCompatActivity {
 
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
 
+        getCaloriesPerDay();
     }
 
     private void initAntropometry(){
@@ -180,7 +181,7 @@ public class TodayActivity extends AppCompatActivity {
         foodRecyclerView = (RecyclerView) findViewById(R.id.food_busket_recycler_view);
         antropometry = (LinearLayout) findViewById(R.id.antropometry_today);
         actionRecyclerView = (RecyclerView) findViewById(R.id.action_busket_recycler_view);
-        skrlView = (NestedScrollView) findViewById(R.id.today_scroll_view);
+        scrlView = (NestedScrollView) findViewById(R.id.today_scroll_view);
 
         editMass = (EditText) findViewById(R.id.edit_mass);
         dayNote = (EditText) findViewById(R.id.DayNote);
@@ -309,10 +310,7 @@ public class TodayActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
+    private void getCaloriesPerDay(){
         Post log = new Post();
         args[0] = "http://caloriesdiary.ru/calories/get_per_day";
         args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
@@ -321,11 +319,11 @@ public class TodayActivity extends AppCompatActivity {
 
         try {
             JSONObject resp = log.get();
-                normCalories.setText(resp.getInt("result") + " ккал");
+            normCalories.setText(resp.getInt("result") + " ккал");
 
-                protein.setText(resp.getInt("protein") + " г.");
-                fats.setText(resp.getInt("fats") + " г.");
-                carbs.setText(resp.getInt("carbs") + " г.");
+            protein.setText(resp.getInt("protein") + " г.");
+            fats.setText(resp.getInt("fats") + " г.");
+            carbs.setText(resp.getInt("carbs") + " г.");
         }catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
@@ -364,27 +362,27 @@ public class TodayActivity extends AppCompatActivity {
 
             sportCalories.setText(sum1 + " ккал");
 
-            }
-            catch (Exception e)
+        }
+        catch (Exception e)
+        {
+            if(foodCalories.getText() != "")
             {
-               if(foodCalories.getText() != "")
-               {
-                   foodCalories.setText(sum + " ккал");
-               }
-               else
-               {
-                   foodCalories.setText("");
-               }
-
-               if(sportCalories.getText() != "")
-               {
-                   sportCalories.setText(sum1 + " ккал");
-               }
-               else
-               {
-                   foodCalories.setText("");
-               }
+                foodCalories.setText(sum + " ккал");
             }
+            else
+            {
+                foodCalories.setText("");
+            }
+
+            if(sportCalories.getText() != "")
+            {
+                sportCalories.setText(sum1 + " ккал");
+            }
+            else
+            {
+                sportCalories.setText("");
+            }
+        }
     }
 
     @Override
@@ -407,12 +405,15 @@ public class TodayActivity extends AppCompatActivity {
 
         if (antropometryFlag) {
             antropometry.setVisibility(View.VISIBLE);
+            Toast.makeText(this,String.valueOf(antropometry.getHeight()),Toast.LENGTH_LONG).show();
+            scrlView.scrollBy(0, 200);
             antropometryFlag = false;
         } else {
             antropometry.setVisibility(View.GONE);
             antropometryFlag = true;
         }
-        skrlView.smoothScrollBy(0, 200);
+
+
     }
 
 
@@ -650,3 +651,25 @@ public class TodayActivity extends AppCompatActivity {
         super.onStop();
     }
 }
+
+//class scrlTask extends AsyncTask<Boolean, Void, Void>{
+//
+//    @Override
+//    protected void onPreExecute() {
+//        super.onPreExecute();
+//    }
+//
+//    @Override
+//    protected void onPostExecute(Void aVoid) {
+//        super.onPostExecute(aVoid);
+//    }
+//
+//    @Override
+//    protected Void doInBackground(Boolean... booleen) {
+//
+//        if (booleen[0])
+//
+//
+//        return null;
+//    }
+//}
