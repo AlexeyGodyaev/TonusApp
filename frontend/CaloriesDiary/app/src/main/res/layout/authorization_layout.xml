@@ -8,14 +8,11 @@
         android:id="@+id/human_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/human_icon"
-        android:alpha="0.1"
-        android:paddingTop="30dp"
-        android:paddingBottom="25dp"
+        android:src="@mipmap/logo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-
+<!--
     <TextView
         android:paddingTop="55dp"
         android:id="@+id/title_app_text"
@@ -27,7 +24,7 @@
         android:text="ДИЕТА"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
-
+-->
     <EditText
         android:id="@+id/editLogin"
         android:layout_width="wrap_content"
