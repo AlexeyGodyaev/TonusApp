@@ -133,6 +133,11 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("ingredients",arg0[3]);
                         postDataParams.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
                         break;
+                    case "http://caloriesdiary.ru/activities/get_activities":
+                        postDataParams.put("query",arg0[1]);
+                        postDataParams.put("sort_names",arg0[2]);
+                        postDataParams.put("sort_calories",arg0[3]);
+                        break;
                 }
 
 

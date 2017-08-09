@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleActionAdapter;
 import com.caloriesdiary.caloriesdiary.HTTP.Get;
 import com.caloriesdiary.caloriesdiary.HTTP.GetActions;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.Items.ActionItem;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.RecyclerTouchListener;
@@ -59,6 +61,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
     Spinner spinner1;
     CheckBox checkbox1;
     ProgressBar progressbar1;
+    Post post;
     List<ActionItem> list = new ArrayList<>();
 
     @Override
@@ -79,8 +82,8 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecycleActionAdapter(initData2());
-        mRecyclerView.setAdapter(mAdapter);
+//        mAdapter = new RecycleActionAdapter(initData2());
+//        mRecyclerView.setAdapter(mAdapter);
 
         addRecyclerClickListener();
 
@@ -93,7 +96,41 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        Get get = new Get();
+        post = new Post();
+        String args[] = new String[4];
+        args[0] = "http://caloriesdiary.ru/activities/get_activities";
+        args[1] = ""; //query
+        args[2] = "1"; //sort_names
+        args[3] = ""; //sort_calories
+        post.execute(args);
+        filllist();
+
+
+
+    }
+
+    private void filllist() {
+        try
+        {
+            JSONObject json = post.get();
+            //Toast.makeText(this, json.toString(), Toast.LENGTH_SHORT).show();
+            if(json.getString("status").equals("1"))
+            {
+                JSONArray jarr = json.getJSONArray("activities");
+                for(int i = 0; i < jarr.length(); i++)
+                {
+                    list.add(new ActionItem(jarr.getJSONObject(i).getString("name"),Float.valueOf(jarr.getJSONObject(i).getString("calories")),Integer.valueOf(jarr.getJSONObject(i).getString("id"))));
+                }
+                mAdapter = new RecycleActionAdapter(list);
+                mRecyclerView.setAdapter(mAdapter);
+                progressbar1.setVisibility(View.GONE);
+            }
+
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void initFiltres() {
@@ -119,6 +156,45 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
                 {
                     spinner1.setEnabled(false);
                 }
+            }
+        });
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(RecycleActionCatalogActivity.this, String.valueOf(spinner1.getSelectedItemPosition()), Toast.LENGTH_SHORT).show();
+                if(spinner1.isEnabled())
+                {
+                    list = new ArrayList<>();
+                    if(spinner1.getSelectedItemPosition()==0)
+                    {
+                        post = new Post();
+                        String args[] = new String[4];
+                        args[0] = "http://caloriesdiary.ru/activities/get_activities";
+                        args[1] = ""; //query
+                        args[2] = ""; //sort_names
+                        args[3] = "1"; //sort_calories
+                        post.execute(args);
+
+                    }
+                    else
+                    {
+                        post = new Post();
+                        String args[] = new String[4];
+                        args[0] = "http://caloriesdiary.ru/activities/get_activities";
+                        args[1] = ""; //query
+                        args[2] = ""; //sort_names
+                        args[3] = "2"; //sort_calories
+                        post.execute(args);
+                    }
+                    filllist();
+
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }
