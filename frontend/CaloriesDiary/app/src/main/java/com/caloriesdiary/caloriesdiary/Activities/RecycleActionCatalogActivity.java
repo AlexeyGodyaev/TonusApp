@@ -445,10 +445,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.menu_refresh:
-                mAdapter = new RecycleActionAdapter(list);
-                mRecyclerView.setAdapter(mAdapter);
-                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
