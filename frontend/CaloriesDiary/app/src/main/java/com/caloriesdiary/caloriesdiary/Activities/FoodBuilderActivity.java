@@ -150,10 +150,18 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             //Toast.makeText(this, json.toString(), Toast.LENGTH_SHORT).show();
             if(json.getString("status").equals("1"))
             {
+                FoodItem foodItemtoAdd = new FoodItem();
                 JSONArray jarr = json.getJSONArray("food");
                 for(int i = 0; i < jarr.length(); i++)
                 {
-                    list.add();
+                    foodItemtoAdd.setId(Integer.valueOf(jarr.getJSONObject(i).getString("food_id")));
+                    foodItemtoAdd.setName(jarr.getJSONObject(i).getString("name"));
+                    foodItemtoAdd.setB(Float.valueOf(jarr.getJSONObject(i).getString("protein")));
+                    foodItemtoAdd.setJ(Float.valueOf(jarr.getJSONObject(i).getString("fats")));
+                    foodItemtoAdd.setU(Float.valueOf(jarr.getJSONObject(i).getString("carbs")));
+                    foodItemtoAdd.setCalories(Float.valueOf(jarr.getJSONObject(i).getString("calories")));
+                    foodItemtoAdd.setCategoryId(Integer.valueOf(jarr.getJSONObject(i).getString("id")));
+                    list.add(foodItemtoAdd);
                 }
 
             }
