@@ -110,11 +110,6 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
         post.setListener(listener);
         progressbar1.setVisibility(View.VISIBLE);
         post.execute(args);
-
-
-
-
-
     }
 
     private void filllist() {
