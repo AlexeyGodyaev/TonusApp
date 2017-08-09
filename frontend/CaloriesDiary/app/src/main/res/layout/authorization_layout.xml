@@ -46,29 +46,34 @@
         android:layout_height="wrap_content"
         android:onClick="forgetpassClick"
         android:text="Забыли пароль?"
+        android:textSize="24px"
+        android:alpha="0.6"
         android:textColor="@android:color/white"
         android:id="@+id/textView"
         android:layout_alignBaseline="@+id/editPassword"
         android:layout_alignBottom="@+id/editPassword"
-        android:layout_toRightOf="@+id/testRequestText"
-        android:layout_toEndOf="@+id/testRequestText" />
+        android:layout_alignRight="@+id/editPassword"
+        android:layout_alignEnd="@+id/editPassword" />
 
     <Button
         android:id="@+id/googleAccountTextView"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:onClick="googleClc"
+        android:background="@drawable/auth_google_button"
         android:text="Google+"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/darker_gray"
         android:layout_marginTop="13dp"
         android:layout_below="@+id/button4"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="220dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:onClick="loginClc"
         android:text="Вход"
+        android:textColor="@android:color/white"
+        android:background="@drawable/auth_login_button"
         android:id="@+id/button4"
         android:layout_marginTop="33dp"
         android:layout_below="@+id/editPassword"
@@ -80,6 +85,9 @@
         android:layout_height="wrap_content"
         android:onClick="guestClc"
         android:text="Войти как Гость"
+        android:alpha="0.5"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:background="@drawable/auth_as_guest"
         android:textColor="@android:color/white"
         android:layout_marginTop="12dp"
         android:layout_below="@+id/googleAccountTextView"
