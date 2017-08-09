@@ -33,11 +33,16 @@
             android:layout_height="wrap_content"
             android:text="Масса" />
 
+        <lecho.lib.hellocharts.view.LineChartView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mass_graph"/>
+
+
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:id="@+id/mass_graph_container"/>
-
         <TextView
             android:id="@+id/eated_text"
             android:layout_width="match_parent"
