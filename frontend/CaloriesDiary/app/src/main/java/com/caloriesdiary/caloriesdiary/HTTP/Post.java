@@ -4,6 +4,7 @@ package com.caloriesdiary.caloriesdiary.HTTP;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
@@ -22,6 +23,12 @@ import javax.net.ssl.HttpsURLConnection;
 
 
 public class Post extends AsyncTask<String, Void, JSONObject> {
+
+    CallBackListener mListener;
+
+    public void setListener(CallBackListener listener){
+        mListener = listener;
+    }
 
         protected void onPreExecute(){}
 
@@ -217,6 +224,12 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
 
         }
         return result.toString();
+    }
+
+    @Override
+    protected void onPostExecute(JSONObject jsonObject) {
+        super.onPostExecute(jsonObject);
+        mListener.callback();
     }
 }
 
