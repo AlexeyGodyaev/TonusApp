@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Adapters.ArchiveAdapter;
 import com.caloriesdiary.caloriesdiary.Items.ArchiveItem;
-import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.RecyclerTouchListener;
 

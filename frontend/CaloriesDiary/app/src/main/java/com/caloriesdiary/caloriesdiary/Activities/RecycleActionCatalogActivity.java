@@ -18,15 +18,23 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleActionAdapter;
-import com.caloriesdiary.caloriesdiary.Posts.GetActions;
+import com.caloriesdiary.caloriesdiary.HTTP.GetActions;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.Items.ActionItem;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.RecyclerTouchListener;
 
@@ -44,13 +52,21 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
-public class RecycleActionCatalogActivity extends AppCompatActivity {
+public class RecycleActionCatalogActivity extends AppCompatActivity implements CallBackListener {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Button btnActionsSortName;
     private boolean sortdir = true, sortkcal = true;
+    Spinner spinner1;
+    CheckBox checkbox1;
+    ProgressBar progressbar1;
+    CallBackListener listener;
+    Post post;
+    String query = "";
     List<ActionItem> list = new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +86,173 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecycleActionAdapter(initData());
-        mRecyclerView.setAdapter(mAdapter);
+//        mAdapter = new RecycleActionAdapter(initData2());
+//        mRecyclerView.setAdapter(mAdapter);
 
         addRecyclerClickListener();
 
-        btnActionsSortName = (Button) findViewById(R.id.btnActionsSortName);
+
+
+        progressbar1 = (ProgressBar) findViewById(R.id.activity_progress_bar);
+
+        initFiltres();
+        initData();
+    }
+
+    private void initData() {
+        post = new Post();
+        String args[] = new String[4];
+        args[0] = "http://caloriesdiary.ru/activities/get_activities";
+        args[1] = ""; //query
+        args[2] = "1"; //sort_names
+        args[3] = ""; //sort_calories
+        listener = this;
+        post.setListener(listener);
+        progressbar1.setVisibility(View.VISIBLE);
+        post.execute(args);
+    }
+
+    private void filllist() {
+        try
+        {
+
+            JSONObject json = post.get();
+            list = new ArrayList<>();
+            //Toast.makeText(this, json.toString(), Toast.LENGTH_SHORT).show();
+            if(json.getString("status").equals("1"))
+            {
+                JSONArray jarr = json.getJSONArray("activities");
+                for(int i = 0; i < jarr.length(); i++)
+                {
+                    list.add(new ActionItem(jarr.getJSONObject(i).getString("name"),Float.valueOf(jarr.getJSONObject(i).getString("calories")),Integer.valueOf(jarr.getJSONObject(i).getString("id"))));
+                }
+                mAdapter = new RecycleActionAdapter(list);
+                mRecyclerView.setAdapter(mAdapter);
+                progressbar1.setVisibility(View.GONE);
+            }
+
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void preparePost()
+    {
+        post.setListener(listener);
+        progressbar1.setVisibility(View.VISIBLE);
+        list = new ArrayList<>();
+        if(getIntent().getStringExtra(SearchManager.QUERY)==null)
+        {
+            query = "";
+        }
+
+        mAdapter = new RecycleActionAdapter(list);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void initFiltres() {
+        spinner1 = (Spinner) findViewById(R.id.activity_spinner1);
+        checkbox1 = (CheckBox) findViewById(R.id.activity_checkbox1);
+        String values[] = {"По возрастанию", "По убыванию"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, values);
+        spinner1.setAdapter(adapter);
+
+        if (!checkbox1.isChecked())
+        {
+            spinner1.setEnabled(false);
+        }
+
+        checkbox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                {
+                    spinner1.setEnabled(true);
+                    if(spinner1.getSelectedItemPosition()==0)
+                    {
+                        post = new Post();
+                        String args[] = new String[4];
+                        args[0] = "http://caloriesdiary.ru/activities/get_activities";
+                        args[1] = query; //query
+                        args[2] = ""; //sort_names
+                        args[3] = "1"; //sort_calories
+                        preparePost();
+                        post.execute(args);
+
+                    }
+                    else
+                    {
+                        post = new Post();
+                        String args[] = new String[4];
+                        args[0] = "http://caloriesdiary.ru/activities/get_activities";
+                        args[1] = query; //query
+                        args[2] = ""; //sort_names
+                        args[3] = "2"; //sort_calories
+                        preparePost();
+                        post.execute(args);
+                    }
+
+
+                }
+                else
+                {
+                    spinner1.setEnabled(false);
+                    post = new Post();
+                    String args[] = new String[4];
+                    args[0] = "http://caloriesdiary.ru/activities/get_activities";
+                    args[1] = query; //query
+                    args[2] = "1"; //sort_names
+                    args[3] = ""; //sort_calories
+                    preparePost();
+                    post.execute(args);
+
+                }
+
+            }
+        });
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                if(spinner1.isEnabled())
+                {
+
+                    if(spinner1.getSelectedItemPosition()==0)
+                    {
+                        post = new Post();
+                        String args[] = new String[4];
+                        args[0] = "http://caloriesdiary.ru/activities/get_activities";
+                        args[1] = query; //query
+                        args[2] = ""; //sort_names
+                        args[3] = "1"; //sort_calories
+                        preparePost();
+                        post.execute(args);
+
+                    }
+                    else
+                    {
+                        post = new Post();
+                        String args[] = new String[4];
+                        args[0] = "http://caloriesdiary.ru/activities/get_activities";
+                        args[1] = query; //query
+                        args[2] = ""; //sort_names
+                        args[3] = "2"; //sort_calories
+                        preparePost();
+                        post.execute(args);
+                    }
+
+
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     private void addRecyclerClickListener(){
@@ -236,22 +413,23 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
 
     private void handleIntent(Intent intent) {
 
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-           // Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
-            List<ActionItem> querylist = new ArrayList<>();
-            for(int i = 0; i < list.size() ; i++ )
-            {
-                ActionItem item = list.get(i);
-             if(item.getName().toLowerCase().contains(query.toLowerCase()))
-             {
-                 querylist.add(item);
-             }
-            }
 
-            mAdapter = new RecycleActionAdapter(querylist);
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            query = intent.getStringExtra(SearchManager.QUERY);
+           // Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
+            post = new Post();
+            String args[] = new String[4];
+            args[0] = "http://caloriesdiary.ru/activities/get_activities";
+            args[1] = query; //query
+            args[2] = "1"; //sort_names
+            args[3] = ""; //sort_calories
+            post.setListener(listener);
+            progressbar1.setVisibility(View.VISIBLE);
+            post.execute(args);
+
+            mAdapter = new RecycleActionAdapter(list);
             mRecyclerView.setAdapter(mAdapter);
-            Toast.makeText(getApplicationContext(), "Найдено элементов: " + String.valueOf(querylist.size() ), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Найдено элементов: " + String.valueOf(querylist.size() ), Toast.LENGTH_SHORT).show();
             //use the query to search
         }
     }
@@ -262,71 +440,14 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.menu_refresh:
-                mAdapter = new RecycleActionAdapter(list);
-                mRecyclerView.setAdapter(mAdapter);
-                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void onClickActionsSortName(View view)
-    {
-        if (sortdir) {
-            list.sort(new Comparator<ActionItem>() {
-                @Override
-                public int compare(ActionItem actionItem, ActionItem t1) {
-                    return actionItem.getName().compareTo(t1.getName());
-                }
-            });
-            mAdapter = new RecycleActionAdapter(list);
-            mRecyclerView.setAdapter(mAdapter);
-            btnActionsSortName.setText("Сортировать (Я-А)");
-            sortdir = false;
-        }
-        else
-        {
-            list.sort(new Comparator<ActionItem>() {
-                @Override
-                public int compare(ActionItem actionItem, ActionItem t1) {
-                    return t1.getName().compareTo(actionItem.getName());
-                }
-            });
-            mAdapter = new RecycleActionAdapter(list);
-            mRecyclerView.setAdapter(mAdapter);
-            btnActionsSortName.setText("Сортировать (А-Я)");
-            sortdir = true;
-        }
-    }
 
-    public void onClickActionsSortKcal(View view)
-    {
-        if(sortkcal)
-        {
-            list.sort(new Comparator<ActionItem>() {
-                @Override
-                public int compare(ActionItem actionItem, ActionItem t1) {
-                    return actionItem.getCalories().compareTo(t1.getCalories());
-                }
-            });
-            mAdapter = new RecycleActionAdapter(list);
-            mRecyclerView.setAdapter(mAdapter);
-            sortkcal = false;
-        }
-        else
-        {
-            list.sort(new Comparator<ActionItem>() {
-                @Override
-                public int compare(ActionItem actionItem, ActionItem t1) {
-                    return t1.getCalories().compareTo(actionItem.getCalories());
-                }
-            });
-            mAdapter = new RecycleActionAdapter(list);
-            mRecyclerView.setAdapter(mAdapter);
-            sortkcal = true;
-        }
 
-    }
+
     public  String getAction() throws InterruptedException, ExecutionException {
         GetActions get = new GetActions();
         get.execute("http://caloriesdiary.ru/activities/get_activities");
@@ -334,7 +455,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
         return get.get();
     }
 
-    private List<ActionItem> initData() {
+    private List<ActionItem> initData2() {
 
         String resp = null;
         String actionName;
@@ -372,6 +493,13 @@ public class RecycleActionCatalogActivity extends AppCompatActivity {
             }
 
         return list;
+    }
+
+    @Override
+    public void callback() {
+
+
+        filllist();
     }
 }
 

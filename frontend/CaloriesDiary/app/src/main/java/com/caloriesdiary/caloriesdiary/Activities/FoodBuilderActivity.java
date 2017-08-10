@@ -28,9 +28,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Adapters.CustomFoodAdapter;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
-import com.caloriesdiary.caloriesdiary.Posts.GetCategories;
-import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.HTTP.GetCategories;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleFoodAdapter;
 import com.caloriesdiary.caloriesdiary.RecyclerTouchListener;
@@ -55,7 +56,7 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class FoodBuilderActivity extends AppCompatActivity {
+public class FoodBuilderActivity extends AppCompatActivity implements CallBackListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -79,6 +80,8 @@ public class FoodBuilderActivity extends AppCompatActivity {
 
     List<FoodItem> list = new ArrayList<>();
     List<FoodItem> item = new ArrayList<>();
+    Post post;
+    CallBackListener listener;
     GetFood get;
     int offset = 0;
     boolean send = true;
@@ -96,6 +99,8 @@ public class FoodBuilderActivity extends AppCompatActivity {
             handleIntent(getIntent());
             initTabs();
             initObjects();
+            initData();
+
 
             get = new FoodBuilderActivity.GetFood();
             String args[] = new String[6];
@@ -108,6 +113,60 @@ public class FoodBuilderActivity extends AppCompatActivity {
             get.execute(args);
             //get.execute("http://caloriesdiary.ru/food/get_food", String.valueOf(offset),"","","","");
 
+            Toast.makeText(this, get.get().toString(), Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void initData() {
+        post = new Post();
+        String args[] = new String[8];
+        args[0] = "http://caloriesdiary.ru/food/get_food";
+        args[1] = ""; //offset
+        args[2] = ""; //query
+        args[3] = ""; //categ_id
+        args[4] = ""; //sort_names
+        args[5] = ""; //sort_calories
+        args[6] = ""; //id
+        args[7] = ""; //instanceToken
+        listener = this;
+        post.setListener(listener);
+        post.execute(args);
+
+    }
+    @Override
+    public void callback() {
+        fillList();
+    }
+
+    private void fillList() {
+        try
+        {
+            JSONObject json = post.get();
+            list = new ArrayList<>();
+            //Toast.makeText(this, json.toString(), Toast.LENGTH_SHORT).show();
+            if(json.getString("status").equals("1"))
+            {
+                FoodItem foodItemtoAdd = new FoodItem();
+                JSONArray jarr = json.getJSONArray("food");
+                for(int i = 0; i < jarr.length(); i++)
+                {
+
+                    foodItemtoAdd.setId(Integer.valueOf(jarr.getJSONObject(i).getString("food_id")));
+                    foodItemtoAdd.setName(jarr.getJSONObject(i).getString("name"));
+                    foodItemtoAdd.setB(Float.valueOf(jarr.getJSONObject(i).getString("protein")));
+                    foodItemtoAdd.setJ(Float.valueOf(jarr.getJSONObject(i).getString("fats")));
+                    foodItemtoAdd.setU(Float.valueOf(jarr.getJSONObject(i).getString("carbs")));
+                    foodItemtoAdd.setCalories(Float.valueOf(jarr.getJSONObject(i).getString("calories")));
+                    foodItemtoAdd.setCategoryId(Integer.valueOf(jarr.getJSONObject(i).getString("id")));
+                    list.add(foodItemtoAdd);
+
+                }
+
+            }
 
         }
         catch (Exception e)
@@ -463,10 +522,12 @@ public class FoodBuilderActivity extends AppCompatActivity {
 
     }
 
+
+
     private class GetFood extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
-            Toast.makeText(FoodBuilderActivity.this, "Загрузка блюд...", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(FoodBuilderActivity.this, "Загрузка блюд...", Toast.LENGTH_SHORT).show();
             super.onPreExecute();
         }
 
@@ -487,6 +548,7 @@ public class FoodBuilderActivity extends AppCompatActivity {
                 String answer = get.get();
                 try
                 {
+                    Toast.makeText(FoodBuilderActivity.this, "ans = " + answer, Toast.LENGTH_SHORT).show();
                     resp = new JSONArray(answer);
                 }
                 catch (Exception e)

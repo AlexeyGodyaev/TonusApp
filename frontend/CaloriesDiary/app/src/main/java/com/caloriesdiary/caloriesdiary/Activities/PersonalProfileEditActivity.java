@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -88,24 +88,19 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
 
             // Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
 
-            Toast.makeText(getApplicationContext(),JSans.toString(),Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(),JSans.toString(),Toast.LENGTH_LONG).show();
 
-            if(JSans.getString("status").equals("1"))
-            {
+            if(JSans.getString("status").equals("1")) {
                 name.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("realName"));
                 age.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("age"));
                 height.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("height"));
                 weight.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("weight"));
-                if(JSans.getJSONArray("userChars").getJSONObject(0).getString("sex").equals("1"))
-                {
+                if (JSans.getJSONArray("userChars").getJSONObject(0).getString("sex").equals("1")) {
                     male.setChecked(true);
-                }
-                else
-                {
+                } else {
                     female.setChecked(true);
                 }
-                switch (JSans.getJSONArray("userChars").getJSONObject(0).getString("activityType"))
-                {
+                switch (JSans.getJSONArray("userChars").getJSONObject(0).getString("activityType")) {
                     case "1":
                         spinner.setSelection(0);
                         break;
@@ -123,10 +118,9 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
                         break;
                 }
                 sleep.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("avgdream"));
-                awake.setText("Ср. время пробуждения: "+JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup"));
-                awakestr =JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup");
+                awake.setText("Ср. время пробуждения: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup"));
+                awakestr = JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup");
             }
-
         }
         catch (Exception e)
         {
@@ -192,7 +186,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
                     editor.putBoolean("IS_PROFILE_CREATED", true);
                     editor.apply();
                     Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Некоторые поля введены некорректно", Toast.LENGTH_LONG).show();

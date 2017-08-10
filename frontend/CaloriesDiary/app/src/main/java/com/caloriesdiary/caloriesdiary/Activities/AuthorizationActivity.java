@@ -28,7 +28,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import com.caloriesdiary.caloriesdiary.ControlService;
-import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -38,7 +39,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 
-public class AuthorizationActivity extends Activity {
+public class AuthorizationActivity extends Activity implements CallBackListener {
 
     GoogleApiClient m;
     GoogleSignInOptions gso;
@@ -85,6 +86,7 @@ public class AuthorizationActivity extends Activity {
     public void googleClc(View view)
     {
         switch (view.getId()) {
+
             case R.id.googleAccountTextView:
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(m);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -140,7 +142,7 @@ public class AuthorizationActivity extends Activity {
             args[2] = acct.getEmail();
             args[3] = acct.getGivenName();
             args[4] = FirebaseInstanceId.getInstance().getToken();
-
+            log.setListener(this);
             log.execute(args); // вызываем запрос
             int status;
             JSONObject JSans = log.get();
@@ -228,7 +230,7 @@ public class AuthorizationActivity extends Activity {
         args[1] = login.getText().toString();
         args[2] = pass.getText().toString();
         args[3] = FirebaseInstanceId.getInstance().getToken();
-
+            log.setListener(this);
         log.execute(args); // вызываем запрос
         int status;
         JSONObject JSans = log.get();
@@ -297,5 +299,10 @@ public class AuthorizationActivity extends Activity {
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
         }
+    }
+
+    @Override
+    public void callback() {
+
     }
 }

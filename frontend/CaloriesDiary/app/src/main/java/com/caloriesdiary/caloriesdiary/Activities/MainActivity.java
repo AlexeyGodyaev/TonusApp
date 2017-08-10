@@ -25,7 +25,8 @@ import com.caloriesdiary.caloriesdiary.Fragments.MainDiaryFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainFoodFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainStatFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainTodayFragment;
-import com.caloriesdiary.caloriesdiary.Posts.Post;
+import com.caloriesdiary.caloriesdiary.HTTP.Post;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -34,7 +35,7 @@ import org.json.JSONObject;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener , CallBackListener {
 
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
@@ -47,56 +48,74 @@ public class MainActivity extends AppCompatActivity
     MainFoodFragment foodfragment;
     MainActivityFragment activityfragment;
     FragmentTransaction fragmentTransaction;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
-        currentTime = (TextView) findViewById(R.id.main_time_textview);
-        calendar = Calendar.getInstance();
-        currentTime.setText(calendar.get(Calendar.DAY_OF_MONTH)+" "+getMonth(calendar.get(Calendar.MONTH))+" "+calendar.get(Calendar.YEAR));
-        sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
-        manager = getSupportFragmentManager();
-        todayfragment = new MainTodayFragment();
-        diaryfragment = new MainDiaryFragment();
-        statfragment = new MainStatFragment();
-        foodfragment = new MainFoodFragment();
-        activityfragment = new MainActivityFragment();
-        fragmentTransaction = manager.beginTransaction();
-        fragmentTransaction.add(R.id.main_todayCont,todayfragment);
-        fragmentTransaction.add(R.id.main_diaryCont,diaryfragment);
-        fragmentTransaction.add(R.id.main_statCont,statfragment);
-        fragmentTransaction.add(R.id.main_foodCont,foodfragment);
-        fragmentTransaction.add(R.id.main_activityCont,activityfragment);
-        fragmentTransaction.commit();
+            currentTime = (TextView) findViewById(R.id.main_time_textview);
+            calendar = Calendar.getInstance();
+            currentTime.setText(calendar.get(Calendar.DAY_OF_MONTH) + " " + getMonth(calendar.get(Calendar.MONTH)) + " " + calendar.get(Calendar.YEAR));
+            sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
+            manager = getSupportFragmentManager();
+            todayfragment = new MainTodayFragment();
+            diaryfragment = new MainDiaryFragment();
+            statfragment = new MainStatFragment();
+            foodfragment = new MainFoodFragment();
+            activityfragment = new MainActivityFragment();
+            fragmentTransaction = manager.beginTransaction();
+            fragmentTransaction.add(R.id.main_todayCont, todayfragment);
+            fragmentTransaction.add(R.id.main_diaryCont, diaryfragment);
+            fragmentTransaction.add(R.id.main_statCont, statfragment);
+            fragmentTransaction.add(R.id.main_foodCont, foodfragment);
+            fragmentTransaction.add(R.id.main_activityCont, activityfragment);
+            fragmentTransaction.commit();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
 
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        View v = navigationView.getHeaderView(0);
-        userMail =  v.findViewById(R.id.head_usermail_text);
-        userName =  v.findViewById(R.id.head_username_text);
-        userMail.setText(sharedPref.getString("userMail", "Нет данных"));
-        userName.setText(sharedPref.getString("userName", "Нет данных"));
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
 
 
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+            View v = navigationView.getHeaderView(0);
+            userMail = v.findViewById(R.id.head_usermail_text);
+            userName = v.findViewById(R.id.head_username_text);
+            userMail.setText(sharedPref.getString("userMail", "Нет данных"));
+            userName.setText(sharedPref.getString("userName", "Нет данных"));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Post getRandomFood = new Post();
+        getRandomFood.setListener(this);
+        getRandomFood.execute("http://caloriesdiary.ru/calories/get_random_food_acts");
+
+        try{
+
+           // Toast.makeText(this, getRandomFood.get().toString(), Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e){
+
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -123,9 +142,40 @@ public class MainActivity extends AppCompatActivity
     }
 
     public  void onTodayClc(View view){
-        Intent intent = new Intent(getApplicationContext(),TodayActivity.class);
 
-        startActivity(intent);
+        try {
+
+
+
+
+            Post log = new Post();
+
+            String args[] = new String[3];
+
+            args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
+            args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+            args[2] = FirebaseInstanceId.getInstance().getToken();
+
+            log.setListener(this);
+            log.execute(args); // вызываем запрос
+            JSONObject JSans = log.get();
+
+
+            if(JSans.getString("status").equals("0")) {
+                Intent intent = new Intent(getApplicationContext(), PersonalProfileEditActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent);
+            }
+            else if(JSans.getString("status").equals("1"))
+            {
+                Intent intent = new Intent(getApplicationContext(), TodayActivity.class);
+
+                startActivity(intent);
+            }
+
+        } catch (Exception e){
+
+        }
     }
 
     public void onExitClc(View view){
@@ -180,7 +230,7 @@ public class MainActivity extends AppCompatActivity
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
             args[2] = FirebaseInstanceId.getInstance().getToken();
 
-
+            log.setListener(this);
             log.execute(args); // вызываем запрос
             JSONObject JSans = log.get();
 
@@ -193,7 +243,6 @@ public class MainActivity extends AppCompatActivity
             else if(JSans.getString("status").equals("1"))
             {
                 Intent intent = new Intent(getApplicationContext(), PersonalProfileActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
             }
         }
@@ -276,5 +325,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         return s;
+    }
+
+    @Override
+    public void callback() {
+
     }
 }

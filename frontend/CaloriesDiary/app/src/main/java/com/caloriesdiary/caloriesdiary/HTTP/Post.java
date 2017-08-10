@@ -1,9 +1,10 @@
-package com.caloriesdiary.caloriesdiary.Posts;
+package com.caloriesdiary.caloriesdiary.HTTP;
 
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
@@ -23,6 +24,12 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Post extends AsyncTask<String, Void, JSONObject> {
 
+    CallBackListener mListener;
+
+    public void setListener(CallBackListener listener){
+        mListener = listener;
+    }
+
         protected void onPreExecute(){}
 
         protected JSONObject doInBackground(String... arg0) {
@@ -34,6 +41,9 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
 
                 switch (arg0[0]) {
 
+                    case "http://caloriesdiary.ru/calories/get_random_food_acts":
+                        postDataParams.put("number_of_elements","12");
+                        break;
                     case "http://caloriesdiary.ru/users/save_backup":
                         postDataParams.put("user_id", arg0[1]);
                         postDataParams.put("day_json", arg0[2]);
@@ -133,6 +143,11 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("ingredients",arg0[3]);
                         postDataParams.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
                         break;
+                    case "http://caloriesdiary.ru/activities/get_activities":
+                        postDataParams.put("query",arg0[1]);
+                        postDataParams.put("sort_names",arg0[2]);
+                        postDataParams.put("sort_calories",arg0[3]);
+                        break;
                 }
 
 
@@ -212,6 +227,12 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
 
         }
         return result.toString();
+    }
+
+    @Override
+    protected void onPostExecute(JSONObject jsonObject) {
+        super.onPostExecute(jsonObject);
+        mListener.callback();
     }
 }
 

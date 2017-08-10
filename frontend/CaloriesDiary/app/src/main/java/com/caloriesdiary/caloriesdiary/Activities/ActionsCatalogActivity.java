@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Items.ActionItem;
 import com.caloriesdiary.caloriesdiary.Adapters.ActionsAdapter;
-import com.caloriesdiary.caloriesdiary.Posts.GetActions;
+import com.caloriesdiary.caloriesdiary.HTTP.GetActions;
 import com.caloriesdiary.caloriesdiary.R;
 
 import org.json.JSONArray;

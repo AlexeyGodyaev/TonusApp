@@ -301,10 +301,7 @@ public class RecycleFoodCatalogActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.menu_refresh:
-
-                return true;
-        }
+                    }
         return super.onOptionsItemSelected(item);
     }
 
