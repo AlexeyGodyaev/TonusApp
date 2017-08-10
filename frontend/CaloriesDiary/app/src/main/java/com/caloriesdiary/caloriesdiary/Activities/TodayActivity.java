@@ -114,9 +114,13 @@ public class TodayActivity extends AppCompatActivity {
 
                 jsn = new JSONObject(text);
 
-                if (jsn.getString("date").equals(String.valueOf(calendar.get(Calendar.YEAR)) + "-"
-                        + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                                "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)))) {
+                String date = String.valueOf(calendar.get(Calendar.YEAR));
+                if (calendar.get(Calendar.MONTH)<9)
+                    date+="-0"+String.valueOf(calendar.get(Calendar.MONTH)+1); else date+="-"+String.valueOf(calendar.get(Calendar.MONTH)+1);
+                if (calendar.get(Calendar.DAY_OF_MONTH)<10)
+                    date+="-0"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)); else date+="-"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+
+                if (jsn.getString("date").equals(date)) {
 
                     editMass.setText(jsn.getString("mass"));
                     dayNote.setText(jsn.getString("note"));
@@ -147,9 +151,13 @@ public class TodayActivity extends AppCompatActivity {
 
                 jsn = new JSONObject(text);
 
-                if (jsn.getString("date")
-                        .equals(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                                "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)))) {
+                String date = String.valueOf(calendar.get(Calendar.YEAR));
+                if (calendar.get(Calendar.MONTH)<9)
+                    date+="-0"+String.valueOf(calendar.get(Calendar.MONTH)+1); else date+="-"+String.valueOf(calendar.get(Calendar.MONTH)+1);
+                if (calendar.get(Calendar.DAY_OF_MONTH)<10)
+                    date+="-0"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)); else date+="-"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+
+                if (jsn.getString("date").equals(date)) {
 
                     rLeg.setText(jsn.getString("rLeg"));
                     rHand.setText(jsn.getString("rHand"));
@@ -597,8 +605,14 @@ public class TodayActivity extends AppCompatActivity {
             jsn.put("protein", protein.getText().toString());
             jsn.put("fats", fats.getText().toString());
             jsn.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
-            jsn.put("date", String.valueOf(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1) +
-                    "-" + calendar.get(Calendar.DAY_OF_MONTH)));
+
+            String date = String.valueOf(calendar.get(Calendar.YEAR));
+            if (calendar.get(Calendar.MONTH)<9)
+                date+="-0"+String.valueOf(calendar.get(Calendar.MONTH)+1); else date+="-"+String.valueOf(calendar.get(Calendar.MONTH)+1);
+            if (calendar.get(Calendar.DAY_OF_MONTH)<10)
+                date+="-0"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)); else date+="-"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+
+            jsn.put("date", date);
 
             if (!rLeg.getText().toString().equals(""))
                 jsn.put("rLeg", rLeg.getText().toString());
@@ -618,7 +632,7 @@ public class TodayActivity extends AppCompatActivity {
             if (!shoulders.getText().toString().equals(""))
                 jsn.put("shoulders", shoulders.getText().toString());
             else jsn.put("shoulders", "0");
-            if (!butt.toString().equals(""))
+            if (!butt.getText().toString().equals(""))
                 jsn.put("butt", butt.getText().toString());
             else jsn.put("butt", "0");
             if (!waist.getText().toString().equals(""))
@@ -628,14 +642,6 @@ public class TodayActivity extends AppCompatActivity {
                 jsn.put("chest", chest.getText().toString());
             else jsn.put("chest", "0");
 
-            SaveTodayParams saveBackUp = new SaveTodayParams();
-
-
-            saveBackUp.execute(jsn);
-
-
-            //Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
-
 
             FileOutputStream out = new FileOutputStream(f);
             ObjectOutputStream outObject = new ObjectOutputStream(out);
@@ -643,6 +649,18 @@ public class TodayActivity extends AppCompatActivity {
             outObject.flush();
             out.getFD().sync();
             outObject.close();
+
+
+            SaveTodayParams saveBackUp = new SaveTodayParams();
+
+
+            saveBackUp.execute(jsn);
+
+
+            Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
+
+
+
 
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();

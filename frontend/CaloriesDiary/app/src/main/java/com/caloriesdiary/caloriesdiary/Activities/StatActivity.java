@@ -126,6 +126,7 @@ public class StatActivity extends AppCompatActivity {
                 LineChartView chart = rootView.findViewById(R.id.mass_graph);
                 chart.setLineChartData(data);
 
+               // mainLayout.addView(chart);
         //------------------------------------
 
                 viewParams =  rootView.findViewById(R.id.graph_params_value);
