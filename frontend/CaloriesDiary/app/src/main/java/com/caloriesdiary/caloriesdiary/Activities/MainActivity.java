@@ -109,9 +109,7 @@ public class MainActivity extends AppCompatActivity
         getRandomFood.execute("http://caloriesdiary.ru/calories/get_random_food_acts");
 
         try{
-
            // Toast.makeText(this, getRandomFood.get().toString(), Toast.LENGTH_SHORT).show();
-
         } catch (Exception e){
 
         }

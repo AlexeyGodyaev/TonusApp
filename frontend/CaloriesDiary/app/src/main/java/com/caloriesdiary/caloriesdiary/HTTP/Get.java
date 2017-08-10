@@ -57,6 +57,7 @@ public class Get extends AsyncTask<String,Void,JSONObject>{
                 jsonObject = new JSONObject();
                 jsonObject.put("status","0");
                 jsonObject.put("msg","Wrong response code: " + String.valueOf(responseCode));
+                return jsonObject;
             }
 
 

@@ -423,14 +423,8 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
             args[1] = query; //query
             args[2] = "1"; //sort_names
             args[3] = ""; //sort_calories
-            post.setListener(listener);
-            progressbar1.setVisibility(View.VISIBLE);
+            preparePost();
             post.execute(args);
-
-            mAdapter = new RecycleActionAdapter(list);
-            mRecyclerView.setAdapter(mAdapter);
-            //Toast.makeText(getApplicationContext(), "Найдено элементов: " + String.valueOf(querylist.size() ), Toast.LENGTH_SHORT).show();
-            //use the query to search
         }
     }
 
@@ -440,61 +434,9 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
             case android.R.id.home:
                 onBackPressed();
                 return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
-    public  String getAction() throws InterruptedException, ExecutionException {
-        GetActions get = new GetActions();
-        get.execute("http://caloriesdiary.ru/activities/get_activities");
-
-        return get.get();
-    }
-
-    private List<ActionItem> initData2() {
-
-        String resp = null;
-        String actionName;
-        Float calories = 0f;
-        Integer id = 0;
-
-        try {
-            resp = getAction();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (resp != null)
-            while(resp.length()>10){
-                try {
-                    id = Integer.valueOf(resp.substring(0,resp.indexOf(',')));
-                } catch (NumberFormatException e) {
-                    System.err.println("Неверный формат строки!");
-                }
-                resp=resp.substring(resp.indexOf(',')+1);
-
-                actionName = resp.substring(0,resp.indexOf(','));
-                resp=resp.substring(resp.indexOf(',')+1);
-
-                try {
-                    calories = Float.valueOf(resp.substring(0,resp.indexOf(';')));
-
-                } catch (NumberFormatException e) {
-                    System.err.println("Неверный формат строки!");
-                }
-
-                resp=resp.substring(resp.indexOf(';')+1);
-
-                if(calories!=0)
-                    list.add(new ActionItem(actionName, calories, id));
-            }
-
-        return list;
-    }
-
     @Override
     public void callback() {
 
