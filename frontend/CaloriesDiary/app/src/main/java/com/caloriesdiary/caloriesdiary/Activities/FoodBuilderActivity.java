@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Adapters.CustomFoodAdapter;
+import com.caloriesdiary.caloriesdiary.HTTP.Get;
 import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
 import com.caloriesdiary.caloriesdiary.HTTP.GetCategories;
@@ -81,8 +82,9 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
     List<FoodItem> list = new ArrayList<>();
     List<FoodItem> item = new ArrayList<>();
     Post post;
+    Get get;
     CallBackListener listener;
-    GetFood get;
+
     int offset = 0;
     boolean send = true,changescrollpos = false;
     int buff=0;
@@ -127,6 +129,11 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
     @Override
     public void callback() {
         fillList();
+        if(changescrollpos)
+        {
+            ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPosition(buff);
+            changescrollpos = false;
+        }
     }
 
     private void fillList() {
@@ -168,11 +175,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
             }
 
-            if(changescrollpos)
-            {
-                ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPosition(buff);
-                changescrollpos = false;
-            }
+
 
         }
         catch (Exception e)
@@ -210,12 +213,11 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
     }
     private void handleIntent(Intent intent) {
 
-        Toast.makeText(this, intent.getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, intent.getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             searchquery = query;
             list = new ArrayList<>();
-           // Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
             post = new Post();
             String args[] = new String[8];
             args[0] = "http://caloriesdiary.ru/food/get_food";
@@ -233,7 +235,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         }
     }
 
-    public void initObjects()
+    public void  initObjects()
     {
 
         buildercheck1 = (CheckBox) findViewById(R.id.builder_checkbox1);
@@ -244,64 +246,66 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
         try
         {
-            GetCategories getcategories = new GetCategories();
-            getcategories.execute("http://caloriesdiary.ru/food/get_food_categories");
-            String ans = getcategories.get();
-            final JSONArray jsarray = new JSONArray(ans);
 
-            categories.add("-");
-            for(int i = 0; i < jsarray.length(); i++)
-            {
-                    categories.add(jsarray.getJSONObject(i).getString("categ_name"));
-            }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
-            spinner1.setAdapter(adapter);
+            get = new Get();
+            get.execute("http://caloriesdiary.ru/food/get_food_categories");
 
-            spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    String text = spinner1.getSelectedItem().toString();
-                    Toast.makeText(FoodBuilderActivity.this, text, Toast.LENGTH_LONG).show();
-                    for(int k = 0; k< jsarray.length() ;k++)
-                    {
-                        try
-                        {
-                            if(jsarray.getJSONObject(k).getString("categ_name").equals(text))
-                            {
-                                list = new ArrayList<>();
-                                get = new FoodBuilderActivity.GetFood();
-                                offset = 0;
-                                String args[] = new String[10];
-                                args[0] = "http://caloriesdiary.ru/food/get_food";
-                                args[1] = String.valueOf(offset);
-                                args[2] = searchquery; //строка поиска
-                                args[3] = jsarray.getJSONObject(k).getString("id"); //id категории
-                                args[4] = ""; //сорт имени
-                                args[5] = ""; //сорт ккал
-                                args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
-                                args[7] = FirebaseInstanceId.getInstance().getToken();
-                                get.execute(args);
+            //Toast.makeText(this,"ans:" + get.get().toString(), Toast.LENGTH_LONG).show();
+            JSONObject json = get.get();
+            if(json.getString("status").equals("1")) {
+
+
+              //  Toast.makeText(this, "json: " + json.toString(), Toast.LENGTH_LONG).show();
+                final JSONArray jarr = json.getJSONArray("categories");
+
+                for (int i = 0; i < jarr.length(); i++) {
+                    categories.add(jarr.getJSONObject(i).getString("categ_name"));
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+                spinner1.setAdapter(adapter);
+
+                spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        String text = spinner1.getSelectedItem().toString();
+
+                        for (int k = 0; k < jarr.length(); k++) {
+                            try {
+                                if (jarr.getJSONObject(k).getString("categ_name").equals(text)) {
+//                                list = new ArrayList<>();
+//                                get = new FoodBuilderActivity.GetFood();
+//                                offset = 0;
+//                                String args[] = new String[10];
+//                                args[0] = "http://caloriesdiary.ru/food/get_food";
+//                                args[1] = String.valueOf(offset);
+//                                args[2] = searchquery; //строка поиска
+//                                args[3] = jsarray.getJSONObject(k).getString("id"); //id категории
+//                                args[4] = ""; //сорт имени
+//                                args[5] = ""; //сорт ккал
+//                                args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+//                                args[7] = FirebaseInstanceId.getInstance().getToken();
+//                                get.execute(args);
+                                }
+                            } catch (Exception e2) {
+
                             }
-                        }
-                        catch(Exception e2)
-                        {
+
 
                         }
-
-
                     }
-                }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                    Toast.makeText(FoodBuilderActivity.this, "Пустота", Toast.LENGTH_LONG).show();
-                }
-            });
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        Toast.makeText(FoodBuilderActivity.this, "Пустота", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
         }
         catch (Exception e)
         {
-            Toast.makeText(this,"InitObjects error: " + e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"InitObjects error: " + e.toString(), Toast.LENGTH_LONG).show();
         }
 
 
@@ -412,7 +416,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 edittext.setText(String.valueOf(visibleItemCount) + ":" +String.valueOf(totalItemCount) + ":"+String.valueOf(lastVisibleItems));
                 if (totalItemCount -1 == lastVisibleItems && send){
                     buff = lastVisibleItems-visibleItemCount+1;
-                    get = new GetFood();
+                    //get = new GetFood();
                     send = false;
                     offset+=1;
                     get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
@@ -551,11 +555,11 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
             try {
 
-                String answer = get.get();
+               // String answer = get.get();
                 try
                 {
-                    Toast.makeText(FoodBuilderActivity.this, "ans = " + answer, Toast.LENGTH_SHORT).show();
-                    resp = new JSONArray(answer);
+//                    Toast.makeText(FoodBuilderActivity.this, "ans = " + answer, Toast.LENGTH_SHORT).show();
+//                    resp = new JSONArray(answer);
                 }
                 catch (Exception e)
                 {
