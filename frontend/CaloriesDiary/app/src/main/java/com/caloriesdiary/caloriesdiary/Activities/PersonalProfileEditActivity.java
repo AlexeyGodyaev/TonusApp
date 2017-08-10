@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -26,7 +27,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 
-public class PersonalProfileEditActivity extends AppCompatActivity{
+public class PersonalProfileEditActivity extends AppCompatActivity implements CallBackListener{
     Spinner spinner;
     TextView name,age,height,weight,sleep,awake;
     RadioButton male,female;
@@ -76,7 +77,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         try
         {
             Post log = new Post();
-
+            log.setListener(this);
             String args[] = new String[3];
 
             args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
@@ -237,5 +238,10 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
         }
+    }
+
+    @Override
+    public void callback() {
+
     }
 }

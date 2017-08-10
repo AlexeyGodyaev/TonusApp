@@ -507,6 +507,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 args[0] = "http://caloriesdiary.ru/calories/get_per_day";
                 args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
                 args[2] = FirebaseInstanceId.getInstance().getToken();
+                log.setListener(this);
                 log.execute(args);
                 JSONObject jOb;
                 try {
@@ -675,25 +676,3 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
     }
 }
-
-//class scrlTask extends AsyncTask<Boolean, Void, Void>{
-//
-//    @Override
-//    protected void onPreExecute() {
-//        super.onPreExecute();
-//    }
-//
-//    @Override
-//    protected void onPostExecute(Void aVoid) {
-//        super.onPostExecute(aVoid);
-//    }
-//
-//    @Override
-//    protected Void doInBackground(Boolean... booleen) {
-//
-//        if (booleen[0])
-//
-//
-//        return null;
-//    }
-//}
