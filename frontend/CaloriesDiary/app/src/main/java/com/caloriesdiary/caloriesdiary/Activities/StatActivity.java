@@ -37,8 +37,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class StatActivity extends AppCompatActivity {
@@ -496,7 +494,7 @@ public class StatActivity extends AppCompatActivity {
 
 
                 try {
-                    if (graphArr!=null&&graphArr.length()>1) {
+                    if (graphArr!=null&&graphArr.length()>2) {
 
                         massData = new DataPoint[graphArr.length()];
                         eatedData = new DataPoint[graphArr.length()];
@@ -718,7 +716,7 @@ public class StatActivity extends AppCompatActivity {
                         s = s.substring(0, s.length()-2)+".";
                         viewParams.setText(s);
                     }
-                    else Toast.makeText(getActivity().getApplicationContext(), "Статистика доступна после двух заполненных дней", Toast.LENGTH_LONG).show();
+                    else Toast.makeText(getActivity().getApplicationContext(), "Статистика доступна после трех заполненных дней", Toast.LENGTH_LONG).show();
 
 
                 } catch (Exception e) {
