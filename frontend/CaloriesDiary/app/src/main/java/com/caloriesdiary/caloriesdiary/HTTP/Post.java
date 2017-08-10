@@ -232,7 +232,7 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
-       // mListener.callback();
+        mListener.callback();
     }
 }
 
