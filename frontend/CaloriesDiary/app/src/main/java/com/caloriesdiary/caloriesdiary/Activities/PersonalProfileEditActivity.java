@@ -92,16 +92,16 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
             //Toast.makeText(getApplicationContext(),JSans.toString(),Toast.LENGTH_LONG).show();
 
             if(JSans.getString("status").equals("1")) {
-                name.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("realName"));
-                age.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("age"));
-                height.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("height"));
-                weight.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("weight"));
-                if (JSans.getJSONArray("userChars").getJSONObject(0).getString("sex").equals("1")) {
+                name.setText(JSans.getJSONObject("userChars").getString("realName"));
+                age.setText(JSans.getJSONObject("userChars").getString("age"));
+                height.setText(JSans.getJSONObject("userChars").getString("height"));
+                weight.setText(JSans.getJSONObject("userChars").getString("weight"));
+                if (JSans.getJSONObject("userChars").getString("sex").equals("1")) {
                     male.setChecked(true);
                 } else {
                     female.setChecked(true);
                 }
-                switch (JSans.getJSONArray("userChars").getJSONObject(0).getString("activityType")) {
+                switch (JSans.getJSONObject("userChars").getString("activityType")) {
                     case "1":
                         spinner.setSelection(0);
                         break;
@@ -118,9 +118,9 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
                         spinner.setSelection(4);
                         break;
                 }
-                sleep.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("avgdream"));
-                awake.setText("Ср. время пробуждения: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup"));
-                awakestr = JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup");
+                sleep.setText(JSans.getJSONObject("userChars").getString("avgdream"));
+                awake.setText("Ср. время пробуждения: " + JSans.getJSONObject("userChars").getString("wokeup"));
+                awakestr = JSans.getJSONObject("userChars").getString("wokeup");
             }
         }
         catch (Exception e)
@@ -165,7 +165,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
                     }
 
                     Post log = new Post();
-
+                    log.setListener(this);
                     String args[] = new String[11];
 
                     args[0] = "http://caloriesdiary.ru/users/save_user_chars";  //аргументы для пост запроса

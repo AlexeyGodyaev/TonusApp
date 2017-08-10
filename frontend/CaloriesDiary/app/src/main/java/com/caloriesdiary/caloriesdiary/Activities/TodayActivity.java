@@ -137,6 +137,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
 
         getCaloriesPerDay();
+        caloriesSum();
     }
 
     private void initAntropometry(){
@@ -240,6 +241,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                     Toast.makeText(getApplicationContext(), "1 +" + e.toString(), Toast.LENGTH_SHORT).show();
                 }
                 listActive.remove(i);
+                caloriesSum();
                 actionAdapter.notifyDataSetChanged();
 
             }
@@ -286,6 +288,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                     Toast.makeText(getApplicationContext(), "1 +" + e.toString(), Toast.LENGTH_SHORT).show();
                 }
                 list.remove(i);
+                caloriesSum();
                 foodAdapter.notifyDataSetChanged();
 
             }
@@ -319,7 +322,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         }
     }
 
-    private void getCaloriesPerDay(){
+    private void getCaloriesPerDay() {
         Post log = new Post();
         args[0] = "http://caloriesdiary.ru/calories/get_per_day";
         args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
@@ -333,18 +336,21 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             protein.setText(resp.getInt("protein") + " г.");
             fats.setText(resp.getInt("fats") + " г.");
             carbs.setText(resp.getInt("carbs") + " г.");
-        }catch (Exception e) {
+        } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
+    }
 
+    private void caloriesSum(){
         try{
-
             File f = new File(getCacheDir(), "Food.txt");
             FileInputStream in = new FileInputStream(f);
             ObjectInputStream inObject = new ObjectInputStream(in);
             String text = inObject.readObject().toString();
             inObject.close();
 
+
+            sum=0; sum1=0;
             JSONObject jsn = new JSONObject(text);
             jsonFood = jsn.getJSONArray("food");
 

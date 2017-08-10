@@ -21,10 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.R;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
@@ -41,13 +37,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.AxisValue;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.model.ValueShape;
-import lecho.lib.hellocharts.view.LineChartView;
 
 public class StatActivity extends AppCompatActivity {
 
@@ -98,8 +87,6 @@ public class StatActivity extends AppCompatActivity {
         private JSONObject graphDraw=null;
         private String s="";
         private String graphHor [];
-
-        private LineChartView hui;
 
 
         @Override
