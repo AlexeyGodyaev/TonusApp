@@ -16,7 +16,7 @@ public class FoodItem {
         this.calories = calories;
     }
 
-    FoodItem(){
+    public FoodItem(){
     }
 
     public String getName() {

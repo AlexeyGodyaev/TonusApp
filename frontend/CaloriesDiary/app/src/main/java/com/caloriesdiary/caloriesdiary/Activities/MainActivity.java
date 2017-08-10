@@ -26,6 +26,7 @@ import com.caloriesdiary.caloriesdiary.Fragments.MainFoodFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainStatFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainTodayFragment;
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -34,7 +35,7 @@ import org.json.JSONObject;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener , CallBackListener {
 
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
@@ -105,11 +106,13 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
 
         Post getRandomFood = new Post();
-
+        getRandomFood.setListener(this);
         getRandomFood.execute("http://caloriesdiary.ru/calories/get_random_food_acts");
 
         try{
+
            // Toast.makeText(this, getRandomFood.get().toString(), Toast.LENGTH_SHORT).show();
+
         } catch (Exception e){
 
         }
@@ -153,7 +156,7 @@ public class MainActivity extends AppCompatActivity
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
             args[2] = FirebaseInstanceId.getInstance().getToken();
 
-
+            log.setListener(this);
             log.execute(args); // вызываем запрос
             JSONObject JSans = log.get();
 
@@ -227,7 +230,7 @@ public class MainActivity extends AppCompatActivity
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
             args[2] = FirebaseInstanceId.getInstance().getToken();
 
-
+            log.setListener(this);
             log.execute(args); // вызываем запрос
             JSONObject JSans = log.get();
 
@@ -322,5 +325,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         return s;
+    }
+
+    @Override
+    public void callback() {
+
     }
 }
