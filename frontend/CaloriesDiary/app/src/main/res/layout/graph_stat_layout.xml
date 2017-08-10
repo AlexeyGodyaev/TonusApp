@@ -48,6 +48,7 @@
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:fadingEdge="none"
             android:id="@+id/eated_calories_graph_container"/>
 
         <TextView
