@@ -333,7 +333,8 @@ public class StatActivity extends AppCompatActivity {
                         mainLayout.removeView(massGraph);
                         mainLayout.removeView(massGraphTxt);
                     } else {
-                        massGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        massGraph.setAlpha(0.5f);
+                        massGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
                         massGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         massGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         massGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -348,7 +349,8 @@ public class StatActivity extends AppCompatActivity {
                         mainLayout.removeView(eatedCaloriesGraph);
                         mainLayout.removeView(eatedCaloriesGraphTxt);
                     } else {
-                        eatedCaloriesGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        eatedCaloriesGraph.setAlpha(0.5f);
+                        eatedCaloriesGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
                         eatedCaloriesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         eatedCaloriesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         eatedCaloriesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -363,7 +365,8 @@ public class StatActivity extends AppCompatActivity {
                         mainLayout.removeView(bernCaloriesGraph);
                         mainLayout.removeView(bernCaloriesGraphTxt);
                     } else {
-                        bernCaloriesGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        bernCaloriesGraph.setAlpha(0.5f);
+                        bernCaloriesGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
                         bernCaloriesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         bernCaloriesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         bernCaloriesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -378,7 +381,8 @@ public class StatActivity extends AppCompatActivity {
                         mainLayout.removeView(shouldersGraph);
                         mainLayout.removeView(shouldersGraphTxt);
                     } else {
-                        shouldersGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        shouldersGraph.setAlpha(0.5f);
+                        shouldersGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
                         shouldersGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         shouldersGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         shouldersGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -396,12 +400,14 @@ public class StatActivity extends AppCompatActivity {
                         mainLayout.removeView(rHandGraphTxt);
                         mainLayout.removeView(lHandGraphTxt);
                     } else {
-                        rHandGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        rHandGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
                         rHandGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         rHandGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         rHandGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                        rHandGraph.setAlpha(0.5f);
 
-                        lHandGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        lHandGraph.setAlpha(0.5f);
+                        lHandGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
                         lHandGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         lHandGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         lHandGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -419,12 +425,14 @@ public class StatActivity extends AppCompatActivity {
                         mainLayout.removeView(lLegGraphTxt);
                         mainLayout.removeView(rLegGraphTxt);
                     } else {
-                        lLegGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        lLegGraph.setAlpha(0.5f);
+                        lLegGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
                         lLegGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         lLegGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         lLegGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
 
-                        rLegGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        rLegGraph.setAlpha(0.5f);
+                        rLegGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
                         rLegGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         rLegGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         rLegGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -438,7 +446,8 @@ public class StatActivity extends AppCompatActivity {
                     mainLayout.removeView(calvesGraph);
                     mainLayout.removeView(calvesGraphTxt);
                 } else {
-                    calvesGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                    calvesGraph.setAlpha(0.5f);
+                    calvesGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
                     calvesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                     calvesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                     calvesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -453,10 +462,11 @@ public class StatActivity extends AppCompatActivity {
                         mainLayout.removeView(buttGraph);
                         mainLayout.removeView(buttGraphTxt);
                     } else {
-                        buttGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        buttGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
                         buttGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         buttGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         buttGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                        buttGraph.setAlpha(0.5f);
                     }
                 } catch (Exception e){
 
@@ -468,7 +478,8 @@ public class StatActivity extends AppCompatActivity {
                         mainLayout.removeView(chestGraph);
                         mainLayout.removeView(chestGraphTxt);
                     } else {
-                        chestGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        chestGraph.setAlpha(0.5f);
+                        chestGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
                         chestGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         chestGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         chestGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -483,7 +494,8 @@ public class StatActivity extends AppCompatActivity {
                         mainLayout.removeView(waistGraph);
                         mainLayout.removeView(waistGraphTxt);
                     } else {
-                        waistGraph.setBackgroundColor(Color.parseColor("#A5CDCD"));
+                        waistGraph.setAlpha(0.5f);
+                        waistGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
                         waistGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         waistGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         waistGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
