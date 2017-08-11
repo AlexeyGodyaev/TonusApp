@@ -47,7 +47,7 @@
                     android:layout_height="66dp"
                     android:textSize="24px"
                     android:layout_gravity="center_horizontal"
-                    android:clickable="false"
+                    android:editable="false"
                     android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
                     android:maxLength="30"
                     android:textAlignment="center" />
@@ -288,9 +288,8 @@
                 android:backgroundTint="@android:color/holo_blue_bright"
                 android:ems="10"
                 android:hint="кг"
-                android:clickable="false"
+                android:editable="false"
                 android:gravity="end"
-                android:inputType="number"
                 android:selectAllOnFocus="false" />
 
             <TextView

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.Fragments.ProfileAntropometryFragment;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -32,7 +33,7 @@ import java.io.OutputStream;
 import java.util.Arrays;
 
 
-public class PersonalProfileActivity extends AppCompatActivity {
+public class PersonalProfileActivity extends AppCompatActivity implements CallBackListener {
 
     ProfileAntropometryFragment fragment;
     FragmentManager manager;
@@ -86,7 +87,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
     private void initProfile() {
         try {
             Post log = new Post();
-
+            log.setListener(this);
             String args[] = new String[3];
 
             args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
@@ -96,7 +97,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
             log.execute(args); // вызываем запрос
             JSans = log.get();
 
-            // Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
 
             Toast.makeText(getApplicationContext(), JSans.getJSONObject("userChars").getString("realName"), Toast.LENGTH_LONG).show();
             name_text.setText("Имя: " + JSans.getJSONObject("userChars").getString("realName"));
@@ -265,4 +266,8 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void callback() {
+
+    }
 }

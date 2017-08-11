@@ -1,7 +1,6 @@
 package com.caloriesdiary.caloriesdiary.Fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.util.Calendar;
 
 
 public class DiaryAntrFragment extends Fragment {
@@ -25,7 +23,7 @@ public class DiaryAntrFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.today_antropometry_fragment, null);
+        View v = inflater.inflate(R.layout.diary_antropometry_fragment, null);
 
         rLeg =  v.findViewById(R.id.edit_right_leg);
         lLeg =  v.findViewById(R.id.edit_left_leg);

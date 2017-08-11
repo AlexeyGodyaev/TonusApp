@@ -2,6 +2,7 @@ package com.caloriesdiary.caloriesdiary.Activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -20,7 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.caloriesdiary.caloriesdiary.HTTP.GetDays;
 import com.caloriesdiary.caloriesdiary.R;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
@@ -34,19 +37,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.view.LineChartView;
 
 public class StatActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +65,7 @@ public class StatActivity extends AppCompatActivity {
 
 
     public static class PlaceholderFragment extends Fragment {
+        SharedPreferences sharedPref;
 
         private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -92,8 +91,6 @@ public class StatActivity extends AppCompatActivity {
         private String s="";
         private String graphHor [];
 
-        private LineChartView hui;
-
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,32 +99,10 @@ public class StatActivity extends AppCompatActivity {
             if (getArguments().getInt(ARG_SECTION_NUMBER)==1){
                 rootView = inflater.inflate(R.layout.graph_stat_layout, container, false);
 
-
-
+                sharedPref = getActivity().getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
                 DataPoint massData [], eatedData[], bernData [], rLegData [], lLegData [], rHandData [],
                         lHandData [], waistData [], chestData [], buttData [], shouldersData [], calvesData [];
-
-        //----------TESTING-------------------
-                List<PointValue> values = new ArrayList<PointValue>();
-                values.add(new PointValue(0, 2));
-                values.add(new PointValue(1, 4));
-                values.add(new PointValue(2, 3));
-                values.add(new PointValue(3, 4));
-
-                //In most cased you can call data model methods in builder-pattern-like manner.
-                Line line = new Line(values).setColor(Color.BLUE).setCubic(true);
-                List<Line> lines = new ArrayList<>();
-                lines.add(line);
-
-                LineChartData data = new LineChartData();
-                data.setLines(lines);
-
-                LineChartView chart = rootView.findViewById(R.id.mass_graph);
-                chart.setLineChartData(data);
-
-               // mainLayout.addView(chart);
-        //------------------------------------
 
                 viewParams =  rootView.findViewById(R.id.graph_params_value);
                 mainLayout =  rootView.findViewById(R.id.graph_layout);
@@ -307,18 +282,32 @@ public class StatActivity extends AppCompatActivity {
 
                 try {
                     JSONObject jsn;
-                    File f = new File(getActivity().getCacheDir(), "Today_params.txt");
-                    if (f.exists()) {
-                        FileInputStream in = new FileInputStream(f);
-                        ObjectInputStream inObject = new ObjectInputStream(in);
-                        String text = inObject.readObject().toString();
-                        inObject.close();
+                   // File f = new File(getActivity().getCacheDir(), "Today_params.txt");
+//                    if (f.exists()) {
+//                        FileInputStream in = new FileInputStream(f);
+//                        ObjectInputStream inObject = new ObjectInputStream(in);
+//                        String text = inObject.readObject().toString();
+//                        inObject.close();
+                        GetDays get = new GetDays();
+                    String args[] = new String[2];
 
+                    args[0] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+                    args[1] = FirebaseInstanceId.getInstance().getToken();
 
-                        jsn = new JSONObject(text);
-                        graphArr = jsn.getJSONArray("today_params");
-                        jsn.remove("today_params");
+                    get.execute(args);
+
+                        jsn = new JSONObject(get.get());
+                        graphArr = jsn.getJSONArray("days");
+                        jsn.remove("days");
+
+                    if (graphArr.length()>7) {
+                        JSONArray buf = new JSONArray();
+                        for (int i = graphArr.length() - 7; i < graphArr.length(); i++) {
+                            buf.put(graphArr.getJSONObject(i));
+                        }
+                        graphArr = new JSONArray(buf.toString());
                     }
+                  //  }
 
 
                 } catch (Exception e) {
@@ -505,7 +494,7 @@ public class StatActivity extends AppCompatActivity {
 
 
                 try {
-                    if (graphArr!=null&&graphArr.length()>1) {
+                    if (graphArr!=null&&graphArr.length()>2) {
 
                         massData = new DataPoint[graphArr.length()];
                         eatedData = new DataPoint[graphArr.length()];
@@ -521,10 +510,7 @@ public class StatActivity extends AppCompatActivity {
                         bernData = new DataPoint[graphArr.length()];
                         graphHor = new String[graphArr.length()];
 
-                        if (graphArr.length()>7)
-                            a = graphArr.length()-8; else a = 0;
-
-                        for (int i=a; i < graphArr.length(); i++) {
+                        for (int i=0; i < graphArr.length(); i++) {
                             if (graphArr.getJSONObject(i).getString("mass").equals(""))
                                 if(i==0) massData[i] = new DataPoint(i, 0); else
                                     massData[i] = new DataPoint(i, massData[i-1].getY());
@@ -596,11 +582,13 @@ public class StatActivity extends AppCompatActivity {
                                     calvesData[i] = new DataPoint(i, calvesData[i-1].getY());
                             else
                                 calvesData[i] = new DataPoint(i, Double.parseDouble(graphArr.getJSONObject(i).getString("calves")));
-                            graphHor[i] = graphArr.getJSONObject(i).getString("date");
+                            graphHor[i] = graphArr.getJSONObject(i).getString("date")
+                                    .substring(8,graphArr.getJSONObject(i).getString("date").length());
                         }
 
                         if(graphDraw!=null&&graphDraw.getString("mass").equals("true")) {
                             LineGraphSeries<DataPoint> massSeries = new LineGraphSeries<>(massData);
+                            massSeries.setThickness(2);
                             StaticLabelsFormatter massLabelsFormatter = new StaticLabelsFormatter(massGraph);
                             massLabelsFormatter.setHorizontalLabels(graphHor);
                             massGraph.getGridLabelRenderer().setLabelFormatter(massLabelsFormatter);
@@ -611,6 +599,7 @@ public class StatActivity extends AppCompatActivity {
 
                         if(graphDraw!=null&&graphDraw.getString("eated").equals("true")){
                             LineGraphSeries<DataPoint> eatedSeries = new LineGraphSeries<>(eatedData);
+                            eatedSeries.setThickness(2);
                             StaticLabelsFormatter eatedLabelsFormatter = new StaticLabelsFormatter(eatedCaloriesGraph);
                             eatedLabelsFormatter.setHorizontalLabels(graphHor);
                             eatedCaloriesGraph.getGridLabelRenderer().setLabelFormatter(eatedLabelsFormatter);
@@ -622,6 +611,7 @@ public class StatActivity extends AppCompatActivity {
                         if(graphDraw!=null&&graphDraw.getString("bern").equals("true")) {
                             LineGraphSeries<DataPoint> bernSeries = new LineGraphSeries<>(bernData);
                             StaticLabelsFormatter bernLabelsFormatter = new StaticLabelsFormatter(bernCaloriesGraph);
+                            bernSeries.setThickness(2);
                             bernLabelsFormatter.setHorizontalLabels(graphHor);
                             bernCaloriesGraph.getGridLabelRenderer().setLabelFormatter(bernLabelsFormatter);
                             bernSeries.setColor(Color.WHITE);
@@ -631,6 +621,7 @@ public class StatActivity extends AppCompatActivity {
 
                         if(graphDraw!=null&&graphDraw.getString("shoulders").equals("true")){
                             LineGraphSeries<DataPoint> shouldersSeries = new LineGraphSeries<>(shouldersData);
+                            shouldersSeries.setThickness(2);
                             StaticLabelsFormatter shouldersLabelsFormatter = new StaticLabelsFormatter(shouldersGraph);
                             shouldersLabelsFormatter.setHorizontalLabels(graphHor);
                             shouldersGraph.getGridLabelRenderer().setLabelFormatter(shouldersLabelsFormatter);
@@ -641,6 +632,7 @@ public class StatActivity extends AppCompatActivity {
 
                         if(graphDraw!=null&&graphDraw.getString("hands").equals("true")){
                             LineGraphSeries<DataPoint> rHandSeries = new LineGraphSeries<>(rHandData);
+                            rHandSeries.setThickness(2);
                             StaticLabelsFormatter rHandLabelsFormatter = new StaticLabelsFormatter(rHandGraph);
                             rHandLabelsFormatter.setHorizontalLabels(graphHor);
                             rHandGraph.getGridLabelRenderer().setLabelFormatter(rHandLabelsFormatter);
@@ -648,6 +640,7 @@ public class StatActivity extends AppCompatActivity {
                             rHandGraph.addSeries(rHandSeries);
 
                             LineGraphSeries<DataPoint> lHandSeries = new LineGraphSeries<>(lHandData);
+                            lHandSeries.setThickness(2);
                             StaticLabelsFormatter lHandLabelsFormatter = new StaticLabelsFormatter(lHandGraph);
                             lHandLabelsFormatter.setHorizontalLabels(graphHor);
                             lHandGraph.getGridLabelRenderer().setLabelFormatter(lHandLabelsFormatter);
@@ -658,6 +651,7 @@ public class StatActivity extends AppCompatActivity {
 
                         if(graphDraw!=null&&graphDraw.getString("chest").equals("true")) {
                             LineGraphSeries<DataPoint> chestSeries = new LineGraphSeries<>(chestData);
+                            chestSeries.setThickness(2);
                             StaticLabelsFormatter chestLabelsFormatter = new StaticLabelsFormatter(chestGraph);
                             chestLabelsFormatter.setHorizontalLabels(graphHor);
                             chestGraph.getGridLabelRenderer().setLabelFormatter(chestLabelsFormatter);
@@ -669,6 +663,7 @@ public class StatActivity extends AppCompatActivity {
                         if(graphDraw!=null&&graphDraw.getString("waist").equals("true")) {
                             LineGraphSeries<DataPoint> waistSeries = new LineGraphSeries<>(waistData);
                             StaticLabelsFormatter waistLabelsFormatter = new StaticLabelsFormatter(waistGraph);
+                            waistSeries.setThickness(2);
                             waistLabelsFormatter.setHorizontalLabels(graphHor);
                             waistGraph.getGridLabelRenderer().setLabelFormatter(waistLabelsFormatter);
                             waistSeries.setColor(Color.WHITE);
@@ -678,6 +673,7 @@ public class StatActivity extends AppCompatActivity {
 
                         if(graphDraw!=null&&graphDraw.getString("butt").equals("true")) {
                             LineGraphSeries<DataPoint> buttSeries = new LineGraphSeries<>(buttData);
+                            buttSeries.setThickness(2);
                             StaticLabelsFormatter buttLabelsFormatter = new StaticLabelsFormatter(buttGraph);
                             buttLabelsFormatter.setHorizontalLabels(graphHor);
                             buttGraph.getGridLabelRenderer().setLabelFormatter(buttLabelsFormatter);
@@ -688,6 +684,7 @@ public class StatActivity extends AppCompatActivity {
 
                         if(graphDraw!=null&&graphDraw.getString("legs").equals("true")){
                             LineGraphSeries<DataPoint> rLegSeries = new LineGraphSeries<>(rLegData);
+                            rLegSeries.setThickness(2);
                             StaticLabelsFormatter rLegLabelsFormatter = new StaticLabelsFormatter(rLegGraph);
                             rLegLabelsFormatter.setHorizontalLabels(graphHor);
                             rLegGraph.getGridLabelRenderer().setLabelFormatter(rLegLabelsFormatter);
@@ -695,6 +692,7 @@ public class StatActivity extends AppCompatActivity {
                             rLegGraph.addSeries(rLegSeries);
 
                             LineGraphSeries<DataPoint> lLegSeries = new LineGraphSeries<>(lLegData);
+                            lLegSeries.setThickness(2);
                             StaticLabelsFormatter lLegLabelsFormatter = new StaticLabelsFormatter(lLegGraph);
                             lLegLabelsFormatter.setHorizontalLabels(graphHor);
                             lLegGraph.getGridLabelRenderer().setLabelFormatter(lLegLabelsFormatter);
@@ -706,6 +704,7 @@ public class StatActivity extends AppCompatActivity {
 
                         if(graphDraw!=null&&graphDraw.getString("calves").equals("true")) {
                             LineGraphSeries<DataPoint> calvesSeries = new LineGraphSeries<>(calvesData);
+                            calvesSeries.setThickness(2);
                             StaticLabelsFormatter calvesLabelsFormatter = new StaticLabelsFormatter(calvesGraph);
                             calvesLabelsFormatter.setHorizontalLabels(graphHor);
                             calvesGraph.getGridLabelRenderer().setLabelFormatter(calvesLabelsFormatter);
@@ -717,7 +716,7 @@ public class StatActivity extends AppCompatActivity {
                         s = s.substring(0, s.length()-2)+".";
                         viewParams.setText(s);
                     }
-                    else Toast.makeText(getActivity().getApplicationContext(), "Статистика доступна после двух заполненных дней", Toast.LENGTH_LONG).show();
+                    else Toast.makeText(getActivity().getApplicationContext(), "Статистика доступна после трех заполненных дней", Toast.LENGTH_LONG).show();
 
 
                 } catch (Exception e) {

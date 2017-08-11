@@ -72,14 +72,13 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.add(R.id.main_activityCont, activityfragment);
             fragmentTransaction.commit();
 
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
+//            fab.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                            .setAction("Action", null).show();
+//                }
+//            });
 
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -110,9 +109,7 @@ public class MainActivity extends AppCompatActivity
         getRandomFood.execute("http://caloriesdiary.ru/calories/get_random_food_acts");
 
         try{
-
            // Toast.makeText(this, getRandomFood.get().toString(), Toast.LENGTH_SHORT).show();
-
         } catch (Exception e){
 
         }
