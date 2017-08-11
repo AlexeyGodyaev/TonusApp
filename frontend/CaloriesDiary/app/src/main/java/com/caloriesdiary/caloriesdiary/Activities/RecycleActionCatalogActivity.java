@@ -176,7 +176,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
                         String args[] = new String[4];
                         args[0] = "http://caloriesdiary.ru/activities/get_activities";
                         args[1] = query; //query
-                        args[2] = ""; //sort_names
+                        args[2] = "1"; //sort_names
                         args[3] = "1"; //sort_calories
                         preparePost();
                         post.execute(args);
@@ -188,7 +188,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
                         String args[] = new String[4];
                         args[0] = "http://caloriesdiary.ru/activities/get_activities";
                         args[1] = query; //query
-                        args[2] = ""; //sort_names
+                        args[2] = "1"; //sort_names
                         args[3] = "2"; //sort_calories
                         preparePost();
                         post.execute(args);

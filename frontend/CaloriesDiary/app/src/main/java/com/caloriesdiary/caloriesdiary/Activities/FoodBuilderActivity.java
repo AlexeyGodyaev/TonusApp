@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TabHost;
@@ -86,9 +87,9 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
     CallBackListener listener;
 
     int offset = 0;
-    boolean send = true,changescrollpos = false;
+    boolean send = true,changescrollpos = false, updialog = false;
     int buff=0;
-    String searchquery = "";
+    String searchquery = "",searchcatid = "",searchsortkcal = "" ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,6 +135,8 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPosition(buff);
             changescrollpos = false;
         }
+
+
     }
 
     private void fillList() {
@@ -172,7 +175,12 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 }
                 mAdapter = new RecycleFoodAdapter(list);
                 mRecyclerView.setAdapter(mAdapter);
-
+                if(updialog)
+                {
+                    updialog = false;
+                    dialogAdapter = new CustomFoodAdapter(list);
+                    dialogRecyclerView.setAdapter(dialogAdapter);
+                }
             }
 
 
@@ -223,12 +231,11 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             args[0] = "http://caloriesdiary.ru/food/get_food";
             args[1] = String.valueOf(offset); //offset
             args[2] = searchquery; //query
-            args[3] = ""; //categ_id
-            args[4] = ""; //sort_names
-            args[5] = ""; //sort_calories
+            args[3] = searchcatid; //categ_id
+            args[4] = "1"; //sort_names
+            args[5] = searchsortkcal; //sort_calories
             args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
             args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
-            listener = this;
             post.setListener(listener);
             post.execute(args);
 
@@ -256,7 +263,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             if(json.getString("status").equals("1")) {
 
 
-              //  Toast.makeText(this, "json: " + json.toString(), Toast.LENGTH_LONG).show();
+                //  Toast.makeText(this, "json: " + json.toString(), Toast.LENGTH_LONG).show();
                 final JSONArray jarr = json.getJSONArray("categories");
 
                 for (int i = 0; i < jarr.length(); i++) {
@@ -273,20 +280,22 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
                         for (int k = 0; k < jarr.length(); k++) {
                             try {
-                                if (jarr.getJSONObject(k).getString("categ_name").equals(text)) {
-//                                list = new ArrayList<>();
-//                                get = new FoodBuilderActivity.GetFood();
-//                                offset = 0;
-//                                String args[] = new String[10];
-//                                args[0] = "http://caloriesdiary.ru/food/get_food";
-//                                args[1] = String.valueOf(offset);
-//                                args[2] = searchquery; //строка поиска
-//                                args[3] = jsarray.getJSONObject(k).getString("id"); //id категории
-//                                args[4] = ""; //сорт имени
-//                                args[5] = ""; //сорт ккал
-//                                args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
-//                                args[7] = FirebaseInstanceId.getInstance().getToken();
-//                                get.execute(args);
+                                if (jarr.getJSONObject(k).getString("categ_name").equals(text) && buildercheck1.isChecked()) {
+                                    list = new ArrayList<>();
+                                    post = new Post();
+                                    offset = 0;
+                                    searchcatid = jarr.getJSONObject(k).getString("id");
+                                    String args[] = new String[10];
+                                    args[0] = "http://caloriesdiary.ru/food/get_food";
+                                    args[1] = String.valueOf(offset);
+                                    args[2] = searchquery; //строка поиска
+                                    args[3] = searchcatid; //id категории
+                                    args[4] = "1"; //сорт имени
+                                    args[5] = searchsortkcal; //сорт ккал
+                                    args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+                                    args[7] = FirebaseInstanceId.getInstance().getToken();
+                                    post.setListener(listener);
+                                    post.execute(args);
                                 }
                             } catch (Exception e2) {
 
@@ -302,12 +311,129 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     }
                 });
             }
+
+            String values[] = {"По возрастанию", "По убыванию"};
+            ArrayAdapter<String> kcaladapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, values);
+            spinner2.setAdapter(kcaladapter);
+
+            if (!buildercheck1.isChecked())
+            {
+                spinner1.setEnabled(false);
+            }
+            if (!buildercheck2.isChecked())
+            {
+                spinner2.setEnabled(false);
+            }
+
+            buildercheck1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(b)
+                    {
+                        spinner1.setEnabled(true);
+
+
+                    }
+                    else
+                    {
+                        spinner1.setEnabled(false);
+                        searchcatid = "";
+                        post = new Post();
+                        list = new ArrayList<>();
+                        String args[] = new String[8];
+                        args[0] = "http://caloriesdiary.ru/food/get_food";
+                        args[1] = String.valueOf(offset); //offset
+                        args[2] = searchquery; //query
+                        args[3] = searchcatid; //categ_id
+                        args[4] = "1"; //sort_names
+                        args[5] = searchsortkcal; //sort_calories
+                        args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
+                        args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                        post.setListener(listener);
+                        post.execute(args);
+
+
+                    }
+
+                }
+            });
+
+            buildercheck2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(b)
+                    {
+                        spinner2.setEnabled(true);
+
+                        if(spinner2.getSelectedItemPosition()==0)
+                        {
+                            searchsortkcal = "1";
+                            post = new Post();
+                            list = new ArrayList<>();
+                            String args[] = new String[8];
+                            args[0] = "http://caloriesdiary.ru/food/get_food";
+                            args[1] = String.valueOf(offset); //offset
+                            args[2] = searchquery; //query
+                            args[3] = searchcatid; //categ_id
+                            args[4] = "1"; //sort_names
+                            args[5] = searchsortkcal; //sort_calories
+                            args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
+                            args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                            post.setListener(listener);
+                            post.execute(args);
+                        }
+                        else
+                        {
+                            searchsortkcal = "2";
+                            post = new Post();
+                            list = new ArrayList<>();
+                            String args[] = new String[8];
+                            args[0] = "http://caloriesdiary.ru/food/get_food";
+                            args[1] = String.valueOf(offset); //offset
+                            args[2] = searchquery; //query
+                            args[3] = searchcatid; //categ_id
+                            args[4] = "1"; //sort_names
+                            args[5] = searchsortkcal; //sort_calories
+                            args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
+                            args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                            post.setListener(listener);
+                            post.execute(args);
+                        }
+
+                    }
+                    else
+                    {
+                        spinner2.setEnabled(false);
+                        searchsortkcal = "";
+                        post = new Post();
+                        list = new ArrayList<>();
+                        String args[] = new String[8];
+                        args[0] = "http://caloriesdiary.ru/food/get_food";
+                        args[1] = String.valueOf(offset); //offset
+                        args[2] = searchquery; //query
+                        args[3] = searchcatid; //categ_id
+                        args[4] = "1"; //sort_names
+                        args[5] = searchsortkcal; //sort_calories
+                        args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
+                        args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                        post.setListener(listener);
+                        post.execute(args);
+                    }
+
+                }
+            });
+
+
+
+
+
+
+
         }
         catch (Exception e)
         {
             Toast.makeText(this,"InitObjects error: " + e.toString(), Toast.LENGTH_LONG).show();
         }
-
 
 
 
@@ -347,7 +473,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     args[0] = "http://caloriesdiary.ru/food/get_food";
                     args[1] = String.valueOf(offset); //offset
                     args[2] = searchquery; //query
-                    args[3] = ""; //categ_id
+                    args[3] = searchcatid; //categ_id
                     args[4] = ""; //sort_names
                     args[5] = ""; //sort_calories
                     args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
@@ -418,11 +544,20 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     buff = lastVisibleItems-visibleItemCount+1;
                     //get = new GetFood();
                     send = false;
-                    offset+=1;
-                    get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
-
-                    dialogAdapter = new CustomFoodAdapter(list);
-                    dialogRecyclerView.setAdapter(dialogAdapter);
+                    offset++;
+                    updialog = true;
+                    post = new Post();
+                    String args[] = new String[8];
+                    args[0] = "http://caloriesdiary.ru/food/get_food";
+                    args[1] = String.valueOf(offset); //offset
+                    args[2] = ""; //query
+                    args[3] = ""; //categ_id
+                    args[4] = ""; //sort_names
+                    args[5] = ""; //sort_calories
+                    args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
+                    args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                    post.setListener(listener);
+                    post.execute(args);
                     ((LinearLayoutManager)dialogRecyclerView.getLayoutManager()).scrollToPosition(buff);
                     Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
                 }
@@ -430,13 +565,23 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             }
         });
 
-
+        updialog = true;
         send = true;
-//        get = new FoodBuilderActivity.GetFood();
-//        get.execute("http://caloriesdiary.ru/food/get_food",String.valueOf(offset));
+        offset = 0;
+        post = new Post();
+        String args[] = new String[8];
+        args[0] = "http://caloriesdiary.ru/food/get_food";
+        args[1] = String.valueOf(offset); //offset
+        args[2] = ""; //query
+        args[3] = ""; //categ_id
+        args[4] = ""; //sort_names
+        args[5] = ""; //sort_calories
+        args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
+        args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+        post.setListener(listener);
+        post.execute(args);
 
-        dialogAdapter = new CustomFoodAdapter(list);
-        dialogRecyclerView.setAdapter(dialogAdapter);
+
 
         dialogRecyclerView.addOnItemTouchListener( new RecyclerTouchListener(this, dialogRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
