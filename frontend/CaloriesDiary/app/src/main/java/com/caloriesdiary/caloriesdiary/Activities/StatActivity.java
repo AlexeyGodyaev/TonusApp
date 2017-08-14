@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,12 +13,17 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -736,13 +742,63 @@ public class StatActivity extends AppCompatActivity {
                 }
 
             } else {
-                rootView = inflater.inflate(R.layout.fragment_main, container, false);
-                //здесь будут таблица
+                rootView = inflater.inflate(R.layout.table_stat_layout, container, false);
+                TableLayout table = rootView.findViewById(R.id.table_layout);
+
+                table.setStretchAllColumns(true);
+//                table.setShrinkAllColumns(true);
+
+                TableRow rowTitle = new TableRow(getActivity().getApplicationContext());
+                rowTitle.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                TableRow rowDayLabels = new TableRow(getActivity().getApplicationContext());
+                TableRow rowHighs = new TableRow(getActivity().getApplicationContext());
+                TableRow rowLows = new TableRow(getActivity().getApplicationContext());
+                TableRow rowConditions = new TableRow(getActivity().getApplicationContext());
+                rowConditions.setGravity(Gravity.CENTER);
+
+                TextView title = new TextView(getActivity().getApplicationContext());
+                title.setText("Java Weather Table");
+
+                title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+                title.setGravity(Gravity.CENTER);
+                title.setTypeface(Typeface.SERIF, Typeface.BOLD);
+
+                TableRow.LayoutParams params = new TableRow.LayoutParams();
+                params.span = 10;
+
+                rowTitle.addView(title, params);
+
+                for (int i = 0; i<20; i++) {
+
+                    // day 1 column
+                    TextView day1Label = new TextView(getActivity().getApplicationContext());
+                    day1Label.setText("Feb 7");
+                    day1Label.setTypeface(Typeface.SERIF, Typeface.BOLD);
+
+                    TextView day1High = new TextView(getActivity().getApplicationContext());
+                    day1High.setText("28°F");
+                    day1High.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                    TextView day1Low = new TextView(getActivity().getApplicationContext());
+                    day1Low.setText("15°F");
+                    day1Low.setGravity(Gravity.CENTER_HORIZONTAL);
+
+
+                    rowDayLabels.addView(day1Label);
+                    rowHighs.addView(day1High);
+                    rowLows.addView(day1Low);
+                }
+                table.addView(rowTitle);
+                table.addView(rowDayLabels);
+                table.addView(rowHighs);
+                table.addView(rowLows);
+                table.addView(rowConditions);
+
 
             }
             return rootView;
         }
-
 
     }
 
