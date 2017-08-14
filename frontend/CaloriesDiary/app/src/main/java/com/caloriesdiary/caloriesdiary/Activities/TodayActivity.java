@@ -46,6 +46,7 @@ import java.util.List;
 
 public class TodayActivity extends AppCompatActivity implements CallBackListener {
 
+
     final List<FoodItem> list = new ArrayList<>();
     final List<ActionItem> listActive = new ArrayList<>();
 
@@ -69,7 +70,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
     SharedPreferences sharedPref;
     Calendar calendar;
     EditText editMass;
-    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, FABFlag=false;
+    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, FABFlag = false;
 
     final String[] args = new String[3];
     LinearLayout linearLayout;
@@ -79,6 +80,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         setContentView(R.layout.today_layout);
         setTitle("Сегодня");
@@ -116,10 +118,12 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 jsn = new JSONObject(text);
 
                 String date = String.valueOf(calendar.get(Calendar.YEAR));
-                if (calendar.get(Calendar.MONTH)<9)
-                    date+="-0"+String.valueOf(calendar.get(Calendar.MONTH)+1); else date+="-"+String.valueOf(calendar.get(Calendar.MONTH)+1);
-                if (calendar.get(Calendar.DAY_OF_MONTH)<10)
-                    date+="-0"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)); else date+="-"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                if (calendar.get(Calendar.MONTH) < 9)
+                    date += "-0" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                else date += "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                if (calendar.get(Calendar.DAY_OF_MONTH) < 10)
+                    date += "-0" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                else date += "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
 
                 if (jsn.getString("date").equals(date)) {
 
@@ -140,7 +144,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         caloriesSum();
     }
 
-    private void initAntropometry(){
+    private void initAntropometry() {
         try {
             JSONObject jsn;
             File f = new File(getCacheDir(), "Today_params.txt");
@@ -154,10 +158,12 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 jsn = new JSONObject(text);
 
                 String date = String.valueOf(calendar.get(Calendar.YEAR));
-                if (calendar.get(Calendar.MONTH)<9)
-                    date+="-0"+String.valueOf(calendar.get(Calendar.MONTH)+1); else date+="-"+String.valueOf(calendar.get(Calendar.MONTH)+1);
-                if (calendar.get(Calendar.DAY_OF_MONTH)<10)
-                    date+="-0"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)); else date+="-"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                if (calendar.get(Calendar.MONTH) < 9)
+                    date += "-0" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                else date += "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                if (calendar.get(Calendar.DAY_OF_MONTH) < 10)
+                    date += "-0" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                else date += "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
 
                 if (jsn.getString("date").equals(date)) {
 
@@ -172,12 +178,12 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                     shoulders.setText(jsn.getString("shoulders"));
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void addViews(){
+    private void addViews() {
         rLeg = (EditText) findViewById(R.id.edit_right_leg);
         lLeg = (EditText) findViewById(R.id.edit_left_leg);
         rHand = (EditText) findViewById(R.id.edit_right_hand);
@@ -205,7 +211,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         linearLayout = (LinearLayout) findViewById(R.id.setting_layout);
     }
 
-    private void addRecyclerOnClickListeners(){
+    private void addRecyclerOnClickListeners() {
         actionRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 actionRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -301,19 +307,19 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         }));
     }
 
-    public  void onAddFoodClc(View view){
-        Intent intent = new Intent(getApplicationContext(), RecycleFoodCatalogActivity.class);
+    public void onAddFoodClc(View view) {
+        Intent intent = new Intent(getApplicationContext(), FoodBuilderActivity.class);
         startActivity(intent);
     }
 
-    public  void onAddActionsClc(View view){
+    public void onAddActionsClc(View view) {
         Intent intent = new Intent(getApplicationContext(), RecycleActionCatalogActivity.class);
         startActivity(intent);
     }
 
-    public void onMainFABClc(View view){
-        if(FABFlag){
-            linearLayout.setVisibility(View.INVISIBLE);
+    public void onMainFABClc(View view) {
+        if (FABFlag) {
+            linearLayout.setVisibility(View.GONE);
             FABFlag = false;
 
         } else {
@@ -341,8 +347,8 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         }
     }
 
-    private void caloriesSum(){
-        try{
+    private void caloriesSum() {
+        try {
             File f = new File(getCacheDir(), "Food.txt");
             FileInputStream in = new FileInputStream(f);
             ObjectInputStream inObject = new ObjectInputStream(in);
@@ -350,7 +356,8 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             inObject.close();
 
 
-            sum=0; sum1=0;
+            sum = 0;
+            sum1 = 0;
             JSONObject jsn = new JSONObject(text);
             jsonFood = jsn.getJSONArray("food");
 
@@ -377,24 +384,16 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
             sportCalories.setText(sum1 + " ккал");
 
-        }
-        catch (Exception e)
-        {
-            if(foodCalories.getText() != "")
-            {
+        } catch (Exception e) {
+            if (foodCalories.getText() != "") {
                 foodCalories.setText(sum + " ккал");
-            }
-            else
-            {
+            } else {
                 foodCalories.setText("");
             }
 
-            if(sportCalories.getText() != "")
-            {
+            if (sportCalories.getText() != "") {
                 sportCalories.setText(sum1 + " ккал");
-            }
-            else
-            {
+            } else {
                 sportCalories.setText("");
             }
         }
@@ -420,7 +419,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
         if (antropometryFlag) {
             antropometry.setVisibility(View.VISIBLE);
-            Toast.makeText(this,String.valueOf(antropometry.getHeight()),Toast.LENGTH_LONG).show();
+            Toast.makeText(this, String.valueOf(antropometry.getHeight()), Toast.LENGTH_LONG).show();
             scrlView.scrollBy(0, 200);
             antropometryFlag = false;
         } else {
@@ -430,7 +429,6 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
 
     }
-
 
 
     public void onTodayActivityBtnClc(View v) {
@@ -473,7 +471,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                     } catch (NumberFormatException e) {
                         System.err.println("Неверный формат строки!");
                     }
-                        list.add(new FoodItem(id, foodName, b, j, u, category_id, calories));
+                    list.add(new FoodItem(id, foodName, b, j, u, category_id, calories));
                 }
             } catch (JSONException jEx) {
                 Toast.makeText(getApplicationContext(), "3 +" + jEx.toString(), Toast.LENGTH_SHORT).show();
@@ -519,7 +517,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 try {
                     jOb = log.get();
                     listActive.add(new ActionItem("Сон", Float.valueOf(jOb.getString("dreamCalories")), 5));
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
@@ -615,10 +613,12 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             jsn.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
 
             String date = String.valueOf(calendar.get(Calendar.YEAR));
-            if (calendar.get(Calendar.MONTH)<9)
-                date+="-0"+String.valueOf(calendar.get(Calendar.MONTH)+1); else date+="-"+String.valueOf(calendar.get(Calendar.MONTH)+1);
-            if (calendar.get(Calendar.DAY_OF_MONTH)<10)
-                date+="-0"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)); else date+="-"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+            if (calendar.get(Calendar.MONTH) < 9)
+                date += "-0" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+            else date += "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+            if (calendar.get(Calendar.DAY_OF_MONTH) < 10)
+                date += "-0" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+            else date += "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
 
             jsn.put("date", date);
 
@@ -668,8 +668,6 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
 
 
-
-
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -679,6 +677,5 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
     @Override
     public void callback() {
-
     }
 }
