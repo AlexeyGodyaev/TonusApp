@@ -675,6 +675,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
         args[2] = nameedit.getText().toString();
         args[3] = jsn.toString();
+            post.setListener(listener);
             post.execute(args);
             String ans = post.get().toString();
             Toast.makeText(this, ans, Toast.LENGTH_LONG).show();
