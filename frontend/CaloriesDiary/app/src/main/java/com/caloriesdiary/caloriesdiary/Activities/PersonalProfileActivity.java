@@ -100,17 +100,17 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
             Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
 
             Toast.makeText(getApplicationContext(), JSans.getJSONObject("userChars").getString("realName"), Toast.LENGTH_LONG).show();
-            life_style.setText("Имя: " + JSans.getJSONObject("userChars").getString("realName"));
+            life_style.setText(JSans.getJSONObject("userChars").getString("activityType"));
             if (JSans.getJSONObject("userChars").getString("sex").equals("1")) {
-                gender_text.setText("Пол: мужской");
+                gender_text.setText("Мужской");
             } else {
-                gender_text.setText("Пол: женский");
+                gender_text.setText("Женский");
             }
-            age_text.setText("Возраст: " + JSans.getJSONObject("userChars").getString("age"));
-            weight_text.setText("Вес: " + JSans.getJSONObject("userChars").getString("weight"));
-            height_text.setText("Рост: " + JSans.getJSONObject("userChars").getString("height"));
-            wakeup_text.setText("Время пробуждения: " + JSans.getJSONObject("userChars").getString("wokeup").substring(0, 5));
-            sleep_text.setText("Среднее время сна: " + JSans.getJSONObject("userChars").getString("avgdream"));
+            age_text.setText(JSans.getJSONObject("userChars").getString("age"));
+            weight_text.setText(JSans.getJSONObject("userChars").getString("weight"));
+            height_text.setText(JSans.getJSONObject("userChars").getString("height"));
+            wakeup_text.setText(JSans.getJSONObject("userChars").getString("wokeup").substring(0, 5));
+            sleep_text.setText(JSans.getJSONObject("userChars").getString("avgdream"));
 
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
