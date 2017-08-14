@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -26,7 +27,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 
-public class PersonalProfileEditActivity extends AppCompatActivity{
+public class PersonalProfileEditActivity extends AppCompatActivity implements CallBackListener{
     Spinner spinner;
     TextView name,age,height,weight,sleep,awake;
     RadioButton male,female;
@@ -76,7 +77,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         try
         {
             Post log = new Post();
-
+            log.setListener(this);
             String args[] = new String[3];
 
             args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
@@ -91,16 +92,16 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
             //Toast.makeText(getApplicationContext(),JSans.toString(),Toast.LENGTH_LONG).show();
 
             if(JSans.getString("status").equals("1")) {
-                name.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("realName"));
-                age.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("age"));
-                height.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("height"));
-                weight.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("weight"));
-                if (JSans.getJSONArray("userChars").getJSONObject(0).getString("sex").equals("1")) {
+                name.setText(JSans.getJSONObject("userChars").getString("realName"));
+                age.setText(JSans.getJSONObject("userChars").getString("age"));
+                height.setText(JSans.getJSONObject("userChars").getString("height"));
+                weight.setText(JSans.getJSONObject("userChars").getString("weight"));
+                if (JSans.getJSONObject("userChars").getString("sex").equals("1")) {
                     male.setChecked(true);
                 } else {
                     female.setChecked(true);
                 }
-                switch (JSans.getJSONArray("userChars").getJSONObject(0).getString("activityType")) {
+                switch (JSans.getJSONObject("userChars").getString("activityType")) {
                     case "1":
                         spinner.setSelection(0);
                         break;
@@ -117,9 +118,9 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
                         spinner.setSelection(4);
                         break;
                 }
-                sleep.setText(JSans.getJSONArray("userChars").getJSONObject(0).getString("avgdream"));
-                awake.setText("Ср. время пробуждения: " + JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup"));
-                awakestr = JSans.getJSONArray("userChars").getJSONObject(0).getString("wokeup");
+                sleep.setText(JSans.getJSONObject("userChars").getString("avgdream"));
+                awake.setText("Ср. время пробуждения: " + JSans.getJSONObject("userChars").getString("wokeup"));
+                awakestr = JSans.getJSONObject("userChars").getString("wokeup");
             }
         }
         catch (Exception e)
@@ -164,7 +165,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
                     }
 
                     Post log = new Post();
-
+                    log.setListener(this);
                     String args[] = new String[11];
 
                     args[0] = "http://caloriesdiary.ru/users/save_user_chars";  //аргументы для пост запроса
@@ -237,5 +238,10 @@ public class PersonalProfileEditActivity extends AppCompatActivity{
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
         }
+    }
+
+    @Override
+    public void callback() {
+
     }
 }

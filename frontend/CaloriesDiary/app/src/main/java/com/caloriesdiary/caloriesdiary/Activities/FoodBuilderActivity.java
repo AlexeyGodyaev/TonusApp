@@ -153,6 +153,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 for(int i = 0; i < jarr.length(); i++)
                 {
                     foodItemtoAdd = new FoodItem();
+
                     foodItemtoAdd.setId(Integer.valueOf(jarr.getJSONObject(i).getString("food_id")));
                     foodItemtoAdd.setName(jarr.getJSONObject(i).getString("name"));
                     foodItemtoAdd.setB(Float.valueOf(jarr.getJSONObject(i).getString("protein")));
@@ -161,6 +162,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     foodItemtoAdd.setCalories(Float.valueOf(jarr.getJSONObject(i).getString("calories")));
                     foodItemtoAdd.setCategoryId(Integer.valueOf(jarr.getJSONObject(i).getString("id")));
                     list.add(foodItemtoAdd);
+
                 }
                 JSONArray customjarr = json.getJSONArray("custom_food");
                 for(int i = 0; i < customjarr.length(); i++) {

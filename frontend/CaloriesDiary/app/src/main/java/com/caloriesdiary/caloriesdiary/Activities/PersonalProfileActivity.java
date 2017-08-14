@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.Fragments.ProfileAntropometryFragment;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -32,13 +33,13 @@ import java.io.OutputStream;
 import java.util.Arrays;
 
 
-public class PersonalProfileActivity extends AppCompatActivity {
+public class PersonalProfileActivity extends AppCompatActivity implements CallBackListener {
 
     ProfileAntropometryFragment fragment;
     FragmentManager manager;
     FragmentTransaction transaction;
     boolean antropometryFlag = true;
-    TextView name_text,age_text,weight_text,height_text,gender_text, wakeup_text, sleep_text;
+    TextView life_style,age_text,weight_text,height_text,gender_text, wakeup_text, sleep_text;
     SharedPreferences sharedPref = null;
     private Toolbar mToolbar;
     private final int reqcode = 1;
@@ -50,7 +51,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
         manager = getSupportFragmentManager();
         fragment = new ProfileAntropometryFragment();
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
-        name_text = (TextView) findViewById(R.id.name_text);
+        life_style = (TextView) findViewById(R.id.life_style_text);
         age_text = (TextView) findViewById(R.id.age_text);
         sleep_text = (TextView) findViewById(R.id.sleep_time_text);
         wakeup_text = (TextView) findViewById(R.id.wakeup_time_text);
@@ -86,7 +87,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
     private void initProfile() {
         try {
             Post log = new Post();
-
+            log.setListener(this);
             String args[] = new String[3];
 
             args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
@@ -96,20 +97,20 @@ public class PersonalProfileActivity extends AppCompatActivity {
             log.execute(args); // вызываем запрос
             JSans = log.get();
 
-            // Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
 
             Toast.makeText(getApplicationContext(), JSans.getJSONObject("userChars").getString("realName"), Toast.LENGTH_LONG).show();
-            name_text.setText("Имя: " + JSans.getJSONObject("userChars").getString("realName"));
+            life_style.setText(JSans.getJSONObject("userChars").getString("activityType"));
             if (JSans.getJSONObject("userChars").getString("sex").equals("1")) {
-                gender_text.setText("Пол: мужской");
+                gender_text.setText("Мужской");
             } else {
-                gender_text.setText("Пол: женский");
+                gender_text.setText("Женский");
             }
-            age_text.setText("Возраст: " + JSans.getJSONObject("userChars").getString("age"));
-            weight_text.setText("Вес: " + JSans.getJSONObject("userChars").getString("weight"));
-            height_text.setText("Рост: " + JSans.getJSONObject("userChars").getString("height"));
-            wakeup_text.setText("Время пробуждения: " + JSans.getJSONObject("userChars").getString("wokeup").substring(0, 5));
-            sleep_text.setText("Среднее время сна: " + JSans.getJSONObject("userChars").getString("avgdream"));
+            age_text.setText(JSans.getJSONObject("userChars").getString("age"));
+            weight_text.setText(JSans.getJSONObject("userChars").getString("weight"));
+            height_text.setText(JSans.getJSONObject("userChars").getString("height"));
+            wakeup_text.setText(JSans.getJSONObject("userChars").getString("wokeup").substring(0, 5));
+            sleep_text.setText(JSans.getJSONObject("userChars").getString("avgdream"));
 
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
@@ -265,4 +266,8 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void callback() {
+
+    }
 }

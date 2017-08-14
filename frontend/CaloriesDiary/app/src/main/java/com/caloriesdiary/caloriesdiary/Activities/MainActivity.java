@@ -54,51 +54,49 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
-        currentTime = (TextView) findViewById(R.id.main_time_textview);
-        calendar = Calendar.getInstance();
-        currentTime.setText(calendar.get(Calendar.DAY_OF_MONTH)+" "+getMonth(calendar.get(Calendar.MONTH))+" "+calendar.get(Calendar.YEAR));
-        sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
-        manager = getSupportFragmentManager();
-        todayfragment = new MainTodayFragment();
-        diaryfragment = new MainDiaryFragment();
-        statfragment = new MainStatFragment();
-        foodfragment = new MainFoodFragment();
-        activityfragment = new MainActivityFragment();
-        fragmentTransaction = manager.beginTransaction();
-        fragmentTransaction.add(R.id.main_todayCont,todayfragment);
-        fragmentTransaction.add(R.id.main_diaryCont,diaryfragment);
-        fragmentTransaction.add(R.id.main_statCont,statfragment);
-        fragmentTransaction.add(R.id.main_foodCont,foodfragment);
-        fragmentTransaction.add(R.id.main_activityCont,activityfragment);
-        fragmentTransaction.commit();
+            currentTime = (TextView) findViewById(R.id.main_time_textview);
+            calendar = Calendar.getInstance();
+            currentTime.setText(calendar.get(Calendar.DAY_OF_MONTH) + " " + getMonth(calendar.get(Calendar.MONTH)) + " " + calendar.get(Calendar.YEAR));
+            sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
+            manager = getSupportFragmentManager();
+            todayfragment = new MainTodayFragment();
+            diaryfragment = new MainDiaryFragment();
+            statfragment = new MainStatFragment();
+            foodfragment = new MainFoodFragment();
+            activityfragment = new MainActivityFragment();
+            fragmentTransaction = manager.beginTransaction();
+            fragmentTransaction.add(R.id.main_todayCont, todayfragment);
+            fragmentTransaction.add(R.id.main_diaryCont, diaryfragment);
+            fragmentTransaction.add(R.id.main_statCont, statfragment);
+            fragmentTransaction.add(R.id.main_foodCont, foodfragment);
+            fragmentTransaction.add(R.id.main_activityCont, activityfragment);
+            fragmentTransaction.commit();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+//            fab.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                            .setAction("Action", null).show();
+//                }
+//            });
 
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        View v = navigationView.getHeaderView(0);
-        userMail =  v.findViewById(R.id.head_usermail_text);
-        userName =  v.findViewById(R.id.head_username_text);
-        userMail.setText(sharedPref.getString("userMail", "Нет данных"));
-        userName.setText(sharedPref.getString("userName", "Нет данных"));
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
 
+
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+            View v = navigationView.getHeaderView(0);
+            userMail = v.findViewById(R.id.head_usermail_text);
+            userName = v.findViewById(R.id.head_username_text);
+            userMail.setText(sharedPref.getString("userMail", "Нет данных"));
+            userName.setText(sharedPref.getString("userName", "Нет данных"));
 
     }
 
@@ -111,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         getRandomFood.execute("http://caloriesdiary.ru/calories/get_random_food_acts");
 
         try{
-            // Toast.makeText(this, getRandomFood.get().toString(), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, getRandomFood.get().toString(), Toast.LENGTH_SHORT).show();
         } catch (Exception e){
 
         }

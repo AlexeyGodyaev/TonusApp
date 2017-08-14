@@ -44,7 +44,8 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class TodayActivity extends AppCompatActivity implements CallBackListener{
+public class TodayActivity extends AppCompatActivity implements CallBackListener {
+
 
     final List<FoodItem> list = new ArrayList<>();
     final List<ActionItem> listActive = new ArrayList<>();
@@ -69,7 +70,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
     SharedPreferences sharedPref;
     Calendar calendar;
     EditText editMass;
-    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, FABFlag=false;
+    private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, FABFlag = false;
 
     final String[] args = new String[3];
     LinearLayout linearLayout;
@@ -116,9 +117,15 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
                 jsn = new JSONObject(text);
 
-                if (jsn.getString("date").equals(String.valueOf(calendar.get(Calendar.YEAR)) + "-"
-                        + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                                "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)))) {
+                String date = String.valueOf(calendar.get(Calendar.YEAR));
+                if (calendar.get(Calendar.MONTH) < 9)
+                    date += "-0" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                else date += "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                if (calendar.get(Calendar.DAY_OF_MONTH) < 10)
+                    date += "-0" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                else date += "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+
+                if (jsn.getString("date").equals(date)) {
 
                     editMass.setText(jsn.getString("mass"));
                     dayNote.setText(jsn.getString("note"));
@@ -134,9 +141,10 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         todayDate.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + getMonth(calendar.get(Calendar.MONTH)) + "." + calendar.get(Calendar.YEAR));
 
         getCaloriesPerDay();
+        caloriesSum();
     }
 
-    private void initAntropometry(){
+    private void initAntropometry() {
         try {
             JSONObject jsn;
             File f = new File(getCacheDir(), "Today_params.txt");
@@ -149,9 +157,15 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
                 jsn = new JSONObject(text);
 
-                if (jsn.getString("date")
-                        .equals(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) +
-                                "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)))) {
+                String date = String.valueOf(calendar.get(Calendar.YEAR));
+                if (calendar.get(Calendar.MONTH) < 9)
+                    date += "-0" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                else date += "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                if (calendar.get(Calendar.DAY_OF_MONTH) < 10)
+                    date += "-0" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                else date += "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+
+                if (jsn.getString("date").equals(date)) {
 
                     rLeg.setText(jsn.getString("rLeg"));
                     rHand.setText(jsn.getString("rHand"));
@@ -164,12 +178,12 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                     shoulders.setText(jsn.getString("shoulders"));
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void addViews(){
+    private void addViews() {
         rLeg = (EditText) findViewById(R.id.edit_right_leg);
         lLeg = (EditText) findViewById(R.id.edit_left_leg);
         rHand = (EditText) findViewById(R.id.edit_right_hand);
@@ -197,7 +211,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         linearLayout = (LinearLayout) findViewById(R.id.setting_layout);
     }
 
-    private void addRecyclerOnClickListeners(){
+    private void addRecyclerOnClickListeners() {
         actionRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 actionRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -233,6 +247,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                     Toast.makeText(getApplicationContext(), "1 +" + e.toString(), Toast.LENGTH_SHORT).show();
                 }
                 listActive.remove(i);
+                caloriesSum();
                 actionAdapter.notifyDataSetChanged();
 
             }
@@ -279,6 +294,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                     Toast.makeText(getApplicationContext(), "1 +" + e.toString(), Toast.LENGTH_SHORT).show();
                 }
                 list.remove(i);
+                caloriesSum();
                 foodAdapter.notifyDataSetChanged();
 
             }
@@ -291,18 +307,18 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         }));
     }
 
-    public  void onAddFoodClc(View view){
+    public void onAddFoodClc(View view) {
         Intent intent = new Intent(getApplicationContext(), FoodBuilderActivity.class);
         startActivity(intent);
     }
 
-    public  void onAddActionsClc(View view){
+    public void onAddActionsClc(View view) {
         Intent intent = new Intent(getApplicationContext(), RecycleActionCatalogActivity.class);
         startActivity(intent);
     }
 
-    public void onMainFABClc(View view){
-        if(FABFlag){
+    public void onMainFABClc(View view) {
+        if (FABFlag) {
             linearLayout.setVisibility(View.GONE);
             FABFlag = false;
 
@@ -312,14 +328,13 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         }
     }
 
-    private void getCaloriesPerDay(){
+    private void getCaloriesPerDay() {
         Post log = new Post();
         args[0] = "http://caloriesdiary.ru/calories/get_per_day";
         args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
         args[2] = FirebaseInstanceId.getInstance().getToken();
         log.setListener(this);
         log.execute(args);
-
         try {
             JSONObject resp = log.get();
             normCalories.setText(resp.getInt("result") + " ккал");
@@ -327,18 +342,22 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             protein.setText(resp.getInt("protein") + " г.");
             fats.setText(resp.getInt("fats") + " г.");
             carbs.setText(resp.getInt("carbs") + " г.");
-        }catch (Exception e) {
+        } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
+    }
 
-        try{
-
+    private void caloriesSum() {
+        try {
             File f = new File(getCacheDir(), "Food.txt");
             FileInputStream in = new FileInputStream(f);
             ObjectInputStream inObject = new ObjectInputStream(in);
             String text = inObject.readObject().toString();
             inObject.close();
 
+
+            sum = 0;
+            sum1 = 0;
             JSONObject jsn = new JSONObject(text);
             jsonFood = jsn.getJSONArray("food");
 
@@ -365,24 +384,16 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
             sportCalories.setText(sum1 + " ккал");
 
-        }
-        catch (Exception e)
-        {
-            if(foodCalories.getText() != "")
-            {
+        } catch (Exception e) {
+            if (foodCalories.getText() != "") {
                 foodCalories.setText(sum + " ккал");
-            }
-            else
-            {
+            } else {
                 foodCalories.setText("");
             }
 
-            if(sportCalories.getText() != "")
-            {
+            if (sportCalories.getText() != "") {
                 sportCalories.setText(sum1 + " ккал");
-            }
-            else
-            {
+            } else {
                 sportCalories.setText("");
             }
         }
@@ -408,7 +419,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
         if (antropometryFlag) {
             antropometry.setVisibility(View.VISIBLE);
-            Toast.makeText(this,String.valueOf(antropometry.getHeight()),Toast.LENGTH_LONG).show();
+            Toast.makeText(this, String.valueOf(antropometry.getHeight()), Toast.LENGTH_LONG).show();
             scrlView.scrollBy(0, 200);
             antropometryFlag = false;
         } else {
@@ -418,7 +429,6 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
 
     }
-
 
 
     public void onTodayActivityBtnClc(View v) {
@@ -461,7 +471,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                     } catch (NumberFormatException e) {
                         System.err.println("Неверный формат строки!");
                     }
-                        list.add(new FoodItem(id, foodName, b, j, u, category_id, calories));
+                    list.add(new FoodItem(id, foodName, b, j, u, category_id, calories));
                 }
             } catch (JSONException jEx) {
                 Toast.makeText(getApplicationContext(), "3 +" + jEx.toString(), Toast.LENGTH_SHORT).show();
@@ -501,12 +511,13 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 args[0] = "http://caloriesdiary.ru/calories/get_per_day";
                 args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
                 args[2] = FirebaseInstanceId.getInstance().getToken();
+                log.setListener(this);
                 log.execute(args);
                 JSONObject jOb;
                 try {
                     jOb = log.get();
                     listActive.add(new ActionItem("Сон", Float.valueOf(jOb.getString("dreamCalories")), 5));
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
@@ -600,8 +611,16 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             jsn.put("protein", protein.getText().toString());
             jsn.put("fats", fats.getText().toString());
             jsn.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
-            jsn.put("date", String.valueOf(String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1) +
-                    "-" + calendar.get(Calendar.DAY_OF_MONTH)));
+
+            String date = String.valueOf(calendar.get(Calendar.YEAR));
+            if (calendar.get(Calendar.MONTH) < 9)
+                date += "-0" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+            else date += "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+            if (calendar.get(Calendar.DAY_OF_MONTH) < 10)
+                date += "-0" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+            else date += "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+
+            jsn.put("date", date);
 
             if (!rLeg.getText().toString().equals(""))
                 jsn.put("rLeg", rLeg.getText().toString());
@@ -621,7 +640,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             if (!shoulders.getText().toString().equals(""))
                 jsn.put("shoulders", shoulders.getText().toString());
             else jsn.put("shoulders", "0");
-            if (!butt.toString().equals(""))
+            if (!butt.getText().toString().equals(""))
                 jsn.put("butt", butt.getText().toString());
             else jsn.put("butt", "0");
             if (!waist.getText().toString().equals(""))
@@ -631,14 +650,6 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 jsn.put("chest", chest.getText().toString());
             else jsn.put("chest", "0");
 
-            SaveTodayParams saveBackUp = new SaveTodayParams();
-
-
-            saveBackUp.execute(jsn);
-
-
-            //Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
-
 
             FileOutputStream out = new FileOutputStream(f);
             ObjectOutputStream outObject = new ObjectOutputStream(out);
@@ -646,6 +657,16 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             outObject.flush();
             out.getFD().sync();
             outObject.close();
+
+
+            SaveTodayParams saveBackUp = new SaveTodayParams();
+
+
+            saveBackUp.execute(jsn);
+
+
+            Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
+
 
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
@@ -656,28 +677,5 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
     @Override
     public void callback() {
-
     }
 }
-
-//class scrlTask extends AsyncTask<Boolean, Void, Void>{
-//
-//    @Override
-//    protected void onPreExecute() {
-//        super.onPreExecute();
-//    }
-//
-//    @Override
-//    protected void onPostExecute(Void aVoid) {
-//        super.onPostExecute(aVoid);
-//    }
-//
-//    @Override
-//    protected Void doInBackground(Boolean... booleen) {
-//
-//        if (booleen[0])
-//
-//
-//        return null;
-//    }
-//}
