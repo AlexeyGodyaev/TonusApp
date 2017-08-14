@@ -10,157 +10,267 @@
         android:layout_height="match_parent"
         android:id="@+id/graph_layout"
         android:orientation="vertical">
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Графики"
-            android:textSize="15sp"/>
+            android:orientation="horizontal"
+            android:paddingBottom="16dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_timeline_black_24dp"
+                android:paddingLeft="18dp"
+                android:paddingTop="24dp"
+                android:alpha="0.3"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="24dp"
+                android:paddingLeft="34dp"
+                android:text="Графики"
+                android:textSize="38px"/>
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/graph_params"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Параметры отображения:"
-            android:textSize="15sp"/>
+            android:elevation="3dp"
+            android:textSize="32px"
+            android:textColor="#000000"
+            android:paddingBottom="14dp"
+            android:paddingLeft="76dp"/>
 
         <TextView
             android:id="@+id/graph_params_value"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="32px"
+            android:paddingLeft="76dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            />
 
         <TextView
             android:id="@+id/mass_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Масса" />
+            android:text="Масса"
+            android:paddingBottom="14dp"
+            android:textSize="27px"
+            android:paddingLeft="76dp"/>
 
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:id="@+id/mass_graph_container"/>
+            android:id="@+id/mass_graph_container"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" />
+
         <TextView
             android:id="@+id/eated_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Потребляемые калории" />
+            android:text="Потребляемые калории"
+            android:paddingBottom="14dp"
+            android:textSize="27px"
+            android:paddingLeft="76dp"
+            android:paddingTop="21dp"/>
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:fadingEdge="none"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="21dp"
             android:id="@+id/eated_calories_graph_container"/>
 
         <TextView
             android:id="@+id/bern_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Затраченные калории" />
+            android:text="Затраченные калории"
+            android:paddingBottom="14dp"
+            android:textSize="27px"
+            android:paddingTop="21dp"
+            android:paddingLeft="76dp"/>
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="21dp"
             android:id="@+id/bern_calories_graph_container"/>
 
         <TextView
             android:id="@+id/shoulders_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Плечи" />
+            android:text="Плечи"
+            android:paddingTop="21dp"
+            android:paddingBottom="14dp"
+            android:textSize="27px"
+            android:paddingLeft="76dp"/>
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="21dp"
             android:id="@+id/shoulders_graph_container"/>
 
         <TextView
             android:id="@+id/rh_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Правая рука" />
+            android:text="Правая рука"
+            android:paddingBottom="14dp"
+            android:textSize="27px"
+            android:paddingTop="21dp"
+            android:paddingLeft="76dp"/>
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="21dp"
             android:id="@+id/right_hand_graph_container"/>
 
         <TextView
             android:id="@+id/lh_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Левая рука" />
+            android:text="Левая рука"
+            android:paddingBottom="14dp"
+            android:textSize="27px"
+            android:paddingTop="21dp"
+            android:paddingLeft="76dp"/>
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="21dp"
             android:id="@+id/left_hand_graph_container"/>
 
         <TextView
             android:id="@+id/chest_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Грудь" />
+            android:text="Грудь"
+            android:paddingBottom="14dp"
+            android:textSize="27px"
+            android:paddingTop="21dp"
+            android:paddingLeft="76dp"/>
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="21dp"
             android:id="@+id/chest_graph_container"/>
 
         <TextView
             android:id="@+id/waist_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Талия" />
+            android:text="Талия"
+            android:paddingBottom="14dp"
+            android:paddingTop="21dp"
+            android:textSize="27px"
+            android:paddingLeft="76dp"/>
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="21dp"
             android:id="@+id/waist_graph_container"/>
 
         <TextView
             android:id="@+id/butt_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ягодицы" />
+            android:text="Ягодицы"
+            android:paddingBottom="14dp"
+            android:textSize="27px"
+            android:paddingTop="21dp"
+            android:paddingLeft="76dp"/>
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="21dp"
             android:id="@+id/butt_graph_container"/>
 
         <TextView
             android:id="@+id/rl_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Правое бедро" />
+            android:text="Правое бедро"
+            android:paddingBottom="14dp"
+            android:textSize="27px"
+            android:paddingTop="21dp"
+            android:paddingLeft="76dp"/>
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="21dp"
             android:id="@+id/right_leg_graph_container"/>
 
         <TextView
             android:id="@+id/ll_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Левое бедро" />
+            android:text="Левое бедро"
+            android:paddingBottom="14dp"
+            android:textSize="27px"
+            android:paddingTop="21dp"
+            android:paddingLeft="76dp"/>
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="21dp"
             android:id="@+id/left_leg_graph_container"/>
 
         <TextView
             android:id="@+id/calves_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Икры" />
+            android:text="Икры"
+            android:paddingTop="21dp"
+            android:paddingBottom="14dp"
+            android:textSize="27px"
+            android:paddingLeft="76dp"/>
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="21dp"
             android:id="@+id/calves_graph_container"/>
-
 
     </LinearLayout>
 
