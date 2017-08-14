@@ -17,6 +17,7 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -215,6 +216,16 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -666,6 +677,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
         args[2] = nameedit.getText().toString();
         args[3] = jsn.toString();
+            post.setListener(listener);
             post.execute(args);
             String ans = post.get().toString();
             Toast.makeText(this, ans, Toast.LENGTH_LONG).show();
@@ -678,172 +690,5 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
 
     }
-
-
-
-    private class GetFood extends AsyncTask<String, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            //Toast.makeText(FoodBuilderActivity.this, "Загрузка блюд...", Toast.LENGTH_SHORT).show();
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(String string) {
-            super.onPostExecute(string);
-
-            send = true;
-            JSONArray resp = null;
-            String foodName = null;
-            Float b=0f, j=0f, u=0f, calories=0f;
-            Integer id=0;
-
-            Integer food_id = 0;
-
-            try {
-
-               // String answer = get.get();
-                try
-                {
-//                    Toast.makeText(FoodBuilderActivity.this, "ans = " + answer, Toast.LENGTH_SHORT).show();
-//                    resp = new JSONArray(answer);
-                }
-                catch (Exception e)
-                {
-                   //
-                }
-
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-                Toast.makeText(FoodBuilderActivity.this, e.toString(), Toast.LENGTH_LONG).show();
-            }
-            if (resp != null)
-                for(int i = 0; i<resp.length(); i++){
-                    try {
-                        id = Integer.valueOf(resp.getJSONObject(i).getString("category_id"));
-
-                        food_id = Integer.valueOf(resp.getJSONObject(i).getString("food_id"));
-
-                        foodName = resp.getJSONObject(i).getString("name");
-                        b = Float.valueOf(resp.getJSONObject(i).getString("protein"));
-                        j = Float.valueOf(resp.getJSONObject(i).getString("fats"));
-                        u = Float.valueOf(resp.getJSONObject(i).getString("carbs"));
-                        calories = Float.valueOf(resp.getJSONObject(i).getString("calories"));
-                    } catch (NumberFormatException e) {
-                        System.err.println("Неверный формат строки!");
-                    } catch (JSONException jEx){
-                        Toast.makeText(getApplicationContext(),jEx.toString(), Toast.LENGTH_SHORT).show();
-                        //errors.setText(jEx.toString());
-                    }
-                        list.add(new FoodItem(food_id,foodName,b,j,u,id,calories));
-
-                }
-
-            mAdapter = new RecycleFoodAdapter(list);
-            mRecyclerView.setAdapter(mAdapter);
-            Toast.makeText(FoodBuilderActivity.this, "Загружено элементов: " + String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
-            ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPosition(buff);
-
-
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-            try {
-
-                URL url = new URL(strings[0]); // первый аргумент из массива который передан при вызове
-                JSONObject postDataParams = new JSONObject();
-
-                postDataParams.put("offset",strings[1]);
-                postDataParams.put("query",strings[2]);
-                postDataParams.put("categ_id",strings[3]);
-                postDataParams.put("sort_names",strings[4]);
-                postDataParams.put("sort_calories",strings[5]);
-                postDataParams.put("id", String.valueOf(sharedPref.getInt("PROFILE_ID",0)));
-                postDataParams.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(150000 /* milliseconds */);
-                conn.setConnectTimeout(150000 /* milliseconds */);
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(getPostDataString(postDataParams)); // преобразуем json объект в строку параметров запроса
-
-                writer.flush();
-                writer.close();
-                os.close();
-
-                int responseCode=conn.getResponseCode();
-
-                if (responseCode == HttpsURLConnection.HTTP_OK) {
-                    BufferedReader in=new BufferedReader(
-                            new InputStreamReader(
-                                    conn.getInputStream(), "UTF-8"));
-                    //StringBuffer sb = new StringBuffer("");
-                    String line;
-                    try
-                    {
-                        JSONObject js = null;
-                        while((line = in.readLine()) != null) {
-                            js = new JSONObject(line);
-                            break;
-                        }
-                        JSONArray jArr = js.getJSONArray("food");
-
-                        in.close();
-                        return jArr.toString();
-                    }
-                    catch (Exception e)
-                    {
-                        return "JSONparse error: " + e.toString();
-                    }
-
-
-
-                }
-                else {
-                    return "Response error: " + String.valueOf(responseCode);
-                }
-            }
-            catch(Exception e){
-                return "Connection error: " + e.toString();
-            }
-
-        }
-        private String getPostDataString(JSONObject params) throws Exception {
-
-            StringBuilder result = new StringBuilder();
-            boolean first = true;
-
-            Iterator<String> itr = params.keys();
-
-            while(itr.hasNext()){
-
-                String key= itr.next();
-                Object value = params.get(key);
-
-
-                if (first)
-                    first = false;
-                else
-                    result.append("&");
-
-                result.append(URLEncoder.encode(key, "UTF-8"));
-                result.append("=");
-                result.append(URLEncoder.encode(value.toString(), "UTF-8"));
-
-            }
-            return result.toString();
-        }
-    }
-
 
 }
