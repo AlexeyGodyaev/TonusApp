@@ -145,8 +145,6 @@ public class MainActivity extends AppCompatActivity
         try {
 
 
-
-
             Post log = new Post();
 
             String args[] = new String[3];
@@ -173,7 +171,7 @@ public class MainActivity extends AppCompatActivity
             }
 
         } catch (Exception e){
-
+            Toast.makeText(this, "New intent error: " + e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 

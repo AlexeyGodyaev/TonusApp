@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleActionAdapter;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
 import com.caloriesdiary.caloriesdiary.Items.ActionItem;
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
@@ -43,7 +44,7 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class TodayActivity extends AppCompatActivity {
+public class TodayActivity extends AppCompatActivity implements CallBackListener{
 
     final List<FoodItem> list = new ArrayList<>();
     final List<ActionItem> listActive = new ArrayList<>();
@@ -78,6 +79,7 @@ public class TodayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         setContentView(R.layout.today_layout);
         setTitle("Сегодня");
@@ -290,7 +292,7 @@ public class TodayActivity extends AppCompatActivity {
     }
 
     public  void onAddFoodClc(View view){
-        Intent intent = new Intent(getApplicationContext(), RecycleFoodCatalogActivity.class);
+        Intent intent = new Intent(getApplicationContext(), FoodBuilderActivity.class);
         startActivity(intent);
     }
 
@@ -301,7 +303,7 @@ public class TodayActivity extends AppCompatActivity {
 
     public void onMainFABClc(View view){
         if(FABFlag){
-            linearLayout.setVisibility(View.INVISIBLE);
+            linearLayout.setVisibility(View.GONE);
             FABFlag = false;
 
         } else {
@@ -315,6 +317,7 @@ public class TodayActivity extends AppCompatActivity {
         args[0] = "http://caloriesdiary.ru/calories/get_per_day";
         args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
         args[2] = FirebaseInstanceId.getInstance().getToken();
+        log.setListener(this);
         log.execute(args);
 
         try {
@@ -649,6 +652,11 @@ public class TodayActivity extends AppCompatActivity {
         }
 
         super.onStop();
+    }
+
+    @Override
+    public void callback() {
+
     }
 }
 
