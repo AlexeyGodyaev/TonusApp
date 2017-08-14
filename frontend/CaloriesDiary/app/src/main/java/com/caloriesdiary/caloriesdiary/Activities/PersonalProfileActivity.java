@@ -39,7 +39,7 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
     FragmentManager manager;
     FragmentTransaction transaction;
     boolean antropometryFlag = true;
-    TextView name_text,age_text,weight_text,height_text,gender_text, wakeup_text, sleep_text;
+    TextView life_style,age_text,weight_text,height_text,gender_text, wakeup_text, sleep_text;
     SharedPreferences sharedPref = null;
     private Toolbar mToolbar;
     private final int reqcode = 1;
@@ -51,7 +51,7 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
         manager = getSupportFragmentManager();
         fragment = new ProfileAntropometryFragment();
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
-        name_text = (TextView) findViewById(R.id.name_text);
+        life_style = (TextView) findViewById(R.id.life_style_text);
         age_text = (TextView) findViewById(R.id.age_text);
         sleep_text = (TextView) findViewById(R.id.sleep_time_text);
         wakeup_text = (TextView) findViewById(R.id.wakeup_time_text);
@@ -100,7 +100,7 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
             Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
 
             Toast.makeText(getApplicationContext(), JSans.getJSONObject("userChars").getString("realName"), Toast.LENGTH_LONG).show();
-            name_text.setText("Имя: " + JSans.getJSONObject("userChars").getString("realName"));
+            life_style.setText("Имя: " + JSans.getJSONObject("userChars").getString("realName"));
             if (JSans.getJSONObject("userChars").getString("sex").equals("1")) {
                 gender_text.setText("Пол: мужской");
             } else {
