@@ -127,7 +127,7 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
                 }
             }
         }catch (Exception e){
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
