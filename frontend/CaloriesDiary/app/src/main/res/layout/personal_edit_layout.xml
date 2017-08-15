@@ -17,32 +17,34 @@
         android:layout_height="wrap_content"
         app:backgroundTint="@android:color/holo_blue_light"
         android:onClick="onClick"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="13dp"
         android:clickable="true"
         app:srcCompat="@mipmap/ic_get_app_white_24dp"
-        android:layout_above="@+id/age_edit"
-        android:layout_toRightOf="@+id/sleep_edit"
-        android:layout_toEndOf="@+id/sleep_edit" />
+        android:layout_alignBottom="@+id/labelName"
+        android:layout_alignRight="@+id/name_edit"
+        android:layout_alignEnd="@+id/name_edit"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp" />
 
     <EditText
-        android:layout_below="@+id/toolbar_edit_profile"
         android:id="@+id/name_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="310dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/toolbar_edit_profile"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="25dp"
-        android:maxLength="30"
-        android:hint="Имя" />
+        android:maxLength="30" />
 
     <EditText
         android:id="@+id/age_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Возраст"
-        android:layout_below="@id/name_edit"
-        android:layout_marginLeft="30dp"
-        android:maxLength="3"
-        android:inputType="number"/>
+        android:layout_width="310dp"
+        android:layout_height="50dp"
+        android:layout_alignLeft="@+id/name_edit"
+        android:layout_alignStart="@+id/name_edit"
+        android:layout_below="@+id/name_edit"
+        android:layout_marginTop="16dp"
+        android:inputType="number"
+        android:maxLength="3" />
     <TextView
         android:id="@+id/gender_text"
         android:layout_width="wrap_content"
@@ -78,22 +80,24 @@
 
     <EditText
         android:id="@+id/height_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Рост (в см)"
+        android:layout_width="310dp"
+        android:layout_height="50dp"
+        android:inputType="number"
         android:maxLength="3"
-        android:layout_below="@+id/gender_edit"
-        android:layout_marginLeft="30dp"
-        android:inputType="number"/>
+        android:layout_below="@+id/labelHeight"
+        android:layout_alignLeft="@+id/labelWeight"
+        android:layout_alignStart="@+id/labelWeight" />
+
     <EditText
         android:id="@+id/weight_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Вес (в кг)"
+        android:layout_width="310dp"
+        android:layout_height="50dp"
+        android:layout_alignLeft="@+id/sleep_edit"
+        android:layout_alignStart="@+id/sleep_edit"
         android:layout_below="@+id/height_edit"
-        android:layout_marginLeft="30dp"
-        android:maxLength="3"
-        android:inputType="number"/>
+        android:layout_marginTop="16dp"
+        android:inputType="number"
+        android:maxLength="3" />
     <TextView
         android:id="@+id/activity_text"
         android:layout_width="wrap_content"
@@ -104,33 +108,87 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_below="@id/weight_edit"/>
+
     <Spinner
         android:id="@+id/activity_spinner"
-        android:layout_width="wrap_content"
+        android:layout_width="310dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/activity_text"
-        android:layout_alignLeft="@+id/activity_text"
+        android:layout_below="@+id/activity_text"
         android:entries="@array/activitylist"
-        />
+        android:layout_alignRight="@+id/weight_edit"
+        android:layout_alignEnd="@+id/weight_edit"
+        android:layout_alignLeft="@+id/labelDream"
+        android:layout_alignStart="@+id/labelDream" />
 
     <EditText
         android:id="@+id/sleep_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Среднее время сна (в часах)"
-        android:layout_below="@+id/activity_spinner"
-        android:layout_marginLeft="30dp"
-        android:maxLength="2"
-        android:inputType="number"/>
+        android:layout_width="310dp"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@+id/age_edit"
+        android:layout_alignLeft="@+id/age_edit"
+        android:layout_alignRight="@+id/age_edit"
+        android:layout_alignStart="@+id/age_edit"
+        android:layout_below="@+id/labelDream"
+        android:inputType="number"
+        android:maxLength="2" />
     <TextView
         android:id="@+id/awake_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:hint="Среднее время пробуждения"
+        android:layout_marginTop="14dp"
+        android:onClick="onAwakeTimeClick"
         android:layout_below="@+id/sleep_edit"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="35dp"
-        android:onClick="onAwakeTimeClick"/>
+        android:layout_alignLeft="@+id/labelDream"
+        android:layout_alignStart="@+id/labelDream" />
+
+    <TextView
+        android:id="@+id/labelName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:text="Имя"
+        android:layout_below="@+id/toolbar_edit_profile"
+        android:layout_alignLeft="@+id/name_edit"
+        android:layout_alignStart="@+id/name_edit" />
+
+    <TextView
+        android:id="@+id/labelAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Возраст"
+        android:layout_below="@+id/name_edit"
+        android:layout_alignLeft="@+id/age_edit"
+        android:layout_alignStart="@+id/age_edit" />
+
+    <TextView
+        android:id="@+id/labelHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Рост:"
+        android:layout_below="@+id/gender_edit"
+        android:layout_alignLeft="@+id/height_edit"
+        android:layout_alignStart="@+id/height_edit"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/labelWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/weight_edit"
+        android:layout_alignStart="@+id/weight_edit"
+        android:layout_below="@+id/height_edit"
+        android:text="Вес:" />
+
+    <TextView
+        android:id="@+id/labelDream"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Продолжительность сна:"
+        android:layout_below="@+id/activity_spinner"
+        android:layout_alignLeft="@+id/sleep_edit"
+        android:layout_alignStart="@+id/sleep_edit"
+        android:layout_marginTop="13dp" />
 </RelativeLayout>
     </ScrollView>

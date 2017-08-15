@@ -8,56 +8,52 @@ class Action extends CI_Model {
         $this->load->database();
     }
 
-    public function getTimestamp()
+    //Даёт список активностей
+    public function getActivities($name, $sort_alphabetical, $sort_calories)
     {
-        $q = $this->db->query('SELECT * FROM updates ORDER BY timestamp DESC LIMIT 1');
-        if($q->num_rows() > 0)
-        {
-            foreach ($q->result() as $row)
-            {
-                return strtotime($row->timestamp);
-            }
+        $this->db->from('Activities');
+
+        switch ($sort_alphabetical) {
+            case 1:
+                $this->db->order_by('name', 'ASC');
+                break;
+
+            case 2:
+                $this->db->order_by('name', 'DESC');
+                break;
         }
-    }
 
-    public function get_act_names($timestamp)
-    {
-        $actNames = array();
-        $response['status'] = 1;
+        switch ($sort_calories) {
+            case 1:
+                $this->db->order_by('calories', 'ASC');
+                break;
 
-        if($this->getTimestamp() > $timestamp)
+            case 2:
+                $this->db->order_by('calories', 'DESC');
+                break;
+        }
+
+
+        if($name != "")
         {
-            $this->db->select('name');
-            $query = $this->db->get('Activities');
-            
-            $i = 0;
-            foreach ($query->result() as $act)
-            {
-                $actNames[$i] = $act->name;
-                $i++;
-            }
+            $this->db->like('name', mb_convert_case($name, MB_CASE_TITLE, 'utf-8'), "after");
+            $queryCapital = $this->db->get();
+            $this->db->or_like('name', mb_strtolower($name));
+            $queryLow = $this->db->get('Activities');
 
-            $response['update'] = true;
-            $response['actNames'] = $actNames;
+            $query = $queryCapital->result() + $queryLow->result();
         }
         else
         {
-            $response['status'] = 0;
-            $response['update'] = false;
-            $response['actNames'] = $actNames;
+            $query = $this->db->get()->result();
         }
 
-        return $response;
-    }
 
-    public function get_activities()
-    {
-        $query = $this->db->get('Activities');
-
+        
         if($query)
         {
             $response['status'] = 1;
-            $response['activities'] = $query->result();
+            $response['activities'] = $query;
         }
         else
         {

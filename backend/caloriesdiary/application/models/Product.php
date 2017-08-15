@@ -8,182 +8,187 @@ class Product extends CI_Model {
         $this->load->database();
     }
 
-     public function getTimestamp()
+    //Получение продуктов по их id (массив)
+    public function getById($ids)
     {
-        $q = $this->db->query('SELECT * FROM updates ORDER BY timestamp DESC LIMIT 1');
+        $this->db->select('*', TRUE);
+        $this->db->from('Food');
+        $this->db->where_in('food_id', $ids);
+        $this->db->join('categories', 'Food.category = categories.id', TRUE);
+        $q = $this->db->get();
+
         if($q->num_rows() > 0)
         {
-            foreach ($q->result() as $row)
+        	$i = 0;
+            foreach ($q->result() as $f)
             {
-                return strtotime($row->timestamp);
-            }
-        }
-    }
-
-    public function get_food_names($timestamp)
-    {
-        $foodNames = array();
-
-        if($this->getTimestamp() > $timestamp)
-        {
-            $this->db->select('name');
-            $query = $this->db->get('Food');
-            
-            $i = 0;
-            foreach ($query->result() as $f) 
-            {
-                $foodNames[$i] = $f->name;
+                $food[$i] = array(
+                "food_id"   =>  $f->food_id,
+                "name"      =>  $f->name,
+                "protein"   =>  $f->protein,
+                "fats"      =>  $f->fats,
+                "carbs"     =>  $f->carbs,
+                "calories"  =>  $f->calories,
+                "category"  =>  $f->categ_name,
+                "category_id" => $f->category
+                    );
                 $i++;
-            }
-
-            $response['status'] = 1;
-            $response['update'] = true;
-            $response['foodNames'] = $foodNames;
-        }
-        else
-        {
-            $response['status'] = 1;
-            $response['update'] = false;
-            $response['foodNames'] = $foodNames;
-        }
-
-        return $response;
-
-    }
-
-     public function get_food($offset)
-    {
-        $this->db->select('*');
-        $this->db->from('Food');
-        $this->db->join('categories', 'Food.category = categories.id');
-        $this->db->limit(500, $offset*500);
-        $query = $this->db->get();
-
-        $food = array();
-
-        if($query)
-        {
-            $response['status'] = 1;
-            foreach ($query->result() as $f) 
-            { 
-                $food[] = array(
-                    "food_id"   =>  $f->food_id,
-                    "name"      =>  $f->name,
-                    "protein"   =>  $f->protein,
-                    "fats"      =>  $f->fats,
-                    "carbs"     =>  $f->carbs,
-                    "calories"  =>  $f->calories,
-                    "category"  =>  $f->categ_name,
-                    "category_id" => $f->category
-                );
             } 
 
-            $response['food'] = $food;
+        }
+
+        return $food;
+    }
+
+
+
+    //Запрос на получение списка еды
+    //Указан id - даст продукты + даст кастомные блюда пользователя
+    //Указан name - даст продукты по куску имени
+    //Указан category_id - даст продукты по категории
+
+    public function getfood($instanceToken, $id, $name, $category_id, $offset, $sort_alphabetical, $sort_calories)
+    {
+        $sql = 'SELECT * FROM "Food"';
+        $sql = $sql . ' JOIN categories ON "Food".category = "categories".id';
+       
+        if($name)
+        {
+           $sql = $sql . " WHERE name ILIKE '$name%'";
+        }
+
+        if($category_id)
+        {
+            $sql = $sql . " WHERE category = $category_id";
+        }
+
+        switch ($sort_alphabetical) {
+    		case 1:
+    			$sql = $sql . ' ORDER BY name ASC';
+    			break;
+
+    		case 2:
+    			$sql = $sql . ' ORDER BY name DESC';
+    			break;
+    	}
+
+    	switch ($sort_calories) {
+    		case 1:
+                $sql = $sql . ' ORDER BY calories ASC';
+    			break;
+
+    		case 2:
+    			$sql = $sql . ' ORDER BY calories DESC';
+    			break;
+    	}
+
+        if($offset != -1)
+        {
+          $sql = $sql . " LIMIT 200 OFFSET $offset*200";
+    	}
+
+        $queryFood = $this->db->query($sql);
+
+        $this->db->from('Users');
+        $this->db->where('instanceToken', $instanceToken);
+        $q = $this->db->get();
+
+        $customFood = array();
+
+        if($q->num_rows() > 0)
+        {
+        	
+        	$this->db->from('custom_user_dishes');
+        	$this->db->where('user_id', $id);
+
+        
+        	$queryCustom = $this->db->get();
+
+        	 if($queryCustom)
+            {
+                foreach ($queryCustom->result() as $f) 
+                { 
+                    $cust_ing = $this->getById(json_decode($f->ingredients)->ingredients);
+                    	
+                    $customFood[] = array(
+                        "id"   =>  $f->id,
+                        "name" =>  $f->name,
+                        "ingredients" => $cust_ing
+                    );
+                }
+
+                $response['custom_food'] = $customFood;
+            }
         }
         else
         {
-            $response['status'] = 0;
-            $response['msg'] = 'Error occured';
-            $response['food'] = $food;
+        	$response['custom_food'] = $customFood;
         }
-
-        return $response;
-    }
-
-    public function getFoodcategories()
-    {
-        $this->db->select('*');
-        $this->db->from('categories');
-        $query = $this->db->get();
-
-        if($query)
-        {
-            $response['status'] = 1;
-            $response['categories'] = $query->result();
-        }
-        else
-        {
-            $response['status'] = 0;
-            $response['msg'] = 'Error occured';
-            $response['categories'] = array();
-        }
-
-        return $response;
-    }
-
-    public function getfoodBycategory($id, $offset)
-    {
-        $this->db->select('*');
-        $this->db->from('Food');
-        $this->db->where('category',$id);
-        $this->db->join('categories', 'Food.category = categories.id');
-        $this->db->limit(500, $offset*500);
-        $query = $this->db->get();
 
         $food = array();
 
-        if($query)
+        if($queryFood)
         {
             $response['status'] = 1;
-            foreach ($query->result() as $f) 
-            { 
-                $food[] = array(
-                    "food_id"   =>  $f->food_id,
-                    "name"      =>  $f->name,
-                    "protein"   =>  $f->protein,
-                    "fats"      =>  $f->fats,
-                    "carbs"     =>  $f->carbs,
-                    "calories"  =>  $f->calories,
-                    "category"  =>  $f->categ_name,
-                    "category_id" => $f->category
-                );
-            }
-            $response['food'] = $food;
+            
+              // foreach ($queryFood->result() as $f) 
+              // { 
+              //     $food[] = array(
+              //         "food_id"   =>  $f->food_id,
+              //         "name"      =>  $f->name,
+              //         "protein"   =>  $f->protein,
+              //         "fats"      =>  $f->fats,
+              //         "carbs"     =>  $f->carbs,
+              //         "calories"  =>  $f->calories,
+              //         "category"  =>  $f->categ_name,
+              //         "category_id" => $f->category
+              //     );
+              // }
+
+            $response['food'] = $queryFood->result();
+ 
         }
         else
         {
             $response['status'] = 0;
             $response['msg'] = 'Error occured';
             $response['food'] = $food;
+            $response['custom_food'] = $customFood;
         }
-        
+ 
         return $response;
+
     }
 
-    public function getfoodByName($name, $offset)
-    {
-        $this->db->select('*');
-        $this->db->from('Food');
-        $this->db->where('name', $name);
-        $this->db->join('categories', 'Food.category = categories.id');
-        $this->db->limit(500, $offset*500);
-        $query = $this->db->get();
+    //Сохранение кастомного блюда пользователя
 
-         if($query)
+    public function saveCustomDish($instanceToken, $id, $name, $ingredients)
+    {
+        $query = $this->db->insert("custom_user_dishes", array("user_id" => $id, "name" => $name, "ingredients" => $ingredients));
+
+        $this->db->from('Users');
+        $this->db->where('instanceToken', $instanceToken);
+        $q = $this->db->get();
+
+        if($q->num_rows() > 0)
         {
-            $response['status'] = 1;
-            foreach ($query->result() as $f) 
-            { 
-                $food = array(
-                    "food_id"   =>  $f->food_id,
-                    "name"      =>  $f->name,
-                    "protein"   =>  $f->protein,
-                    "fats"      =>  $f->fats,
-                    "carbs"     =>  $f->carbs,
-                    "calories"  =>  $f->calories,
-                    "category"  =>  $f->categ_name,
-                    "category_id" => $f->category
-                );
-            }
-            $response['food'] = $food;
+        	if($query)
+        	{
+            	$response['status'] = 1;
+            	$response['msg'] = 'Блюдо добавлено';
+        	}
+        	else
+        	{
+            	$response['status'] = 0;
+            	$response['msg'] = 'Error occured';
+        	}
         }
         else
         {
-            $response['status'] = 0;
-            $response['msg'] = 'Error occured';
-            $response['food'] = $food; 
+        	$response['status'] = 0;
+            $response['msg'] = 'Доступ запрещён';
         }
-        
+
         return $response;
     }
 
