@@ -653,7 +653,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 jsn.put("chest", chest.getText().toString());
             else jsn.put("chest", "0");
 
-            Toast.makeText(this, jsn.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, jsn.toString(), Toast.LENGTH_LONG).show();
             FileOutputStream out = new FileOutputStream(f);
             ObjectOutputStream outObject = new ObjectOutputStream(out);
             outObject.writeObject(jsn.toString());
