@@ -135,6 +135,18 @@ public class StatActivity extends AppCompatActivity {
                         String text = inObject.readObject().toString();
                         inObject.close();
                         graphDraw = new JSONObject(text);
+                    } else {
+                        graphDraw.put("mass", "true");
+                        graphDraw.put("shoulders", "true");
+                        graphDraw.put("calves", "true");
+                        graphDraw.put("chest", "true");
+                        graphDraw.put("waist", "true");
+                        graphDraw.put("butt", "true");
+                        graphDraw.put("bern", "true");
+                        graphDraw.put("eated", "true");
+                        graphDraw.put("legs", "true");
+                        graphDraw.put("hands", "true");
+
                     }
                 }  catch (Exception e){
                     Toast.makeText(getActivity().getApplicationContext(), e.toString() , Toast.LENGTH_LONG).show();
