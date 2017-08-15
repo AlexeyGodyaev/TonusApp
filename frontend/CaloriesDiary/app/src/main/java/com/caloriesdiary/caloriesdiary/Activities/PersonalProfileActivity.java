@@ -120,6 +120,8 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
             setTitle(JSans.getJSONObject("userChars").getString("realName"));
 
             life_style.setText(JSans.getJSONObject("userChars").getString("activityType"));
+            //String te[] = (String[]) findViewById( R.array.activitylist);
+
             if (JSans.getJSONObject("userChars").getString("sex").equals("1")) {
                 gender_text.setText("Мужской");
             } else {
@@ -269,6 +271,8 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
         }}
 
     private void SavePictureToServer(Drawable dr) {
+
+
         try {
 
 //            PostAvatar postAvatar = new PostAvatar();
@@ -293,16 +297,16 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
 //        args[2] = FirebaseInstanceId.getInstance().getToken();
 //        Bitmap bm = ((BitmapDrawable) dr).getBitmap();
 //        ByteArrayOutputStream bao = new ByteArrayOutputStream();
-//        bm.compress(Bitmap.CompressFormat.PNG, 100, bao);
+//        bm.compress(Bitmap.CompressFormat.JPEG, 100, bao);
 //       // byte [] ba = bao.toByteArray();
 //
 //        args[3] = Base64.encodeToString(bao.toByteArray(),Base64.DEFAULT);
-//
-//        byte[] bytes = Base64.decode(args[3], Base64.DEFAULT);
-//
-//        Bitmap bm2 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//        Drawable dr2 = new BitmapDrawable(bm2);
-//        imageView.setImageDrawable(dr2);
+////
+////        byte[] bytes = Base64.decode(args[3], Base64.DEFAULT);
+////
+////        Bitmap bm2 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+////        Drawable dr2 = new BitmapDrawable(bm2);
+////        imageView.setImageDrawable(dr2);
 //        post.execute(args);
 //        try {
 //          //  setTitle(post.get().toString());

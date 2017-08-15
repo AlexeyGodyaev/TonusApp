@@ -74,10 +74,10 @@ public class PostAvatar {
             dos.writeBytes("Content-Disposition: form-data; name=\"instanceToken\"" + lineEnd + lineEnd
                     + instanceToken + lineEnd);
 
-            dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=\"" +
-                    attachmentName + "\";filename=\"" +
-                    attachmentFileName + "\"" + lineEnd);
+//            dos.writeBytes(twoHyphens + boundary + lineEnd);
+//            dos.writeBytes("Content-Disposition: form-data; name=\"" +
+//                    attachmentName + "\";filename=\"" +
+//                    attachmentFileName + "\"" + lineEnd);
 
                     /*dos.writeBytes("Content-Disposition: form-data; name=\"avatar\";filename=\""
                             + "profile_picture" + "\"" + lineEnd);*/
@@ -125,18 +125,14 @@ public class PostAvatar {
 
             }
             else {
-                BufferedReader in=new BufferedReader(
-                        new InputStreamReader(
-                                conn.getInputStream(), "UTF-8"));
-                if((line = in.readLine()) != null)
-                {
-                    json = new JSONObject(line);
 
+                    json = new JSONObject();
+                    json.put("msg",String.valueOf(responseCode));
                     fileInputStream.close();
                     dos.flush();
                     dos.close();
                     return json;
-                }
+
 
             }
 
