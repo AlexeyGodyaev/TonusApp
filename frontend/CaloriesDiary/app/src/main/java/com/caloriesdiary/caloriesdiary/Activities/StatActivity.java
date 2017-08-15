@@ -755,14 +755,14 @@ public class StatActivity extends AppCompatActivity {
 //                table.setShrinkAllColumns(true);
                 TableRow rowDayLabels = new TableRow(getActivity().getApplicationContext());
                 TableRow rowMass = new TableRow(getActivity().getApplicationContext());
-                rowMass.setBackgroundColor(Color.GRAY);
+                rowMass.setBackgroundColor(Color.LTGRAY);
                 TableRow rowBurnCalories = new TableRow(getActivity().getApplicationContext());
-                rowBurnCalories.setBackgroundColor(Color.GRAY);
+                rowBurnCalories.setBackgroundColor(Color.LTGRAY);
                 TableRow rowEatedCalories = new TableRow(getActivity().getApplicationContext());
                 TableRow rowShoulders = new TableRow(getActivity().getApplicationContext());
                 TableRow rowLHand = new TableRow(getActivity().getApplicationContext());
                 TableRow rowRHand = new TableRow(getActivity().getApplicationContext());
-                rowRHand.setBackgroundColor(Color.GRAY);
+                rowRHand.setBackgroundColor(Color.LTGRAY);
                 TableRow rowCalves = new TableRow(getActivity().getApplicationContext());
                 TableRow rowLLeg = new TableRow(getActivity().getApplicationContext());
                 TableRow rowRLeg = new TableRow(getActivity().getApplicationContext());
@@ -771,21 +771,21 @@ public class StatActivity extends AppCompatActivity {
                 TableRow rowWaist = new TableRow(getActivity().getApplicationContext());
                 rowChest.setBackgroundColor(Color.LTGRAY);
                 TableRow rowButt = new TableRow(getActivity().getApplicationContext());
-                rowButt.setBackgroundColor(Color.GRAY);
+                rowButt.setBackgroundColor(Color.LTGRAY);
 
-                rowDayLabels.setMinimumHeight(40);
-                rowMass.setMinimumHeight(40);
-                rowEatedCalories.setMinimumHeight(40);
-                rowBurnCalories.setMinimumHeight(40);
-                rowShoulders.setMinimumHeight(40);
-                rowRHand.setMinimumHeight(40);
-                rowLHand.setMinimumHeight(40);
-                rowChest.setMinimumHeight(40);
-                rowWaist.setMinimumHeight(40);
-                rowButt.setMinimumHeight(40);
-                rowRLeg.setMinimumHeight(40);
-                rowLLeg.setMinimumHeight(40);
-                rowCalves.setMinimumHeight(40);
+                rowDayLabels.setPadding(0,10,0,10);
+                rowMass.setPadding(0,10,0,10);
+                rowEatedCalories.setPadding(0,10,0,10);
+                rowBurnCalories.setPadding(0,10,0,10);
+                rowShoulders.setPadding(0,10,0,10);
+                rowRHand.setPadding(0,10,0,10);
+                rowLHand.setPadding(0,10,0,10);
+                rowChest.setPadding(0,10,0,10);
+                rowWaist.setPadding(0,10,0,10);
+                rowButt.setPadding(0,10,0,10);
+                rowRLeg.setPadding(0,10,0,10);
+                rowLLeg.setPadding(0,10,0,10);
+                rowCalves.setPadding(0,10,0,10);
 
                 try {
                     JSONObject jsn;
