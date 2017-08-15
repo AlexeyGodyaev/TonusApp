@@ -6,29 +6,50 @@ class Calories extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('CaloriesCalc');
 
+        $this->load->library('form_validation');
+		$this->load->model('CaloriesCalc');
 	}
 
-    public function get_calories_per_day()
+    public function get_per_day()
     {
-        if($this->input->post(array('weight','height','sex','age','activityType')))
+        $this->form_validation->set_rules('id', 'Id', 'required|integer');
+        $this->form_validation->set_rules('instanceToken', 'instanceToken', 'required');
+        
+        if($this->form_validation->run())
         {
-            $weight = $this->input->post('weight');
-            $height = $this->input->post('height');
-            $sex = $this->input->post('sex');
-            $age = $this->input->post('age');
-            $activityType = $this->input->post('activityType');
+            $id = $this->input->post('id');
+            $instanceToken = $this->input->post("instanceToken");
 
-            $response = $this->CaloriesCalc->caloriesPerday($weight, $height, $sex, $activityType, $age);
+            $response = $this->CaloriesCalc->caloriesPerday($id, $instanceToken);
         }
         else
         {
             $response['status'] = 0;
             $response['msg'] = 'Invalid params';
         }
+        
         echo json_encode($response, TRUE);
+    }
 
+    //TODO: В отдельный скрипт
+
+    public function get_random_food_acts()
+    {
+        $this->form_validation->set_rules('number_of_elements', 'Number of elements', 'required|integer|greater_than[0]');
+
+        if($this->form_validation->run())
+        {
+            $number = $this->input->post('number_of_elements');
+            $response = $this->CaloriesCalc->getRandom($number);
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['msg'] = 'Invalid params';
+        }
+        
+        echo json_encode($response, TRUE);
     }
 
 }

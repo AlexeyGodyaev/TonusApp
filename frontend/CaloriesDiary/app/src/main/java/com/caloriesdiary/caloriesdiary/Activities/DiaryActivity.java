@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -80,6 +81,7 @@ public class DiaryActivity extends AppCompatActivity {
         setTitle("Дневник");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setElevation(0);
 
         protein = (TextView) findViewById(R.id.ProteinText);
         fats = (TextView) findViewById(R.id.FatsText);
@@ -107,7 +109,7 @@ public class DiaryActivity extends AppCompatActivity {
 
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
-        todayDate = (TextView) findViewById(R.id.diaryDate);
+        todayDate = (Button) findViewById(R.id.datePick);
         foodCalories = (TextView) findViewById(R.id.diaryFoodCalories);
         sportCalories = (TextView) findViewById(R.id.diarySportCalories);
         normCalories = (TextView) findViewById(R.id.diaryCaloriesNormText);

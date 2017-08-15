@@ -12,6 +12,11 @@
         <item>Очень тяжелый (Тренировки по два раза в день)</item>
     </string-array>
 
+    <string-array name="gender_list">
+        <item>Мужской</item>
+        <item>Женский</item>
+    </string-array>
+
     <string-array name="goalTypesList">
         <item>Снижение массы подкожного жира</item>
         <item>Снизить общую массу тела</item>
