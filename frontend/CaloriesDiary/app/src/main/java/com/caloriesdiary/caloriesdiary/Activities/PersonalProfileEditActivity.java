@@ -47,8 +47,8 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
         setContentView(R.layout.personal_edit_layout);
 
         spinner = (Spinner) findViewById(R.id.activity_spinner);
-        male = (RadioButton) findViewById(R.id.gender_male);
-        female = (RadioButton) findViewById(R.id.gender_female);
+//        male = (RadioButton) findViewById(R.id.gender_male);
+//        female = (RadioButton) findViewById(R.id.gender_female);
         name = (EditText) findViewById(R.id.name_edit);
         age = (EditText) findViewById(R.id.age_edit);
         height = (EditText) findViewById(R.id.height_edit);
