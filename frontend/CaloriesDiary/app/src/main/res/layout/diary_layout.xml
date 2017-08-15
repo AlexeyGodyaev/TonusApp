@@ -19,17 +19,42 @@
             android:orientation="vertical"
             android:weightSum="1">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="0.19"
+                android:background="@color/colorPrimary"
+                android:weightSum="1">
 
-            <TextView
-                android:id="@+id/diaryDate"
-                android:paddingTop="33dp"
-                android:paddingLeft="32dp"
-                android:paddingBottom="19dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@android:color/darker_gray"
-                android:textSize="48px" />
+                <TextView
+                    android:id="@+id/labelDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginStart="13dp"
+                    android:text="Выберете дату:"
+                    android:textColor="@android:color/white"
+                    android:textSize="24px"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="10dp" />
+
+                <Button
+                    android:id="@+id/datePick"
+                    android:layout_width="470px"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/auth_google_button"
+                    android:textSize="54px"
+                    tools:layout_gravity="center_horizontal"
+                    android:layout_marginTop="11dp"
+                    android:layout_below="@+id/labelDate"
+                    android:layout_centerHorizontal="true" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -315,5 +340,7 @@
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
+
 
 </RelativeLayout>
