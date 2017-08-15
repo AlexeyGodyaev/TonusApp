@@ -668,7 +668,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             saveBackUp.execute(jsn);
 
 
-            Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
 
 
         } catch (Exception e) {
