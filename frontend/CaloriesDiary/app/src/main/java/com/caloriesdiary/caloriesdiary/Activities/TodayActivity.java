@@ -605,9 +605,9 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             jsn.put("mass", editMass.getText().toString()); else jsn.put("mass", "0");
             jsn.put("note", dayNote.getText().toString());
             if(jsonAction.length()>0)
-            jsn.put("active", jsonAction); else jsn.put("active", "{[]}");
+            jsn.put("active", jsonAction); else jsn.put("active", "[]");
             if (jsonFood.length()>0)
-            jsn.put("food", jsonFood); else jsn.put("food", "{[]}");
+            jsn.put("food", jsonFood); else jsn.put("food", "[]");
             jsn.put("active_sum", String.valueOf(sum1));
             jsn.put("food_sum", String.valueOf(sum));
             jsn.put("carbs", carbs.getText().toString());
@@ -653,7 +653,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 jsn.put("chest", chest.getText().toString());
             else jsn.put("chest", "0");
 
-
+            Toast.makeText(this, jsn.toString(), Toast.LENGTH_LONG).show();
             FileOutputStream out = new FileOutputStream(f);
             ObjectOutputStream outObject = new ObjectOutputStream(out);
             outObject.writeObject(jsn.toString());
