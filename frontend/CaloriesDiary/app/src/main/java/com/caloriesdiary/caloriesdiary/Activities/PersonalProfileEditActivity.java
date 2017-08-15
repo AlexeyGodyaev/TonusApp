@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -28,9 +27,9 @@ import java.util.Map;
 
 
 public class PersonalProfileEditActivity extends AppCompatActivity implements CallBackListener{
-    Spinner spinner;
+    Spinner active_spin, gender_spin;
     TextView name,age,height,weight,sleep,awake;
-    RadioButton male,female;
+
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
     String awakestr;
@@ -46,15 +45,14 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personal_edit_layout);
 
-        spinner = (Spinner) findViewById(R.id.activity_spinner);
-//        male = (RadioButton) findViewById(R.id.gender_male);
-//        female = (RadioButton) findViewById(R.id.gender_female);
+        active_spin = (Spinner) findViewById(R.id.activity_spinner);
+        gender_spin = (Spinner) findViewById(R.id.edit_gender_spinner);
         name = (EditText) findViewById(R.id.name_edit);
         age = (EditText) findViewById(R.id.age_edit);
         height = (EditText) findViewById(R.id.height_edit);
         weight = (EditText) findViewById(R.id.weight_edit);
         sleep = (EditText) findViewById(R.id.sleep_edit);
-        awake = (TextView) findViewById(R.id.awake_edit);
+        awake = (EditText) findViewById(R.id.edit_awake_time);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_edit_profile);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
@@ -97,29 +95,29 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
                 height.setText(JSans.getJSONObject("userChars").getString("height"));
                 weight.setText(JSans.getJSONObject("userChars").getString("weight"));
                 if (JSans.getJSONObject("userChars").getString("sex").equals("1")) {
-                    male.setChecked(true);
+                    gender_spin.setSelection(0);
                 } else {
-                    female.setChecked(true);
+                    gender_spin.setSelection(1);
                 }
                 switch (JSans.getJSONObject("userChars").getString("activityType")) {
                     case "1":
-                        spinner.setSelection(0);
+                        active_spin.setSelection(0);
                         break;
                     case "2":
-                        spinner.setSelection(1);
+                        active_spin.setSelection(1);
                         break;
                     case "3":
-                        spinner.setSelection(2);
+                        active_spin.setSelection(2);
                         break;
                     case "4":
-                        spinner.setSelection(3);
+                        active_spin.setSelection(3);
                         break;
                     case "5":
-                        spinner.setSelection(4);
+                        active_spin.setSelection(4);
                         break;
                 }
                 sleep.setText(JSans.getJSONObject("userChars").getString("avgdream"));
-                awake.setText("Ср. время пробуждения: " + JSans.getJSONObject("userChars").getString("wokeup"));
+                awake.setText(JSans.getJSONObject("userChars").getString("wokeup").substring(0, 5));
                 awakestr = JSans.getJSONObject("userChars").getString("wokeup");
             }
         }
@@ -145,7 +143,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
     public void onClick(View view)  {
 
         try {
-            String selected_activity = String.valueOf(spinner.getSelectedItemPosition() + 1);
+            String selected_activity = String.valueOf(active_spin.getSelectedItemPosition() + 1);
             String selected_gender;
 
             if (!isEmpty(name) && !isEmpty(weight) && !isEmpty(age) && !isEmpty(height)) {
@@ -156,12 +154,10 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
                         && Integer.parseInt(height.getText().toString()) < 300
                         && Integer.parseInt(sleep.getText().toString()) < 24) {
 
-                    if (male.isChecked()) {
+                    if (gender_spin.getSelectedItemPosition()==0) {
                         selected_gender = "1";
-                    } else if (female.isChecked()) {
+                    }  else {
                         selected_gender = "2";
-                    } else {
-                        selected_gender = "1";
                     }
 
                     Post log = new Post();
@@ -221,11 +217,11 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
             myMinute = minute;
 
             if (myMinute <10) {
-                awake.setText("Ср. время пробуждения: " + String.valueOf(myHour) + ":0" + String.valueOf(myMinute) + ":00");
+                awake.setText(String.valueOf(myHour) + ":0" + String.valueOf(myMinute));
                 awakestr = String.valueOf(myHour) + ":0" + String.valueOf(myMinute) + ":00";
             }
             else {
-                awake.setText("Ср. время пробуждения: " + String.valueOf(myHour) + ":" + String.valueOf(myMinute) + ":00");
+                awake.setText(String.valueOf(myHour) + ":" + String.valueOf(myMinute));
                 awakestr = String.valueOf(myHour) + ":" + String.valueOf(myMinute) + ":00";
             }
         }
