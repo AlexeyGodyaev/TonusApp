@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -268,43 +269,68 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
         }}
 
     private void SavePictureToServer(Drawable dr) {
-
-//        PostAvatar postAvatar = new PostAvatar();
-//        postAvatar.PostAvatar(String.valueOf(sharedPref.getInt("PROFILE_ID", 0)),FirebaseInstanceId.getInstance().getToken(),((BitmapDrawable) dr).getBitmap());
-
-       Post post = new Post();
-        post.setListener(this);
-        String args[] = new String[4];
-        args[0] = "http://caloriesdiary.ru/users/set_avatar";
-        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-        args[2] = FirebaseInstanceId.getInstance().getToken();
-        Bitmap bm = ((BitmapDrawable) dr).getBitmap();
-        ByteArrayOutputStream bao = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, bao);
-       // byte [] ba = bao.toByteArray();
-
-        args[3] = Base64.encodeToString(bao.toByteArray(),Base64.DEFAULT);
-
-        byte[] bytes = Base64.decode(args[3], Base64.DEFAULT);
-
-        Bitmap bm2 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        Drawable dr2 = new BitmapDrawable(bm2);
-        imageView.setImageDrawable(dr2);
-        post.execute(args);
         try {
-          //  setTitle(post.get().toString());
-            Log.e("POSTIMAGE",post.get().toString());
-            Toast.makeText(this, post.get().toString(), Toast.LENGTH_LONG).show();
 
+//            PostAvatar postAvatar = new PostAvatar();
+//            JSONObject json = postAvatar.PostAvatar(String.valueOf(sharedPref.getInt("PROFILE_ID", 0)),FirebaseInstanceId.getInstance().getToken(),((BitmapDrawable) dr).getBitmap());
+           // Toast.makeText(this, "Что получилось: " + json.toString(), Toast.LENGTH_LONG).show();
+
+            ImagePost imagepost = new ImagePost();
+            imagepost.execute(dr);
+            JSONObject json = imagepost.get();
+            Toast.makeText(this, "Что получилось: " + json.toString(), Toast.LENGTH_LONG).show();
         }
         catch (Exception e)
         {
-
+            Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
         }
 
-
+//       Post post = new Post();
+//        post.setListener(this);
+//        String args[] = new String[4];
+//        args[0] = "http://caloriesdiary.ru/users/set_avatar";
+//        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+//        args[2] = FirebaseInstanceId.getInstance().getToken();
+//        Bitmap bm = ((BitmapDrawable) dr).getBitmap();
+//        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+//        bm.compress(Bitmap.CompressFormat.PNG, 100, bao);
+//       // byte [] ba = bao.toByteArray();
+//
+//        args[3] = Base64.encodeToString(bao.toByteArray(),Base64.DEFAULT);
+//
+//        byte[] bytes = Base64.decode(args[3], Base64.DEFAULT);
+//
+//        Bitmap bm2 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//        Drawable dr2 = new BitmapDrawable(bm2);
+//        imageView.setImageDrawable(dr2);
+//        post.execute(args);
+//        try {
+//          //  setTitle(post.get().toString());
+//            Log.e("POSTIMAGE",post.get().toString());
+//            Toast.makeText(this, post.get().toString(), Toast.LENGTH_LONG).show();
+//
+//        }
+//        catch (Exception e)
+//        {
+//
+//        }
 
     }
+        public class ImagePost extends AsyncTask<Drawable,Void,JSONObject>
+        {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected JSONObject doInBackground(Drawable... dr) {
+
+                PostAvatar postAvatar = new PostAvatar();
+                JSONObject json = postAvatar.PostAvatar(String.valueOf(sharedPref.getInt("PROFILE_ID", 0)),FirebaseInstanceId.getInstance().getToken(),((BitmapDrawable) dr[0]).getBitmap());
+                return json;
+            }
+        }
 
     private String SavePicture(String folderToSave, Uri uri)
     {

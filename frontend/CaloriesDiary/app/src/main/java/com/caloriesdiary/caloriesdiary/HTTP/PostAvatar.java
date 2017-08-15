@@ -6,9 +6,13 @@ import android.provider.Settings;
 
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -21,6 +25,13 @@ public class PostAvatar {
     String lineEnd = "\r\n";
     String twoHyphens = "--";
     String boundary = "*****";
+    String attachmentName = "avatar";
+
+    int bytesRead, bytesAvailable, bufferSize;
+    byte[] buffer;
+    int maxBufferSize = 1 * 1024 * 1024;
+    int responseCode;
+    StringBuilder result;
 
     public JSONObject PostAvatar(String id, String token, Bitmap bitmap)
     {
@@ -63,12 +74,87 @@ public class PostAvatar {
             dos.writeBytes("Content-Disposition: form-data; name=\"instanceToken\"" + lineEnd + lineEnd
                     + instanceToken + lineEnd);
 
-            
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=\"" +
+                    attachmentName + "\";filename=\"" +
+                    attachmentFileName + "\"" + lineEnd);
+
+                    /*dos.writeBytes("Content-Disposition: form-data; name=\"avatar\";filename=\""
+                            + "profile_picture" + "\"" + lineEnd);*/
+            dos.writeBytes(lineEnd);
+
+            // create a buffer of  maximum size
+            bytesAvailable = fileInputStream.available();
+
+            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            buffer = new byte[bufferSize];
+
+            // read file and write it into form...
+            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+            while (bytesRead > 0) {
+                dos.write(buffer, 0, bufferSize);
+                bytesAvailable = fileInputStream.available();
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            }
+
+            // send multipart form data necesssary after file data...
+            dos.writeBytes(lineEnd);
+            dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+            responseCode = conn.getResponseCode();
+
+            String line;
+            JSONObject json;
+            if (responseCode == 201 && responseCode == 200  ) {
+                BufferedReader in=new BufferedReader(
+                        new InputStreamReader(
+                                conn.getInputStream(), "UTF-8"));
+                if((line = in.readLine()) != null)
+                {
+                    json = new JSONObject(line);
+
+                    fileInputStream.close();
+                    dos.flush();
+                    dos.close();
+
+                    return json;
+
+                }
+
+            }
+            else {
+                BufferedReader in=new BufferedReader(
+                        new InputStreamReader(
+                                conn.getInputStream(), "UTF-8"));
+                if((line = in.readLine()) != null)
+                {
+                    json = new JSONObject(line);
+
+                    fileInputStream.close();
+                    dos.flush();
+                    dos.close();
+                    return json;
+                }
+
+            }
+
 
 
         }
         catch (Exception e)
         {
+            try
+            {
+                JSONObject json = new JSONObject();
+                json.put("msg",e.toString());
+                return json;
+            }
+            catch (Exception e2)
+            {
+
+            }
 
         }
 
