@@ -1,7 +1,10 @@
 package com.caloriesdiary.caloriesdiary.HTTP;
 
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
 import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
@@ -158,6 +161,12 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("sort_calories",arg0[5]);
                         postDataParams.put("id",arg0[6]);
                         postDataParams.put("instanceToken",arg0[7]);
+                        break;
+                    case "http://caloriesdiary.ru/users/set_avatar":
+                        postDataParams.put("user_id",arg0[1]);
+                        postDataParams.put("instanceToken",arg0[2]);
+                        byte[] bytes = Base64.decode(arg0[3], Base64.DEFAULT);
+                        postDataParams.put("avatar", bytes);
                         break;
                 }
 

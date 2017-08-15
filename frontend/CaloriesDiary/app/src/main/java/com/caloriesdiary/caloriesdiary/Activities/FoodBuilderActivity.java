@@ -436,7 +436,53 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 }
             });
 
+            spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
+                    if (spinner2.isEnabled()) {
+
+
+                        if (spinner2.getSelectedItemPosition() == 0) {
+                            searchsortkcal = "1";
+                            post = new Post();
+                            list = new ArrayList<>();
+                            String args[] = new String[8];
+                            args[0] = "http://caloriesdiary.ru/food/get_food";
+                            args[1] = String.valueOf(offset); //offset
+                            args[2] = searchquery; //query
+                            args[3] = searchcatid; //categ_id
+                            args[4] = "1"; //sort_names
+                            args[5] = searchsortkcal; //sort_calories
+                            args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0)); //id
+                            args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                            post.setListener(listener);
+                            post.execute(args);
+                        } else {
+                            searchsortkcal = "2";
+                            post = new Post();
+                            list = new ArrayList<>();
+                            String args[] = new String[8];
+                            args[0] = "http://caloriesdiary.ru/food/get_food";
+                            args[1] = String.valueOf(offset); //offset
+                            args[2] = searchquery; //query
+                            args[3] = searchcatid; //categ_id
+                            args[4] = "1"; //sort_names
+                            args[5] = searchsortkcal; //sort_calories
+                            args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0)); //id
+                            args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                            post.setListener(listener);
+                            post.execute(args);
+                            Toast.makeText(FoodBuilderActivity.this, "kcal: " + searchsortkcal, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
 
 
 
