@@ -35,7 +35,7 @@ public class PostAvatar {
 
     public JSONObject PostAvatar(String id, String token, Bitmap bitmap)
     {
-        this.instanceToken = id;
+        this.user_id = id;
         this.instanceToken = token;
         this.avatar = bitmap;
 
@@ -107,7 +107,7 @@ public class PostAvatar {
 
             String line;
             JSONObject json;
-            if (responseCode == 201 && responseCode == 200  ) {
+            if (responseCode == 200  ) {
                 BufferedReader in=new BufferedReader(
                         new InputStreamReader(
                                 conn.getInputStream(), "UTF-8"));
