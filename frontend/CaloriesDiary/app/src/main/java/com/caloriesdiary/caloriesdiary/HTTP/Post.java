@@ -165,8 +165,8 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                     case "http://caloriesdiary.ru/users/set_avatar":
                         postDataParams.put("user_id",arg0[1]);
                         postDataParams.put("instanceToken",arg0[2]);
-                        byte[] bytes = Base64.decode(arg0[3], Base64.DEFAULT);
-                        postDataParams.put("avatar", bytes);
+                        //byte[] bytes = Base64.decode(arg0[3], Base64.DEFAULT);
+                        postDataParams.put("avatar", arg0[3]);
                         break;
                 }
 
