@@ -74,10 +74,10 @@ public class PostAvatar {
             dos.writeBytes("Content-Disposition: form-data; name=\"instanceToken\"" + lineEnd + lineEnd
                     + instanceToken + lineEnd);
 
-//            dos.writeBytes(twoHyphens + boundary + lineEnd);
-//            dos.writeBytes("Content-Disposition: form-data; name=\"" +
-//                    attachmentName + "\";filename=\"" +
-//                    attachmentFileName + "\"" + lineEnd);
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=\"" +
+                    attachmentName + "\";filename=\"" +
+                    attachmentFileName + "\"" + lineEnd);
 
                     /*dos.writeBytes("Content-Disposition: form-data; name=\"avatar\";filename=\""
                             + "profile_picture" + "\"" + lineEnd);*/

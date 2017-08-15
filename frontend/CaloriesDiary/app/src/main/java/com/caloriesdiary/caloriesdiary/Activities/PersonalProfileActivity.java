@@ -114,14 +114,14 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
             log.execute(args); // вызываем запрос
             JSans = log.get();
 
-            Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
 
-            Toast.makeText(getApplicationContext(), JSans.getJSONObject("userChars").getString("realName"), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), JSans.getJSONObject("userChars").getString("realName"), Toast.LENGTH_LONG).show();
             setTitle(JSans.getJSONObject("userChars").getString("realName"));
 
             life_style.setText(JSans.getJSONObject("userChars").getString("activityType"));
-            //String te[] = (String[]) findViewById( R.array.activitylist);
-
+            String te[] = getResources().getStringArray(R.array.activitylist);
+            life_style.setText(te[Integer.valueOf(JSans.getJSONObject("userChars").getString("activityType"))-1]);
             if (JSans.getJSONObject("userChars").getString("sex").equals("1")) {
                 gender_text.setText("Мужской");
             } else {
@@ -141,7 +141,7 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
 
-            Toast.makeText(this, avatar, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, avatar, Toast.LENGTH_SHORT).show();
 
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
@@ -282,7 +282,7 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
             ImagePost imagepost = new ImagePost();
             imagepost.execute(dr);
             JSONObject json = imagepost.get();
-            Toast.makeText(this, "Что получилось: " + json.toString(), Toast.LENGTH_LONG).show();
+           // Toast.makeText(this, "Что получилось: " + json.toString(), Toast.LENGTH_LONG).show();
         }
         catch (Exception e)
         {
