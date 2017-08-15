@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.caloriesdiary.caloriesdiary.HTTP.GetImage;
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.Fragments.ProfileAntropometryFragment;
 import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
@@ -30,6 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.Arrays;
 
 
@@ -44,6 +47,8 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
     private Toolbar mToolbar;
     private final int reqcode = 1;
     JSONObject JSans;
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
+    ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,26 +63,29 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
         weight_text = (TextView) findViewById(R.id.weight_text);
         height_text = (TextView) findViewById(R.id.height_text);
         gender_text = (TextView) findViewById(R.id.gender_text);
-
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
-
-        mToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view,"Клие на актионебар",Snackbar.LENGTH_LONG).show();
-               // Toast.makeText(getApplicationContext(),this.getCacheDir().toString(),Toast.LENGTH_LONG).show();
-                Intent pickphoto = new Intent(Intent.ACTION_PICK);
-                pickphoto.setType("image/*");
-                startActivityForResult(pickphoto,reqcode);
-            }
-        });
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
+        imageView = mCollapsingToolbarLayout.findViewById(R.id.backdrop);
+//
+//
+//        mToolbar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view,"Клие на актионебар",Snackbar.LENGTH_LONG).show();
+//               // Toast.makeText(getApplicationContext(),this.getCacheDir().toString(),Toast.LENGTH_LONG).show();
+//                Intent pickphoto = new Intent(Intent.ACTION_PICK);
+//                pickphoto.setType("image/*");
+//                startActivityForResult(pickphoto,reqcode);
+//            }
+//        });
 
         setSupportActionBar(mToolbar);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(false);
+//        getSupportActionBar().setDisplayShowTitleEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initProfile();
         setAvatar();
@@ -100,6 +108,7 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
             Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
 
             Toast.makeText(getApplicationContext(), JSans.getJSONObject("userChars").getString("realName"), Toast.LENGTH_LONG).show();
+            setTitle(JSans.getJSONObject("userChars").getString("realName"));
             life_style.setText(JSans.getJSONObject("userChars").getString("activityType"));
             if (JSans.getJSONObject("userChars").getString("sex").equals("1")) {
                 gender_text.setText("Мужской");
@@ -112,13 +121,43 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
             wakeup_text.setText(JSans.getJSONObject("userChars").getString("wokeup").substring(0, 5));
             sleep_text.setText(JSans.getJSONObject("userChars").getString("avgdream"));
 
+            String avatar = JSans.getJSONObject("userChars").getString("avatar");
+            GetImage getImage = new GetImage();
+            getImage.execute(avatar);
+            Drawable dr = getImage.get();
+            imageView.setImageDrawable(dr);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+
+            Toast.makeText(this, avatar, Toast.LENGTH_SHORT).show();
+
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
 
     }
-
+    public Drawable LoadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            return d;
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+            return null;
+        }
+    }
     private void setAvatar(){
+
+        mCollapsingToolbarLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pickphoto = new Intent(Intent.ACTION_PICK);
+                pickphoto.setType("image/*");
+                startActivityForResult(pickphoto,reqcode);
+            }
+        });
+
+
         File imgFile = new  File("/data/user/0/com.caloriesdiary.caloriesdiary/cache/avatar.png");
 
         if(imgFile.exists()){
@@ -130,11 +169,11 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
                 Drawable dr = Drawable.createFromStream(imageStream,"avatar.png");
 
                 //dr.setAlpha(30);
-                ImageView imageView = mToolbar.findViewById(R.id.toolbar_image);
 
 
-                imageView.setImageDrawable(dr);
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                //imageView.setImageDrawable(dr);
+                //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                 //Есть 2 стула, один имэйджью обрезанный, с другой бэкграунд растянутый. Какой юзнешь, а какой с проекта пошлешь?
 
@@ -202,7 +241,10 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
                         final Uri imageUri = imageReturnedIntent.getData();
                         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                         Drawable dr = Drawable.createFromStream(imageStream,"avatar.png");
-                        mToolbar.setBackground(dr);
+
+
+                        imageView.setImageDrawable(dr);
+                        //mToolbar.setBackground(dr);
                        //final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                         //photo_view.setImageBitmap(selectedImage);
                         SavePicture(this.getCacheDir().toString(),imageUri);
