@@ -2,6 +2,9 @@ package com.caloriesdiary.caloriesdiary.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +15,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,12 +26,14 @@ import android.widget.Toast;
 import com.caloriesdiary.caloriesdiary.HTTP.GetImage;
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.Fragments.ProfileAntropometryFragment;
+import com.caloriesdiary.caloriesdiary.HTTP.PostAvatar;
 import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -34,6 +41,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Arrays;
+
 
 
 public class PersonalProfileActivity extends AppCompatActivity implements CallBackListener {
@@ -109,6 +117,7 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
 
             Toast.makeText(getApplicationContext(), JSans.getJSONObject("userChars").getString("realName"), Toast.LENGTH_LONG).show();
             setTitle(JSans.getJSONObject("userChars").getString("realName"));
+
             life_style.setText(JSans.getJSONObject("userChars").getString("activityType"));
             if (JSans.getJSONObject("userChars").getString("sex").equals("1")) {
                 gender_text.setText("Мужской");
@@ -243,16 +252,59 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
                         Drawable dr = Drawable.createFromStream(imageStream,"avatar.png");
 
 
-                        imageView.setImageDrawable(dr);
+                       // imageView.setImageDrawable(dr);
+
+
                         //mToolbar.setBackground(dr);
                        //final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                         //photo_view.setImageBitmap(selectedImage);
-                        SavePicture(this.getCacheDir().toString(),imageUri);
+                        SavePictureToServer(dr);
+                        //SavePicture(this.getCacheDir().toString(),imageUri);
+
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
                 }
         }}
+
+    private void SavePictureToServer(Drawable dr) {
+
+//        PostAvatar postAvatar = new PostAvatar();
+//        postAvatar.PostAvatar(String.valueOf(sharedPref.getInt("PROFILE_ID", 0)),FirebaseInstanceId.getInstance().getToken(),((BitmapDrawable) dr).getBitmap());
+
+       Post post = new Post();
+        post.setListener(this);
+        String args[] = new String[4];
+        args[0] = "http://caloriesdiary.ru/users/set_avatar";
+        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+        args[2] = FirebaseInstanceId.getInstance().getToken();
+        Bitmap bm = ((BitmapDrawable) dr).getBitmap();
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, bao);
+       // byte [] ba = bao.toByteArray();
+
+        args[3] = Base64.encodeToString(bao.toByteArray(),Base64.DEFAULT);
+
+        byte[] bytes = Base64.decode(args[3], Base64.DEFAULT);
+
+        Bitmap bm2 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        Drawable dr2 = new BitmapDrawable(bm2);
+        imageView.setImageDrawable(dr2);
+        post.execute(args);
+        try {
+          //  setTitle(post.get().toString());
+            Log.e("POSTIMAGE",post.get().toString());
+            Toast.makeText(this, post.get().toString(), Toast.LENGTH_LONG).show();
+
+        }
+        catch (Exception e)
+        {
+
+        }
+
+
+
+    }
 
     private String SavePicture(String folderToSave, Uri uri)
     {
