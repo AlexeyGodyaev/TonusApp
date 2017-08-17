@@ -49,7 +49,6 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
 
 
     EditText login, pass;
-    TextView err;
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor;
 
@@ -65,15 +64,29 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
 
         InitPreference();
 
-        clearFiles();
+        //clearFiles();
 
+        autoLogin();
+    }
+
+    private void saveUser(JSONObject jsn){
+        File f = new File (getCacheDir(), "Auth");
+        try {
+            FileOutputStream out = new FileOutputStream(f);
+            ObjectOutputStream outObj = new ObjectOutputStream(out);
+            outObj.writeObject(jsn.toString());
+            outObj.flush();
+            out.getFD().sync();
+            outObj.close();
+        }catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void InitObjects()
     {
         login =  findViewById(R.id.editLogin);
         pass =  findViewById(R.id.editPassword);
-        err =  findViewById(R.id.testRequestText);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
         editor = sharedPref.edit();
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -131,6 +144,33 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
         }
     }
 
+    private void autoLogin(){
+        try {
+            File f = new File(getCacheDir(), "Auth");
+            if (f.exists()) {
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                String read = inObject.readObject().toString();
+                inObject.close();
+
+                JSONObject JSans = new JSONObject(read);
+
+                editor = sharedPref.edit();
+                editor.putInt("PROFILE_ID", JSans.getInt("user_id"));
+                editor.putString("userName", JSans.getString("username"));
+                editor.putString("userMail", JSans.getString("email"));
+                editor.apply();
+
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        }catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void handleSignInResult(GoogleSignInResult result) throws InterruptedException, ExecutionException {
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -149,6 +189,7 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
             int status;
             JSONObject JSans = log.get();
 
+            saveUser(JSans);
             try {
                 status = JSans.getInt("status");
                 if (status == 1) {
@@ -158,7 +199,6 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
                     editor.putString("userMail", JSans.getString("email"));
                     editor.apply();
 
-                    Toast.makeText(getApplicationContext(), "Добро пожаловать, " + acct.getGivenName() + " " + String.valueOf(sharedPref.getInt("PROFILE_ID", 0)), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -231,7 +271,7 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
         int status;
         JSONObject JSans = log.get();
 
-            err.setText("Status: " + JSans.getString("status"));
+            saveUser(JSans);
             status = JSans.getInt("status");
 
             if (status == 1) {
@@ -239,7 +279,7 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
                 editor.putString("userName", JSans.getString("username"));
                 editor.putString("userMail", JSans.getString("email"));
                 editor.apply();
-                Toast.makeText(getApplicationContext(), "Добро пожаловать, " + login.getText().toString() + " " + String.valueOf(sharedPref.getInt("PROFILE_ID", 0)), Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -259,7 +299,7 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
                         startWebServicePendingIntent);
 
             } else if (status == 0) {
-                err.setText("Неправильное имя пользователя или пароль");
+
             }
         }
         catch (Exception e) {
@@ -308,7 +348,8 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
             int status;
             JSONObject JSans = log.get();
 
-            err.setText("Status: " + JSans.getString("status"));
+            saveUser(JSans);
+
             status = JSans.getInt("status");
 
             if (status == 1) {
@@ -316,7 +357,7 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
                 editor.putString("userName", JSans.getString("username"));
                 editor.putString("userMail", JSans.getString("email"));
                 editor.apply();
-                Toast.makeText(getApplicationContext(), "Добро пожаловать, " + login.getText().toString() + " " + String.valueOf(sharedPref.getInt("PROFILE_ID", 0)), Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -336,7 +377,6 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
                         startWebServicePendingIntent);
 
             } else if (status == 0) {
-                err.setText("Неправильное имя пользователя или пароль");
             }
         }
         catch (Exception e) {

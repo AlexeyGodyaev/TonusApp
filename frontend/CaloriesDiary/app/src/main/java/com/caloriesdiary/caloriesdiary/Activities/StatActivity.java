@@ -135,6 +135,19 @@ public class StatActivity extends AppCompatActivity {
                         String text = inObject.readObject().toString();
                         inObject.close();
                         graphDraw = new JSONObject(text);
+                    } else {
+                        graphDraw = new JSONObject();
+                        graphDraw.put("mass", "true");
+                        graphDraw.put("shoulders", "true");
+                        graphDraw.put("calves", "true");
+                        graphDraw.put("chest", "true");
+                        graphDraw.put("waist", "true");
+                        graphDraw.put("butt", "true");
+                        graphDraw.put("bern", "true");
+                        graphDraw.put("eated", "true");
+                        graphDraw.put("legs", "true");
+                        graphDraw.put("hands", "true");
+
                     }
                 }  catch (Exception e){
                     Toast.makeText(getActivity().getApplicationContext(), e.toString() , Toast.LENGTH_LONG).show();
@@ -350,6 +363,7 @@ public class StatActivity extends AppCompatActivity {
                         massGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         massGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         massGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                        s+="Масса, ";
                     }
                 } catch (Exception e){
 
@@ -366,6 +380,7 @@ public class StatActivity extends AppCompatActivity {
                         eatedCaloriesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         eatedCaloriesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         eatedCaloriesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                        s+="Потребляемые калории, ";
                     }
                 }catch (Exception e){
 
@@ -382,6 +397,7 @@ public class StatActivity extends AppCompatActivity {
                         bernCaloriesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         bernCaloriesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         bernCaloriesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                        s+="Затраченные калории, ";
                     }
                 }catch (Exception e){
 
@@ -398,6 +414,7 @@ public class StatActivity extends AppCompatActivity {
                         shouldersGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         shouldersGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         shouldersGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                        s+="Плечи, ";
                     }
                 } catch (Exception e){
 
@@ -423,6 +440,7 @@ public class StatActivity extends AppCompatActivity {
                         lHandGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         lHandGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         lHandGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                        s+="Руки, ";
                     }
                 } catch (Exception e) {
 
@@ -448,6 +466,7 @@ public class StatActivity extends AppCompatActivity {
                         rLegGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         rLegGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         rLegGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                        s+="Бедра, ";
                     }
                 } catch (Exception e) {
 
@@ -463,6 +482,7 @@ public class StatActivity extends AppCompatActivity {
                     calvesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                     calvesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                     calvesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                    s+= "Икры, ";
                 }
                 } catch (Exception e){
 
@@ -479,6 +499,7 @@ public class StatActivity extends AppCompatActivity {
                         buttGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         buttGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
                         buttGraph.setAlpha(0.5f);
+                        s+="Ягодицы, ";
                     }
                 } catch (Exception e){
 
@@ -495,6 +516,7 @@ public class StatActivity extends AppCompatActivity {
                         chestGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         chestGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         chestGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                        s+="Грудь, ";
                     }
                 } catch (Exception e){
 
@@ -511,11 +533,14 @@ public class StatActivity extends AppCompatActivity {
                         waistGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                         waistGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                         waistGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+                        s+="Талия, ";
                     }
                 } catch (Exception e){
 
                 }
 
+                s = s.substring(0, s.length()-2)+".";
+                viewParams.setText(s);
 
                 try {
                     if (graphArr!=null&&graphArr.length()>2) {
@@ -618,7 +643,6 @@ public class StatActivity extends AppCompatActivity {
                             massGraph.getGridLabelRenderer().setLabelFormatter(massLabelsFormatter);
                             massSeries.setColor(Color.WHITE);
                             massGraph.addSeries(massSeries);
-                            s+="Масса, ";
                         }
 
                         if(graphDraw!=null&&graphDraw.getString("eated").equals("true")){
@@ -629,7 +653,6 @@ public class StatActivity extends AppCompatActivity {
                             eatedCaloriesGraph.getGridLabelRenderer().setLabelFormatter(eatedLabelsFormatter);
                             eatedSeries.setColor(Color.WHITE);
                             eatedCaloriesGraph.addSeries(eatedSeries);
-                            s+="Потребляемые калории, ";
                         }
 
                         if(graphDraw!=null&&graphDraw.getString("bern").equals("true")) {
@@ -640,7 +663,6 @@ public class StatActivity extends AppCompatActivity {
                             bernCaloriesGraph.getGridLabelRenderer().setLabelFormatter(bernLabelsFormatter);
                             bernSeries.setColor(Color.WHITE);
                             bernCaloriesGraph.addSeries(bernSeries);
-                            s+="Затраченные калории, ";
                         }
 
                         if(graphDraw!=null&&graphDraw.getString("shoulders").equals("true")){
@@ -651,7 +673,6 @@ public class StatActivity extends AppCompatActivity {
                             shouldersGraph.getGridLabelRenderer().setLabelFormatter(shouldersLabelsFormatter);
                             shouldersSeries.setColor(Color.WHITE);
                             shouldersGraph.addSeries(shouldersSeries);
-                            s+="Плечи, ";
                         }
 
                         if(graphDraw!=null&&graphDraw.getString("hands").equals("true")){
@@ -670,7 +691,6 @@ public class StatActivity extends AppCompatActivity {
                             lHandGraph.getGridLabelRenderer().setLabelFormatter(lHandLabelsFormatter);
                             lHandSeries.setColor(Color.WHITE);
                             lHandGraph.addSeries(lHandSeries);
-                            s+="Руки, ";
                         }
 
                         if(graphDraw!=null&&graphDraw.getString("chest").equals("true")) {
@@ -681,7 +701,6 @@ public class StatActivity extends AppCompatActivity {
                             chestGraph.getGridLabelRenderer().setLabelFormatter(chestLabelsFormatter);
                             chestSeries.setColor(Color.WHITE);
                             chestGraph.addSeries(chestSeries);
-                            s+="Грудь, ";
                         }
 
                         if(graphDraw!=null&&graphDraw.getString("waist").equals("true")) {
@@ -692,7 +711,6 @@ public class StatActivity extends AppCompatActivity {
                             waistGraph.getGridLabelRenderer().setLabelFormatter(waistLabelsFormatter);
                             waistSeries.setColor(Color.WHITE);
                             waistGraph.addSeries(waistSeries);
-                            s+="Талия, ";
                         }
 
                         if(graphDraw!=null&&graphDraw.getString("butt").equals("true")) {
@@ -703,7 +721,7 @@ public class StatActivity extends AppCompatActivity {
                             buttGraph.getGridLabelRenderer().setLabelFormatter(buttLabelsFormatter);
                             buttSeries.setColor(Color.WHITE);
                             buttGraph.addSeries(buttSeries);
-                            s+="Ягодицы, ";
+
                         }
 
                         if(graphDraw!=null&&graphDraw.getString("legs").equals("true")){
@@ -722,7 +740,6 @@ public class StatActivity extends AppCompatActivity {
                             lLegGraph.getGridLabelRenderer().setLabelFormatter(lLegLabelsFormatter);
                             lLegSeries.setColor(Color.WHITE);
                             lLegGraph.addSeries(lLegSeries);
-                            s+="Бедра, ";
                         }
 
 
@@ -734,11 +751,7 @@ public class StatActivity extends AppCompatActivity {
                             calvesGraph.getGridLabelRenderer().setLabelFormatter(calvesLabelsFormatter);
                             calvesSeries.setColor(Color.WHITE);
                             calvesGraph.addSeries(calvesSeries);
-                            s+= "Икры, ";
                         }
-
-                        s = s.substring(0, s.length()-2)+".";
-                        viewParams.setText(s);
                     }
                     else Toast.makeText(getActivity().getApplicationContext(), "Статистика доступна после трех заполненных дней", Toast.LENGTH_LONG).show();
 

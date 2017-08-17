@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@android:color/darker_gray"
-                android:textSize="48px" />
+                android:textSize="24sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                     android:id="@+id/DayNote"
                     android:layout_width="match_parent"
                     android:layout_height="66dp"
-                    android:textSize="24px"
+                    android:textSize="12sp"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
                     android:maxLength="30"
@@ -69,7 +69,7 @@
                     android:paddingLeft="32dp"
                     android:text="Суточная норма:"
                     android:textColor="@android:color/background_dark"
-                    android:textSize="31px" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/normaCaloriesText"
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="31px" />
+                    android:textSize="16sp" />
 
             </RelativeLayout>
 
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="32dp"
                     android:paddingBottom="19dp"
-                    android:textSize="24px"
+                    android:textSize="12sp"
                     android:text="Белки:"
                     android:textAlignment="center"
                     android:textColor="@android:color/black" />
@@ -105,7 +105,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="19dp"
                     android:text="Жиры:"
-                    android:textSize="24px"
+                    android:textSize="12sp"
                     android:textAlignment="center"
                     android:textColor="@android:color/black" />
 
@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:paddingRight="32dp"
                     android:paddingBottom="19dp"
-                    android:textSize="24px"
+                    android:textSize="12sp"
                     android:layout_alignParentRight="true"
                     android:text="Углеводы:"
                     android:textAlignment="center"
@@ -133,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="23dp"
                     android:paddingLeft="35dp"
-                    android:textSize="36px"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:textAlignment="center"
-                    android:textSize="36px"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -152,7 +152,7 @@
                     android:layout_alignParentRight="true"
                     android:paddingRight="35dp"
                     android:textAlignment="center"
-                    android:textSize="36px"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
             </RelativeLayout>
 
@@ -189,7 +189,7 @@
                     android:paddingTop="10dp"
                     android:text="Питание"
                     android:textColor="?attr/colorControlNormal"
-                    android:textSize="44px" />
+                    android:textSize="22sp" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/food_busket_recycler_view"
@@ -247,7 +247,7 @@
                     android:layout_toRightOf="@id/imageView2"
                     android:text="Активность"
                     android:textColor="?attr/colorControlNormal"
-                    android:textSize="44px" />
+                    android:textSize="22sp" />
 
 
                 <TextView
@@ -303,7 +303,7 @@
                 android:paddingLeft="10dp"
                 android:text="Антропометрия"
                 android:textColor="?attr/colorControlNormal"
-                android:textSize="25sp" />
+                android:textSize="22sp" />
 
             <LinearLayout
         android:layout_width="match_parent"
