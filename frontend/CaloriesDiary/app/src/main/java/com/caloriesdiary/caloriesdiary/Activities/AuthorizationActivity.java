@@ -72,6 +72,8 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
 
     private void saveUser(JSONObject jsn){
         File f = new File (getCacheDir(), "Auth");
+        File cache = new File(getCacheDir(), "Today_params.txt");
+        cache.delete();
         try {
             FileOutputStream out = new FileOutputStream(f);
             ObjectOutputStream outObj = new ObjectOutputStream(out);
@@ -144,7 +146,7 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
                 }
             }
         }catch (Exception e){
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
