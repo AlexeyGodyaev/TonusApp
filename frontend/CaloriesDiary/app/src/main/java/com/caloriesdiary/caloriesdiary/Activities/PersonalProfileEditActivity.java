@@ -4,25 +4,37 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.caloriesdiary.caloriesdiary.HTTP.GetImage;
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
+import com.caloriesdiary.caloriesdiary.HTTP.PostAvatar;
 import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
+import com.google.android.gms.common.api.BooleanResult;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Map;
 
 
@@ -34,7 +46,12 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
     SharedPreferences.Editor editor;
     String awakestr;
     private Toolbar mToolbar;
+    Post log;
+    Boolean initprofile = false;
 
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
+    ImageView imageView;
+    private final int reqcode = 1;
     int DIALOG_TIME = 1;
     int myHour = 14;
     int myMinute = 35;
@@ -54,78 +71,115 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
         sleep = (EditText) findViewById(R.id.sleep_edit);
         awake = (EditText) findViewById(R.id.edit_awake_time);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar_edit_profile);
+
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
 
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_edit);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_edit);
+        imageView = mCollapsingToolbarLayout.findViewById(R.id.backdrop_edit);
+        setSupportActionBar(mToolbar);
+
+
         try {
-            setSupportActionBar(mToolbar);
-            getSupportActionBar().setDisplayShowHomeEnabled(false);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
+
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
 
         initProfile();
-
+        setAvatar();
        // InitPreference();
     }
 
     private void initProfile(){
         try
         {
-            Post log = new Post();
+            log = new Post();
             log.setListener(this);
             String args[] = new String[3];
 
             args[0] = "http://caloriesdiary.ru/users/get_user_chars";  //аргументы для пост запроса
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
             args[2] = FirebaseInstanceId.getInstance().getToken();
-
+            initprofile = true;
             log.execute(args); // вызываем запрос
-            JSONObject JSans = log.get();
 
-            // Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
-
-            //Toast.makeText(getApplicationContext(),JSans.toString(),Toast.LENGTH_LONG).show();
-
-            if(JSans.getString("status").equals("1")) {
-                name.setText(JSans.getJSONObject("userChars").getString("realName"));
-                age.setText(JSans.getJSONObject("userChars").getString("age"));
-                height.setText(JSans.getJSONObject("userChars").getString("height"));
-                weight.setText(JSans.getJSONObject("userChars").getString("weight"));
-                if (JSans.getJSONObject("userChars").getString("sex").equals("1")) {
-                    gender_spin.setSelection(0);
-                } else {
-                    gender_spin.setSelection(1);
-                }
-                switch (JSans.getJSONObject("userChars").getString("activityType")) {
-                    case "1":
-                        active_spin.setSelection(0);
-                        break;
-                    case "2":
-                        active_spin.setSelection(1);
-                        break;
-                    case "3":
-                        active_spin.setSelection(2);
-                        break;
-                    case "4":
-                        active_spin.setSelection(3);
-                        break;
-                    case "5":
-                        active_spin.setSelection(4);
-                        break;
-                }
-                sleep.setText(JSans.getJSONObject("userChars").getString("avgdream"));
-                awake.setText(JSans.getJSONObject("userChars").getString("wokeup").substring(0, 5));
-                awakestr = JSans.getJSONObject("userChars").getString("wokeup");
-            }
         }
         catch (Exception e)
         {
             Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
         }
     }
+
+
+    private void setAvatar(){
+
+        mCollapsingToolbarLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pickphoto = new Intent(Intent.ACTION_PICK);
+                pickphoto.setType("image/*");
+                startActivityForResult(pickphoto,reqcode);
+            }
+        });
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+        switch(requestCode) {
+            case reqcode:
+                if(resultCode == RESULT_OK){
+                    try {
+
+
+                        final Uri imageUri = imageReturnedIntent.getData();
+                        final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                        Drawable dr = Drawable.createFromStream(imageStream,"avatar.png");
+                        SavePictureToServer(dr);
+
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+        }}
+    private void SavePictureToServer(Drawable dr) {
+
+
+        try {
+            ImagePost imagepost = new ImagePost();
+            imagepost.execute(dr);
+            JSONObject json = imagepost.get();
+
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    public class ImagePost extends AsyncTask<Drawable,Void,JSONObject>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected JSONObject doInBackground(Drawable... dr) {
+
+            PostAvatar postAvatar = new PostAvatar();
+            JSONObject json = postAvatar.PostAvatar(String.valueOf(sharedPref.getInt("PROFILE_ID", 0)),FirebaseInstanceId.getInstance().getToken(),((BitmapDrawable) dr[0]).getBitmap());
+            return json;
+        }
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -238,6 +292,57 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
 
     @Override
     public void callback() {
+        if(initprofile) {
+            try {
+                JSONObject JSans = log.get();
+
+                // Toast.makeText(getApplicationContext(),String.valueOf(sharedPref.getInt("PROFILE_ID",0)) + " " +JSans.toString(),Toast.LENGTH_LONG).show();
+
+                //Toast.makeText(getApplicationContext(),JSans.toString(),Toast.LENGTH_LONG).show();
+
+                if (JSans.getString("status").equals("1")) {
+                    name.setText(JSans.getJSONObject("userChars").getString("realName"));
+                    age.setText(JSans.getJSONObject("userChars").getString("age"));
+                    height.setText(JSans.getJSONObject("userChars").getString("height"));
+                    weight.setText(JSans.getJSONObject("userChars").getString("weight"));
+                    if (JSans.getJSONObject("userChars").getString("sex").equals("1")) {
+                        gender_spin.setSelection(0);
+                    } else {
+                        gender_spin.setSelection(1);
+                    }
+                    switch (JSans.getJSONObject("userChars").getString("activityType")) {
+                        case "1":
+                            active_spin.setSelection(0);
+                            break;
+                        case "2":
+                            active_spin.setSelection(1);
+                            break;
+                        case "3":
+                            active_spin.setSelection(2);
+                            break;
+                        case "4":
+                            active_spin.setSelection(3);
+                            break;
+                        case "5":
+                            active_spin.setSelection(4);
+                            break;
+                    }
+                    sleep.setText(JSans.getJSONObject("userChars").getString("avgdream"));
+                    awake.setText(JSans.getJSONObject("userChars").getString("wokeup").substring(0, 5));
+                    awakestr = JSans.getJSONObject("userChars").getString("wokeup");
+
+                    String avatar = JSans.getJSONObject("userChars").getString("avatar");
+                    GetImage getImage = new GetImage();
+                    getImage.execute(avatar);
+                    Drawable dr = getImage.get();
+                    imageView.setImageDrawable(dr);
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                }
+            } catch (Exception e) {
+                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            }
+        }
 
     }
 }

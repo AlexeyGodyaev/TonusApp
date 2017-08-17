@@ -57,13 +57,14 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Button btnActionsSortName;
-    private boolean sortdir = true, sortkcal = true;
+    private boolean sortdir = true;
     Spinner spinner1;
     CheckBox checkbox1;
     ProgressBar progressbar1;
     CallBackListener listener;
     Post post;
     String query = "";
+    String sortkcal = "";
     List<ActionItem> list = new ArrayList<>();
 
 
@@ -105,7 +106,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
         args[0] = "http://caloriesdiary.ru/activities/get_activities";
         args[1] = ""; //query
         args[2] = "1"; //sort_names
-        args[3] = ""; //sort_calories
+        args[3] = sortkcal; //sort_calories
         listener = this;
         post.setListener(listener);
         progressbar1.setVisibility(View.VISIBLE);
@@ -143,11 +144,11 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
         post.setListener(listener);
         progressbar1.setVisibility(View.VISIBLE);
         list = new ArrayList<>();
-        if(getIntent().getStringExtra(SearchManager.QUERY)==null)
-        {
-            query = "";
-        }
-
+//
+    //    if(getIntent().getStringExtra(SearchManager.QUERY)==null)
+//        {
+//            query = "";
+//        }
         mAdapter = new RecycleActionAdapter(list);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -172,24 +173,26 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
                     spinner1.setEnabled(true);
                     if(spinner1.getSelectedItemPosition()==0)
                     {
+                        sortkcal = "1";
                         post = new Post();
                         String args[] = new String[4];
                         args[0] = "http://caloriesdiary.ru/activities/get_activities";
                         args[1] = query; //query
                         args[2] = "1"; //sort_names
-                        args[3] = "1"; //sort_calories
+                        args[3] = sortkcal; //sort_calories
                         preparePost();
                         post.execute(args);
 
                     }
                     else
                     {
+                        sortkcal = "2";
                         post = new Post();
                         String args[] = new String[4];
                         args[0] = "http://caloriesdiary.ru/activities/get_activities";
                         args[1] = query; //query
                         args[2] = "1"; //sort_names
-                        args[3] = "2"; //sort_calories
+                        args[3] = sortkcal; //sort_calories
                         preparePost();
                         post.execute(args);
                     }
@@ -198,13 +201,14 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
                 }
                 else
                 {
+                    sortkcal = "";
                     spinner1.setEnabled(false);
                     post = new Post();
                     String args[] = new String[4];
                     args[0] = "http://caloriesdiary.ru/activities/get_activities";
                     args[1] = query; //query
                     args[2] = "1"; //sort_names
-                    args[3] = ""; //sort_calories
+                    args[3] = sortkcal; //sort_calories
                     preparePost();
                     post.execute(args);
 
@@ -221,24 +225,26 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
 
                     if(spinner1.getSelectedItemPosition()==0)
                     {
+                        sortkcal = "1";
                         post = new Post();
                         String args[] = new String[4];
                         args[0] = "http://caloriesdiary.ru/activities/get_activities";
                         args[1] = query; //query
                         args[2] = ""; //sort_names
-                        args[3] = "1"; //sort_calories
+                        args[3] = sortkcal; //sort_calories
                         preparePost();
                         post.execute(args);
 
                     }
                     else
                     {
+                        sortkcal = "2";
                         post = new Post();
                         String args[] = new String[4];
                         args[0] = "http://caloriesdiary.ru/activities/get_activities";
                         args[1] = query; //query
                         args[2] = ""; //sort_names
-                        args[3] = "2"; //sort_calories
+                        args[3] = sortkcal; //sort_calories
                         preparePost();
                         post.execute(args);
                     }
@@ -417,12 +423,13 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
            // Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
+            sortkcal = "";
             post = new Post();
             String args[] = new String[4];
             args[0] = "http://caloriesdiary.ru/activities/get_activities";
             args[1] = query; //query
             args[2] = "1"; //sort_names
-            args[3] = ""; //sort_calories
+            args[3] = sortkcal; //sort_calories
             preparePost();
             post.execute(args);
         }

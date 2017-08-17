@@ -128,7 +128,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         args[1] = String.valueOf(offset); //offset
         args[2] = searchquery; //query
         args[3] = ""; //categ_id
-        args[4] = ""; //sort_names
+        args[4] = "1"; //sort_names
         args[5] = ""; //sort_calories
         args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
         args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
@@ -144,6 +144,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         {
             ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPosition(buff);
             changescrollpos = false;
+            send = true;
         }
 
 
@@ -281,7 +282,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             get.execute("http://caloriesdiary.ru/food/get_food_categories");
 
             //Toast.makeText(this,"ans:" + get.get().toString(), Toast.LENGTH_LONG).show();
-            JSONObject json = get.get();
+            final JSONObject json = get.get();
             if(json.getString("status").equals("1")) {
 
 
@@ -352,7 +353,35 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if(b)
                     {
+                        try {
                         spinner1.setEnabled(true);
+                        String text = spinner1.getSelectedItem().toString();
+                        final JSONArray jarr2 = json.getJSONArray("categories");
+                        for (int k = 0; k < jarr2.length(); k++) {
+
+                            if (jarr2.getJSONObject(k).getString("categ_name").equals(text) && buildercheck1.isChecked()) {
+                                list = new ArrayList<>();
+                                post = new Post();
+                                offset = 0;
+                                searchcatid = jarr2.getJSONObject(k).getString("id");
+                                String args[] = new String[10];
+                                args[0] = "http://caloriesdiary.ru/food/get_food";
+                                args[1] = String.valueOf(offset);
+                                args[2] = searchquery; //строка поиска
+                                args[3] = searchcatid; //id категории
+                                args[4] = "1"; //сорт имени
+                                args[5] = searchsortkcal; //сорт ккал
+                                args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+                                args[7] = FirebaseInstanceId.getInstance().getToken();
+                                post.setListener(listener);
+                                post.execute(args);
+                            }
+                        }
+                            } catch (Exception e2) {
+
+                            }
+
+
 
 
                     }
@@ -482,7 +511,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                             args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
                             post.setListener(listener);
                             post.execute(args);
-                            Toast.makeText(FoodBuilderActivity.this, "kcal: " + searchsortkcal, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(FoodBuilderActivity.this, "kcal: " + searchsortkcal, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -762,7 +791,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 int visibleItemCount = dialogLayoutManager.getChildCount();
                 int totalItemCount = dialogLayoutManager.getItemCount();
                 int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                edittext.setText(String.valueOf(visibleItemCount) + ":" +String.valueOf(totalItemCount) + ":"+String.valueOf(lastVisibleItems));
+               // edittext.setText(String.valueOf(visibleItemCount) + ":" +String.valueOf(totalItemCount) + ":"+String.valueOf(lastVisibleItems));
                 if (totalItemCount -1 == lastVisibleItems && send){
                     buff = lastVisibleItems-visibleItemCount+1;
                     //get = new GetFood();
@@ -782,7 +811,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     post.setListener(listener);
                     post.execute(args);
                     ((LinearLayoutManager)dialogRecyclerView.getLayoutManager()).scrollToPosition(buff);
-                    Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -818,13 +847,13 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
                 if(!checkbox.isChecked())
                 {
-                    Toast.makeText(FoodBuilderActivity.this, "Добавить " + checkbox.getText().toString() , Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(FoodBuilderActivity.this, "Добавить " + checkbox.getText().toString() , Toast.LENGTH_SHORT).show();
                     item.add(new FoodItem(Integer.valueOf(textId.getText().toString()),checkbox.getText().toString(),Float.valueOf(textB.getText().toString()),Float.valueOf(textJ.getText().toString()),Float.valueOf(textU.getText().toString()),0,Float.valueOf(textKc.getText().toString())));
 
                 }
                 else
                 {
-                    Toast.makeText(FoodBuilderActivity.this,"Удалить " + checkbox.getText().toString(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(FoodBuilderActivity.this,"Удалить " + checkbox.getText().toString(), Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < item.size(); i++ )
                     {
                         if( item.get(i).getName().equals(checkbox.getText().toString()))
@@ -852,7 +881,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 .setPositiveButton("Принять", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(FoodBuilderActivity.this, edittext.getText().toString(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(FoodBuilderActivity.this, edittext.getText().toString(), Toast.LENGTH_SHORT).show();
                         ingAdapter = new RecycleFoodAdapter(item);
                         ingRecyclerView.setAdapter(ingAdapter);
                     }
@@ -890,11 +919,11 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             post.setListener(listener);
             post.execute(args);
             String ans = post.get().toString();
-            Toast.makeText(this, ans, Toast.LENGTH_LONG).show();
+          //  Toast.makeText(this, ans, Toast.LENGTH_LONG).show();
         }
         catch (Exception e)
         {
-
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
 
 
