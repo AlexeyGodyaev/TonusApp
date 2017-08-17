@@ -282,7 +282,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             get.execute("http://caloriesdiary.ru/food/get_food_categories");
 
             //Toast.makeText(this,"ans:" + get.get().toString(), Toast.LENGTH_LONG).show();
-            JSONObject json = get.get();
+            final JSONObject json = get.get();
             if(json.getString("status").equals("1")) {
 
 
@@ -353,7 +353,35 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if(b)
                     {
+                        try {
                         spinner1.setEnabled(true);
+                        String text = spinner1.getSelectedItem().toString();
+                        final JSONArray jarr2 = json.getJSONArray("categories");
+                        for (int k = 0; k < jarr2.length(); k++) {
+
+                            if (jarr2.getJSONObject(k).getString("categ_name").equals(text) && buildercheck1.isChecked()) {
+                                list = new ArrayList<>();
+                                post = new Post();
+                                offset = 0;
+                                searchcatid = jarr2.getJSONObject(k).getString("id");
+                                String args[] = new String[10];
+                                args[0] = "http://caloriesdiary.ru/food/get_food";
+                                args[1] = String.valueOf(offset);
+                                args[2] = searchquery; //строка поиска
+                                args[3] = searchcatid; //id категории
+                                args[4] = "1"; //сорт имени
+                                args[5] = searchsortkcal; //сорт ккал
+                                args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+                                args[7] = FirebaseInstanceId.getInstance().getToken();
+                                post.setListener(listener);
+                                post.execute(args);
+                            }
+                        }
+                            } catch (Exception e2) {
+
+                            }
+
+
 
 
                     }
