@@ -127,7 +127,9 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
                 if (jsn.getString("date").equals(date)) {
 
+                    if(!jsn.getString("mass").equals("0"))
                     editMass.setText(jsn.getString("mass"));
+                    if(!jsn.getString("note").equals(" "))
                     dayNote.setText(jsn.getString("note"));
                 }
             }
@@ -167,14 +169,23 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
                 if (jsn.getString("date").equals(date)) {
 
+                    if(!jsn.getString("rLeg").equals("0"))
                     rLeg.setText(jsn.getString("rLeg"));
+                    if(!jsn.getString("rHand").equals("0"))
                     rHand.setText(jsn.getString("rHand"));
+                    if(!jsn.getString("lLeg").equals("0"))
                     lLeg.setText(jsn.getString("lLeg"));
+                    if(!jsn.getString("chest").equals("0"))
                     chest.setText(jsn.getString("chest"));
+                    if(!jsn.getString("lHand").equals("0"))
                     lHand.setText(jsn.getString("lHand"));
+                    if(!jsn.getString("waist").equals("0"))
                     waist.setText(jsn.getString("waist"));
+                    if(!jsn.getString("butt").equals("0"))
                     butt.setText(jsn.getString("butt"));
+                    if(!jsn.getString("calves").equals("0"))
                     calves.setText(jsn.getString("calves"));
+                    if(!jsn.getString("shoulders").equals("0"))
                     shoulders.setText(jsn.getString("shoulders"));
                 }
             }
@@ -357,7 +368,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
 
             sum = 0;
-            sum1 = 0;
+
             JSONObject jsn = new JSONObject(text);
             jsonFood = jsn.getJSONArray("food");
 
@@ -366,15 +377,24 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             }
 
             foodCalories.setText(sum + " ккал");
+        } catch (Exception e) {
+            if (foodCalories.getText() != "") {
+                foodCalories.setText(sum + " ккал");
+            } else {
+                foodCalories.setText("0 ккал");
+            }
+        }
 
-
-            f = new File(getCacheDir(), "Actions.txt");
-            in = new FileInputStream(f);
-            inObject = new ObjectInputStream(in);
-            text = inObject.readObject().toString();
+        try {
+            File f = new File(getCacheDir(), "Actions.txt");
+            FileInputStream in = new FileInputStream(f);
+            ObjectInputStream inObject = new ObjectInputStream(in);
+            String text = inObject.readObject().toString();
             inObject.close();
 
-            jsn = new JSONObject(text);
+            sum1 = 0;
+
+            JSONObject jsn = new JSONObject(text);
             jsonAction = jsn.getJSONArray("active");
 
 
@@ -384,17 +404,11 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
             sportCalories.setText(sum1 + " ккал");
 
-        } catch (Exception e) {
-            if (foodCalories.getText() != "") {
-                foodCalories.setText(sum + " ккал");
-            } else {
-                foodCalories.setText("");
-            }
-
+        } catch (Exception e){
             if (sportCalories.getText() != "") {
                 sportCalories.setText(sum1 + " ккал");
             } else {
-                sportCalories.setText("");
+                sportCalories.setText("0 ккал");
             }
         }
     }
@@ -603,11 +617,19 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             jsn.put("day_calories", normCalories.getText().toString());
             if(!editMass.getText().toString().equals(""))
             jsn.put("mass", editMass.getText().toString()); else jsn.put("mass", "0");
-            jsn.put("note", dayNote.getText().toString());
-            if(jsonAction.length()>0)
-            jsn.put("active", jsonAction); else jsn.put("active", "[]");
-            if (jsonFood.length()>0)
-            jsn.put("food", jsonFood); else jsn.put("food", "[]");
+            if(!dayNote.getText().toString().equals(""))
+            jsn.put("note", dayNote.getText().toString()); else jsn.put("note", " ");
+            if(jsonAction!=null)
+            {
+                if(jsonAction.length()>0)
+                jsn.put("active", jsonAction); else jsn.put("active", "[]");
+            }
+             else jsn.put("active", "[]");
+            if (jsonFood!=null) {
+                if(jsonFood.length()>0)
+                jsn.put("food", jsonFood); else jsn.put("food", "[]");
+            }
+            else jsn.put("food", "[]");
             jsn.put("active_sum", String.valueOf(sum1));
             jsn.put("food_sum", String.valueOf(sum));
             jsn.put("carbs", carbs.getText().toString());

@@ -136,6 +136,7 @@ public class StatActivity extends AppCompatActivity {
                         inObject.close();
                         graphDraw = new JSONObject(text);
                     } else {
+                        graphDraw = new JSONObject();
                         graphDraw.put("mass", "true");
                         graphDraw.put("shoulders", "true");
                         graphDraw.put("calves", "true");
