@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import com.caloriesdiary.caloriesdiary.ControlService;
+import com.caloriesdiary.caloriesdiary.HTTP.GetDays;
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
@@ -64,7 +65,7 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
 
         InitPreference();
 
-        //clearFiles();
+        clearFiles();
 
         autoLogin();
     }
@@ -109,10 +110,12 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
         }
     }
 
+
     private void clearFiles(){
         try {
             JSONArray jsonArray;
             JSONObject jsn;
+
             File f = new File(getCacheDir(), "Today_params.txt");
             if (f.exists()) {
                 FileInputStream in = new FileInputStream(f);
@@ -122,8 +125,9 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
 
 
                 jsn = new JSONObject(text);
-                jsonArray = jsn.getJSONArray("today_params");
-                jsn.remove("today_params");
+               // Toast.makeText(this, jsn.toString(), Toast.LENGTH_SHORT).show();
+                jsonArray = jsn.getJSONArray("days");
+                jsn.remove("days");
 
                 Calendar c = Calendar.getInstance();
 
@@ -140,7 +144,7 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
                 }
             }
         }catch (Exception e){
-            //Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 

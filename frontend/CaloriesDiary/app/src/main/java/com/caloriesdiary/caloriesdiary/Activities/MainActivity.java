@@ -25,6 +25,7 @@ import com.caloriesdiary.caloriesdiary.Fragments.MainDiaryFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainFoodFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainStatFragment;
 import com.caloriesdiary.caloriesdiary.Fragments.MainTodayFragment;
+import com.caloriesdiary.caloriesdiary.HTTP.GetDays;
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
@@ -32,6 +33,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
@@ -97,7 +101,34 @@ public class MainActivity extends AppCompatActivity
             userName = v.findViewById(R.id.head_username_text);
             userMail.setText(sharedPref.getString("userMail", "Нет данных"));
             userName.setText(sharedPref.getString("userName", "Нет данных"));
+            getArchive();
+    }
 
+    private void getArchive() {
+        try {
+            File f = new File(getCacheDir(), "Today_params.txt");
+            if(!f.exists()) {
+            JSONObject jsn;
+            GetDays get = new GetDays();
+
+            String args [] = new String[2];
+            args[0] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+            args[1] = FirebaseInstanceId.getInstance().getToken();
+
+            get.execute(args);
+
+            jsn = new JSONObject(get.get());
+
+            FileOutputStream out = new FileOutputStream(f);
+            ObjectOutputStream outObject = new ObjectOutputStream(out);
+            outObject.writeObject(jsn.toString());
+            outObject.flush();
+            out.getFD().sync();
+            outObject.close();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
