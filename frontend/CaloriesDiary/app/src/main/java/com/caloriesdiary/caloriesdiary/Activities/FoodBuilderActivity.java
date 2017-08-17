@@ -511,7 +511,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                             args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
                             post.setListener(listener);
                             post.execute(args);
-                            Toast.makeText(FoodBuilderActivity.this, "kcal: " + searchsortkcal, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(FoodBuilderActivity.this, "kcal: " + searchsortkcal, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
