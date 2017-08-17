@@ -81,7 +81,7 @@
                 <LinearLayout
                     android:id="@+id/tab2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
 
@@ -99,9 +99,13 @@
                         android:layout_margin="10dp"
                         android:ems="18" />
 
-                    <ScrollView
+                    <android.support.v4.widget.NestedScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -128,7 +132,7 @@
                                 android:text="+"
                                 android:onClick="onAddFood"/>
                         </LinearLayout>
-                    </ScrollView>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -144,8 +148,8 @@
                         android:layout_height="wrap_content"
                         android:text="Добавить"
                         android:onClick="onAddinDB"/>
-
-
+                        </LinearLayout>
+                    </android.support.v4.widget.NestedScrollView>
                 </LinearLayout>
             </FrameLayout>
             </LinearLayout>
