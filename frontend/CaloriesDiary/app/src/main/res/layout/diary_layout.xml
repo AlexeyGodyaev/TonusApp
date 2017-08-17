@@ -92,7 +92,7 @@
                     android:paddingLeft="32dp"
                     android:text="Суточная норма:"
                     android:textColor="@android:color/background_dark"
-                    android:textSize="31px" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/diaryCaloriesNormText"
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="31px" />
+                    android:textSize="15sp" />
 
             </RelativeLayout>
 
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="32dp"
                     android:paddingBottom="19dp"
-                    android:textSize="24px"
+                    android:textSize="12sp"
                     android:text="Белки:"
                     android:textAlignment="center"
                     android:textColor="@android:color/black" />
@@ -128,7 +128,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="19dp"
                     android:text="Жиры:"
-                    android:textSize="24px"
+                    android:textSize="12sp"
                     android:textAlignment="center"
                     android:textColor="@android:color/black" />
 
@@ -137,7 +137,7 @@
                     android:layout_height="wrap_content"
                     android:paddingRight="32dp"
                     android:paddingBottom="19dp"
-                    android:textSize="24px"
+                    android:textSize="12sp"
                     android:layout_alignParentRight="true"
                     android:text="Углеводы:"
                     android:textAlignment="center"
@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="23dp"
                     android:paddingLeft="35dp"
-                    android:textSize="36px"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -165,7 +165,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:textAlignment="center"
-                    android:textSize="36px"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -175,7 +175,7 @@
                     android:layout_alignParentRight="true"
                     android:paddingRight="35dp"
                     android:textAlignment="center"
-                    android:textSize="36px"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
             </RelativeLayout>
@@ -213,7 +213,7 @@
                     android:paddingTop="10dp"
                     android:text="Питание"
                     android:textColor="?attr/colorControlNormal"
-                    android:textSize="44px" />
+                    android:textSize="22sp" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/diary_food_busket_recycler_view"
@@ -271,7 +271,7 @@
                     android:layout_toRightOf="@id/imageView2"
                     android:text="Активность"
                     android:textColor="?attr/colorControlNormal"
-                    android:textSize="44px" />
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/diarySportCalories"
@@ -328,7 +328,7 @@
                 android:paddingLeft="10dp"
                 android:text="Антропометрия"
                 android:textColor="?attr/colorControlNormal"
-                android:textSize="25sp" />
+                android:textSize="22sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
