@@ -791,7 +791,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 int visibleItemCount = dialogLayoutManager.getChildCount();
                 int totalItemCount = dialogLayoutManager.getItemCount();
                 int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                edittext.setText(String.valueOf(visibleItemCount) + ":" +String.valueOf(totalItemCount) + ":"+String.valueOf(lastVisibleItems));
+               // edittext.setText(String.valueOf(visibleItemCount) + ":" +String.valueOf(totalItemCount) + ":"+String.valueOf(lastVisibleItems));
                 if (totalItemCount -1 == lastVisibleItems && send){
                     buff = lastVisibleItems-visibleItemCount+1;
                     //get = new GetFood();
@@ -811,7 +811,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     post.setListener(listener);
                     post.execute(args);
                     ((LinearLayoutManager)dialogRecyclerView.getLayoutManager()).scrollToPosition(buff);
-                    Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -847,13 +847,13 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
                 if(!checkbox.isChecked())
                 {
-                    Toast.makeText(FoodBuilderActivity.this, "Добавить " + checkbox.getText().toString() , Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(FoodBuilderActivity.this, "Добавить " + checkbox.getText().toString() , Toast.LENGTH_SHORT).show();
                     item.add(new FoodItem(Integer.valueOf(textId.getText().toString()),checkbox.getText().toString(),Float.valueOf(textB.getText().toString()),Float.valueOf(textJ.getText().toString()),Float.valueOf(textU.getText().toString()),0,Float.valueOf(textKc.getText().toString())));
 
                 }
                 else
                 {
-                    Toast.makeText(FoodBuilderActivity.this,"Удалить " + checkbox.getText().toString(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(FoodBuilderActivity.this,"Удалить " + checkbox.getText().toString(), Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < item.size(); i++ )
                     {
                         if( item.get(i).getName().equals(checkbox.getText().toString()))
@@ -881,7 +881,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 .setPositiveButton("Принять", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(FoodBuilderActivity.this, edittext.getText().toString(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(FoodBuilderActivity.this, edittext.getText().toString(), Toast.LENGTH_SHORT).show();
                         ingAdapter = new RecycleFoodAdapter(item);
                         ingRecyclerView.setAdapter(ingAdapter);
                     }
@@ -919,11 +919,11 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             post.setListener(listener);
             post.execute(args);
             String ans = post.get().toString();
-            Toast.makeText(this, ans, Toast.LENGTH_LONG).show();
+          //  Toast.makeText(this, ans, Toast.LENGTH_LONG).show();
         }
         catch (Exception e)
         {
-
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
 
 
