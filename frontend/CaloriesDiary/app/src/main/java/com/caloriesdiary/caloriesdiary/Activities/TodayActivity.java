@@ -115,7 +115,10 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 String text = inObject.readObject().toString();
                 inObject.close();
 
-                jsn = new JSONObject(text);
+                JSONObject days = new JSONObject(text);
+                JSONArray dayArray = days.getJSONArray("days");
+                jsn = dayArray.getJSONObject(dayArray.length()-1);
+
 
                 String date = String.valueOf(calendar.get(Calendar.YEAR));
                 if (calendar.get(Calendar.MONTH) < 9)
@@ -156,8 +159,9 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 String text = inObject.readObject().toString();
                 inObject.close();
 
-
-                jsn = new JSONObject(text);
+                JSONObject days = new JSONObject(text);
+                JSONArray dayArray = days.getJSONArray("days");
+                jsn = dayArray.getJSONObject(dayArray.length()-1);
 
                 String date = String.valueOf(calendar.get(Calendar.YEAR));
                 if (calendar.get(Calendar.MONTH) < 9)
@@ -265,8 +269,8 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
             @Override
             public void onLongClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), "Long press on position :" + position,
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "Long press on position :" + position,
+//                        Toast.LENGTH_LONG).show();
             }
         }));
 
@@ -312,8 +316,8 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
             @Override
             public void onLongClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), "Long press on position :" + position,
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "Long press on position :" + position,
+//                        Toast.LENGTH_LONG).show();
             }
         }));
     }
@@ -433,7 +437,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
         if (antropometryFlag) {
             antropometry.setVisibility(View.VISIBLE);
-            Toast.makeText(this, String.valueOf(antropometry.getHeight()), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, String.valueOf(antropometry.getHeight()), Toast.LENGTH_LONG).show();
             scrlView.scrollBy(0, 200);
             antropometryFlag = false;
         } else {
@@ -610,8 +614,18 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
     protected void onStop() {
         try {
             JSONObject jsn = new JSONObject();
+            JSONObject days = null;
             File f = new File(getCacheDir(), "Today_params.txt");
-            f.createNewFile();
+            if(f.exists()){
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                String text = inObject.readObject().toString();
+                days = new JSONObject(text);
+            }
+
+            JSONArray dayArray = null;
+            if(days!=null)
+                dayArray = days.getJSONArray("days");
 
             jsn.put("id", String.valueOf(sharedPref.getInt("PROFILE_ID", 0)));
             jsn.put("day_calories", normCalories.getText().toString());
@@ -675,7 +689,24 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 jsn.put("chest", chest.getText().toString());
             else jsn.put("chest", "0");
 
+            if(dayArray != null){
+                if(dayArray.length()>0 && dayArray.getJSONObject(dayArray.length()-1)
+                        .getString("date").equals(date)){
+                    dayArray.remove(dayArray.length()-1);
+                    dayArray.put(jsn);
+                }
+                else dayArray.put(jsn);
+            }
+            else {
+                dayArray = new JSONArray();
+                dayArray.put(jsn);
+            }
+
+            jsn = new JSONObject();
+            jsn.put("days", dayArray);
+
             //Toast.makeText(this, jsn.toString(), Toast.LENGTH_LONG).show();
+
             FileOutputStream out = new FileOutputStream(f);
             ObjectOutputStream outObject = new ObjectOutputStream(out);
             outObject.writeObject(jsn.toString());
@@ -684,10 +715,10 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             outObject.close();
 
 
-            SaveTodayParams saveBackUp = new SaveTodayParams();
+            //SaveTodayParams saveBackUp = new SaveTodayParams();
 
 
-            saveBackUp.execute(jsn);
+            //saveBackUp.execute(jsn);
 
 
             //Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
