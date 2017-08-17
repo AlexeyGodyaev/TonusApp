@@ -92,9 +92,7 @@ public class PersonalProfileActivity extends AppCompatActivity implements CallBa
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setDisplayShowHomeEnabled(false);
-//        getSupportActionBar().setDisplayShowTitleEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         initProfile();
         setAvatar();

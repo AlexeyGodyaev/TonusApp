@@ -128,7 +128,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         args[1] = String.valueOf(offset); //offset
         args[2] = searchquery; //query
         args[3] = ""; //categ_id
-        args[4] = ""; //sort_names
+        args[4] = "1"; //sort_names
         args[5] = ""; //sort_calories
         args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
         args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
@@ -144,6 +144,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         {
             ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPosition(buff);
             changescrollpos = false;
+            send = true;
         }
 
 
