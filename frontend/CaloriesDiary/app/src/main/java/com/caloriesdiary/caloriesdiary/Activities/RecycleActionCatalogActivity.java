@@ -129,9 +129,9 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
                 }
                 mAdapter = new RecycleActionAdapter(list);
                 mRecyclerView.setAdapter(mAdapter);
-                progressbar1.setVisibility(View.GONE);
-            }
 
+            }
+            progressbar1.setVisibility(View.GONE);
         }
         catch (Exception e)
         {
@@ -388,6 +388,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
         }));
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -403,6 +404,23 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
                     (SearchView) menu.findItem(R.id.menu_search).getActionView();
             searchView.setSearchableInfo(
                     searchManager.getSearchableInfo(getComponentName()));
+
+
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    query = "";
+                    post = new Post();
+                    String args[] = new String[4];
+                    args[0] = "http://caloriesdiary.ru/activities/get_activities";
+                    args[1] = query; //query
+                    args[2] = "1"; //sort_names
+                    args[3] = sortkcal; //sort_calories
+                    preparePost();
+                    post.execute(args);
+                    return false;
+                }
+            });
 
         }
         catch (Exception e)
@@ -423,7 +441,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
            // Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
-            sortkcal = "";
+            //sortkcal = "";
             post = new Post();
             String args[] = new String[4];
             args[0] = "http://caloriesdiary.ru/activities/get_activities";
