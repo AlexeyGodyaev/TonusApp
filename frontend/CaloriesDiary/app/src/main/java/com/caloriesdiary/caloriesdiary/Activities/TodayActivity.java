@@ -201,7 +201,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
 
                 calendar = Calendar.getInstance();
-                
+
                 jsn = dayArray.getJSONObject(dayArray.length()-1);
 
                 String date = String.valueOf(calendar.get(Calendar.YEAR));
