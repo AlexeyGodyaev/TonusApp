@@ -357,7 +357,7 @@ public class MainActivity extends AppCompatActivity
             if(setavatar)
             {
                 JSONObject JSans = postav.get();
-                Toast.makeText(this, JSans.toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, JSans.toString(), Toast.LENGTH_LONG).show();
                 String avatar = JSans.getJSONObject("photo").getString("avatar");
                 GetImage getImage = new GetImage();
                 getImage.execute(avatar);
