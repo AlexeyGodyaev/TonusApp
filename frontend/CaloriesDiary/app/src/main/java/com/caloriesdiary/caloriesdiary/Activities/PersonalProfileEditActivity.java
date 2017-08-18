@@ -340,11 +340,12 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
                     Drawable dr = getImage.get();
                     imageView.setImageDrawable(dr);
                     imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    dialog.dismiss();
+
                 }
             } catch (Exception e) {
                 Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
             }
+            dialog.dismiss();
         }
 
     }

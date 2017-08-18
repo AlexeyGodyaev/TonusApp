@@ -36,6 +36,14 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });
+        Preference ExitPref = findPreference("pref_key_change_password");
+        ChangePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                //open browser or intent here
+
+                return true;
+            }
+        });
 
 
     }
