@@ -290,12 +290,14 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
 
                 final EditText input = content.findViewById(R.id.dialog_time);
 
+                input.setText("60");
+                kcaltextview.setText(kcal + " ккал");
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
                 input.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         double newkcal = kcal;
-                        if (input.getText().length() > 0) {
+                        if (input.getText().toString().length()>0) {
                             OKBtn.setClickable(true);
                             int time = Integer.parseInt(input.getText().toString());
                             if (time < 1440) {
@@ -308,7 +310,6 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
                             }
 
                         } else {
-
                             kcaltextview.setText("");
                             OKBtn.setClickable(false);
                         }
