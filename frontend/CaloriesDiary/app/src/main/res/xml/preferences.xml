@@ -9,7 +9,8 @@
         android:title="Сменить пароль">
     </Preference>
     <Preference
-        
+        android:key="pref_google_exit"
+        android:title="Выйти из Google аккаунта"
         />
 
 
