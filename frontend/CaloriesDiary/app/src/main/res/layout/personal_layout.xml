@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Пол"
-        android:textSize="26px"
+        android:textSize="13sp"
         android:layout_marginTop="34dp"
         />
 
@@ -78,7 +78,7 @@
           android:id="@+id/gender_text"
           android:paddingLeft="72dp"
           android:paddingBottom="18dp"
-          android:textSize="38px"
+          android:textSize="19sp"
           android:textColor="#000000"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -91,14 +91,14 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="Возраст"
-          android:textSize="26px"
+          android:textSize="13sp"
           android:layout_below="@id/gender_text" />
 
       <TextView
           android:id="@+id/age_text"
           android:paddingLeft="72dp"
           android:paddingBottom="18dp"
-          android:textSize="38px"
+          android:textSize="19sp"
           android:textColor="#000000"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -111,14 +111,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Вес"
-        android:textSize="26px"
+        android:textSize="13sp"
         android:layout_below="@id/age_text" />
 
       <TextView
           android:id="@+id/weight_text"
           android:paddingLeft="72dp"
           android:paddingBottom="18dp"
-          android:textSize="38px"
+          android:textSize="19sp"
           android:textColor="#000000"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -131,14 +131,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Рост"
-        android:textSize="26px"
+        android:textSize="13sp"
         android:layout_below="@id/weight_text"/>
 
       <TextView
           android:id="@+id/height_text"
           android:paddingLeft="72dp"
           android:paddingBottom="18dp"
-          android:textSize="38px"
+          android:textSize="19sp"
           android:textColor="#000000"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="Уровень активности"
-          android:textSize="26px"
+          android:textSize="13sp"
           android:layout_below="@id/height_text"
           />
 
@@ -159,7 +159,7 @@
           android:id="@+id/life_style_text"
           android:paddingBottom="16dp"
           android:paddingLeft="72dp"
-          android:textSize="38px"
+          android:textSize="19sp"
           android:textColor="#000000"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -202,7 +202,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Среднее время сна"
-        android:textSize="26px"
+        android:textSize="13sp"
         android:paddingBottom="16dp"
         android:layout_below="@id/profile_antr_container"
         />
@@ -212,7 +212,7 @@
         android:paddingLeft="72dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="38px"
+        android:textSize="19sp"
         android:textColor="#000000"
         android:paddingBottom="18dp"
         android:layout_below="@id/sleep_time_title"
@@ -225,7 +225,7 @@
         android:text="Время пробуждения"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="26px"
+        android:textSize="13sp"
         android:layout_below="@id/sleep_time_text"
         />
 
@@ -234,7 +234,7 @@
         android:paddingLeft="72dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="38px"
+        android:textSize="19sp"
         android:textColor="#000000"
         android:paddingBottom="18dp"
         android:layout_below="@id/wakeup_time_title"

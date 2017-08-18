@@ -115,7 +115,10 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 String text = inObject.readObject().toString();
                 inObject.close();
 
-                jsn = new JSONObject(text);
+                JSONObject days = new JSONObject(text);
+                JSONArray dayArray = days.getJSONArray("days");
+                jsn = dayArray.getJSONObject(dayArray.length()-1);
+
 
                 String date = String.valueOf(calendar.get(Calendar.YEAR));
                 if (calendar.get(Calendar.MONTH) < 9)
@@ -127,7 +130,9 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
                 if (jsn.getString("date").equals(date)) {
 
+                    if(!jsn.getString("mass").equals("0"))
                     editMass.setText(jsn.getString("mass"));
+                    if(!jsn.getString("note").equals(" "))
                     dayNote.setText(jsn.getString("note"));
                 }
             }
@@ -154,8 +159,9 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 String text = inObject.readObject().toString();
                 inObject.close();
 
-
-                jsn = new JSONObject(text);
+                JSONObject days = new JSONObject(text);
+                JSONArray dayArray = days.getJSONArray("days");
+                jsn = dayArray.getJSONObject(dayArray.length()-1);
 
                 String date = String.valueOf(calendar.get(Calendar.YEAR));
                 if (calendar.get(Calendar.MONTH) < 9)
@@ -167,14 +173,23 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
                 if (jsn.getString("date").equals(date)) {
 
+                    if(!jsn.getString("rLeg").equals("0"))
                     rLeg.setText(jsn.getString("rLeg"));
+                    if(!jsn.getString("rHand").equals("0"))
                     rHand.setText(jsn.getString("rHand"));
+                    if(!jsn.getString("lLeg").equals("0"))
                     lLeg.setText(jsn.getString("lLeg"));
+                    if(!jsn.getString("chest").equals("0"))
                     chest.setText(jsn.getString("chest"));
+                    if(!jsn.getString("lHand").equals("0"))
                     lHand.setText(jsn.getString("lHand"));
+                    if(!jsn.getString("waist").equals("0"))
                     waist.setText(jsn.getString("waist"));
+                    if(!jsn.getString("butt").equals("0"))
                     butt.setText(jsn.getString("butt"));
+                    if(!jsn.getString("calves").equals("0"))
                     calves.setText(jsn.getString("calves"));
+                    if(!jsn.getString("shoulders").equals("0"))
                     shoulders.setText(jsn.getString("shoulders"));
                 }
             }
@@ -254,8 +269,8 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
             @Override
             public void onLongClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), "Long press on position :" + position,
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "Long press on position :" + position,
+//                        Toast.LENGTH_LONG).show();
             }
         }));
 
@@ -301,8 +316,8 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
             @Override
             public void onLongClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), "Long press on position :" + position,
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "Long press on position :" + position,
+//                        Toast.LENGTH_LONG).show();
             }
         }));
     }
@@ -357,7 +372,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
 
             sum = 0;
-            sum1 = 0;
+
             JSONObject jsn = new JSONObject(text);
             jsonFood = jsn.getJSONArray("food");
 
@@ -366,15 +381,24 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             }
 
             foodCalories.setText(sum + " ккал");
+        } catch (Exception e) {
+            if (foodCalories.getText() != "") {
+                foodCalories.setText(sum + " ккал");
+            } else {
+                foodCalories.setText("0 ккал");
+            }
+        }
 
-
-            f = new File(getCacheDir(), "Actions.txt");
-            in = new FileInputStream(f);
-            inObject = new ObjectInputStream(in);
-            text = inObject.readObject().toString();
+        try {
+            File f = new File(getCacheDir(), "Actions.txt");
+            FileInputStream in = new FileInputStream(f);
+            ObjectInputStream inObject = new ObjectInputStream(in);
+            String text = inObject.readObject().toString();
             inObject.close();
 
-            jsn = new JSONObject(text);
+            sum1 = 0;
+
+            JSONObject jsn = new JSONObject(text);
             jsonAction = jsn.getJSONArray("active");
 
 
@@ -384,17 +408,11 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
             sportCalories.setText(sum1 + " ккал");
 
-        } catch (Exception e) {
-            if (foodCalories.getText() != "") {
-                foodCalories.setText(sum + " ккал");
-            } else {
-                foodCalories.setText("");
-            }
-
+        } catch (Exception e){
             if (sportCalories.getText() != "") {
                 sportCalories.setText(sum1 + " ккал");
             } else {
-                sportCalories.setText("");
+                sportCalories.setText("0 ккал");
             }
         }
     }
@@ -419,7 +437,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
         if (antropometryFlag) {
             antropometry.setVisibility(View.VISIBLE);
-            Toast.makeText(this, String.valueOf(antropometry.getHeight()), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, String.valueOf(antropometry.getHeight()), Toast.LENGTH_LONG).show();
             scrlView.scrollBy(0, 200);
             antropometryFlag = false;
         } else {
@@ -596,18 +614,36 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
     protected void onStop() {
         try {
             JSONObject jsn = new JSONObject();
+            JSONObject days = null;
             File f = new File(getCacheDir(), "Today_params.txt");
-            f.createNewFile();
+            if(f.exists()){
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                String text = inObject.readObject().toString();
+                days = new JSONObject(text);
+            }
+
+            JSONArray dayArray = null;
+            if(days!=null)
+                dayArray = days.getJSONArray("days");
 
             jsn.put("id", String.valueOf(sharedPref.getInt("PROFILE_ID", 0)));
             jsn.put("day_calories", normCalories.getText().toString());
             if(!editMass.getText().toString().equals(""))
             jsn.put("mass", editMass.getText().toString()); else jsn.put("mass", "0");
-            jsn.put("note", dayNote.getText().toString());
-            if(jsonAction.length()>0)
-            jsn.put("active", jsonAction); else jsn.put("active", "[]");
-            if (jsonFood.length()>0)
-            jsn.put("food", jsonFood); else jsn.put("food", "[]");
+            if(!dayNote.getText().toString().equals(""))
+            jsn.put("note", dayNote.getText().toString()); else jsn.put("note", " ");
+            if(jsonAction!=null)
+            {
+                if(jsonAction.length()>0)
+                jsn.put("active", jsonAction); else jsn.put("active", "[]");
+            }
+             else jsn.put("active", "[]");
+            if (jsonFood!=null) {
+                if(jsonFood.length()>0)
+                jsn.put("food", jsonFood); else jsn.put("food", "[]");
+            }
+            else jsn.put("food", "[]");
             jsn.put("active_sum", String.valueOf(sum1));
             jsn.put("food_sum", String.valueOf(sum));
             jsn.put("carbs", carbs.getText().toString());
@@ -653,7 +689,24 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                 jsn.put("chest", chest.getText().toString());
             else jsn.put("chest", "0");
 
+            if(dayArray != null){
+                if(dayArray.length()>0 && dayArray.getJSONObject(dayArray.length()-1)
+                        .getString("date").equals(date)){
+                    dayArray.remove(dayArray.length()-1);
+                    dayArray.put(jsn);
+                }
+                else dayArray.put(jsn);
+            }
+            else {
+                dayArray = new JSONArray();
+                dayArray.put(jsn);
+            }
+
+            jsn = new JSONObject();
+            jsn.put("days", dayArray);
+
             //Toast.makeText(this, jsn.toString(), Toast.LENGTH_LONG).show();
+
             FileOutputStream out = new FileOutputStream(f);
             ObjectOutputStream outObject = new ObjectOutputStream(out);
             outObject.writeObject(jsn.toString());
@@ -662,10 +715,10 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             outObject.close();
 
 
-            SaveTodayParams saveBackUp = new SaveTodayParams();
+            //SaveTodayParams saveBackUp = new SaveTodayParams();
 
 
-            saveBackUp.execute(jsn);
+            //saveBackUp.execute(jsn);
 
 
             //Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();

@@ -109,8 +109,6 @@ public class StatActivity extends AppCompatActivity {
 
             sharedPref = getActivity().getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
-            args[0] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-            args[1] = FirebaseInstanceId.getInstance().getToken();
 
             if (getArguments().getInt(ARG_SECTION_NUMBER)==1){
                 rootView = inflater.inflate(R.layout.graph_stat_layout, container, false);
@@ -135,6 +133,19 @@ public class StatActivity extends AppCompatActivity {
                         String text = inObject.readObject().toString();
                         inObject.close();
                         graphDraw = new JSONObject(text);
+                    } else {
+                        graphDraw = new JSONObject();
+                        graphDraw.put("mass", "true");
+                        graphDraw.put("shoulders", "true");
+                        graphDraw.put("calves", "true");
+                        graphDraw.put("chest", "true");
+                        graphDraw.put("waist", "true");
+                        graphDraw.put("butt", "true");
+                        graphDraw.put("bern", "true");
+                        graphDraw.put("eated", "true");
+                        graphDraw.put("legs", "true");
+                        graphDraw.put("hands", "true");
+
                     }
                 }  catch (Exception e){
                     Toast.makeText(getActivity().getApplicationContext(), e.toString() , Toast.LENGTH_LONG).show();
@@ -298,30 +309,25 @@ public class StatActivity extends AppCompatActivity {
 
                 try {
                     JSONObject jsn;
-                   // File f = new File(getActivity().getCacheDir(), "Today_params.txt");
-//                    if (f.exists()) {
-//                        FileInputStream in = new FileInputStream(f);
-//                        ObjectInputStream inObject = new ObjectInputStream(in);
-//                        String text = inObject.readObject().toString();
-//                        inObject.close();
-                        GetDays get = new GetDays();
+                    File f = new File(getActivity().getCacheDir(), "Today_params.txt");
+                    if (f.exists()) {
+                        FileInputStream in = new FileInputStream(f);
+                        ObjectInputStream inObject = new ObjectInputStream(in);
+                        String text = inObject.readObject().toString();
+                        inObject.close();
 
-                    get.execute(args);
-
-                        jsn = new JSONObject(get.get());
+                        jsn = new JSONObject(text);
                         graphArr = jsn.getJSONArray("days");
                         jsn.remove("days");
 
-                    if (graphArr.length()>7) {
-                        JSONArray buf = new JSONArray();
-                        for (int i = graphArr.length() - 7; i < graphArr.length(); i++) {
-                            buf.put(graphArr.getJSONObject(i));
+                        if (graphArr.length() > 7) {
+                            JSONArray buf = new JSONArray();
+                            for (int i = graphArr.length() - 7; i < graphArr.length(); i++) {
+                                buf.put(graphArr.getJSONObject(i));
+                            }
+                            graphArr = new JSONArray(buf.toString());
                         }
-                        graphArr = new JSONArray(buf.toString());
                     }
-                  //  }
-
-
                 } catch (Exception e) {
                     Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                 }
@@ -740,7 +746,7 @@ public class StatActivity extends AppCompatActivity {
                             calvesGraph.addSeries(calvesSeries);
                         }
                     }
-                    else Toast.makeText(getActivity().getApplicationContext(), "Статистика доступна после трех заполненных дней", Toast.LENGTH_LONG).show();
+                    else Toast.makeText(getActivity().getApplicationContext(), "Графики доступны после трех заполненных дней", Toast.LENGTH_LONG).show();
 
 
                 } catch (Exception e) {
@@ -751,7 +757,7 @@ public class StatActivity extends AppCompatActivity {
                 rootView = inflater.inflate(R.layout.table_stat_layout, container, false);
                 TableLayout table = rootView.findViewById(R.id.table_layout);
 
-                JSONArray tableDataArray;
+                JSONArray tableDataArray = null;
                 table.setStretchAllColumns(true);
 //                table.setShrinkAllColumns(true);
                 TableRow rowDayLabels = new TableRow(getActivity().getApplicationContext());
@@ -790,219 +796,222 @@ public class StatActivity extends AppCompatActivity {
 
                 try {
                     JSONObject jsn;
-                    // File f = new File(getActivity().getCacheDir(), "Today_params.txt");
-//                    if (f.exists()) {
-//                        FileInputStream in = new FileInputStream(f);
-//                        ObjectInputStream inObject = new ObjectInputStream(in);
-//                        String text = inObject.readObject().toString();
-//                        inObject.close();
-                    GetDays getTable = new GetDays();
+                    File f = new File(getActivity().getCacheDir(), "Today_params.txt");
+                    if (f.exists()) {
+                        FileInputStream in = new FileInputStream(f);
+                        ObjectInputStream inObject = new ObjectInputStream(in);
+                        String text = inObject.readObject().toString();
+                        inObject.close();
 
-                    getTable.execute(args);
 
-                    jsn = new JSONObject(getTable.get());
-                    tableDataArray = jsn.getJSONArray("days");
-                    jsn.remove("days");
-
-                for (int i = 0; i<tableDataArray.length()+1; i++) {
-                    if(i==0) {
-                        TextView dayLabel = new TextView(getActivity().getApplicationContext());
-                        dayLabel.setText("");
-                        dayLabel.setTextColor(Color.GRAY);
-
-                        TextView dayMass = new TextView(getActivity().getApplicationContext());
-                        dayMass.setText("Масса");
-                        dayMass.setTextColor(Color.BLACK);
-                        dayMass.setTextSize(20f);
-                        dayMass.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayEated = new TextView(getActivity().getApplicationContext());
-                        dayEated.setText("Потр. Калории");
-                        dayEated.setTextColor(Color.BLACK);
-                        dayEated.setTextSize(20f);
-                        dayEated.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayBurn = new TextView(getActivity().getApplicationContext());
-                        dayBurn.setText("Затр. Калории");
-                        dayBurn.setTextColor(Color.BLACK);
-                        dayBurn.setTextSize(20f);
-                        dayBurn.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayShoulders = new TextView(getActivity().getApplicationContext());
-                        dayShoulders.setText("Плечи");
-                        dayShoulders.setTextColor(Color.BLACK);
-                        dayShoulders.setTextSize(20f);
-                        dayShoulders.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayRHand = new TextView(getActivity().getApplicationContext());
-                        dayRHand.setText("Пр. рука");
-                        dayRHand.setTextColor(Color.BLACK);
-                        dayRHand.setTextSize(20f);
-                        dayRHand.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayLHand = new TextView(getActivity().getApplicationContext());
-                        dayLHand.setText("Лев. Рука");
-                        dayLHand.setTextColor(Color.BLACK);
-                        dayLHand.setTextSize(20f);
-                        dayLHand.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayChest = new TextView(getActivity().getApplicationContext());
-                        dayChest.setText("Грудь");
-                        dayChest.setTextColor(Color.BLACK);
-                        dayChest.setTextSize(20f);
-                        dayChest.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayWaist = new TextView(getActivity().getApplicationContext());
-                        dayWaist.setText("Талия");
-                        dayWaist.setTextColor(Color.BLACK);
-                        dayWaist.setTextSize(20f);
-                        dayWaist.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayButt = new TextView(getActivity().getApplicationContext());
-                        dayButt.setText("Ягодицы");
-                        dayButt.setTextColor(Color.BLACK);
-                        dayButt.setTextSize(20f);
-                        dayButt.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayRLeg = new TextView(getActivity().getApplicationContext());
-                        dayRLeg.setText("Пр. бедро");
-                        dayRLeg.setTextColor(Color.BLACK);
-                        dayRLeg.setTextSize(20f);
-                        dayRLeg.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayLLeg = new TextView(getActivity().getApplicationContext());
-                        dayLLeg.setText("Лев. бедро");
-                        dayLLeg.setTextColor(Color.BLACK);
-                        dayLLeg.setTextSize(20f);
-                        dayLLeg.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayCalves = new TextView(getActivity().getApplicationContext());
-                        dayCalves.setText("Икры");
-                        dayCalves.setTextColor(Color.BLACK);
-                        dayCalves.setTextSize(20f);
-                        dayCalves.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        rowDayLabels.addView(dayLabel);
-                        rowMass.addView(dayMass);
-                        rowEatedCalories.addView(dayEated);
-                        rowBurnCalories.addView(dayBurn);
-                        rowShoulders.addView(dayShoulders);
-                        rowRHand.addView(dayRHand);
-                        rowLHand.addView(dayLHand);
-                        rowChest.addView(dayChest);
-                        rowWaist.addView(dayWaist);
-                        rowButt.addView(dayButt);
-                        rowRLeg.addView(dayRLeg);
-                        rowLLeg.addView(dayLLeg);
-                        rowCalves.addView(dayCalves);
-                    } else {
-                        TextView dayLabel = new TextView(getActivity().getApplicationContext());
-                        dayLabel.setText(tableDataArray.getJSONObject(i-1).getString("date"));
-                        dayLabel.setTextSize(20f);
-                        dayLabel.setPadding(10,0,10,0);
-                        dayLabel.setTextColor(Color.GRAY);
-
-                        TextView dayMass = new TextView(getActivity().getApplicationContext());
-                        dayMass.setText(tableDataArray.getJSONObject(i-1).getString("mass"));
-                        dayMass.setTextColor(Color.BLACK);
-                        dayMass.setTextSize(20f);
-                        dayMass.setGravity(Gravity.CENTER);
-
-                        TextView dayEated = new TextView(getActivity().getApplicationContext());
-                        dayEated.setText(tableDataArray.getJSONObject(i-1).getString("food_sum"));
-                        dayEated.setTextColor(Color.BLACK);
-                        dayEated.setTextSize(20f);
-                        dayEated.setGravity(Gravity.CENTER);
-
-                        TextView dayBurn = new TextView(getActivity().getApplicationContext());
-                        dayBurn.setText(tableDataArray.getJSONObject(i-1).getString("active_sum"));
-                        dayBurn.setTextColor(Color.BLACK);
-                        dayBurn.setTextSize(20f);
-                        dayBurn.setGravity(Gravity.CENTER);
-
-                        TextView dayShoulders = new TextView(getActivity().getApplicationContext());
-                        dayShoulders.setText(tableDataArray.getJSONObject(i-1).getString("shoulders"));
-                        dayShoulders.setTextColor(Color.BLACK);
-                        dayShoulders.setTextSize(20f);
-                        dayShoulders.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayRHand = new TextView(getActivity().getApplicationContext());
-                        dayRHand.setText(tableDataArray.getJSONObject(i-1).getString("rHand"));
-                        dayRHand.setTextColor(Color.BLACK);
-                        dayRHand.setTextSize(20f);
-                        dayRHand.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayLHand = new TextView(getActivity().getApplicationContext());
-                        dayLHand.setText(tableDataArray.getJSONObject(i-1).getString("lHand"));
-                        dayLHand.setTextColor(Color.BLACK);
-                        dayLHand.setTextSize(20f);
-                        dayLHand.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayChest = new TextView(getActivity().getApplicationContext());
-                        dayChest.setText(tableDataArray.getJSONObject(i-1).getString("chest"));
-                        dayChest.setTextColor(Color.BLACK);
-                        dayChest.setTextSize(20f);
-                        dayChest.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayWaist = new TextView(getActivity().getApplicationContext());
-                        dayWaist.setText(tableDataArray.getJSONObject(i-1).getString("waist"));
-                        dayWaist.setTextColor(Color.BLACK);
-                        dayWaist.setTextSize(20f);
-                        dayWaist.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayButt = new TextView(getActivity().getApplicationContext());
-                        dayButt.setText(tableDataArray.getJSONObject(i-1).getString("butt"));
-                        dayButt.setTextColor(Color.BLACK);
-                        dayButt.setTextSize(20f);
-                        dayButt.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayRLeg = new TextView(getActivity().getApplicationContext());
-                        dayRLeg.setText(tableDataArray.getJSONObject(i-1).getString("rLeg"));
-                        dayRLeg.setTextColor(Color.BLACK);
-                        dayRLeg.setTextSize(20f);
-                        dayRLeg.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayLLeg = new TextView(getActivity().getApplicationContext());
-                        dayLLeg.setText(tableDataArray.getJSONObject(i-1).getString("lLeg"));
-                        dayLLeg.setTextColor(Color.BLACK);
-                        dayLLeg.setTextSize(20f);
-                        dayLLeg.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        TextView dayCalves = new TextView(getActivity().getApplicationContext());
-                        dayCalves.setText(tableDataArray.getJSONObject(i-1).getString("calves"));
-                        dayCalves.setTextColor(Color.BLACK);
-                        dayCalves.setTextSize(20f);
-                        dayCalves.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                        rowDayLabels.addView(dayLabel);
-                        rowMass.addView(dayMass);
-                        rowEatedCalories.addView(dayEated);
-                        rowBurnCalories.addView(dayBurn);
-                        rowShoulders.addView(dayShoulders);
-                        rowRHand.addView(dayRHand);
-                        rowLHand.addView(dayLHand);
-                        rowChest.addView(dayChest);
-                        rowWaist.addView(dayWaist);
-                        rowButt.addView(dayButt);
-                        rowRLeg.addView(dayRLeg);
-                        rowLLeg.addView(dayLLeg);
-                        rowCalves.addView(dayCalves);
+                        jsn = new JSONObject(text);
+                        tableDataArray = jsn.getJSONArray("days");
+                        jsn.remove("days");
                     }
-                }
-                table.addView(rowDayLabels);
-                table.addView(rowMass);
-                table.addView(rowEatedCalories);
-                table.addView(rowBurnCalories);
-                table.addView(rowShoulders);
-                table.addView(rowRHand);
-                table.addView(rowLHand);
-                table.addView(rowChest);
-                table.addView(rowWaist);
-                table.addView(rowButt);
-                table.addView(rowRLeg);
-                table.addView(rowLLeg);
-                table.addView(rowCalves);
 
+                    if(tableDataArray!=null && tableDataArray.length()<0) {
+                        for (int i = 0; i < tableDataArray.length() + 1; i++) {
+                            if (i == 0) {
+                                TextView dayLabel = new TextView(getActivity().getApplicationContext());
+                                dayLabel.setText("");
+                                dayLabel.setTextColor(Color.GRAY);
+
+                                TextView dayMass = new TextView(getActivity().getApplicationContext());
+                                dayMass.setText("Масса");
+                                dayMass.setTextColor(Color.BLACK);
+                                dayMass.setTextSize(20f);
+                                dayMass.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayEated = new TextView(getActivity().getApplicationContext());
+                                dayEated.setText("Потр. Калории");
+                                dayEated.setTextColor(Color.BLACK);
+                                dayEated.setTextSize(20f);
+                                dayEated.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayBurn = new TextView(getActivity().getApplicationContext());
+                                dayBurn.setText("Затр. Калории");
+                                dayBurn.setTextColor(Color.BLACK);
+                                dayBurn.setTextSize(20f);
+                                dayBurn.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayShoulders = new TextView(getActivity().getApplicationContext());
+                                dayShoulders.setText("Плечи");
+                                dayShoulders.setTextColor(Color.BLACK);
+                                dayShoulders.setTextSize(20f);
+                                dayShoulders.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayRHand = new TextView(getActivity().getApplicationContext());
+                                dayRHand.setText("Пр. рука");
+                                dayRHand.setTextColor(Color.BLACK);
+                                dayRHand.setTextSize(20f);
+                                dayRHand.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayLHand = new TextView(getActivity().getApplicationContext());
+                                dayLHand.setText("Лев. Рука");
+                                dayLHand.setTextColor(Color.BLACK);
+                                dayLHand.setTextSize(20f);
+                                dayLHand.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayChest = new TextView(getActivity().getApplicationContext());
+                                dayChest.setText("Грудь");
+                                dayChest.setTextColor(Color.BLACK);
+                                dayChest.setTextSize(20f);
+                                dayChest.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayWaist = new TextView(getActivity().getApplicationContext());
+                                dayWaist.setText("Талия");
+                                dayWaist.setTextColor(Color.BLACK);
+                                dayWaist.setTextSize(20f);
+                                dayWaist.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayButt = new TextView(getActivity().getApplicationContext());
+                                dayButt.setText("Ягодицы");
+                                dayButt.setTextColor(Color.BLACK);
+                                dayButt.setTextSize(20f);
+                                dayButt.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayRLeg = new TextView(getActivity().getApplicationContext());
+                                dayRLeg.setText("Пр. бедро");
+                                dayRLeg.setTextColor(Color.BLACK);
+                                dayRLeg.setTextSize(20f);
+                                dayRLeg.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayLLeg = new TextView(getActivity().getApplicationContext());
+                                dayLLeg.setText("Лев. бедро");
+                                dayLLeg.setTextColor(Color.BLACK);
+                                dayLLeg.setTextSize(20f);
+                                dayLLeg.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayCalves = new TextView(getActivity().getApplicationContext());
+                                dayCalves.setText("Икры");
+                                dayCalves.setTextColor(Color.BLACK);
+                                dayCalves.setTextSize(20f);
+                                dayCalves.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                rowDayLabels.addView(dayLabel);
+                                rowMass.addView(dayMass);
+                                rowEatedCalories.addView(dayEated);
+                                rowBurnCalories.addView(dayBurn);
+                                rowShoulders.addView(dayShoulders);
+                                rowRHand.addView(dayRHand);
+                                rowLHand.addView(dayLHand);
+                                rowChest.addView(dayChest);
+                                rowWaist.addView(dayWaist);
+                                rowButt.addView(dayButt);
+                                rowRLeg.addView(dayRLeg);
+                                rowLLeg.addView(dayLLeg);
+                                rowCalves.addView(dayCalves);
+                            } else {
+                                TextView dayLabel = new TextView(getActivity().getApplicationContext());
+                                dayLabel.setText(tableDataArray.getJSONObject(i - 1).getString("date"));
+                                dayLabel.setTextSize(20f);
+                                dayLabel.setPadding(10, 0, 10, 0);
+                                dayLabel.setTextColor(Color.GRAY);
+
+                                TextView dayMass = new TextView(getActivity().getApplicationContext());
+                                dayMass.setText(tableDataArray.getJSONObject(i - 1).getString("mass"));
+                                dayMass.setTextColor(Color.BLACK);
+                                dayMass.setTextSize(20f);
+                                dayMass.setGravity(Gravity.CENTER);
+
+                                TextView dayEated = new TextView(getActivity().getApplicationContext());
+                                dayEated.setText(tableDataArray.getJSONObject(i - 1).getString("food_sum"));
+                                dayEated.setTextColor(Color.BLACK);
+                                dayEated.setTextSize(20f);
+                                dayEated.setGravity(Gravity.CENTER);
+
+                                TextView dayBurn = new TextView(getActivity().getApplicationContext());
+                                dayBurn.setText(tableDataArray.getJSONObject(i - 1).getString("active_sum"));
+                                dayBurn.setTextColor(Color.BLACK);
+                                dayBurn.setTextSize(20f);
+                                dayBurn.setGravity(Gravity.CENTER);
+
+                                TextView dayShoulders = new TextView(getActivity().getApplicationContext());
+                                dayShoulders.setText(tableDataArray.getJSONObject(i - 1).getString("shoulders"));
+                                dayShoulders.setTextColor(Color.BLACK);
+                                dayShoulders.setTextSize(20f);
+                                dayShoulders.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayRHand = new TextView(getActivity().getApplicationContext());
+                                dayRHand.setText(tableDataArray.getJSONObject(i - 1).getString("rHand"));
+                                dayRHand.setTextColor(Color.BLACK);
+                                dayRHand.setTextSize(20f);
+                                dayRHand.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayLHand = new TextView(getActivity().getApplicationContext());
+                                dayLHand.setText(tableDataArray.getJSONObject(i - 1).getString("lHand"));
+                                dayLHand.setTextColor(Color.BLACK);
+                                dayLHand.setTextSize(20f);
+                                dayLHand.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayChest = new TextView(getActivity().getApplicationContext());
+                                dayChest.setText(tableDataArray.getJSONObject(i - 1).getString("chest"));
+                                dayChest.setTextColor(Color.BLACK);
+                                dayChest.setTextSize(20f);
+                                dayChest.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayWaist = new TextView(getActivity().getApplicationContext());
+                                dayWaist.setText(tableDataArray.getJSONObject(i - 1).getString("waist"));
+                                dayWaist.setTextColor(Color.BLACK);
+                                dayWaist.setTextSize(20f);
+                                dayWaist.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayButt = new TextView(getActivity().getApplicationContext());
+                                dayButt.setText(tableDataArray.getJSONObject(i - 1).getString("butt"));
+                                dayButt.setTextColor(Color.BLACK);
+                                dayButt.setTextSize(20f);
+                                dayButt.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayRLeg = new TextView(getActivity().getApplicationContext());
+                                dayRLeg.setText(tableDataArray.getJSONObject(i - 1).getString("rLeg"));
+                                dayRLeg.setTextColor(Color.BLACK);
+                                dayRLeg.setTextSize(20f);
+                                dayRLeg.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayLLeg = new TextView(getActivity().getApplicationContext());
+                                dayLLeg.setText(tableDataArray.getJSONObject(i - 1).getString("lLeg"));
+                                dayLLeg.setTextColor(Color.BLACK);
+                                dayLLeg.setTextSize(20f);
+                                dayLLeg.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                TextView dayCalves = new TextView(getActivity().getApplicationContext());
+                                dayCalves.setText(tableDataArray.getJSONObject(i - 1).getString("calves"));
+                                dayCalves.setTextColor(Color.BLACK);
+                                dayCalves.setTextSize(20f);
+                                dayCalves.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                rowDayLabels.addView(dayLabel);
+                                rowMass.addView(dayMass);
+                                rowEatedCalories.addView(dayEated);
+                                rowBurnCalories.addView(dayBurn);
+                                rowShoulders.addView(dayShoulders);
+                                rowRHand.addView(dayRHand);
+                                rowLHand.addView(dayLHand);
+                                rowChest.addView(dayChest);
+                                rowWaist.addView(dayWaist);
+                                rowButt.addView(dayButt);
+                                rowRLeg.addView(dayRLeg);
+                                rowLLeg.addView(dayLLeg);
+                                rowCalves.addView(dayCalves);
+                            }
+                        }
+                        table.addView(rowDayLabels);
+                        table.addView(rowMass);
+                        table.addView(rowEatedCalories);
+                        table.addView(rowBurnCalories);
+                        table.addView(rowShoulders);
+                        table.addView(rowRHand);
+                        table.addView(rowLHand);
+                        table.addView(rowChest);
+                        table.addView(rowWaist);
+                        table.addView(rowButt);
+                        table.addView(rowRLeg);
+                        table.addView(rowLLeg);
+                        table.addView(rowCalves);
+                    }
+                    else{
+                        Toast.makeText(getContext(), "Отсутствуют данные для отображения", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (Exception e){
                     Toast.makeText(getContext(), e.toString(), Toast.LENGTH_LONG ).show();
                 }

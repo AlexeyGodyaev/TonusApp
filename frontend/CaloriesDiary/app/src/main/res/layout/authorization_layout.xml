@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:onClick="forgetpassClick"
         android:text="Забыли пароль?"
-        android:textSize="24px"
+        android:textSize="12sp"
         android:alpha="0.6"
         android:textColor="@android:color/white"
         android:id="@+id/textView"
@@ -103,16 +103,5 @@
         android:layout_marginTop="12dp"
         android:layout_below="@+id/googleAccountTextView"
         android:layout_centerHorizontal="true" />
-
-
-    <TextView
-        android:id="@+id/testRequestText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/guest_text_view"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
-        android:text="TextView" />
-
 
 </RelativeLayout>
