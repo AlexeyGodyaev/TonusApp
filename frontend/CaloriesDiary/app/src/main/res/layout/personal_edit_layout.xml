@@ -56,19 +56,7 @@
     android:layout_height="match_parent">
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:backgroundTint="@android:color/holo_blue_light"
-        android:onClick="onClick"
-        android:layout_marginBottom="13dp"
-        android:clickable="true"
-        app:srcCompat="@mipmap/ic_get_app_white_24dp"
-        android:layout_alignBottom="@+id/labelName"
-        android:layout_alignRight="@+id/name_edit"
-        android:layout_alignEnd="@+id/name_edit"
-        android:layout_marginRight="13dp"
-        android:layout_marginEnd="13dp" />
+
 
     <EditText
         android:id="@+id/name_edit"
