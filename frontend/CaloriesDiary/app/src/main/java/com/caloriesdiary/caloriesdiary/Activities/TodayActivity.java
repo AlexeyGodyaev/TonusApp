@@ -396,8 +396,19 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             String text = inObject.readObject().toString();
             inObject.close();
 
-            sum1 = 0;
+            Post log = new Post();
+//            args[0] = "http://caloriesdiary.ru/calories/get_per_day";
+//            args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+//            args[2] = FirebaseInstanceId.getInstance().getToken();
+//            log.setListener(this);
+//            log.execute(args);
+//            JSONObject jOb;
+//
+//            jOb = log.get();
+//
+//            sum1 = jOb.getInt("dreamCalories");
 
+            sum1 = 0;
             JSONObject jsn = new JSONObject(text);
             jsonAction = jsn.getJSONArray("active");
 
@@ -524,23 +535,9 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
         if (resp != null && activeFlag) {
             try {
-
-                Post log = new Post();
-                args[0] = "http://caloriesdiary.ru/calories/get_per_day";
-                args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-                args[2] = FirebaseInstanceId.getInstance().getToken();
-                log.setListener(this);
-                log.execute(args);
-                JSONObject jOb;
-                try {
-                    jOb = log.get();
-                    listActive.add(new ActionItem("Сон", Float.valueOf(jOb.getString("dreamCalories")), 5));
-                } catch (Exception e) {
-
-                }
-
-                jOb = new JSONObject(resp);
+                JSONObject jOb = new JSONObject(resp);
                 JSONArray jArr = jOb.getJSONArray("active");
+
                 for (int i = 0; i < jArr.length(); i++) {
                     try {
                         actionName = jArr.getJSONObject(i).getString("name");
@@ -715,14 +712,31 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             outObject.close();
 
 
-            //SaveTodayParams saveBackUp = new SaveTodayParams();
 
+            Post getLastDay = new Post();
+            getLastDay.setListener(this);
+            getLastDay.execute("http://caloriesdiary.ru/users/get_last_day", String.valueOf(sharedPref.getInt("PROFILE_ID", 0)));
+            JSONObject resp = getLastDay.get();
 
-            //saveBackUp.execute(jsn);
-
-
-            //Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
-
+                if (resp.getString("status").equals("1")) {
+                    boolean flag = false;
+                    for (int i = 0; i < dayArray.length(); i++) {
+                        if (dayArray.getJSONObject(i).getString("date").equals(resp.getString("last_date")))
+                            flag = true;
+                        if (flag) {
+                            SaveTodayParams saveBackUp = new SaveTodayParams();
+                            saveBackUp.execute(dayArray.getJSONObject(i));
+                          //  Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                else if(resp.getString("status").equals("2")) {
+                    for (int i = 0; i < dayArray.length(); i++) {
+                        SaveTodayParams saveBackUp = new SaveTodayParams();
+                        saveBackUp.execute(dayArray.getJSONObject(i));
+                       // Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
+                    }
+                }
 
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();

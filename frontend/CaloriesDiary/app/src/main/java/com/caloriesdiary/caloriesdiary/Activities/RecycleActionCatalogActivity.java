@@ -144,11 +144,11 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
         post.setListener(listener);
         progressbar1.setVisibility(View.VISIBLE);
         list = new ArrayList<>();
-        if(getIntent().getStringExtra(SearchManager.QUERY)==null)
-        {
-            query = "";
-        }
-
+//
+    //    if(getIntent().getStringExtra(SearchManager.QUERY)==null)
+//        {
+//            query = "";
+//        }
         mAdapter = new RecycleActionAdapter(list);
         mRecyclerView.setAdapter(mAdapter);
     }
