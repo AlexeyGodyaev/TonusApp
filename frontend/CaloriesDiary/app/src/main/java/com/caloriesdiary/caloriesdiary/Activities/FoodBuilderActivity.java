@@ -220,6 +220,27 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             searchView.setSearchableInfo(
                     searchManager.getSearchableInfo(getComponentName()));
 
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    list = new ArrayList<>();
+                    post = new Post();
+                    searchquery = "";
+                    String args[] = new String[8];
+                    args[0] = "http://caloriesdiary.ru/food/get_food";
+                    args[1] = String.valueOf(offset); //offset
+                    args[2] = searchquery; //query
+                    args[3] = searchcatid; //categ_id
+                    args[4] = "1"; //sort_names
+                    args[5] = searchsortkcal; //sort_calories
+                    args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
+                    args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                    post.setListener(listener);
+                    post.execute(args);
+                    return false;
+                }
+            });
+
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
