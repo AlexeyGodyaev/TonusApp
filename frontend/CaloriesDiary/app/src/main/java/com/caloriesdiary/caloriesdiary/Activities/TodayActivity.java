@@ -712,14 +712,31 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             outObject.close();
 
 
-            //SaveTodayParams saveBackUp = new SaveTodayParams();
 
+            Post getLastDay = new Post();
+            getLastDay.setListener(this);
+            getLastDay.execute("http://caloriesdiary.ru/users/get_last_day", String.valueOf(sharedPref.getInt("PROFILE_ID", 0)));
+            JSONObject resp = getLastDay.get();
 
-            //saveBackUp.execute(jsn);
-
-
-            //Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
-
+                if (resp.getString("status").equals("1")) {
+                    boolean flag = false;
+                    for (int i = 0; i < dayArray.length(); i++) {
+                        if (dayArray.getJSONObject(i).getString("date").equals(resp.getString("last_date")))
+                            flag = true;
+                        if (flag) {
+                            SaveTodayParams saveBackUp = new SaveTodayParams();
+                            saveBackUp.execute(dayArray.getJSONObject(i));
+                          //  Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                else if(resp.getString("status").equals("2")) {
+                    for (int i = 0; i < dayArray.length(); i++) {
+                        SaveTodayParams saveBackUp = new SaveTodayParams();
+                        saveBackUp.execute(dayArray.getJSONObject(i));
+                       // Toast.makeText(this, saveBackUp.get(), Toast.LENGTH_SHORT).show();
+                    }
+                }
 
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
