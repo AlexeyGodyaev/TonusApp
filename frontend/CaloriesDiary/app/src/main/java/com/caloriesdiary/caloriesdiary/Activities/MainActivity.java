@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
             userMail = v.findViewById(R.id.head_usermail_text);
             userName = v.findViewById(R.id.head_username_text);
             userAvatar = v.findViewById(R.id.head_useravatar);
-            setminiAvatar();
+
             userMail.setText(sharedPref.getString("userMail", "Нет данных"));
             userName.setText(sharedPref.getString("userName", "Нет данных"));
             getArchive();
@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity
         Post getRandomFood = new Post();
         getRandomFood.setListener(this);
         getRandomFood.execute("http://caloriesdiary.ru/calories/get_random_food_acts");
+        setminiAvatar();
 
         try{
            // Toast.makeText(this, getRandomFood.get().toString(), Toast.LENGTH_SHORT).show();
@@ -395,7 +396,7 @@ public class MainActivity extends AppCompatActivity
             if(setavatar)
             {
                 JSONObject JSans = postav.get();
-                Toast.makeText(this, JSans.toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, JSans.toString(), Toast.LENGTH_LONG).show();
                 String avatar = JSans.getJSONObject("photo").getString("avatar");
                 GetImage getImage = new GetImage();
                 getImage.execute(avatar);

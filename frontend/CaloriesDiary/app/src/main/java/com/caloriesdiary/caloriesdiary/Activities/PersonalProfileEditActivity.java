@@ -1,6 +1,7 @@
 package com.caloriesdiary.caloriesdiary.Activities;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,7 +49,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
     private Toolbar mToolbar;
     Post log;
     Boolean initprofile = false;
-
+    ProgressDialog dialog;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     ImageView imageView;
     private final int reqcode = 1;
@@ -105,6 +106,8 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
             args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
             args[2] = FirebaseInstanceId.getInstance().getToken();
             initprofile = true;
+            dialog = ProgressDialog.show(PersonalProfileEditActivity.this, "",
+                    "Идет загрузка...", true);
             log.execute(args); // вызываем запрос
 
         }
@@ -337,7 +340,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
                     Drawable dr = getImage.get();
                     imageView.setImageDrawable(dr);
                     imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
+                    dialog.dismiss();
                 }
             } catch (Exception e) {
                 Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
