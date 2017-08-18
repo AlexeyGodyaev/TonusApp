@@ -126,24 +126,25 @@ public class MainActivity extends AppCompatActivity
         try {
             File f = new File(getCacheDir(), "Today_params.txt");
             if(!f.exists()) {
-            JSONObject jsn;
-            GetDays get = new GetDays();
+                JSONObject jsn;
+                GetDays get = new GetDays();
 
-            String args [] = new String[2];
-            args[0] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-            args[1] = FirebaseInstanceId.getInstance().getToken();
+                String args[] = new String[2];
+                args[0] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+                args[1] = FirebaseInstanceId.getInstance().getToken();
 
 
-            get.execute(args);
+                get.execute(args);
+                jsn = new JSONObject(get.get());
+                if (jsn.getString("status").equals("1")) {
 
-            jsn = new JSONObject(get.get());
-
-            FileOutputStream out = new FileOutputStream(f);
-            ObjectOutputStream outObject = new ObjectOutputStream(out);
-            outObject.writeObject(jsn.toString());
-            outObject.flush();
-            out.getFD().sync();
-            outObject.close();
+                    FileOutputStream out = new FileOutputStream(f);
+                    ObjectOutputStream outObject = new ObjectOutputStream(out);
+                    outObject.writeObject(jsn.toString());
+                    outObject.flush();
+                    out.getFD().sync();
+                    outObject.close();
+                }
             }
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();

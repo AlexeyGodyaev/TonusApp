@@ -35,7 +35,9 @@ import org.json.JSONObject;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -126,18 +128,19 @@ public class DiaryActivity extends AppCompatActivity {
 
     private void initDiaryData(){
         try {
-            JSONObject jsn;
-            GetDays getDays = new GetDays();
 
-            String args[] = new String[2];
+            JSONObject days = null;
+            File f = new File(getCacheDir(), "Today_params.txt");
+            if(f.exists()){
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                String text = inObject.readObject().toString();
+                days = new JSONObject(text);
+            }
 
-            args[0] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-            args[1] = FirebaseInstanceId.getInstance().getToken();
-            getDays.execute(args);
-            //Toast.makeText(this, getDays.get(), Toast.LENGTH_LONG).show();
-            jsn = new JSONObject(getDays.get());
-            todayParams = jsn.getJSONArray("days");
-            jsn.remove("days");
+
+            todayParams = days.getJSONArray("days");
+
 
             position = todayParams.length()-1;
             if (todayParams.length() > 0) {
@@ -188,9 +191,9 @@ public class DiaryActivity extends AppCompatActivity {
                 historyAntr.put("rHand", todayParams.getJSONObject(position).getString("rHand"));
                 historyAntr.put("lHand", todayParams.getJSONObject(position).getString("lHand"));
 
-                File f = new File(getCacheDir(), "History_antr.txt");
-                if (f.exists()) f.createNewFile();
-                FileOutputStream out = new FileOutputStream(f);
+                File history = new File(getCacheDir(), "History_antr.txt");
+                if (history.exists()) history.createNewFile();
+                FileOutputStream out = new FileOutputStream(history);
                 ObjectOutputStream outObject = new ObjectOutputStream(out);
                 outObject.writeObject(historyAntr.toString());
                 outObject.flush();

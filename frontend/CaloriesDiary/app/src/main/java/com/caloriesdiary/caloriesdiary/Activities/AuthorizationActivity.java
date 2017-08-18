@@ -133,16 +133,48 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
 
                 Calendar c = Calendar.getInstance();
 
+                String data;
+                data = String.valueOf(c.get(Calendar.YEAR));
+                if (c.get(Calendar.MONTH)<9)
+                    data+="-0" + String.valueOf(c.get(Calendar.MONTH)+1); else data+="-" + String.valueOf(c.get(Calendar.MONTH)+1);
+                if (c.get(Calendar.DAY_OF_MONTH)<10)
+                    data+="-0"+String.valueOf(c.get(Calendar.DAY_OF_MONTH)); else data+="-"+String.valueOf(c.get(Calendar.DAY_OF_MONTH));
+
                 if(jsonArray.length()>0 && !jsonArray.getJSONObject(jsonArray.length()-1).getString("date")
-                        .equals(String.valueOf(c.get(Calendar.YEAR)) + "-" + String.valueOf(c.get(Calendar.MONTH)+1) +
-                                "-" + String.valueOf(c.get(Calendar.DAY_OF_MONTH)))){
+                        .equals(data)){
                     File food = new File(getCacheDir(), "Food.txt");
                     if(food.exists())
                         food.delete();
 
+
                     File active = new File(getCacheDir(), "Actions.txt");
                     if(active.exists())
-                        active.delete();
+                        active.createNewFile();
+
+                    String args [] = new String[3];
+                    Post log = new Post();
+                    args[0] = "http://caloriesdiary.ru/calories/get_per_day";
+                    args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+                    args[2] = FirebaseInstanceId.getInstance().getToken();
+                    log.setListener(this);
+                    log.execute(args);
+                    JSONObject jOb = log.get();
+
+                    JSONObject js = new JSONObject();
+                    js.put("name", "Сон");
+                    js.put("calories", jOb.get("dreamCalories"));
+                    JSONArray jArr = new JSONArray();
+                    jArr.put(js);
+
+                    js = new JSONObject();
+                    js.put("active", jArr);
+
+                    FileOutputStream out = new FileOutputStream(active);
+                    ObjectOutputStream outObject = new ObjectOutputStream(out);
+                    outObject.writeObject(js.toString());
+                    outObject.flush();
+                    out.getFD().sync();
+                    outObject.close();
                 }
             }
         }catch (Exception e){

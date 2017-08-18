@@ -809,7 +809,7 @@ public class StatActivity extends AppCompatActivity {
                         jsn.remove("days");
                     }
 
-                    if(tableDataArray!=null && tableDataArray.length()<0) {
+                    if(tableDataArray!=null && tableDataArray.length()>0) {
                         for (int i = 0; i < tableDataArray.length() + 1; i++) {
                             if (i == 0) {
                                 TextView dayLabel = new TextView(getActivity().getApplicationContext());

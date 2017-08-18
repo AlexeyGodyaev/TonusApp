@@ -396,8 +396,19 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             String text = inObject.readObject().toString();
             inObject.close();
 
-            sum1 = 0;
+            Post log = new Post();
+//            args[0] = "http://caloriesdiary.ru/calories/get_per_day";
+//            args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+//            args[2] = FirebaseInstanceId.getInstance().getToken();
+//            log.setListener(this);
+//            log.execute(args);
+//            JSONObject jOb;
+//
+//            jOb = log.get();
+//
+//            sum1 = jOb.getInt("dreamCalories");
 
+            sum1 = 0;
             JSONObject jsn = new JSONObject(text);
             jsonAction = jsn.getJSONArray("active");
 
@@ -524,23 +535,9 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
         if (resp != null && activeFlag) {
             try {
-
-                Post log = new Post();
-                args[0] = "http://caloriesdiary.ru/calories/get_per_day";
-                args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
-                args[2] = FirebaseInstanceId.getInstance().getToken();
-                log.setListener(this);
-                log.execute(args);
-                JSONObject jOb;
-                try {
-                    jOb = log.get();
-                    listActive.add(new ActionItem("Сон", Float.valueOf(jOb.getString("dreamCalories")), 5));
-                } catch (Exception e) {
-
-                }
-
-                jOb = new JSONObject(resp);
+                JSONObject jOb = new JSONObject(resp);
                 JSONArray jArr = jOb.getJSONArray("active");
+
                 for (int i = 0; i < jArr.length(); i++) {
                     try {
                         actionName = jArr.getJSONObject(i).getString("name");
