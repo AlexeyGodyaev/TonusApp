@@ -44,11 +44,20 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
 
                 switch (arg0[0]) {
 
+                    case "http://caloriesdiary.ru/users/migrate":
+                        postDataParams.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
+                        postDataParams.put("id", arg0[1]);
+                        postDataParams.put("username",arg0[2]);
+                        postDataParams.put("password",arg0[3]);
+                        postDataParams.put("email",arg0[4]);
+                        break;
                     case "http://caloriesdiary.ru/users/get_last_day":
                         postDataParams.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
                         postDataParams.put("id", arg0[1]);
+                        break;
                     case "http://caloriesdiary.ru/users/guest":
                         postDataParams.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
+                        break;
                     case "http://caloriesdiary.ru/calories/get_random_food_acts":
                         postDataParams.put("number_of_elements","12");
                         break;
