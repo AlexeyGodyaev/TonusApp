@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,24 +12,19 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.caloriesdiary.caloriesdiary.HTTP.GetDays;
 import com.caloriesdiary.caloriesdiary.R;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
@@ -761,38 +755,45 @@ public class StatActivity extends AppCompatActivity {
                 table.setStretchAllColumns(true);
 //                table.setShrinkAllColumns(true);
                 TableRow rowDayLabels = new TableRow(getActivity().getApplicationContext());
+                rowDayLabels.setBackgroundResource(R.drawable.table_border_white);
                 TableRow rowMass = new TableRow(getActivity().getApplicationContext());
-                rowMass.setBackgroundColor(Color.LTGRAY);
+                rowMass.setBackgroundResource(R.drawable.table_border_gray);
                 TableRow rowBurnCalories = new TableRow(getActivity().getApplicationContext());
-                rowBurnCalories.setBackgroundColor(Color.LTGRAY);
+                rowBurnCalories.setBackgroundResource(R.drawable.table_border_gray);
                 TableRow rowEatedCalories = new TableRow(getActivity().getApplicationContext());
+                rowEatedCalories.setBackgroundResource(R.drawable.table_border_white);
                 TableRow rowShoulders = new TableRow(getActivity().getApplicationContext());
+                rowShoulders.setBackgroundResource(R.drawable.table_border_white);
                 TableRow rowLHand = new TableRow(getActivity().getApplicationContext());
+                rowLHand.setBackgroundResource(R.drawable.table_border_white);
                 TableRow rowRHand = new TableRow(getActivity().getApplicationContext());
-                rowRHand.setBackgroundColor(Color.LTGRAY);
+                rowRHand.setBackgroundResource(R.drawable.table_border_gray);
                 TableRow rowCalves = new TableRow(getActivity().getApplicationContext());
                 TableRow rowLLeg = new TableRow(getActivity().getApplicationContext());
                 TableRow rowRLeg = new TableRow(getActivity().getApplicationContext());
-                rowLLeg.setBackgroundColor(Color.LTGRAY);
+                rowRLeg.setBackgroundResource(R.drawable.table_border_white);
+                rowLLeg.setBackgroundResource(R.drawable.table_border_gray);
                 TableRow rowChest = new TableRow(getActivity().getApplicationContext());
                 TableRow rowWaist = new TableRow(getActivity().getApplicationContext());
-                rowChest.setBackgroundColor(Color.LTGRAY);
+                rowWaist.setBackgroundResource(R.drawable.table_border_white);
+                rowChest.setBackgroundResource(R.drawable.table_border_gray);
                 TableRow rowButt = new TableRow(getActivity().getApplicationContext());
-                rowButt.setBackgroundColor(Color.LTGRAY);
+                rowButt.setBackgroundResource(R.drawable.table_border_gray);
+                rowCalves.setBackgroundResource(R.drawable.table_border_white);
 
-                rowDayLabels.setPadding(0,15,0,15);
-                rowMass.setPadding(0,15,0,15);
-                rowEatedCalories.setPadding(0,15,0,15);
-                rowBurnCalories.setPadding(0,15,0,15);
-                rowShoulders.setPadding(0,15,0,15);
-                rowRHand.setPadding(0,15,0,15);
-                rowLHand.setPadding(0,15,0,15);
-                rowChest.setPadding(0,15,0,15);
-                rowWaist.setPadding(0,15,0,15);
-                rowButt.setPadding(0,15,0,15);
-                rowRLeg.setPadding(0,15,0,15);
-                rowLLeg.setPadding(0,15,0,15);
-                rowCalves.setPadding(0,15,0,15);
+                rowDayLabels.setPadding(0,20,0,20);
+                rowMass.setPadding(0,20,0,20);
+                rowEatedCalories.setPadding(0,20,0,20);
+                rowBurnCalories.setPadding(0,20,0,20);
+                rowShoulders.setPadding(0,20,0,20);
+                rowRHand.setPadding(0,20,0,20);
+                rowLHand.setPadding(0,20,0,20);
+                rowChest.setPadding(0,20,0,20);
+                rowWaist.setPadding(0,20,0,20);
+                rowButt.setPadding(0,20,0,20);
+                rowRLeg.setPadding(0,20,0,20);
+                rowLLeg.setPadding(0,20,0,20);
+                rowCalves.setPadding(0,20,0,20);
 
                 try {
                     JSONObject jsn;
@@ -823,13 +824,13 @@ public class StatActivity extends AppCompatActivity {
                                 dayMass.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayEated = new TextView(getActivity().getApplicationContext());
-                                dayEated.setText("Потр. Калории");
+                                dayEated.setText("Потреблено");
                                 dayEated.setTextColor(Color.BLACK);
                                 dayEated.setTextSize(20f);
                                 dayEated.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayBurn = new TextView(getActivity().getApplicationContext());
-                                dayBurn.setText("Затр. Калории");
+                                dayBurn.setText("Затрачено");
                                 dayBurn.setTextColor(Color.BLACK);
                                 dayBurn.setTextSize(20f);
                                 dayBurn.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -909,73 +910,73 @@ public class StatActivity extends AppCompatActivity {
                                 dayLabel.setTextColor(Color.GRAY);
 
                                 TextView dayMass = new TextView(getActivity().getApplicationContext());
-                                dayMass.setText(tableDataArray.getJSONObject(i - 1).getString("mass"));
+                                dayMass.setText(tableDataArray.getJSONObject(i - 1).getString("mass") + " кг");
                                 dayMass.setTextColor(Color.BLACK);
                                 dayMass.setTextSize(20f);
                                 dayMass.setGravity(Gravity.CENTER);
 
                                 TextView dayEated = new TextView(getActivity().getApplicationContext());
-                                dayEated.setText(tableDataArray.getJSONObject(i - 1).getString("food_sum"));
+                                dayEated.setText(tableDataArray.getJSONObject(i - 1).getString("food_sum") + " ккал");
                                 dayEated.setTextColor(Color.BLACK);
                                 dayEated.setTextSize(20f);
                                 dayEated.setGravity(Gravity.CENTER);
 
                                 TextView dayBurn = new TextView(getActivity().getApplicationContext());
-                                dayBurn.setText(tableDataArray.getJSONObject(i - 1).getString("active_sum"));
+                                dayBurn.setText(tableDataArray.getJSONObject(i - 1).getString("active_sum") + " ккал");
                                 dayBurn.setTextColor(Color.BLACK);
                                 dayBurn.setTextSize(20f);
                                 dayBurn.setGravity(Gravity.CENTER);
 
                                 TextView dayShoulders = new TextView(getActivity().getApplicationContext());
-                                dayShoulders.setText(tableDataArray.getJSONObject(i - 1).getString("shoulders"));
+                                dayShoulders.setText(tableDataArray.getJSONObject(i - 1).getString("shoulders") + " см");
                                 dayShoulders.setTextColor(Color.BLACK);
                                 dayShoulders.setTextSize(20f);
                                 dayShoulders.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayRHand = new TextView(getActivity().getApplicationContext());
-                                dayRHand.setText(tableDataArray.getJSONObject(i - 1).getString("rHand"));
+                                dayRHand.setText(tableDataArray.getJSONObject(i - 1).getString("rHand") + " см");
                                 dayRHand.setTextColor(Color.BLACK);
                                 dayRHand.setTextSize(20f);
                                 dayRHand.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayLHand = new TextView(getActivity().getApplicationContext());
-                                dayLHand.setText(tableDataArray.getJSONObject(i - 1).getString("lHand"));
+                                dayLHand.setText(tableDataArray.getJSONObject(i - 1).getString("lHand") + " см");
                                 dayLHand.setTextColor(Color.BLACK);
                                 dayLHand.setTextSize(20f);
                                 dayLHand.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayChest = new TextView(getActivity().getApplicationContext());
-                                dayChest.setText(tableDataArray.getJSONObject(i - 1).getString("chest"));
+                                dayChest.setText(tableDataArray.getJSONObject(i - 1).getString("chest") + " см");
                                 dayChest.setTextColor(Color.BLACK);
                                 dayChest.setTextSize(20f);
                                 dayChest.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayWaist = new TextView(getActivity().getApplicationContext());
-                                dayWaist.setText(tableDataArray.getJSONObject(i - 1).getString("waist"));
+                                dayWaist.setText(tableDataArray.getJSONObject(i - 1).getString("waist") + " см");
                                 dayWaist.setTextColor(Color.BLACK);
                                 dayWaist.setTextSize(20f);
                                 dayWaist.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayButt = new TextView(getActivity().getApplicationContext());
-                                dayButt.setText(tableDataArray.getJSONObject(i - 1).getString("butt"));
+                                dayButt.setText(tableDataArray.getJSONObject(i - 1).getString("butt") + " см");
                                 dayButt.setTextColor(Color.BLACK);
                                 dayButt.setTextSize(20f);
                                 dayButt.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayRLeg = new TextView(getActivity().getApplicationContext());
-                                dayRLeg.setText(tableDataArray.getJSONObject(i - 1).getString("rLeg"));
+                                dayRLeg.setText(tableDataArray.getJSONObject(i - 1).getString("rLeg") + " см");
                                 dayRLeg.setTextColor(Color.BLACK);
                                 dayRLeg.setTextSize(20f);
                                 dayRLeg.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayLLeg = new TextView(getActivity().getApplicationContext());
-                                dayLLeg.setText(tableDataArray.getJSONObject(i - 1).getString("lLeg"));
+                                dayLLeg.setText(tableDataArray.getJSONObject(i - 1).getString("lLeg") + " см");
                                 dayLLeg.setTextColor(Color.BLACK);
                                 dayLLeg.setTextSize(20f);
                                 dayLLeg.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayCalves = new TextView(getActivity().getApplicationContext());
-                                dayCalves.setText(tableDataArray.getJSONObject(i - 1).getString("calves"));
+                                dayCalves.setText(tableDataArray.getJSONObject(i - 1).getString("calves") + " см");
                                 dayCalves.setTextColor(Color.BLACK);
                                 dayCalves.setTextSize(20f);
                                 dayCalves.setGravity(Gravity.CENTER_HORIZONTAL);
