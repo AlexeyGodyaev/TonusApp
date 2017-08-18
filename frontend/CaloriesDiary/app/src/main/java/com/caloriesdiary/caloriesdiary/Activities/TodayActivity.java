@@ -161,6 +161,47 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
                 JSONObject days = new JSONObject(text);
                 JSONArray dayArray = days.getJSONArray("days");
+
+                if(dayArray.length()>2){
+                    calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR)-1);
+
+                    String date = String.valueOf(calendar.get(Calendar.YEAR));
+                    if (calendar.get(Calendar.MONTH) < 9)
+                        date += "-0" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                    else date += "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                    if (calendar.get(Calendar.DAY_OF_MONTH) < 10)
+                        date += "-0" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                    else date += "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+
+                    for (int i = 0; i<dayArray.length(); i++) {
+                        jsn = dayArray.getJSONObject(i);
+                        if (jsn.getString("date").equals(date)) {
+
+                            if (!jsn.getString("rLeg").equals("0"))
+                                rLeg.setText(jsn.getString("rLeg"));
+                            if (!jsn.getString("rHand").equals("0"))
+                                rHand.setText(jsn.getString("rHand"));
+                            if (!jsn.getString("lLeg").equals("0"))
+                                lLeg.setText(jsn.getString("lLeg"));
+                            if (!jsn.getString("chest").equals("0"))
+                                chest.setText(jsn.getString("chest"));
+                            if (!jsn.getString("lHand").equals("0"))
+                                lHand.setText(jsn.getString("lHand"));
+                            if (!jsn.getString("waist").equals("0"))
+                                waist.setText(jsn.getString("waist"));
+                            if (!jsn.getString("butt").equals("0"))
+                                butt.setText(jsn.getString("butt"));
+                            if (!jsn.getString("calves").equals("0"))
+                                calves.setText(jsn.getString("calves"));
+                            if (!jsn.getString("shoulders").equals("0"))
+                                shoulders.setText(jsn.getString("shoulders"));
+                        }
+                    }
+                }
+
+
+                calendar = Calendar.getInstance();
+
                 jsn = dayArray.getJSONObject(dayArray.length()-1);
 
                 String date = String.valueOf(calendar.get(Calendar.YEAR));
