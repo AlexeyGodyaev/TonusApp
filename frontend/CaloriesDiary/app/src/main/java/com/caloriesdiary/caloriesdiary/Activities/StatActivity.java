@@ -814,8 +814,11 @@ public class StatActivity extends AppCompatActivity {
                         for (int i = 0; i < tableDataArray.length() + 1; i++) {
                             if (i == 0) {
                                 TextView dayLabel = new TextView(getActivity().getApplicationContext());
-                                dayLabel.setText("");
+                                dayLabel.setText("Дата");
                                 dayLabel.setTextColor(Color.GRAY);
+                                dayLabel.setTextSize(20f);
+                                dayLabel.setGravity(Gravity.CENTER_HORIZONTAL);
+
 
                                 TextView dayMass = new TextView(getActivity().getApplicationContext());
                                 dayMass.setText("Масса");
@@ -904,7 +907,7 @@ public class StatActivity extends AppCompatActivity {
                                 rowCalves.addView(dayCalves);
                             } else {
                                 TextView dayLabel = new TextView(getActivity().getApplicationContext());
-                                dayLabel.setText(tableDataArray.getJSONObject(i - 1).getString("date"));
+                                dayLabel.setText(tableDataArray.getJSONObject(i - 1).getString("date").replace('-','.'));
                                 dayLabel.setTextSize(20f);
                                 dayLabel.setPadding(10, 0, 10, 0);
                                 dayLabel.setTextColor(Color.GRAY);
@@ -928,55 +931,73 @@ public class StatActivity extends AppCompatActivity {
                                 dayBurn.setGravity(Gravity.CENTER);
 
                                 TextView dayShoulders = new TextView(getActivity().getApplicationContext());
+                                if(!tableDataArray.getJSONObject(i - 1).getString("shoulders").equals("0"))
                                 dayShoulders.setText(tableDataArray.getJSONObject(i - 1).getString("shoulders") + " см");
+                                else dayShoulders.setText("-");
                                 dayShoulders.setTextColor(Color.BLACK);
                                 dayShoulders.setTextSize(20f);
                                 dayShoulders.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayRHand = new TextView(getActivity().getApplicationContext());
+                                if(!tableDataArray.getJSONObject(i - 1).getString("rHand").equals("0"))
                                 dayRHand.setText(tableDataArray.getJSONObject(i - 1).getString("rHand") + " см");
+                                else dayRHand.setText("-");
                                 dayRHand.setTextColor(Color.BLACK);
                                 dayRHand.setTextSize(20f);
                                 dayRHand.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayLHand = new TextView(getActivity().getApplicationContext());
+                                if(!tableDataArray.getJSONObject(i - 1).getString("lHand").equals("0"))
                                 dayLHand.setText(tableDataArray.getJSONObject(i - 1).getString("lHand") + " см");
+                                else dayLHand.setText("-");
                                 dayLHand.setTextColor(Color.BLACK);
                                 dayLHand.setTextSize(20f);
                                 dayLHand.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayChest = new TextView(getActivity().getApplicationContext());
+                                if(!tableDataArray.getJSONObject(i - 1).getString("chest").equals("0"))
                                 dayChest.setText(tableDataArray.getJSONObject(i - 1).getString("chest") + " см");
+                                else dayChest.setText("-");
                                 dayChest.setTextColor(Color.BLACK);
                                 dayChest.setTextSize(20f);
                                 dayChest.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayWaist = new TextView(getActivity().getApplicationContext());
+                                if(!tableDataArray.getJSONObject(i - 1).getString("waist").equals("0"))
                                 dayWaist.setText(tableDataArray.getJSONObject(i - 1).getString("waist") + " см");
+                                else dayWaist.setText("-");
                                 dayWaist.setTextColor(Color.BLACK);
                                 dayWaist.setTextSize(20f);
                                 dayWaist.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayButt = new TextView(getActivity().getApplicationContext());
+                                if(!tableDataArray.getJSONObject(i - 1).getString("butt").equals("0"))
                                 dayButt.setText(tableDataArray.getJSONObject(i - 1).getString("butt") + " см");
+                                else dayButt.setText("-");
                                 dayButt.setTextColor(Color.BLACK);
                                 dayButt.setTextSize(20f);
                                 dayButt.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayRLeg = new TextView(getActivity().getApplicationContext());
+                                if(!tableDataArray.getJSONObject(i - 1).getString("rLeg").equals("0"))
                                 dayRLeg.setText(tableDataArray.getJSONObject(i - 1).getString("rLeg") + " см");
+                                else dayRLeg.setText("-");
                                 dayRLeg.setTextColor(Color.BLACK);
                                 dayRLeg.setTextSize(20f);
                                 dayRLeg.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayLLeg = new TextView(getActivity().getApplicationContext());
+                                if(!tableDataArray.getJSONObject(i - 1).getString("lLeg").equals("0"))
                                 dayLLeg.setText(tableDataArray.getJSONObject(i - 1).getString("lLeg") + " см");
+                                else dayLLeg.setText("-");
                                 dayLLeg.setTextColor(Color.BLACK);
                                 dayLLeg.setTextSize(20f);
                                 dayLLeg.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                 TextView dayCalves = new TextView(getActivity().getApplicationContext());
+                                if(!tableDataArray.getJSONObject(i - 1).getString("lHand").equals("0"))
                                 dayCalves.setText(tableDataArray.getJSONObject(i - 1).getString("calves") + " см");
+                                else dayCalves.setText("-");
                                 dayCalves.setTextColor(Color.BLACK);
                                 dayCalves.setTextSize(20f);
                                 dayCalves.setGravity(Gravity.CENTER_HORIZONTAL);
