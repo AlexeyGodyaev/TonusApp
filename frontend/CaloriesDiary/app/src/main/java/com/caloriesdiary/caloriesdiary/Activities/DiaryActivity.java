@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,12 +64,16 @@ public class DiaryActivity extends AppCompatActivity {
     private RecyclerView.Adapter actionAdapter;
     RecyclerView.LayoutManager actionLayoutManager;
 
+    ImageView dropArrow;
+
     JSONArray todayParams;
 
     SharedPreferences sharedPref;
     Calendar calendar;
     EditText editMass;
     private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, dateFlag = false;
+
+    String date;
 
     Calendar minDate = Calendar.getInstance(), maxDate = Calendar.getInstance();
     final String[] args = new String[2];
@@ -88,6 +93,8 @@ public class DiaryActivity extends AppCompatActivity {
         protein = (TextView) findViewById(R.id.ProteinText);
         fats = (TextView) findViewById(R.id.FatsText);
         carbs = (TextView) findViewById(R.id.CarbsText);
+
+        dropArrow = (ImageView) findViewById(R.id.drop_image);
 
         foodRecyclerView = (RecyclerView) findViewById(R.id.diary_food_busket_recycler_view);
         foodRecyclerView.setHasFixedSize(true);
@@ -226,17 +233,21 @@ public class DiaryActivity extends AppCompatActivity {
 
         public void onDateSet(DatePicker view, int selectedYear,int selectedMonth, int selectedDay) {
             try {
-                String date = String.valueOf(selectedYear);
+                date = String.valueOf(selectedYear);
                 if (selectedMonth<9)
                     date+="-0"+String.valueOf(selectedMonth+1); else date+="-"+String.valueOf(selectedMonth+1);
                 if (selectedDay<10)
                     date+="-0"+String.valueOf(selectedDay); else date+="-"+String.valueOf(selectedDay);
 
+                boolean flag = true;
                 for (int i = 0; i < todayParams.length(); i++) {
                     if (todayParams.getJSONObject(i).getString("date")
                             .equals(date)) {
+                        flag = false;
                         position = i;
                     }
+                    else if(flag)
+                        position=-1;
                    // Toast.makeText(DiaryActivity.this, date + "..." + todayParams.getJSONObject(i).getString("date"), Toast.LENGTH_LONG).show();
                 }
 
@@ -258,43 +269,68 @@ public class DiaryActivity extends AppCompatActivity {
 
     protected void onChangeDiaryData() {
         try {
-            JSONObject jsn = todayParams.getJSONObject(position);
-
-            normCalories.setText(jsn.getString("day_calories"));
-            editMass.setText(jsn.getString("mass"));
-            dayNote.setText(jsn.getString("note"));
-            todayDate.setText(jsn.getString("date"));
-            foodCalories.setText(jsn.getString("food_sum") + " ккал");
-            sportCalories.setText(jsn.getString("active_sum") + " ккал");
-            protein.setText(jsn.getString("protein"));
-            fats.setText(jsn.getString("fats"));
-            carbs.setText(jsn.getString("carbs"));
-
             JSONObject historyAntr = new JSONObject();
+            if(position>=0) {
+                JSONObject jsn = todayParams.getJSONObject(position);
 
-            historyAntr.put("chest", jsn.getString("chest"));
-            historyAntr.put("waist", jsn.getString("waist"));
-            historyAntr.put("butt", jsn.getString("butt"));
-            historyAntr.put("calves", jsn.getString("calves"));
-            historyAntr.put("shoulders", jsn.getString("shoulders"));
-            historyAntr.put("rLeg", jsn.getString("rLeg"));
-            historyAntr.put("lLeg", jsn.getString("lLeg"));
-            historyAntr.put("rHand", jsn.getString("rHand"));
-            historyAntr.put("lHand", jsn.getString("lHand"));
+                normCalories.setText(jsn.getString("day_calories"));
+                editMass.setText(jsn.getString("mass"));
+                dayNote.setText(jsn.getString("note"));
+                todayDate.setText(jsn.getString("date"));
+                foodCalories.setText(jsn.getString("food_sum") + " ккал");
+                sportCalories.setText(jsn.getString("active_sum") + " ккал");
+                protein.setText(jsn.getString("protein"));
+                fats.setText(jsn.getString("fats"));
+                carbs.setText(jsn.getString("carbs"));
 
-            Toast.makeText(this, historyAntr.toString(), Toast.LENGTH_LONG).show();
+                historyAntr.put("chest", jsn.getString("chest"));
+                historyAntr.put("waist", jsn.getString("waist"));
+                historyAntr.put("butt", jsn.getString("butt"));
+                historyAntr.put("calves", jsn.getString("calves"));
+                historyAntr.put("shoulders", jsn.getString("shoulders"));
+                historyAntr.put("rLeg", jsn.getString("rLeg"));
+                historyAntr.put("lLeg", jsn.getString("lLeg"));
+                historyAntr.put("rHand", jsn.getString("rHand"));
+                historyAntr.put("lHand", jsn.getString("lHand"));
 
-            File f = new File(getCacheDir(), "History_antr.txt");
-            if (f.exists()) f.createNewFile();
-            FileOutputStream out = new FileOutputStream(f);
-            ObjectOutputStream outObject = new ObjectOutputStream(out);
-            outObject.writeObject(historyAntr.toString());
-            outObject.flush();
-            out.getFD().sync();
-            outObject.close();
+                //Toast.makeText(this, historyAntr.toString(), Toast.LENGTH_LONG).show();
+            }
+            else {
+                normCalories.setText("-");
+                editMass.setText("-");
+                dayNote.setText("-");
+                todayDate.setText(date);
+                foodCalories.setText("-");
+                sportCalories.setText("-");
+                protein.setText("-");
+                fats.setText("-");
+                carbs.setText("-");
 
-            if(fragment.getView()!=null)
-                fragment.updateFragmentData();
+                historyAntr.put("chest", "");
+                historyAntr.put("waist", "");
+                historyAntr.put("butt", "");
+                historyAntr.put("calves", "");
+                historyAntr.put("shoulders", "");
+                historyAntr.put("rLeg", "");
+                historyAntr.put("lLeg", "");
+                historyAntr.put("rHand", "");
+                historyAntr.put("lHand", "");
+
+            }
+
+                File f = new File(getCacheDir(), "History_antr.txt");
+                if (f.exists()) f.createNewFile();
+                FileOutputStream out = new FileOutputStream(f);
+                ObjectOutputStream outObject = new ObjectOutputStream(out);
+                outObject.writeObject(historyAntr.toString());
+                outObject.flush();
+                out.getFD().sync();
+                outObject.close();
+
+                if (fragment.getView() != null)
+                    fragment.updateFragmentData();
+
+            else dayNote.setText("Данные не вводились");
         }
         catch (Exception e)
         {
@@ -322,14 +358,19 @@ public class DiaryActivity extends AppCompatActivity {
         transaction = manager.beginTransaction();
         try {
             if (antropometryFlag) {
-                if(fragment.getView()==null)
-                transaction.add(R.id.antropometry_diary, fragment);
-                else transaction.show(fragment);
+                if(fragment.getView()==null) {
+                    transaction.add(R.id.antropometry_diary, fragment);
+                    dropArrow.setImageResource(R.mipmap.ic_arrow_drop_up_black_24dp);
+                }
+                else {
+                    transaction.show(fragment);
+                    dropArrow.setImageResource(R.mipmap.ic_arrow_drop_up_black_24dp);
+                }
                 antropometryFlag = false;
-
             } else {
                 transaction.hide(fragment);
                 antropometryFlag = true;
+                dropArrow.setImageResource(R.mipmap.ic_arrow_drop_down_black_24dp);
             }
 
             transaction.commit();

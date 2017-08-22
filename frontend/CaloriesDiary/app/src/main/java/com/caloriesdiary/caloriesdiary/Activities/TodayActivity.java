@@ -15,7 +15,9 @@ import android.view.View;
 
 import android.widget.EditText;
 
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,8 +75,9 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
     private boolean foodFlag = false, activeFlag = false, antropometryFlag = true, FABFlag = false;
 
     final String[] args = new String[3];
-    LinearLayout linearLayout;
+    RelativeLayout linearLayout;
 
+    ImageView dropArrow;
     JSONArray jsonAction, jsonFood;
 
     @Override
@@ -99,12 +102,14 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         actionRecyclerView.setLayoutManager(actionLayoutManager);
         actionAdapter = new RecycleActionAdapter(initActiveData());
 
+        dropArrow = (ImageView) findViewById(R.id.drop_image);
+
         calendar = Calendar.getInstance();
         antropometry.setVisibility(View.GONE);
 
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
-        linearLayout.setVisibility(View.INVISIBLE);
+        linearLayout.setVisibility(View.GONE);
 
         try {
             JSONObject jsn;
@@ -264,7 +269,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         protein = (TextView) findViewById(R.id.ProteinText);
         fats = (TextView) findViewById(R.id.FatsText);
         carbs = (TextView) findViewById(R.id.CarbsText);
-        linearLayout = (LinearLayout) findViewById(R.id.setting_layout);
+        linearLayout = (RelativeLayout) findViewById(R.id.setting_layout);
     }
 
     private void addRecyclerOnClickListeners() {
@@ -492,9 +497,12 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
             //Toast.makeText(this, String.valueOf(antropometry.getHeight()), Toast.LENGTH_LONG).show();
             scrlView.scrollBy(0, 200);
             antropometryFlag = false;
+            dropArrow.setImageResource(R.mipmap.ic_arrow_drop_up_black_24dp);
+
         } else {
             antropometry.setVisibility(View.GONE);
             antropometryFlag = true;
+            dropArrow.setImageResource(R.mipmap.ic_arrow_drop_down_black_24dp);
         }
 
 

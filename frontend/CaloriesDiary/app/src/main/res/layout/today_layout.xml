@@ -2,7 +2,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -59,7 +58,6 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center_horizontal"
                 >
-
 
                 <EditText
                     android:id="@+id/DayNote"
@@ -198,7 +196,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/imageView"
-                    android:layout_gravity="center"
                     android:elevation="0dp"
                     android:onClick="onTodayFoodBtnClc"
                     android:paddingBottom="16dp"
@@ -298,30 +295,47 @@
                 android:layout_marginLeft="36dp"
                 android:textSize="12sp"
                 android:layout_marginTop="14dp"
-                android:layout_marginBottom="14dp"
                 android:textColor="@android:color/holo_blue_light"
                 android:background="@android:color/transparent"
                 android:text="Масса" />
 
-            <EditText
-                android:id="@+id/edit_mass"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="36dp"
-                android:layout_marginLeft="36dp"
-                android:textSize="19sp"
-                android:backgroundTint="@android:color/holo_blue_bright"
-                android:ems="10"
-                android:inputType="number"
-                android:selectAllOnFocus="false" />
+                android:layout_height="wrap_content">
 
+                <EditText
+                    android:id="@+id/edit_mass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="36dp"
+                    android:layout_marginLeft="36dp"
+                    android:textSize="19sp"
+                    android:backgroundTint="@android:color/holo_blue_bright"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:selectAllOnFocus="false" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_alignRight="@id/edit_mass"
+                    android:textColor="@android:color/holo_blue_light"
+                    android:text="кг" />
+
+            </RelativeLayout>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:onClick="todayAntrClc"
+    android:background="#F2F2F2">
             <TextView
                 android:id="@+id/today_antropometry"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#F2F2F2"
-                android:onClick="todayAntrClc"
                 android:paddingBottom="22dp"
                 android:paddingTop="20dp"
                 android:paddingLeft="36dp"
@@ -329,6 +343,15 @@
                 android:textColor="?attr/colorControlNormal"
                 android:textSize="22sp" />
 
+    <ImageView
+        android:id="@+id/drop_image"
+        android:src="@mipmap/ic_arrow_drop_down_black_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/today_antropometry"
+        android:layout_marginTop="22dp"/>
+</RelativeLayout>
             <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -342,6 +365,9 @@
                     android:textSize="12sp"
                     android:paddingLeft="36dp"/>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/edit_shoulders"
                     android:layout_width="match_parent"
@@ -349,11 +375,21 @@
                     android:layout_marginLeft="36dp"
                     android:layout_marginRight="36dp"
                     android:textSize="19sp"
-                    android:layout_marginTop="18dp"
                     android:layout_marginBottom="12dp"
                     android:ems="10"
                     android:inputType="number" />
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:paddingTop="15dp"
+        android:paddingRight="10dp"
+        android:layout_alignRight="@id/edit_shoulders"
+        android:text="см" />
+
+</RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -361,7 +397,9 @@
                     android:text="Обхват левой руки"
                     android:textSize="12sp"
                     android:paddingLeft="36dp"/>
-
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/edit_left_hand"
                     android:layout_width="match_parent"
@@ -369,10 +407,19 @@
                     android:layout_marginLeft="36dp"
                     android:layout_marginRight="36dp"
                     android:textSize="19sp"
-                    android:layout_marginTop="18dp"
                     android:layout_marginBottom="12dp"
                     android:ems="10"
                     android:inputType="number" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:paddingTop="15dp"
+        android:paddingRight="10dp"
+        android:layout_alignRight="@id/edit_left_hand"
+        android:text="см" />
+
+</RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -381,6 +428,10 @@
                     android:textSize="12sp"
                     android:paddingLeft="36dp"/>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
                 <EditText
                     android:id="@+id/edit_right_hand"
                     android:layout_width="match_parent"
@@ -388,10 +439,20 @@
                     android:layout_marginLeft="36dp"
                     android:layout_marginRight="36dp"
                     android:textSize="19sp"
-                    android:layout_marginTop="18dp"
                     android:layout_marginBottom="12dp"
                     android:ems="10"
                     android:inputType="number" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:paddingTop="15dp"
+                        android:paddingRight="10dp"
+                        android:layout_alignRight="@id/edit_right_hand"
+                        android:text="см" />
+
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -399,7 +460,9 @@
                     android:text="Обхват груди"
                     android:textSize="12sp"
                     android:paddingLeft="36dp"/>
-
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/edit_chest"
                     android:layout_width="match_parent"
@@ -407,10 +470,20 @@
                     android:layout_marginLeft="36dp"
                     android:layout_marginRight="36dp"
                     android:textSize="19sp"
-                    android:layout_marginTop="18dp"
                     android:layout_marginBottom="12dp"
                     android:ems="10"
                     android:inputType="number" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:paddingTop="15dp"
+        android:paddingRight="10dp"
+        android:layout_alignRight="@id/edit_chest"
+        android:text="см" />
+
+</RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -419,6 +492,9 @@
                     android:textSize="12sp"
                     android:paddingLeft="36dp"/>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/edit_waist"
                     android:layout_width="match_parent"
@@ -426,10 +502,20 @@
                     android:layout_marginLeft="36dp"
                     android:layout_marginRight="36dp"
                     android:textSize="19sp"
-                    android:layout_marginTop="18dp"
                     android:layout_marginBottom="12dp"
                     android:ems="10"
                     android:inputType="number" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:paddingTop="15dp"
+                        android:paddingRight="10dp"
+                        android:layout_alignRight="@id/edit_waist"
+                        android:text="см" />
+
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -438,6 +524,9 @@
                     android:textSize="12sp"
                     android:paddingLeft="36dp"/>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/edit_butt"
                     android:layout_width="match_parent"
@@ -445,10 +534,20 @@
                     android:layout_marginLeft="36dp"
                     android:layout_marginRight="36dp"
                     android:textSize="19sp"
-                    android:layout_marginTop="18dp"
                     android:layout_marginBottom="12dp"
                     android:ems="10"
                     android:inputType="number"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:paddingTop="15dp"
+                        android:paddingRight="10dp"
+                        android:layout_alignRight="@id/edit_butt"
+                        android:text="см" />
+
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -457,6 +556,9 @@
                     android:textSize="12sp"
                     android:paddingLeft="36dp"/>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/edit_right_leg"
                     android:layout_width="match_parent"
@@ -464,10 +566,20 @@
                     android:layout_marginLeft="36dp"
                     android:layout_marginRight="36dp"
                     android:textSize="19sp"
-                    android:layout_marginTop="18dp"
                     android:layout_marginBottom="12dp"
                     android:ems="10"
                     android:inputType="number" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:paddingTop="15dp"
+                        android:paddingRight="10dp"
+                        android:layout_alignRight="@id/edit_right_leg"
+                        android:text="см" />
+
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -476,6 +588,9 @@
                     android:textSize="12sp"
                     android:paddingLeft="36dp"/>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/edit_left_leg"
                     android:layout_width="match_parent"
@@ -483,12 +598,21 @@
                     android:layout_marginLeft="36dp"
                     android:layout_marginRight="36dp"
                     android:textSize="19sp"
-                    android:layout_marginTop="18dp"
                     android:layout_marginBottom="12dp"
                     android:ems="10"
                     android:inputType="number"
                     />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:paddingTop="15dp"
+                        android:paddingRight="10dp"
+                        android:layout_alignRight="@id/edit_left_leg"
+                        android:text="см" />
+
+                </RelativeLayout>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -496,6 +620,9 @@
                     android:textSize="12sp"
                     android:paddingLeft="36dp"/>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/edit_calves"
                     android:layout_width="match_parent"
@@ -503,19 +630,28 @@
                     android:layout_marginLeft="36dp"
                     android:layout_marginRight="36dp"
                     android:textSize="19sp"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="20dp"
                     android:ems="10"
                     android:inputType="number"
                     />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:paddingTop="15dp"
+                        android:paddingRight="10dp"
+                        android:layout_alignRight="@id/edit_calves"
+                        android:text="см" />
+
+                </RelativeLayout>
         </LinearLayout>
 
         </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/setting_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -524,11 +660,13 @@
         android:layout_above="@+id/today_options_button">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/floatingActionButtonActive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/floatingActionButtonFood"
             android:clickable="true"
             android:onClick="onAddActionsClc"
             app:backgroundTint="@android:color/holo_blue_light"
@@ -536,15 +674,48 @@
             app:srcCompat="@mipmap/ic_timer_white_actionbutton" />
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButtonFood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
             android:clickable="true"
             android:onClick="onAddFoodClc"
             app:fabSize="mini"
             app:srcCompat="@mipmap/ic_local_dining_actionbutton" />
-    </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Добавить блюдо"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/today_add_buttons"
+            android:textColor="#FFFFFF"
+            android:layout_toLeftOf="@+id/floatingActionButtonFood"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Добавить активность"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/today_add_buttons"
+            android:textColor="#FFFFFF"
+            android:layout_alignTop="@+id/floatingActionButtonActive"
+            android:layout_toLeftOf="@+id/floatingActionButtonActive"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            />
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/today_options_button"

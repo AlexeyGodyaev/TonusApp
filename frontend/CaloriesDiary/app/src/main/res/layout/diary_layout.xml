@@ -59,19 +59,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
+                android:layout_marginTop="14dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:orientation="horizontal"
                 android:layout_gravity="center_horizontal"
                 >
 
-
                 <EditText
                     android:id="@+id/diaryDayNote"
                     android:layout_width="match_parent"
-                    android:layout_height="66dp"
-                    android:textSize="24px"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_height="68dp"
+                    android:textSize="17sp"
                     android:editable="false"
                     android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
                     android:maxLength="30"
@@ -197,8 +196,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_marginLeft="11dp"
-                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_above="@+id/diary_food_busket_recycler_view" />
 
                 <TextView
@@ -206,11 +204,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/imageView"
-                    android:layout_gravity="center"
                     android:elevation="0dp"
                     android:onClick="onDiaryFoodBtnClc"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
                     android:text="Питание"
                     android:textColor="?attr/colorControlNormal"
                     android:textSize="22sp" />
@@ -256,17 +253,15 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:paddingRight="16dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="16dp"
                     app:srcCompat="@mipmap/ic_timer_black_24px" />
 
                 <TextView
                     android:id="@+id/diaryActiveBtn"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:elevation="20dp"
                     android:onClick="onDiaryActivityBtnClc"
                     android:layout_toRightOf="@id/imageView2"
                     android:text="Активность"
@@ -303,32 +298,67 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="36dp"
+                android:textSize="12sp"
+                android:layout_marginTop="14dp"
+                android:textColor="@android:color/holo_blue_light"
                 android:background="@android:color/transparent"
-                android:text="Вес" />
+                android:text="Масса" />
 
-            <EditText
-                android:id="@+id/diary_mass"
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/diary_mass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="36dp"
+                    android:layout_marginLeft="36dp"
+                    android:textSize="19sp"
+                    android:backgroundTint="@android:color/holo_blue_bright"
+                    android:ems="10"
+                    android:editable="false"
+                    android:selectAllOnFocus="false" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_alignRight="@id/diary_mass"
+                    android:textColor="@android:color/holo_blue_light"
+                    android:text="кг" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/holo_blue_bright"
-                android:ems="10"
-                android:hint="кг"
-                android:editable="false"
-                android:gravity="end"
-                android:selectAllOnFocus="false" />
-
-            <TextView
-                android:id="@+id/diary_antropometry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#F2F2F2"
                 android:onClick="diaryAntrClc"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:text="Антропометрия"
-                android:textColor="?attr/colorControlNormal"
-                android:textSize="22sp" />
+                android:background="#F2F2F2">
+                <TextView
+                    android:id="@+id/diary_antropometry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="22dp"
+                    android:paddingTop="20dp"
+                    android:paddingLeft="36dp"
+                    android:text="Антропометрия"
+                    android:textColor="?attr/colorControlNormal"
+                    android:textSize="22sp" />
+
+                <ImageView
+                    android:id="@+id/drop_image"
+                    android:src="@mipmap/ic_arrow_drop_down_black_24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/diary_antropometry"
+                    android:layout_marginTop="22dp"/>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
