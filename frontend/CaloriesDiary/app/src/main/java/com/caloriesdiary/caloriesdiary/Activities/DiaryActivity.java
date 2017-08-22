@@ -4,6 +4,7 @@ package com.caloriesdiary.caloriesdiary.Activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -383,6 +384,10 @@ public class DiaryActivity extends AppCompatActivity {
     }
 
 
+    public void onStatClc(View view){
+        Intent intent = new Intent(this, StatActivity.class);
+        startActivity(intent);
+    }
 
     public void onDiaryActivityBtnClc(View v) {
         initActiveData();
