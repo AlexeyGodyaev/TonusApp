@@ -62,6 +62,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
     CheckBox checkbox1;
     ProgressBar progressbar1;
     CallBackListener listener;
+    TextView test;
     Post post;
     String query = "";
     String sortkcal = "";
@@ -89,6 +90,8 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
 
 //        mAdapter = new RecycleActionAdapter(initData2());
 //        mRecyclerView.setAdapter(mAdapter);
+
+        test = (TextView) findViewById(R.id.activity_textview);
 
         addRecyclerClickListener();
 
@@ -118,6 +121,9 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
         {
 
             JSONObject json = post.get();
+
+           // test.setText(json.toString());
+
             list = new ArrayList<>();
             //Toast.makeText(this, json.toString(), Toast.LENGTH_SHORT).show();
             if(json.getString("status").equals("1"))
@@ -171,6 +177,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
                 if(b)
                 {
                     spinner1.setEnabled(true);
+
                     if(spinner1.getSelectedItemPosition()==0)
                     {
                         sortkcal = "1";
@@ -196,7 +203,6 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
                         preparePost();
                         post.execute(args);
                     }
-
 
                 }
                 else
@@ -230,7 +236,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
                         String args[] = new String[4];
                         args[0] = "http://caloriesdiary.ru/activities/get_activities";
                         args[1] = query; //query
-                        args[2] = ""; //sort_names
+                        args[2] = "1"; //sort_names
                         args[3] = sortkcal; //sort_calories
                         preparePost();
                         post.execute(args);
@@ -243,13 +249,11 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
                         String args[] = new String[4];
                         args[0] = "http://caloriesdiary.ru/activities/get_activities";
                         args[1] = query; //query
-                        args[2] = ""; //sort_names
+                        args[2] = "1"; //sort_names
                         args[3] = sortkcal; //sort_calories
                         preparePost();
                         post.execute(args);
                     }
-
-
 
                 }
             }
