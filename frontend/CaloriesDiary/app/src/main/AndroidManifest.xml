@@ -42,18 +42,9 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".Activities.FoodCatalogActivity" android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"
-            />
-        <activity android:name=".Activities.ActionsCatalogActivity" android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"
-            />
-        <activity android:name=".Activities.GuestMainActivity" android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"
-            />
         <activity android:name=".Activities.StatActivity" android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"
-            android:theme="@style/AppTheme.NoActionBar"/>
+           />
         <activity android:name=".Activities.SettingsActivity" android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"
             />
@@ -107,24 +98,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity
-            android:name=".Activities.RecycleFoodCatalogActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".RecycleFoodCatalogActivity" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
         <activity android:name=".Activities.FoodBuilderActivity" android:screenOrientation="portrait"
             android:launchMode="singleTop">
             <meta-data
