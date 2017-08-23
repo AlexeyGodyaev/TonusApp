@@ -2,22 +2,84 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/confirm_login"
+    <TextView
+        android:id="@+id/delete_dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Введите логин"
-        />
-    <EditText
-        android:id="@+id/confirm_pass"
+        android:text="Удаление аккаунта"
+        android:layout_marginTop="22dp"
+        android:layout_marginLeft="22dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_blue_light"/>
+
+    <TextView
+        android:id="@+id/delete_dialog_message"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Вы уверены что хотите удалить аккаунт? Все данные будут удалены!"
+        android:layout_marginRight="22dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/delete_dialog_title"
+        android:textSize="13sp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/delete_dialog_message_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Введите пароль для подтверждения удаления аккаунта."
+        android:layout_marginRight="22dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="14dp"
+        android:layout_below="@+id/delete_dialog_message"
+        android:textSize="13sp"
+        android:textColor="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/delete_dialog_pass_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Пароль:"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="22dp"
+        android:textSize="13sp"
+        android:layout_below="@+id/delete_dialog_message_2"
+        android:textColor="@android:color/holo_blue_light"/>
+
+    <EditText
+        android:id="@+id/delete_dialog_pass"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Введите пароль"
-        android:layout_below="@id/confirm_login"/>
+        android:textSize="13sp"
+        android:layout_below="@+id/delete_dialog_pass_text"
+        android:layout_marginRight="22dp"
+        android:layout_marginLeft="22dp"
+        android:inputType="textPassword"
+        />
     <Button
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:text="Отмена"
+        android:id="@+id/cancel_delete_button"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="22dp"
+        android:layout_below="@+id/delete_dialog_pass"
+        android:layout_marginTop="22dp"
+        android:layout_marginBottom="22dp"
+        android:textColor="@android:color/white"
+        android:background="@android:color/holo_blue_light"
+        />
+
+    <TextView
+        android:id="@+id/accept_delete_acc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Удалить"
-        android:layout_below="@id/confirm_pass"
-        android:onClick="onClickDelete"/>
+        android:layout_below="@+id/delete_dialog_pass"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="22dp"
+        />
 </RelativeLayout>

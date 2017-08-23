@@ -29,7 +29,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
 
     public void InitObjects()
     {
-        pass = (EditText) findViewById(R.id.confirm_pass);
+        pass = (EditText) findViewById(R.id.delete_dialog_pass);
         sharedPref = getSharedPreferences("GlobalPref",MODE_PRIVATE);
     }
 

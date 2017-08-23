@@ -112,7 +112,6 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
         }
     }
 
-
     private void clearFiles(){
         try {
             JSONArray jsonArray;

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/acc_setting"
+        android:layout_marginTop="28dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginRight="21dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/table_border_white"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:onClick="onAccSetting"
+        android:text="Настройки аккаунта" />
+
+    <Button
+        android:id="@+id/push_setting"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginRight="21dp"
+        android:background="@drawable/table_border_white"
+        android:onClick="onPushSetting"
+        android:text="Настройки уведомлений" />
+</LinearLayout>

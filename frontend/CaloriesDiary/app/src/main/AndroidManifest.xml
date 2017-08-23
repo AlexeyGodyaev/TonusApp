@@ -30,6 +30,7 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".Activities.SetAGoal" android:screenOrientation="portrait" />
+        <activity android:name=".Activities.AccSettingActivity" android:screenOrientation="portrait" />
         <activity android:name=".Activities.ArchiveActivity" android:screenOrientation="portrait" />
         <activity android:name=".Activities.ArchiveItemDataActivity" android:screenOrientation="portrait" />
         <activity android:name=".Activities.PersonalProfileEditActivity" android:screenOrientation="portrait"
