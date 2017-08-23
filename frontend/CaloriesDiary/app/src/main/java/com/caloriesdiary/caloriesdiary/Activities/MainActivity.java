@@ -44,6 +44,7 @@ import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -145,6 +146,44 @@ public class MainActivity extends AppCompatActivity
                     out.getFD().sync();
                     outObject.close();
                 }
+
+                JSONArray days = jsn.getJSONArray("days");
+
+                Calendar calendar = Calendar.getInstance();
+                String date = String.valueOf(calendar.get(Calendar.YEAR));
+                if (calendar.get(Calendar.MONTH) < 9)
+                    date += "-0" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                else date += "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                if (calendar.get(Calendar.DAY_OF_MONTH) < 10)
+                    date += "-0" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                else date += "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+
+                if (days.getJSONObject(days.length()-1).getString("date").equals(date)){
+
+                    File active = new File(getCacheDir(), "Actions.txt");
+                    JSONObject jObject = new JSONObject();
+                    jObject.put("active", days.getJSONObject(days.length()-1).get("activities").toString()
+                            .substring(1, days.getJSONObject(days.length()-1).get("activities").toString().length()-1));
+
+                    FileOutputStream out = new FileOutputStream(active);
+                    ObjectOutputStream outObject = new ObjectOutputStream(out);
+                    outObject.writeObject(jObject.toString());
+                    outObject.flush();
+                    out.getFD().sync();
+                    outObject.close();
+
+                    File food = new File(getCacheDir(), "Food.txt");
+                    jObject = new JSONObject();
+                    jObject.put("food", days.getJSONObject(days.length()-1).get("food").toString()
+                            .substring(1, days.getJSONObject(days.length()-1).get("food").toString().length()-1));
+
+                    FileOutputStream outFood = new FileOutputStream(food);
+                    ObjectOutputStream outFoodObject = new ObjectOutputStream(outFood);
+                    outFoodObject.writeObject(jObject.toString());
+                    outFoodObject.flush();
+                    outFood.getFD().sync();
+                    outFoodObject.close();
+                }
             }
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
@@ -207,8 +246,6 @@ public class MainActivity extends AppCompatActivity
     public  void onTodayClc(View view){
 
         try {
-
-
             Post log = new Post();
 
             String args[] = new String[3];
@@ -240,10 +277,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onFoodCatalogClc(View view){
-//        Intent intent = new Intent(getApplicationContext(),RecycleFoodCatalogActivity.class);
-//
-//        startActivity(intent);
-
         Intent intent = new Intent(getApplicationContext(),FoodBuilderActivity.class);
         startActivity(intent);
     }
