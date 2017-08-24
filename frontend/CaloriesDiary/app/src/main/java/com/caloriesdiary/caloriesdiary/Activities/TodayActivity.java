@@ -350,7 +350,6 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
                     outObject.flush();
                     out.getFD().sync();
                     outObject.close();
-
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "1 +" + e.toString(), Toast.LENGTH_SHORT).show();
                 }

@@ -162,8 +162,8 @@ public class MainActivity extends AppCompatActivity
 
                     File active = new File(getCacheDir(), "Actions.txt");
                     JSONObject jObject = new JSONObject();
-                    jObject.put("active", days.getJSONObject(days.length()-1).get("activities").toString()
-                            .substring(1, days.getJSONObject(days.length()-1).get("activities").toString().length()-1));
+                    JSONArray jArr = new JSONArray(days.getJSONObject(days.length()-1).get("activities").toString());
+                    jObject.put("active", jArr);
 
                     FileOutputStream out = new FileOutputStream(active);
                     ObjectOutputStream outObject = new ObjectOutputStream(out);
@@ -174,8 +174,8 @@ public class MainActivity extends AppCompatActivity
 
                     File food = new File(getCacheDir(), "Food.txt");
                     jObject = new JSONObject();
-                    jObject.put("food", days.getJSONObject(days.length()-1).get("food").toString()
-                            .substring(1, days.getJSONObject(days.length()-1).get("food").toString().length()-1));
+                    jArr = new JSONArray(days.getJSONObject(days.length()-1).get("food").toString());
+                    jObject.put("food", jArr);
 
                     FileOutputStream outFood = new FileOutputStream(food);
                     ObjectOutputStream outFoodObject = new ObjectOutputStream(outFood);
