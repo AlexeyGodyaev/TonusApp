@@ -59,12 +59,12 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
     private Button btnActionsSortName;
     private boolean sortdir = true;
     Spinner spinner1;
+    String query = "";
     CheckBox checkbox1;
     ProgressBar progressbar1;
     CallBackListener listener;
     TextView test;
     Post post;
-    String query = "";
     String sortkcal = "";
     List<ActionItem> list = new ArrayList<>();
 

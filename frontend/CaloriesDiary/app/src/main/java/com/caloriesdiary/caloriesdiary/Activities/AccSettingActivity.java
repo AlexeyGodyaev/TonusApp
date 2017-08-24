@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 
 import org.json.JSONObject;
@@ -28,11 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AccSettingActivity extends AppCompatActivity {
+public class AccSettingActivity extends AppCompatActivity implements CallBackListener {
 
     private SharedPreferences sharedPref;
     private ListView settingList;
-    private String flag = "";
+    private String flag = "", guestPass="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,8 @@ public class AccSettingActivity extends AppCompatActivity {
             ObjectInputStream inObject = new ObjectInputStream(in);
             JSONObject js = new JSONObject(inObject.readObject().toString());
             flag = js.getString("flag");
+            if (flag.equals("guest"))
+                guestPass = js.getString("guest_pass");
             inObject.close();
         } catch (Exception e){
 
@@ -69,7 +72,7 @@ public class AccSettingActivity extends AppCompatActivity {
         settingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                if (flag.equals("user"))
                 switch (i){
                     case 0:
                         onChangePass();
@@ -81,6 +84,26 @@ public class AccSettingActivity extends AppCompatActivity {
                         onDeleteClc();
                         break;
                 }
+
+                if(flag.equals("guest"))
+                    switch (i){
+                        case 0:
+                            regUser();
+                            break;
+                        case 1:
+                            onDelGuest();
+                            break;
+                    }
+
+                if (flag.equals("google"))
+                    switch (i){
+                        case 0:
+                            onExitClc();
+                            break;
+                        case 1:
+                            onDeleteClc();
+                            break;
+                    }
             }
         });
     }
@@ -90,12 +113,10 @@ public class AccSettingActivity extends AppCompatActivity {
 
         if(flag.equals("user"))
             list.add("Смена пароля");
-
         if(flag.equals("guest"))
             list.add("Регистрация");
-
         list.add("Выйти из аккаунта");
-        //if(!flag.equals("guest"))
+        if(!flag.equals("guest"))
         list.add("Удаление аккаунта");
 
 
@@ -128,8 +149,9 @@ public class AccSettingActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     try {
+                        clearAllFiles();
                         Post log = new Post();
-
+                        log.setListener(AccSettingActivity.this);
                         String args[] = new String[3];
 
                         args[0] = "http://caloriesdiary.ru/users/delete";  //аргументы для пост запроса
@@ -160,6 +182,37 @@ public class AccSettingActivity extends AppCompatActivity {
         }
     }
 
+    private void regUser(){
+        Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+        startActivity(intent);
+    }
+
+    private void onDelGuest(){
+        try {
+            clearAllFiles();
+            Post log = new Post();
+            log.setListener(this);
+            String args[] = new String[3];
+
+            args[0] = "http://caloriesdiary.ru/users/delete";  //аргументы для пост запроса
+            args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+            args[2] = guestPass;
+
+
+            log.execute(args); // вызываем запрос
+            JSONObject JSans = log.get();
+            Toast.makeText(this, JSans.toString(), Toast.LENGTH_SHORT).show();
+            if (JSans.getString("status").equals("1")) {
+                Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        } catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void onChangePass(){
         Intent intent = new Intent(this, ChangePasswordActivity.class);
         startActivity(intent);
@@ -172,14 +225,14 @@ public class AccSettingActivity extends AppCompatActivity {
         active.delete();
         File food = new File(getCacheDir(), "Food.txt");
         food.delete();
+        File auht = new File(getCacheDir(), "Auth");
+        auht.delete();
     }
 
     public void onExitClc(){
 
         clearAllFiles();
         Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
-        File f = new File(getCacheDir(), "Auth");
-        f.delete();
 
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -194,5 +247,10 @@ public class AccSettingActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void callback() {
+
     }
 }

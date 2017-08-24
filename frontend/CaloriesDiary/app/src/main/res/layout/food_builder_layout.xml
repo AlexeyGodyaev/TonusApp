@@ -33,11 +33,16 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
+
                     <RelativeLayout
+                        android:id="@+id/filters"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@xml/border">
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@android:color/white">
                         <CheckBox
                             android:id="@+id/builder_checkbox1"
                             android:layout_width="wrap_content"

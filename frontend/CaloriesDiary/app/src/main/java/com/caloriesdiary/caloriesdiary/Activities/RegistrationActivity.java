@@ -2,6 +2,7 @@ package com.caloriesdiary.caloriesdiary.Activities;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -21,6 +22,7 @@ public class RegistrationActivity  extends AppCompatActivity {
 
     TextView error;
     EditText name, pass, passAgain, mail;
+    SharedPreferences sharedPref;
 
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
@@ -37,6 +39,7 @@ public class RegistrationActivity  extends AppCompatActivity {
 
         setTitle("Регистрация");
 
+        sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -70,10 +73,11 @@ public class RegistrationActivity  extends AppCompatActivity {
                     if (name.getText().toString().length() > 3 && valid(name.getText().toString())) {
 
                         String args[] = new String[4];
-                        args[0] = "http://caloriesdiary.ru/users/register";
-                        args[1] = name.getText().toString();
-                        args[2] = pass.getText().toString();
-                        args[3] = mail.getText().toString();
+                        args[0] = "http://caloriesdiary.ru/users/migrate";
+                        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
+                        args[2] = name.getText().toString();
+                        args[3] = pass.getText().toString();
+                        args[4] = mail.getText().toString();
 
                         Post sendReg = new Post();
                         sendReg.execute(args);

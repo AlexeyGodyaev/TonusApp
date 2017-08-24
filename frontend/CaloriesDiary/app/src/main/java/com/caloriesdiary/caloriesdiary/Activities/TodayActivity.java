@@ -2,6 +2,7 @@ package com.caloriesdiary.caloriesdiary.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 
@@ -13,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
 import android.widget.ImageView;
@@ -105,7 +108,6 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         dropArrow = (ImageView) findViewById(R.id.drop_image);
 
         calendar = Calendar.getInstance();
-        antropometry.setVisibility(View.GONE);
 
         sharedPref = getSharedPreferences("GlobalPref", MODE_PRIVATE);
 
@@ -255,8 +257,11 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
         calves = (EditText) findViewById(R.id.edit_calves);
         shoulders = (EditText) findViewById(R.id.edit_shoulders);
 
-        foodRecyclerView = (RecyclerView) findViewById(R.id.food_busket_recycler_view);
         antropometry = (LinearLayout) findViewById(R.id.antropometry_today);
+        antropometry.setVisibility(View.GONE);
+
+
+        foodRecyclerView = (RecyclerView) findViewById(R.id.food_busket_recycler_view);
         actionRecyclerView = (RecyclerView) findViewById(R.id.action_busket_recycler_view);
         scrlView = (NestedScrollView) findViewById(R.id.today_scroll_view);
 
@@ -490,20 +495,22 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
     }
 
     public void todayAntrClc(View view) {
+        try {
+            if (antropometryFlag) {
+                antropometry.setVisibility(View.VISIBLE);
+                antropometry.getRootView().refreshDrawableState();
+                scrlView.scrollBy(0, 200);
+                antropometryFlag = false;
+                dropArrow.setImageResource(R.mipmap.ic_arrow_drop_up_black_24dp);
 
-        if (antropometryFlag) {
-            antropometry.setVisibility(View.VISIBLE);
-            //Toast.makeText(this, String.valueOf(antropometry.getHeight()), Toast.LENGTH_LONG).show();
-            scrlView.scrollBy(0, 200);
-            antropometryFlag = false;
-            dropArrow.setImageResource(R.mipmap.ic_arrow_drop_up_black_24dp);
-
-        } else {
-            antropometry.setVisibility(View.GONE);
-            antropometryFlag = true;
-            dropArrow.setImageResource(R.mipmap.ic_arrow_drop_down_black_24dp);
+            } else {
+                antropometry.setVisibility(View.GONE);
+                antropometryFlag = true;
+                dropArrow.setImageResource(R.mipmap.ic_arrow_drop_down_black_24dp);
+            }
+        } catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
-
 
     }
 

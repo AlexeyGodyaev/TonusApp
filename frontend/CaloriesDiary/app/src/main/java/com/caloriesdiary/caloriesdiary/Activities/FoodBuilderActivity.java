@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +27,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -37,7 +38,6 @@ import com.caloriesdiary.caloriesdiary.Adapters.CustomFoodAdapter;
 import com.caloriesdiary.caloriesdiary.HTTP.Get;
 import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
-import com.caloriesdiary.caloriesdiary.HTTP.GetCategories;
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
 import com.caloriesdiary.caloriesdiary.R;
 import com.caloriesdiary.caloriesdiary.Adapters.RecycleFoodAdapter;
@@ -45,27 +45,15 @@ import com.caloriesdiary.caloriesdiary.RecyclerTouchListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.net.ssl.HttpsURLConnection;
 
 
 public class FoodBuilderActivity extends AppCompatActivity implements CallBackListener {
@@ -761,6 +749,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         });
 
     }
+
     public void initTabs()
     {
         TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);

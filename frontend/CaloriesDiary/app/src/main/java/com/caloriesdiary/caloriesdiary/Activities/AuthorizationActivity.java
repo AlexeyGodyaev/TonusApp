@@ -389,6 +389,7 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
             JSONObject JSans = log.get();
 
             JSans.put("flag", "guest");
+            JSans.put("guest_pass", jsn.getString("password"));
             saveUser(JSans);
 
             status = JSans.getInt("status");
