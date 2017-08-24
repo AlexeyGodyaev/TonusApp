@@ -226,8 +226,10 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
             int status;
             JSONObject JSans = log.get();
 
-            saveUser(JSans);
             try {
+                JSans.put("flag", "google");
+                saveUser(JSans);
+
                 status = JSans.getInt("status");
                 if (status == 1) {
                     editor = sharedPref.edit();
@@ -308,6 +310,7 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
         int status;
         JSONObject JSans = log.get();
 
+            JSans.put("flag", "user");
             saveUser(JSans);
             status = JSans.getInt("status");
 
@@ -385,6 +388,7 @@ public class AuthorizationActivity extends Activity implements CallBackListener 
             int status;
             JSONObject JSans = log.get();
 
+            JSans.put("flag", "guest");
             saveUser(JSans);
 
             status = JSans.getInt("status");

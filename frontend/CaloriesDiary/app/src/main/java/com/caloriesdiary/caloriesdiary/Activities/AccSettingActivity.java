@@ -22,6 +22,8 @@ import com.caloriesdiary.caloriesdiary.R;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class AccSettingActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPref;
     private ListView settingList;
-
+    private String flag = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,17 @@ public class AccSettingActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        try {
+            File f = new File(getCacheDir(), "Auth");
+            FileInputStream in = new FileInputStream(f);
+            ObjectInputStream inObject = new ObjectInputStream(in);
+            JSONObject js = new JSONObject(inObject.readObject().toString());
+            flag = js.getString("flag");
+            inObject.close();
+        } catch (Exception e){
+
+        }
 
         settingList = (ListView) findViewById(R.id.acc_setting_list);
 
@@ -75,9 +88,16 @@ public class AccSettingActivity extends AppCompatActivity {
     private List<String> initList(){
         List<String> list = new ArrayList<>();
 
-        list.add("Смена пароля");
+        if(flag.equals("user"))
+            list.add("Смена пароля");
+
+        if(flag.equals("guest"))
+            list.add("Регистрация");
+
         list.add("Выйти из аккаунта");
+        //if(!flag.equals("guest"))
         list.add("Удаление аккаунта");
+
 
         return list;
     }

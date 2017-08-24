@@ -37,7 +37,7 @@
                     android:layout_marginStart="13dp"
                     android:text="Выберете дату:"
                     android:textColor="@android:color/white"
-                    android:textSize="24px"
+                    android:textSize="12sp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
