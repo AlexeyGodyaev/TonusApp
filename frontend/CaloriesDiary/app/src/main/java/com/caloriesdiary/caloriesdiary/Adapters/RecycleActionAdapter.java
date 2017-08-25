@@ -52,7 +52,11 @@ public class RecycleActionAdapter extends RecyclerView.Adapter<RecycleActionAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ActionItem actionItem = listitem.get(position);
-        holder.nameview.setText(actionItem.getName());
+        if(actionItem.getName().length()>18)
+            holder.nameview.setText(actionItem.getName().substring(0,18)+"...");
+        else
+            holder.nameview.setText(actionItem.getName());
+
         holder.caloriesview.setText(actionItem.getCalories().toString());
     }
 
