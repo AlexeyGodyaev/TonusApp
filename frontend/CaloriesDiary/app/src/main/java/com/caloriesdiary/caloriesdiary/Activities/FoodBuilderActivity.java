@@ -787,7 +787,6 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
         final EditText edittext =  content.findViewById(R.id.custom_food_search);
 
-
         dialogRecyclerView =  content.findViewById(R.id.custom_food_recycle);
         dialogRecyclerView.setHasFixedSize(true);
 
@@ -801,7 +800,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 int visibleItemCount = dialogLayoutManager.getChildCount();
                 int totalItemCount = dialogLayoutManager.getItemCount();
                 int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-               // edittext.setText(String.valueOf(visibleItemCount) + ":" +String.valueOf(totalItemCount) + ":"+String.valueOf(lastVisibleItems));
+                edittext.setText(String.valueOf(offset)+":"+String.valueOf(visibleItemCount) + ":" +String.valueOf(totalItemCount) + ":"+String.valueOf(lastVisibleItems));
                 if (totalItemCount -1 == lastVisibleItems && send){
                     buff = lastVisibleItems-visibleItemCount+1;
                     //get = new GetFood();
@@ -821,7 +820,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     post.setListener(listener);
                     post.execute(args);
                     ((LinearLayoutManager)dialogRecyclerView.getLayoutManager()).scrollToPosition(buff);
-                   // Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -848,12 +847,12 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         dialogRecyclerView.addOnItemTouchListener( new RecyclerTouchListener(this, dialogRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                final CheckBox checkbox = (CheckBox) view.findViewById(R.id.add_food_checkbox);
-                final TextView textB = (TextView) view.findViewById(R.id.viewB);
-                final TextView textJ = (TextView) view.findViewById(R.id.viewJ);
-                final TextView textU = (TextView) view.findViewById(R.id.viewU);
-                final TextView textKc = (TextView) view.findViewById(R.id.viewKc);
-                final TextView textId = (TextView) view.findViewById(R.id.viewID);
+                final CheckBox checkbox = view.findViewById(R.id.add_food_checkbox);
+                final TextView textB = view.findViewById(R.id.viewB);
+                final TextView textJ = view.findViewById(R.id.viewJ);
+                final TextView textU = view.findViewById(R.id.viewU);
+                final TextView textKc = view.findViewById(R.id.viewKc);
+                final TextView textId = view.findViewById(R.id.viewID);
 
                 if(!checkbox.isChecked())
                 {
