@@ -58,6 +58,7 @@ import java.util.List;
 
 public class FoodBuilderActivity extends AppCompatActivity implements CallBackListener {
 
+    JSONArray allFoodArray = new JSONArray();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -145,14 +146,17 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             if(json.getString("status").equals("1"))
             {
 
-                FoodItem foodItemtoAdd = new FoodItem();
+                FoodItem foodItemtoAdd;
                 JSONArray jarr = json.getJSONArray("food");
                 for(int i = 0; i < jarr.length(); i++)
                 {
                     foodItemtoAdd = new FoodItem();
 
                     foodItemtoAdd.setId(Integer.valueOf(jarr.getJSONObject(i).getString("food_id")));
-                    foodItemtoAdd.setName(jarr.getJSONObject(i).getString("name"));
+                    if(jarr.getJSONObject(i).getString("name").length()<20)
+                        foodItemtoAdd.setName(jarr.getJSONObject(i).getString("name"));
+                    else
+                        foodItemtoAdd.setName(jarr.getJSONObject(i).getString("name").substring(0,18) + "...");
                     foodItemtoAdd.setB(Float.valueOf(jarr.getJSONObject(i).getString("protein")));
                     foodItemtoAdd.setJ(Float.valueOf(jarr.getJSONObject(i).getString("fats")));
                     foodItemtoAdd.setU(Float.valueOf(jarr.getJSONObject(i).getString("carbs")));
@@ -173,6 +177,11 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     foodItemtoAdd.setCategoryId(0);
                     list.add(foodItemtoAdd);
                 }
+
+                for(int i=0; i<jarr.length(); i++){
+                    allFoodArray.put(jarr.getJSONObject(i));
+                }
+
                 mAdapter = new RecycleFoodAdapter(list);
                 mRecyclerView.setAdapter(mAdapter);
                 if(updialog)
@@ -568,9 +577,11 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
                 final TextView txtName = view.findViewById(R.id.recycler_food_item_name);
                 final TextView dialogName = content.findViewById(R.id.dialog_food_title);
-                if(txtName.getText().toString().length()>20)
-                    dialogName.setText(txtName.getText().toString().substring(0, 20) + "...");
-                else dialogName.setText(txtName.getText());
+                try {
+                    dialogName.setText(allFoodArray.getJSONObject(position).getString("name"));
+                }catch (Exception e){
+
+                }
                 final TextView txtBJU = view.findViewById(R.id.recycler_food_item_bju);
                 final TextView txtCalories = view.findViewById(R.id.recycler_food_item_calories);
                 final TextView dialogCalories = content.findViewById(R.id.dialog_cal);
@@ -833,7 +844,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     post.setListener(listener);
                     post.execute(args);
                 }
-                
+
                 dialogRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

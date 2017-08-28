@@ -56,8 +56,6 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private Button btnActionsSortName;
-    private boolean sortdir = true;
     Spinner spinner1;
     String query = "";
     CheckBox checkbox1;
@@ -68,7 +66,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
     String sortkcal = "";
     List<ActionItem> list = new ArrayList<>();
 
-
+    JSONArray jarr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,10 +126,15 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
             //Toast.makeText(this, json.toString(), Toast.LENGTH_SHORT).show();
             if(json.getString("status").equals("1"))
             {
-                JSONArray jarr = json.getJSONArray("activities");
+                jarr = json.getJSONArray("activities");
                 for(int i = 0; i < jarr.length(); i++)
                 {
-                    list.add(new ActionItem(jarr.getJSONObject(i).getString("name"),Float.valueOf(jarr.getJSONObject(i).getString("calories")),Integer.valueOf(jarr.getJSONObject(i).getString("id"))));
+                    if(jarr.getJSONObject(i).getString("name").length()<20)
+                        list.add(new ActionItem(jarr.getJSONObject(i).getString("name")
+                                ,Float.valueOf(jarr.getJSONObject(i).getString("calories")),Integer.valueOf(jarr.getJSONObject(i).getString("id"))));
+                    else
+                        list.add(new ActionItem(jarr.getJSONObject(i).getString("name").substring(0,18)+"..."
+                                ,Float.valueOf(jarr.getJSONObject(i).getString("calories")),Integer.valueOf(jarr.getJSONObject(i).getString("id"))));
                 }
                 mAdapter = new RecycleActionAdapter(list);
                 mRecyclerView.setAdapter(mAdapter);
@@ -275,7 +278,9 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
 
                 final TextView txtName = view.findViewById(R.id.recycler_action_item_name);
                 final TextView dialogName = content.findViewById(R.id.dialog_title);
-                dialogName.setText(txtName.getText());
+                try {
+                    dialogName.setText(jarr.getJSONObject(position).getString("name"));
+                } catch (Exception e){}
                 final TextView dialogCalories = content.findViewById(R.id.dialog_burn_per_hour);
                 final TextView txtCalories = view.findViewById(R.id.recycler_action_item_calories);
 
@@ -363,7 +368,7 @@ public class RecycleActionCatalogActivity extends AppCompatActivity implements C
                                 jsn.remove("active");
                             }
 
-                            jsn.put("name", dialogName.getText().toString());
+                            jsn.put("name", txtName.getText().toString());
                             jsn.put("calories", kcaltextview.getText().toString()
                                     .substring(0, kcaltextview.getText().toString().indexOf('.')));
                             jsonArray.put(jsn);

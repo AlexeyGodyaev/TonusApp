@@ -49,10 +49,7 @@ public class RecycleFoodAdapter extends RecyclerView.Adapter<RecycleFoodAdapter.
     @Override
     public void onBindViewHolder(RecycleFoodAdapter.ViewHolder holder, int position) {
         FoodItem foodItem = listitem.get(position);
-        if (foodItem.getName().length()>20)
-            holder.nameview.setText(foodItem.getName().substring(0, 20) + "...");
-        else
-            holder.nameview.setText(foodItem.getName());
+        holder.nameview.setText(foodItem.getName());
 
         holder.caloriesview.setText(foodItem.getCalories().toString());
 
