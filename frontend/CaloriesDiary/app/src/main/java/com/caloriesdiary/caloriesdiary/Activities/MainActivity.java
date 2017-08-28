@@ -48,7 +48,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
 
@@ -56,7 +58,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , CallBackListener {
 
     SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
     TextView userName, userMail, currentTime;
     ImageView userAvatar;
     boolean setavatar = false;
@@ -109,6 +110,8 @@ public class MainActivity extends AppCompatActivity
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.setDrawerListener(toggle);
             toggle.syncState();
+
+            checkUserParams();
 
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -184,12 +187,101 @@ public class MainActivity extends AppCompatActivity
                     outFood.getFD().sync();
                     outFoodObject.close();
                 }
+                checkUserParams();
             }
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
 
 
+    }
+
+    private void checkUserParams(){
+        File f = new File(getCacheDir(), "Today_params.txt");
+        if(f.exists()) {
+            try {
+                FileInputStream in = new FileInputStream(f);
+                ObjectInputStream inObject = new ObjectInputStream(in);
+                String text = inObject.readObject().toString();
+                inObject.close();
+
+                JSONObject jsn = new JSONObject(text);
+                JSONArray days = jsn.getJSONArray("days");
+
+                for (int i = 1; i < days.length(); i++) {
+                    if (days.getJSONObject(i).getString("mass").equals("0"))
+                        if (!days.getJSONObject(i - 1).getString("mass").equals("0"))
+                            days.getJSONObject(i).put("mass", days.getJSONObject(i - 1).getString("mass"));
+                }
+
+                for (int i = 1; i < days.length(); i++) {
+                    if (days.getJSONObject(i).getString("shoulders").equals("0"))
+                        if (!days.getJSONObject(i - 1).getString("shoulders").equals("0"))
+                            days.getJSONObject(i).put("shoulders", days.getJSONObject(i - 1).getString("shoulders"));
+                }
+
+                for (int i = 1; i < days.length(); i++) {
+                    if (days.getJSONObject(i).getString("rHand").equals("0"))
+                        if (!days.getJSONObject(i - 1).getString("rHand").equals("0"))
+                            days.getJSONObject(i).put("rHand", days.getJSONObject(i - 1).getString("rHand"));
+                }
+
+                for (int i = 1; i < days.length(); i++) {
+                    if (days.getJSONObject(i).getString("lHand").equals("0"))
+                        if (!days.getJSONObject(i - 1).getString("lHand").equals("0"))
+                            days.getJSONObject(i).put("lHand", days.getJSONObject(i - 1).getString("lHand"));
+                }
+
+                for (int i = 1; i < days.length(); i++) {
+                    if (days.getJSONObject(i).getString("chest").equals("0"))
+                        if (!days.getJSONObject(i - 1).getString("chest").equals("0"))
+                            days.getJSONObject(i).put("chest", days.getJSONObject(i - 1).getString("chest"));
+                }
+
+                for (int i = 1; i < days.length(); i++) {
+                    if (days.getJSONObject(i).getString("waist").equals("0"))
+                        if (!days.getJSONObject(i - 1).getString("waist").equals("0"))
+                            days.getJSONObject(i).put("waist", days.getJSONObject(i - 1).getString("waist"));
+                }
+
+                for (int i = 1; i < days.length(); i++) {
+                    if (days.getJSONObject(i).getString("butt").equals("0"))
+                        if (!days.getJSONObject(i - 1).getString("butt").equals("0"))
+                            days.getJSONObject(i).put("butt", days.getJSONObject(i - 1).getString("butt"));
+                }
+
+                for (int i = 1; i < days.length(); i++) {
+                    if (days.getJSONObject(i).getString("lLeg").equals("0"))
+                        if (!days.getJSONObject(i - 1).getString("lLeg").equals("0"))
+                            days.getJSONObject(i).put("lLeg", days.getJSONObject(i - 1).getString("lLeg"));
+                }
+
+                for (int i = 1; i < days.length(); i++) {
+                    if (days.getJSONObject(i).getString("rLeg").equals("0"))
+                        if (!days.getJSONObject(i - 1).getString("rLeg").equals("0"))
+                            days.getJSONObject(i).put("rLeg", days.getJSONObject(i - 1).getString("rLeg"));
+                }
+
+                for (int i = 1; i < days.length(); i++) {
+                    if (days.getJSONObject(i).getString("calves").equals("0"))
+                        if (!days.getJSONObject(i - 1).getString("calves").equals("0"))
+                            days.getJSONObject(i).put("calves", days.getJSONObject(i - 1).getString("calves"));
+                }
+
+                jsn = new JSONObject();
+                jsn.put("days", days);
+
+                FileOutputStream out = new FileOutputStream(f);
+                ObjectOutputStream outObject = new ObjectOutputStream(out);
+                outObject.writeObject(jsn.toString());
+                outObject.flush();
+                out.getFD().sync();
+                outObject.close();
+
+            } catch (Exception e) {
+                Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void setminiAvatar() {

@@ -6,11 +6,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -79,6 +82,8 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
 
     final String[] args = new String[3];
     RelativeLayout linearLayout;
+
+    FloatingActionButton fab;
 
     ImageView dropArrow;
     JSONArray jsonAction, jsonFood;
@@ -247,6 +252,7 @@ public class TodayActivity extends AppCompatActivity implements CallBackListener
     }
 
     private void addViews() {
+        fab = (FloatingActionButton) findViewById(R.id.today_options_button);
         rLeg = (EditText) findViewById(R.id.edit_right_leg);
         lLeg = (EditText) findViewById(R.id.edit_left_leg);
         rHand = (EditText) findViewById(R.id.edit_right_hand);

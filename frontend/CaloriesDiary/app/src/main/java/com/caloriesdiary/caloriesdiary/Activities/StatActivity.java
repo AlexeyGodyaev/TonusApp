@@ -949,31 +949,34 @@ public class StatActivity extends AppCompatActivity {
 
                     } else {
                         TextView dayLabel = new TextView(getApplicationContext());
-                        dayLabel.setText(tableDataArray.getJSONObject(i - 1).getString("date").replace('-','.'));
+                        String date = tableDataArray.getJSONObject(i - 1).getString("date").replace('-','.');
+                        dayLabel.setText(date.substring(date.indexOf('.')).substring(date.indexOf('.'))+
+                                date.substring(date.indexOf('.'), date.indexOf('.')+3)+"."+date.substring(0,4));
                         dayLabel.setTextSize(18f);
-                        dayLabel.setPadding(padding_in_px, 0, 0, 0);
+                        dayLabel.setPadding(padding_in_px, 0, padding_in_px, 0);
                         dayLabel.setTextColor(Color.GRAY);
+                        dayLabel.setGravity(Gravity.END);
 
                         TextView dayMass = new TextView(getApplicationContext());
                         dayMass.setText(tableDataArray.getJSONObject(i - 1).getString("mass") + " кг");
                         dayMass.setTextColor(Color.parseColor("#1D1D1D"));
-                        dayMass.setPadding(padding_in_px, 0, 0, 0);
+                        dayMass.setPadding(padding_in_px, 0, padding_in_px, 0);
                         dayMass.setTextSize(18f);
-                        dayMass.setGravity(Gravity.CENTER_VERTICAL);
+                        dayMass.setGravity(Gravity.END);
 
                         TextView dayEated = new TextView(getApplicationContext());
                         dayEated.setText(tableDataArray.getJSONObject(i - 1).getString("food_sum") + " ккал");
                         dayEated.setTextColor(Color.parseColor("#1D1D1D"));
                         dayEated.setTextSize(18f);
-                        dayEated.setPadding(padding_in_px, 0, 0, 0);
-                        dayEated.setGravity(Gravity.CENTER_VERTICAL);
+                        dayEated.setPadding(padding_in_px, 0, padding_in_px, 0);
+                        dayEated.setGravity(Gravity.END);
 
                         TextView dayBurn = new TextView(getApplicationContext());
                         dayBurn.setText(tableDataArray.getJSONObject(i - 1).getString("active_sum") + " ккал");
                         dayBurn.setTextColor(Color.parseColor("#1D1D1D"));
-                        dayBurn.setPadding(padding_in_px, 0, 0, 0);
+                        dayBurn.setPadding(padding_in_px, 0, padding_in_px, 0);
                         dayBurn.setTextSize(18f);
-                        dayBurn.setGravity(Gravity.CENTER_VERTICAL);
+                        dayBurn.setGravity(Gravity.END);
 
                         TextView dayShoulders = new TextView(getApplicationContext());
                         if(!tableDataArray.getJSONObject(i - 1).getString("shoulders").equals("0"))
@@ -981,8 +984,8 @@ public class StatActivity extends AppCompatActivity {
                         else dayShoulders.setText("-");
                         dayShoulders.setTextColor(Color.parseColor("#1D1D1D"));
                         dayShoulders.setTextSize(18f);
-                        dayShoulders.setPadding(padding_in_px, 0, 0, 0);
-                        dayShoulders.setGravity(Gravity.CENTER_VERTICAL);
+                        dayShoulders.setPadding(padding_in_px, 0, padding_in_px, 0);
+                        dayShoulders.setGravity(Gravity.END);
 
                         TextView dayRHand = new TextView(getApplicationContext());
                         if(!tableDataArray.getJSONObject(i - 1).getString("rHand").equals("0"))
@@ -990,8 +993,8 @@ public class StatActivity extends AppCompatActivity {
                         else dayRHand.setText("-");
                         dayRHand.setTextColor(Color.parseColor("#1D1D1D"));
                         dayRHand.setTextSize(18f);
-                        dayRHand.setPadding(padding_in_px, 0, 0, 0);
-                        dayRHand.setGravity(Gravity.CENTER_VERTICAL);
+                        dayRHand.setPadding(padding_in_px, 0, padding_in_px, 0);
+                        dayRHand.setGravity(Gravity.END);
 
                         TextView dayLHand = new TextView(getApplicationContext());
                         if(!tableDataArray.getJSONObject(i - 1).getString("lHand").equals("0"))
@@ -999,8 +1002,8 @@ public class StatActivity extends AppCompatActivity {
                         else dayLHand.setText("-");
                         dayLHand.setTextColor(Color.parseColor("#1D1D1D"));
                         dayLHand.setTextSize(18f);
-                        dayLHand.setPadding(padding_in_px, 0, 0, 0);
-                        dayLHand.setGravity(Gravity.CENTER_VERTICAL);
+                        dayLHand.setPadding(padding_in_px, 0, padding_in_px, 0);
+                        dayLHand.setGravity(Gravity.END);
 
                         TextView dayChest = new TextView(getApplicationContext());
                         if(!tableDataArray.getJSONObject(i - 1).getString("chest").equals("0"))
@@ -1008,8 +1011,8 @@ public class StatActivity extends AppCompatActivity {
                         else dayChest.setText("-");
                         dayChest.setTextColor(Color.parseColor("#1D1D1D"));
                         dayChest.setTextSize(18f);
-                        dayChest.setPadding(padding_in_px, 0, 0, 0);
-                        dayChest.setGravity(Gravity.CENTER_VERTICAL);
+                        dayChest.setPadding(padding_in_px, 0, padding_in_px, 0);
+                        dayChest.setGravity(Gravity.END);
 
                         TextView dayWaist = new TextView(getApplicationContext());
                         if(!tableDataArray.getJSONObject(i - 1).getString("waist").equals("0"))
@@ -1017,8 +1020,8 @@ public class StatActivity extends AppCompatActivity {
                         else dayWaist.setText("-");
                         dayWaist.setTextColor(Color.parseColor("#1D1D1D"));
                         dayWaist.setTextSize(18f);
-                        dayWaist.setPadding(padding_in_px, 0, 0, 0);
-                        dayWaist.setGravity(Gravity.CENTER_VERTICAL);
+                        dayWaist.setPadding(padding_in_px, 0, padding_in_px, 0);
+                        dayWaist.setGravity(Gravity.END);
 
                         TextView dayButt = new TextView(getApplicationContext());
                         if(!tableDataArray.getJSONObject(i - 1).getString("butt").equals("0"))
@@ -1026,8 +1029,8 @@ public class StatActivity extends AppCompatActivity {
                         else dayButt.setText("-");
                         dayButt.setTextColor(Color.parseColor("#1D1D1D"));
                         dayButt.setTextSize(18f);
-                        dayButt.setPadding(padding_in_px, 0, 0, 0);
-                        dayButt.setGravity(Gravity.CENTER_VERTICAL);
+                        dayButt.setPadding(padding_in_px, 0, padding_in_px, 0);
+                        dayButt.setGravity(Gravity.END);
 
                         TextView dayRLeg = new TextView(getApplicationContext());
                         if(!tableDataArray.getJSONObject(i - 1).getString("rLeg").equals("0"))
@@ -1035,8 +1038,8 @@ public class StatActivity extends AppCompatActivity {
                         else dayRLeg.setText("-");
                         dayRLeg.setTextColor(Color.parseColor("#1D1D1D"));
                         dayRLeg.setTextSize(18f);
-                        dayRLeg.setPadding(padding_in_px, 0, 0, 0);
-                        dayRLeg.setGravity(Gravity.CENTER_VERTICAL);
+                        dayRLeg.setPadding(padding_in_px, 0, padding_in_px, 0);
+                        dayRLeg.setGravity(Gravity.END);
 
                         TextView dayLLeg = new TextView(getApplicationContext());
                         if(!tableDataArray.getJSONObject(i - 1).getString("lLeg").equals("0"))
@@ -1044,8 +1047,8 @@ public class StatActivity extends AppCompatActivity {
                         else dayLLeg.setText("-");
                         dayLLeg.setTextColor(Color.parseColor("#1D1D1D"));
                         dayLLeg.setTextSize(18f);
-                        dayLLeg.setPadding(padding_in_px, 0, 0, 0);
-                        dayLLeg.setGravity(Gravity.CENTER_VERTICAL);
+                        dayLLeg.setPadding(padding_in_px, 0, padding_in_px, 0);
+                        dayLLeg.setGravity(Gravity.END);
 
                         TextView dayCalves = new TextView(getApplicationContext());
                         if(!tableDataArray.getJSONObject(i - 1).getString("calves").equals("0"))
@@ -1053,8 +1056,8 @@ public class StatActivity extends AppCompatActivity {
                         else dayCalves.setText("-");
                         dayCalves.setTextColor(Color.parseColor("#1D1D1D"));
                         dayCalves.setTextSize(18f);
-                        dayCalves.setPadding(padding_in_px, 0, 0, 0);
-                        dayCalves.setGravity(Gravity.CENTER_VERTICAL);
+                        dayCalves.setPadding(padding_in_px, 0, padding_in_px, 0);
+                        dayCalves.setGravity(Gravity.RIGHT);
 
                         rowDayLabels.addView(dayLabel);
                         rowMass.addView(dayMass);
