@@ -102,6 +102,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             initTabs();
             initObjects();
             initData();
+            ingRecyclerTouchListener();
         }
         catch (Exception e)
         {
@@ -964,6 +965,22 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+    private void ingRecyclerTouchListener(){
+        ingRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, ingRecyclerView,
+                new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                item.remove(position);
+                //Toast.makeText(FoodBuilderActivity.this, "оно удалилось", Toast.LENGTH_SHORT).show();
+                ingAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+    }
 
     public void onAddinDB(View view)
     {
@@ -987,7 +1004,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             post.setListener(listener);
             post.execute(args);
             String ans = post.get().toString();
-          //  Toast.makeText(this, ans, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, ans, Toast.LENGTH_LONG).show();
         }
         catch (Exception e)
         {
