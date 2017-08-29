@@ -25,7 +25,7 @@ import java.util.Iterator;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class Post extends AsyncTask<String, Void, JSONObject> {
+public class  Post extends AsyncTask<String, Void, JSONObject> {
 
     CallBackListener mListener;
 
@@ -158,6 +158,10 @@ public class Post extends AsyncTask<String, Void, JSONObject> {
                         postDataParams.put("id",arg0[1]);
                         postDataParams.put("name",arg0[2]);
                         postDataParams.put("ingredients",arg0[3]);
+                        postDataParams.put("calories", arg0[4]);
+                        postDataParams.put("protein", arg0[5]);
+                        postDataParams.put("fats", arg0[6]);
+                        postDataParams.put("carbs", arg0[7]);
                         postDataParams.put("instanceToken", FirebaseInstanceId.getInstance().getToken());
                         break;
                     case "http://caloriesdiary.ru/activities/get_activities":

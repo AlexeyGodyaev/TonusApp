@@ -67,9 +67,11 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
     private RecyclerView.Adapter dialogAdapter;
     private RecyclerView.LayoutManager dialogLayoutManager;
 
+    private TextView customCalories, customProt, customCarbs, customFats;
     private RecyclerView ingRecyclerView;
     private RecyclerView.Adapter ingAdapter;
     private RecyclerView.LayoutManager ingLayoutManager;
+
 
     public CheckBox buildercheck1,buildercheck2;
     public Spinner spinner1,spinner2;
@@ -86,7 +88,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
     CallBackListener listener;
 
     int offset = 0;
-    boolean send = true,changescrollpos = false, updialog = false;
+    boolean send = true, changescrollpos = false, updialog = false, canscroll=true;
     int buff=0;
     String searchquery = "",searchcatid = "",searchsortkcal = "" ;
     @Override
@@ -108,6 +110,10 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
+        customCalories = (TextView) findViewById(R.id.builder_food_calories_value);
+        customProt = (TextView) findViewById(R.id.builder_food_protein_value);
+        customCarbs = (TextView) findViewById(R.id.builder_food_carbs_value);
+        customFats = (TextView) findViewById(R.id.builder_food_fats_value);
     }
 
     private void initData() {
@@ -149,6 +155,10 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
                 FoodItem foodItemtoAdd;
                 JSONArray jarr = json.getJSONArray("food");
+
+                if(jarr.length()<150)
+                    canscroll = false;
+
                 for(int i = 0; i < jarr.length(); i++)
                 {
                     foodItemtoAdd = new FoodItem();
@@ -734,7 +744,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 int visibleItemCount = mLayoutManager.getChildCount();
                 int totalItemCount = mLayoutManager.getItemCount();
                 int lastVisibleItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                if (totalItemCount - 1 == lastVisibleItems && send) {
+                if (totalItemCount - 1 == lastVisibleItems && send && canscroll) {
                     buff = lastVisibleItems - visibleItemCount + 1;
 
                     send = false;
@@ -798,6 +808,34 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         updialog = true;
         send = true;
         offset = 0;
+        canscroll = true;
+    }
+
+    private void customValues(){
+        if(item.size()>0) {
+            float calories = 0, carbs = 0, protein = 0, fats = 0;
+            for (int i = 0; i < item.size(); i++) {
+                calories += item.get(i).getCalories();
+                carbs += item.get(i).getU();
+                fats += item.get(i).getJ();
+                protein += item.get(i).getB();
+            }
+
+            calories = calories / item.size();
+            carbs = carbs / item.size();
+            fats = fats / item.size();
+            protein = protein / item.size();
+
+            customCalories.setText(String.valueOf(Math.round(calories*10)/10.0));
+            customFats.setText(String.valueOf(Math.round(fats*10)/10.0));
+            customProt.setText(String.valueOf(Math.round(protein*10)/10.0));
+            customCarbs.setText(String.valueOf(Math.round(carbs*10)/10.0));
+        } else{
+            customCalories.setText("0");
+            customFats.setText("0");
+            customProt.setText("0");
+            customCarbs.setText("0");
+        }
     }
 
     public void onAddFood (View view)
@@ -851,7 +889,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 int totalItemCount = dialogLayoutManager.getItemCount();
                 int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
                 //edittext.setText(String.valueOf(offset)+":"+String.valueOf(visibleItemCount) + ":" +String.valueOf(totalItemCount) + ":"+String.valueOf(lastVisibleItems));
-                if (totalItemCount -1 == lastVisibleItems && send){
+                if (totalItemCount -1 == lastVisibleItems && send && canscroll){
                     buff = lastVisibleItems-visibleItemCount+1;
                     //get = new GetFood();
                     send = false;
@@ -869,7 +907,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     post.setListener(listener);
                     post.execute(args);
                     (dialogRecyclerView.getLayoutManager()).scrollToPosition(buff);
-                    Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -929,6 +967,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                         ingAdapter = new RecycleFoodAdapter(item);
                         ingRecyclerView.setAdapter(ingAdapter);
                         clearList();
+                        customValues();
                         post = new Post();
                         String args[] = new String[8];
                         args[0] = "http://caloriesdiary.ru/food/get_food";
@@ -946,6 +985,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        customValues();
                         clearList();
                         post = new Post();
                         String args[] = new String[8];
@@ -965,12 +1005,16 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+
+
     private void ingRecyclerTouchListener(){
         ingRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, ingRecyclerView,
                 new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 item.remove(position);
+                customValues();
                 //Toast.makeText(FoodBuilderActivity.this, "оно удалилось", Toast.LENGTH_SHORT).show();
                 ingAdapter.notifyDataSetChanged();
             }
@@ -994,13 +1038,17 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             }
             jsn.put("ingredients",jsnArray);
            // Toast.makeText(this, jsn.toString(), Toast.LENGTH_LONG).show();
-        Post post = new Post();
+            Post post = new Post();
 
-        String args[] = new String[4];
-        args[0] = "http://caloriesdiary.ru/food/save_custom_dish";
-        args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
-        args[2] = nameedit.getText().toString();
-        args[3] = jsn.toString();
+            String args[] = new String[8];
+            args[0] = "http://caloriesdiary.ru/food/save_custom_dish";
+            args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID",0));
+            args[2] = nameedit.getText().toString();
+            args[3] = jsn.toString();
+            args[4] = customCalories.getText().toString();
+            args[5] = customProt.getText().toString();
+            args[6] = customFats.getText().toString();
+            args[7] = customCarbs.getText().toString();
             post.setListener(listener);
             post.execute(args);
             String ans = post.get().toString();

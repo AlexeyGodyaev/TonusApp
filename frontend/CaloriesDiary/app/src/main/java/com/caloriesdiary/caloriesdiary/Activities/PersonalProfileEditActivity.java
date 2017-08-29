@@ -62,7 +62,7 @@ public class PersonalProfileEditActivity extends AppCompatActivity implements Ca
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personal_edit_layout);
-
+        setTitle("");
         active_spin = (Spinner) findViewById(R.id.activity_spinner);
         gender_spin = (Spinner) findViewById(R.id.edit_gender_spinner);
         name = (EditText) findViewById(R.id.name_edit);
