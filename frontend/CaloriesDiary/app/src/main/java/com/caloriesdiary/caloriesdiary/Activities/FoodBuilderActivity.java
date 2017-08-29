@@ -135,7 +135,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             changescrollpos = false;
         }
         send = true;
-
+        offset++;
     }
 
     private void fillList() {
@@ -737,7 +737,6 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     buff = lastVisibleItems - visibleItemCount + 1;
 
                     send = false;
-                    offset++;
 
                     post = new Post();
                     String args[] = new String[8];
@@ -745,7 +744,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     args[1] = String.valueOf(offset); //offset
                     args[2] = searchquery; //query
                     args[3] = searchcatid; //categ_id
-                    args[4] = ""; //sort_names
+                    args[4] = "1"; //sort_names
                     args[5] = ""; //sort_calories
                     args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
                     args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
@@ -791,6 +790,15 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
     }
 
+    private void clearList(){
+        while (!list.isEmpty()){
+            list.remove(0);
+        }
+        updialog = true;
+        send = true;
+        offset = 0;
+    }
+
     public void onAddFood (View view)
     {
         View content = LayoutInflater.from(getApplicationContext()).inflate(R.layout.add_food_dialoglayout,null);
@@ -803,16 +811,14 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         dialogLayoutManager = new LinearLayoutManager(this);
         dialogRecyclerView.setLayoutManager(dialogLayoutManager);
 
-        updialog = true;
-        send = true;
-        offset = 0;
+        clearList();
         post = new Post();
         String args[] = new String[8];
         args[0] = "http://caloriesdiary.ru/food/get_food";
         args[1] = String.valueOf(offset); //offset
         args[2] = ""; //query
         args[3] = ""; //categ_id
-        args[4] = ""; //sort_names
+        args[4] = "1"; //sort_names
         args[5] = ""; //sort_calories
         args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
         args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
@@ -827,56 +833,8 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!edittext.getText().toString().equals("")) {
-                    updialog = true;
-                    send = true;
-                    offset = 0;
-                    post = new Post();
-                    String args[] = new String[8];
-                    args[0] = "http://caloriesdiary.ru/food/get_food";
-                    args[1] = String.valueOf(offset); //offset
-                    args[2] = edittext.getText().toString(); //query
-                    args[3] = ""; //categ_id
-                    args[4] = ""; //sort_names
-                    args[5] = ""; //sort_calories
-                    args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0)); //id
-                    args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
-                    post.setListener(listener);
-                    post.execute(args);
-                }
 
-                dialogRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        int visibleItemCount = dialogLayoutManager.getChildCount();
-                        int totalItemCount = dialogLayoutManager.getItemCount();
-                        int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                        //edittext.setText(String.valueOf(offset)+":"+String.valueOf(visibleItemCount) + ":" +String.valueOf(totalItemCount) + ":"+String.valueOf(lastVisibleItems));
-                        if (totalItemCount -1 == lastVisibleItems && send){
-                            buff = lastVisibleItems-visibleItemCount+1;
-                            //get = new GetFood();
-                            send = false;
-                            offset++;
-                            updialog = true;
-                            post = new Post();
-                            String args[] = new String[8];
-                            args[0] = "http://caloriesdiary.ru/food/get_food";
-                            args[1] = String.valueOf(offset); //offset
-                            args[2] = edittext.getText().toString(); //query
-                            args[3] = ""; //categ_id
-                            args[4] = ""; //sort_names
-                            args[5] = ""; //sort_calories
-                            args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
-                            args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
-                            post.setListener(listener);
-                            post.execute(args);
-                            (dialogRecyclerView.getLayoutManager()).scrollToPosition(buff);
-                            Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
+                   clearList();
             }
 
             @Override
@@ -884,39 +842,38 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
             }
         });
-//        dialogRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                int visibleItemCount = dialogLayoutManager.getChildCount();
-//                int totalItemCount = dialogLayoutManager.getItemCount();
-//                int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-//                edittext.setText(String.valueOf(offset)+":"+String.valueOf(visibleItemCount) + ":" +String.valueOf(totalItemCount) + ":"+String.valueOf(lastVisibleItems));
-//                if (totalItemCount -1 == lastVisibleItems && send){
-//                    buff = lastVisibleItems-visibleItemCount+1;
-//                    //get = new GetFood();
-//                    send = false;
-//                    offset++;
-//                    updialog = true;
-//                    post = new Post();
-//                    String args[] = new String[8];
-//                    args[0] = "http://caloriesdiary.ru/food/get_food";
-//                    args[1] = String.valueOf(offset); //offset
-//                    args[2] = ""; //query
-//                    args[3] = ""; //categ_id
-//                    args[4] = ""; //sort_names
-//                    args[5] = ""; //sort_calories
-//                    args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
-//                    args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
-//                    post.setListener(listener);
-//                    post.execute(args);
-//                    (dialogRecyclerView.getLayoutManager()).scrollToPosition(buff);
-//                    Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
-//                }
-//
-//            }
-//        });
-//
+        dialogRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = dialogLayoutManager.getChildCount();
+                int totalItemCount = dialogLayoutManager.getItemCount();
+                int lastVisibleItems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                //edittext.setText(String.valueOf(offset)+":"+String.valueOf(visibleItemCount) + ":" +String.valueOf(totalItemCount) + ":"+String.valueOf(lastVisibleItems));
+                if (totalItemCount -1 == lastVisibleItems && send){
+                    buff = lastVisibleItems-visibleItemCount+1;
+                    //get = new GetFood();
+                    send = false;
+                    updialog = true;
+                    post = new Post();
+                    String args[] = new String[8];
+                    args[0] = "http://caloriesdiary.ru/food/get_food";
+                    args[1] = String.valueOf(offset); //offset
+                    args[2] = edittext.getText().toString(); //query
+                    args[3] = ""; //categ_id
+                    args[4] = "1"; //sort_names
+                    args[5] = ""; //sort_calories
+                    args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
+                    args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                    post.setListener(listener);
+                    post.execute(args);
+                    (dialogRecyclerView.getLayoutManager()).scrollToPosition(buff);
+                    Toast.makeText(FoodBuilderActivity.this, String.valueOf(buff), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
 
 
 
@@ -970,12 +927,37 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                       //  Toast.makeText(FoodBuilderActivity.this, edittext.getText().toString(), Toast.LENGTH_SHORT).show();
                         ingAdapter = new RecycleFoodAdapter(item);
                         ingRecyclerView.setAdapter(ingAdapter);
+                        clearList();
+                        post = new Post();
+                        String args[] = new String[8];
+                        args[0] = "http://caloriesdiary.ru/food/get_food";
+                        args[1] = String.valueOf(offset); //offset
+                        args[2] = ""; //query
+                        args[3] = ""; //categ_id
+                        args[4] = "1"; //sort_names
+                        args[5] = ""; //sort_calories
+                        args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
+                        args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                        post.setListener(listener);
+                        post.execute(args);
                     }
                 })
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        clearList();
+                        post = new Post();
+                        String args[] = new String[8];
+                        args[0] = "http://caloriesdiary.ru/food/get_food";
+                        args[1] = String.valueOf(offset); //offset
+                        args[2] = ""; //query
+                        args[3] = ""; //categ_id
+                        args[4] = "1"; //sort_names
+                        args[5] = ""; //sort_calories
+                        args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
+                        args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                        post.setListener(listener);
+                        post.execute(args);
                     }
                 });
 
