@@ -230,6 +230,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             searchView.setOnCloseListener(new SearchView.OnCloseListener() {
                 @Override
                 public boolean onClose() {
+                    offset = 0;
                     list = new ArrayList<>();
                     post = new Post();
                     searchquery = "";
@@ -274,6 +275,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
         //Toast.makeText(this, intent.getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            offset = 0;
             String query = intent.getStringExtra(SearchManager.QUERY);
             searchquery = query;
             list = new ArrayList<>();
@@ -304,8 +306,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
         try
         {
-
-
+            offset = 0;
             get = new Get();
             get.execute("http://caloriesdiary.ru/food/get_food_categories");
 
@@ -417,6 +418,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     {
                         spinner1.setEnabled(false);
                         searchcatid = "";
+                        offset = 0;
                         post = new Post();
                         list = new ArrayList<>();
                         String args[] = new String[8];
@@ -448,6 +450,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                         {
                             searchsortkcal = "1";
                             post = new Post();
+                            offset = 0;
                             list = new ArrayList<>();
                             String args[] = new String[8];
                             args[0] = "http://caloriesdiary.ru/food/get_food";
@@ -464,6 +467,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                         else
                         {
                             searchsortkcal = "2";
+                            offset = 0;
                             post = new Post();
                             list = new ArrayList<>();
                             String args[] = new String[8];
@@ -484,6 +488,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     {
                         spinner2.setEnabled(false);
                         searchsortkcal = "";
+                        offset = 0;
                         post = new Post();
                         list = new ArrayList<>();
                         String args[] = new String[8];
@@ -511,6 +516,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
                         if (spinner2.getSelectedItemPosition() == 0) {
                             searchsortkcal = "1";
+                            offset = 0;
                             post = new Post();
                             list = new ArrayList<>();
                             String args[] = new String[8];
@@ -526,6 +532,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                             post.execute(args);
                         } else {
                             searchsortkcal = "2";
+                            offset = 0;
                             post = new Post();
                             list = new ArrayList<>();
                             String args[] = new String[8];
@@ -756,7 +763,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                     args[2] = searchquery; //query
                     args[3] = searchcatid; //categ_id
                     args[4] = "1"; //sort_names
-                    args[5] = ""; //sort_calories
+                    args[5] = searchsortkcal; //sort_calories
                     args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
                     args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
                     post.setListener(listener);
