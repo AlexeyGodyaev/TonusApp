@@ -921,7 +921,8 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         });
 
 
-
+        final Button okBtn = content.findViewById(R.id.add_ingr);
+        final TextView cancelDialog = content.findViewById(R.id.cancel_builder);
 
 
         dialogRecyclerView.addOnItemTouchListener( new RecyclerTouchListener(this, dialogRecyclerView, new RecyclerTouchListener.ClickListener() {
@@ -933,6 +934,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 final TextView textU = view.findViewById(R.id.viewU);
                 final TextView textKc = view.findViewById(R.id.viewKc);
                 final TextView textId = view.findViewById(R.id.viewID);
+
 
                 if(!checkbox.isChecked())
                 {
@@ -965,52 +967,59 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(FoodBuilderActivity.this);
-        builder.setTitle("Добавление блюда")
-                .setView(content)
-                .setPositiveButton("Принять", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                      //  Toast.makeText(FoodBuilderActivity.this, edittext.getText().toString(), Toast.LENGTH_SHORT).show();
-                        ingAdapter = new RecycleFoodAdapter(item);
-                        ingRecyclerView.setAdapter(ingAdapter);
-                        clearList();
-                        customValues();
-                        post = new Post();
-                        String args[] = new String[8];
-                        args[0] = "http://caloriesdiary.ru/food/get_food";
-                        args[1] = String.valueOf(offset); //offset
-                        args[2] = ""; //query
-                        args[3] = ""; //categ_id
-                        args[4] = "1"; //sort_names
-                        args[5] = ""; //sort_calories
-                        args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
-                        args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
-                        post.setListener(listener);
-                        post.execute(args);
-                    }
-                })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        customValues();
-                        clearList();
-                        post = new Post();
-                        String args[] = new String[8];
-                        args[0] = "http://caloriesdiary.ru/food/get_food";
-                        args[1] = String.valueOf(offset); //offset
-                        args[2] = ""; //query
-                        args[3] = ""; //categ_id
-                        args[4] = "1"; //sort_names
-                        args[5] = ""; //sort_calories
-                        args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
-                        args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
-                        post.setListener(listener);
-                        post.execute(args);
-                    }
-                });
+                builder.setView(content);
 
-        AlertDialog alertDialog = builder.create();
+        final AlertDialog alertDialog = builder.create();
         alertDialog.show();
+
+        cancelDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customValues();
+                clearList();
+                post = new Post();
+                String args[] = new String[8];
+                args[0] = "http://caloriesdiary.ru/food/get_food";
+                args[1] = String.valueOf(offset); //offset
+                args[2] = ""; //query
+                args[3] = ""; //categ_id
+                args[4] = "1"; //sort_names
+                args[5] = ""; //sort_calories
+                args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
+                args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                post.setListener(listener);
+                post.execute(args);
+
+                alertDialog.cancel();
+            }
+        });
+
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ingAdapter = new RecycleFoodAdapter(item);
+                ingRecyclerView.setAdapter(ingAdapter);
+                clearList();
+                customValues();
+                post = new Post();
+                String args[] = new String[8];
+                args[0] = "http://caloriesdiary.ru/food/get_food";
+                args[1] = String.valueOf(offset); //offset
+                args[2] = ""; //query
+                args[3] = ""; //categ_id
+                args[4] = "1"; //sort_names
+                args[5] = ""; //sort_calories
+                args[6] = String.valueOf(sharedPref.getInt("PROFILE_ID",0)); //id
+                args[7] = FirebaseInstanceId.getInstance().getToken(); //instanceToken
+                post.setListener(listener);
+                post.execute(args);
+
+                alertDialog.dismiss();
+            }
+        });
+
+
+
     }
 
 
