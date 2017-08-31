@@ -9,7 +9,7 @@
     android:layout_margin="10dp">
 
     <TextView
-        android:id="@+id/recycler_food_item_name"
+        android:id="@+id/recycler_ing_item_name"
         android:text="name_value1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,51 +19,39 @@
         android:textColor="#404040"/>
 
     <TextView
-        android:id="@+id/recycler_food_item_bju"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="b/j/u"
-        android:textSize="14sp"
-        android:textColor="#aaaaaa"
+        android:textSize="12sp"
+        android:text="г."
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/recycler_food_item_calories"
-        android:layout_marginRight="18dp"
-        android:layout_marginBottom="18dp"
+        android:layout_below="@id/recycler_ing_item_name"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="12dp"/>
 
+    <EditText
+        android:id="@+id/recycler_ing_item_mass"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="100"
+        android:maxLength="4"
+        android:textSize="15sp"
+        android:textColor="@android:color/holo_blue_light"
+        android:layout_alignParentRight="true"
+        android:inputType="number"
+        android:layout_below="@+id/recycler_ing_item_name"
+        android:layout_marginRight="28dp"
+        android:layout_marginBottom="18dp" />
+
     <TextView
-        android:text="Белки/Жиры/Углеводы"
+        android:text="Масса:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
         android:layout_marginTop="12dp"
+        android:textColor="@android:color/holo_blue_light"
         android:layout_marginLeft="18dp"
-        android:textSize="14sp"
-        android:layout_below="@+id/recycler_food_item_calories"
-        android:textColor="#404040"/>
-
-    <TextView
-        android:id="@+id/recycler_food_item_calories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="calories_value2"
-        android:textSize="18sp"
-        android:textColor="#aaaaaa"
-        android:layout_alignBaseline="@+id/foodkcal"
-        android:layout_alignBottom="@+id/foodkcal"
-        android:layout_toLeftOf="@+id/foodkcal"
-        android:layout_toStartOf="@+id/foodkcal" />
-
-    <TextView
-        android:id="@+id/foodkcal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="18dp"
-        android:layout_marginTop="18dp"
-        android:text="ккал"
-        android:textColor="#aaaaaa"
-        android:textSize="18sp" />
+        android:textSize="16sp"
+        android:layout_below="@+id/recycler_ing_item_name"/>
 
 
 </RelativeLayout>

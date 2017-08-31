@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Adapters.CustomFoodAdapter;
+import com.caloriesdiary.caloriesdiary.Adapters.IngItemAdapter;
 import com.caloriesdiary.caloriesdiary.HTTP.Get;
 import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
@@ -105,6 +106,9 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
             initObjects();
             initData();
             ingRecyclerTouchListener();
+
+            ingAdapter = new IngItemAdapter(item);
+            ingRecyclerView.setAdapter(ingAdapter);
         }
         catch (Exception e)
         {
@@ -939,7 +943,7 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 if(!checkbox.isChecked())
                 {
                   //  Toast.makeText(FoodBuilderActivity.this, "Добавить " + checkbox.getText().toString() , Toast.LENGTH_SHORT).show();
-                    item.add(new FoodItem(Integer.valueOf(textId.getText().toString()),checkbox.getText().toString(),Float.valueOf(textB.getText().toString()),Float.valueOf(textJ.getText().toString()),Float.valueOf(textU.getText().toString()),0,Float.valueOf(textKc.getText().toString())));
+                    item.add(new FoodItem(Integer.valueOf(textId.getText().toString()),checkbox.getText().toString(),Float.valueOf(textB.getText().toString()),Float.valueOf(textJ.getText().toString()),Float.valueOf(textU.getText().toString()),0,Float.valueOf(textKc.getText().toString()),100));
 
                 }
                 else
@@ -997,8 +1001,8 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ingAdapter = new RecycleFoodAdapter(item);
-                ingRecyclerView.setAdapter(ingAdapter);
+
+                ingAdapter.notifyDataSetChanged();
                 clearList();
                 customValues();
                 post = new Post();
@@ -1029,15 +1033,15 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                item.remove(position);
-                customValues();
-                //Toast.makeText(FoodBuilderActivity.this, "оно удалилось", Toast.LENGTH_SHORT).show();
-                ingAdapter.notifyDataSetChanged();
+
             }
 
             @Override
             public void onLongClick(View view, int position) {
-
+                item.remove(position);
+                customValues();
+                //Toast.makeText(FoodBuilderActivity.this, "оно удалилось", Toast.LENGTH_SHORT).show();
+                ingAdapter.notifyDataSetChanged();
             }
         }));
     }

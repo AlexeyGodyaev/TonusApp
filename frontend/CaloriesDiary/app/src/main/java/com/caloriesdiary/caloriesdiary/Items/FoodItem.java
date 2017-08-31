@@ -4,7 +4,18 @@ package com.caloriesdiary.caloriesdiary.Items;
 public class FoodItem {
     String name;
     Float b, j, u, calories;
-    int categoryId, id;
+    int categoryId;
+    int id;
+
+    public int getMass() {
+        return mass;
+    }
+
+    public void setMass(int mass) {
+        this.mass = mass;
+    }
+
+    int mass;
 
     public FoodItem(int id, String name, Float b, Float j, Float u, int categoryId, Float calories){
         this.name = name;
@@ -14,6 +25,17 @@ public class FoodItem {
         this.u = u;
         this.categoryId =categoryId;
         this.calories = calories;
+    }
+
+    public FoodItem(int id, String name, Float b, Float j, Float u, int categoryId, Float calories, int mass){
+        this.name = name;
+        this.id = id;
+        this.b = b;
+        this.j = j;
+        this.u = u;
+        this.categoryId =categoryId;
+        this.calories = calories;
+        this.mass = mass;
     }
 
     public FoodItem(){

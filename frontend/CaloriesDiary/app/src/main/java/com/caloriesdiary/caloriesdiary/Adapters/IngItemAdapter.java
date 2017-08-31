@@ -2,10 +2,14 @@ package com.caloriesdiary.caloriesdiary.Adapters;
 
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.Items.FoodItem;
 import com.caloriesdiary.caloriesdiary.R;
@@ -17,13 +21,11 @@ public class IngItemAdapter extends RecyclerView.Adapter<IngItemAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
         public final TextView nameview;
-        public final TextView caloriesview;
-        public final TextView bjuview;
+        public final EditText massview;
         public ViewHolder(View view) {
             super(view);
-            nameview =  view.findViewById(R.id.recycler_food_item_name);
-            caloriesview =  view.findViewById(R.id.recycler_food_item_calories);
-            bjuview =  view.findViewById(R.id.recycler_food_item_bju);
+            nameview =  view.findViewById(R.id.recycler_ing_item_name);
+            massview =  view.findViewById(R.id.recycler_ing_item_mass);
             view.setOnClickListener(this);
         }
         @Override
@@ -47,13 +49,34 @@ public class IngItemAdapter extends RecyclerView.Adapter<IngItemAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(IngItemAdapter.ViewHolder holder, int position) {
-        FoodItem foodItem = listitem.get(position);
+    public void onBindViewHolder(final IngItemAdapter.ViewHolder holder, int position) {
+        final FoodItem foodItem = listitem.get(position);
         holder.nameview.setText(foodItem.getName());
 
-        holder.caloriesview.setText(foodItem.getCalories().toString());
+        holder.massview.setText(String.valueOf(foodItem.getMass()));
+        holder.massview.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                foodItem.setCalories(foodItem.getCalories()/Float.valueOf(holder.massview.getText().toString()));
+                foodItem.setB(foodItem.getB()/Float.valueOf(holder.massview.getText().toString()));
+                foodItem.setJ(foodItem.getJ()/Float.valueOf(holder.massview.getText().toString()));
+                foodItem.setU(foodItem.getU()/Float.valueOf(holder.massview.getText().toString()));
+            }
 
-        holder.bjuview.setText(foodItem.getB().toString()+"/"+foodItem.getJ().toString()+"/"+foodItem.getU().toString());
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                foodItem.setCalories(foodItem.getCalories()*Float.valueOf(holder.massview.getText().toString()));
+                foodItem.setB(foodItem.getB()*Float.valueOf(holder.massview.getText().toString()));
+                foodItem.setJ(foodItem.getJ()*Float.valueOf(holder.massview.getText().toString()));
+                foodItem.setU(foodItem.getU()*Float.valueOf(holder.massview.getText().toString()));
+                foodItem.setMass(Integer.valueOf(holder.massview.getText().toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     @Override
