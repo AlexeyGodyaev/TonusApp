@@ -130,11 +130,13 @@
 
                             </android.support.v7.widget.RecyclerView>
 
-                            <Button
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
-                                android:text="+"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="@mipmap/ic_add_box_black_24dp"
                                 android:onClick="onAddFood"/>
                         </LinearLayout>
 
@@ -143,111 +145,135 @@
                                 android:layout_height="wrap_content">
 
                                 <TextView
+                                    android:id="@+id/calories_lable"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="Калорийность блюда" />
+                                    android:layout_marginLeft="35dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:textSize="12sp"
+                                    android:text="Калорийность блюда:" />
 
                                 <TextView
                                     android:id="@+id/builder_food_calories_value"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_below="@+id/calories_lable"
                                     android:layout_marginTop="10dp"
+                                    android:layout_marginLeft="35dp"
                                     android:layout_marginBottom="10dp"
+                                    android:textSize="18sp"
                                     android:text="0"
-                                    android:layout_toLeftOf="@+id/builder_food_calories_text"/>
+                                    />
 
                                 <TextView
                                     android:id="@+id/builder_food_calories_text"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_toRightOf="@+id/builder_food_calories_value"
+                                    android:layout_alignBottom="@+id/builder_food_calories_value"
                                     android:text="ккал"
                                     android:layout_alignParentRight="true"/>
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                >
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/builder_food_calories_value"
-                                    android:layout_margin="10dp"
-                                    android:text="Содержание белков в блюде" />
+                                    android:paddingLeft="32dp"
+                                    android:paddingBottom="19dp"
+                                    android:textSize="12sp"
+                                    android:text="Белки:"
+                                    android:textAlignment="center"
+                                    android:textColor="@android:color/black" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:paddingBottom="19dp"
+                                    android:text="Жиры:"
+                                    android:textSize="12sp"
+                                    android:textAlignment="center"
+                                    android:textColor="@android:color/black" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingRight="32dp"
+                                    android:paddingBottom="19dp"
+                                    android:textSize="12sp"
+                                    android:layout_alignParentRight="true"
+                                    android:text="Углеводы:"
+                                    android:textAlignment="center"
+                                    android:textColor="@android:color/black" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                >
 
                                 <TextView
                                     android:id="@+id/builder_food_protein_value"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/builder_food_calories_value"
-                                    android:text="0"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_toLeftOf="@+id/builder_food_protein_text"/>
-
-                                <TextView
-                                    android:id="@+id/builder_food_protein_text"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:layout_below="@+id/builder_food_calories_value"
-                                    android:text="г"
-                                    android:layout_alignParentRight="true"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/builder_food_protein_value"
-                                    android:layout_margin="10dp"
-                                    android:text="Содержание жиров в блюде" />
+                                    android:paddingBottom="23dp"
+                                    android:paddingLeft="35dp"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/builder_food_fats_value"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/builder_food_protein_value"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:text="0"
-                                    android:layout_toLeftOf="@+id/builder_food_fats_text"/>
-
-                                <TextView
-                                    android:id="@+id/builder_food_fats_text"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:layout_below="@+id/builder_food_protein_value"
-                                    android:text="г"
-                                    android:layout_alignParentRight="true"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/builder_food_fats_value"
-                                    android:layout_margin="10dp"
-                                    android:text="Содержание углеводов в блюде" />
+                                    android:layout_centerHorizontal="true"
+                                    android:textAlignment="center"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/builder_food_carbs_value"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/builder_food_fats_value"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:text="0"
-                                    android:layout_toLeftOf="@+id/builder_food_carbs_text"/>
+                                    android:layout_alignParentRight="true"
+                                    android:paddingRight="35dp"
+                                    android:textAlignment="center"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
 
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
                                 <TextView
-                                    android:id="@+id/builder_food_carbs_text"
+                                    android:id="@+id/clear_ing_list"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:layout_below="@+id/builder_food_fats_value"
-                                    android:text="г"
-                                    android:layout_alignParentRight="true"/>
+                                    android:text="Очистить"
+                                    android:layout_marginLeft="20dp"
+                                    android:textSize="15sp"
+                                    android:layout_marginTop="25dp"/>
+
+                                <Button
+                                    android:layout_marginTop="20dp"
+                                    android:layout_width="100dp"
+                                    android:layout_height="35dp"
+                                    android:layout_marginRight="20dp"
+                                    android:layout_alignParentRight="true"
+                                    android:text="сохранить"
+                                    android:textColor="@android:color/white"
+                                    android:background="@android:color/holo_blue_light"
+                                    android:textSize="15sp"
+                                    android:onClick="onAddinDB"/>
                             </RelativeLayout>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Добавить"
-                        android:onClick="onAddinDB"/>
                         </LinearLayout>
                     </android.support.v4.widget.NestedScrollView>
                 </LinearLayout>
