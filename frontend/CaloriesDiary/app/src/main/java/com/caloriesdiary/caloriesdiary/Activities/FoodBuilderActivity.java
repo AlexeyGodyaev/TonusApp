@@ -827,18 +827,19 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
 
     private void customValues(){
         if(item.size()>0) {
-            float calories = 0, carbs = 0, protein = 0, fats = 0;
+            float calories = 0, carbs = 0, protein = 0, fats = 0, mass = 0;
             for (int i = 0; i < item.size(); i++) {
                 calories += item.get(i).getCalories();
                 carbs += item.get(i).getU();
                 fats += item.get(i).getJ();
                 protein += item.get(i).getB();
+                mass += item.get(i).getMass();
             }
 
-            calories = calories / item.size();
-            carbs = carbs / item.size();
-            fats = fats / item.size();
-            protein = protein / item.size();
+            calories = calories * 100 / mass ;
+            carbs = carbs * 100 / mass;
+            fats = fats * 100 / mass;
+            protein = protein * 100 / mass;
 
             customCalories.setText(String.valueOf(Math.round(calories*10)/10.0));
             customFats.setText(String.valueOf(Math.round(fats*10)/10.0));
@@ -1061,7 +1062,35 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
                 new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
+                final EditText mass = view.findViewById(R.id.recycler_ing_item_mass);
+                final FoodItem foodItem = item.get(position);
+                mass.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        if (!mass.getText().toString().equals("")) {
+                            foodItem.setCalories(foodItem.getCalories() / Float.valueOf(foodItem.getMass()));
+                            foodItem.setB(foodItem.getB() / Float.valueOf(foodItem.getMass()));
+                            foodItem.setJ(foodItem.getJ() / Float.valueOf(foodItem.getMass()));
+                            foodItem.setU(foodItem.getU() / Float.valueOf(foodItem.getMass()));
+
+                            foodItem.setCalories(foodItem.getCalories() * Float.valueOf(mass.getText().toString()));
+                            foodItem.setB(foodItem.getB() * Float.valueOf(mass.getText().toString()));
+                            foodItem.setJ(foodItem.getJ() * Float.valueOf(mass.getText().toString()));
+                            foodItem.setU(foodItem.getU() * Float.valueOf(mass.getText().toString()));
+                            foodItem.setMass(Integer.valueOf(mass.getText().toString()));
+                        }
+                        customValues();
+                    }
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
             }
 
             @Override

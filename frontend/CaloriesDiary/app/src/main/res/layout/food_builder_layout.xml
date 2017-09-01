@@ -151,6 +151,7 @@
                                     android:layout_marginLeft="35dp"
                                     android:layout_marginTop="10dp"
                                     android:layout_marginBottom="5dp"
+                                    android:textColor="@android:color/black"
                                     android:textSize="12sp"
                                     android:text="Калорийность блюда:" />
 
@@ -163,6 +164,7 @@
                                     android:layout_marginLeft="35dp"
                                     android:layout_marginBottom="10dp"
                                     android:textSize="18sp"
+                                    android:textStyle="bold"
                                     android:text="0"
                                     />
 
@@ -228,7 +230,8 @@
                                     android:paddingBottom="23dp"
                                     android:paddingLeft="35dp"
                                     android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textStyle="bold"
+                                    android:text="0"/>
 
                                 <TextView
                                     android:id="@+id/builder_food_fats_value"
@@ -237,7 +240,8 @@
                                     android:layout_centerHorizontal="true"
                                     android:textAlignment="center"
                                     android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textStyle="bold"
+                                    android:text="0"/>
 
                                 <TextView
                                     android:id="@+id/builder_food_carbs_value"
@@ -247,7 +251,8 @@
                                     android:paddingRight="35dp"
                                     android:textAlignment="center"
                                     android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textStyle="bold"
+                                    android:text="0"/>
                             </RelativeLayout>
 
                             <RelativeLayout

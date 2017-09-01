@@ -54,29 +54,6 @@ public class IngItemAdapter extends RecyclerView.Adapter<IngItemAdapter.ViewHold
         holder.nameview.setText(foodItem.getName());
 
         holder.massview.setText(String.valueOf(foodItem.getMass()));
-        holder.massview.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                foodItem.setCalories(foodItem.getCalories()/Float.valueOf(holder.massview.getText().toString()));
-                foodItem.setB(foodItem.getB()/Float.valueOf(holder.massview.getText().toString()));
-                foodItem.setJ(foodItem.getJ()/Float.valueOf(holder.massview.getText().toString()));
-                foodItem.setU(foodItem.getU()/Float.valueOf(holder.massview.getText().toString()));
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                foodItem.setCalories(foodItem.getCalories()*Float.valueOf(holder.massview.getText().toString()));
-                foodItem.setB(foodItem.getB()*Float.valueOf(holder.massview.getText().toString()));
-                foodItem.setJ(foodItem.getJ()*Float.valueOf(holder.massview.getText().toString()));
-                foodItem.setU(foodItem.getU()*Float.valueOf(holder.massview.getText().toString()));
-                foodItem.setMass(Integer.valueOf(holder.massview.getText().toString()));
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
     }
 
     @Override
