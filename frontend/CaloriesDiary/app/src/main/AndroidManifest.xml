@@ -102,6 +102,7 @@
 
         <activity android:name=".Activities.FoodBuilderActivity" android:screenOrientation="portrait"
             android:launchMode="singleTop">
+
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".Activities.FoodBuilderActivity" />
