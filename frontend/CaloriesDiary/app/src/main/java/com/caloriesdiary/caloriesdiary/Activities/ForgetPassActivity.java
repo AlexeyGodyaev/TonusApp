@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 
 import org.json.JSONObject;
@@ -16,7 +17,7 @@ import org.json.JSONObject;
 import java.util.concurrent.ExecutionException;
 
 
-public class ForgetPassActivity extends AppCompatActivity {
+public class ForgetPassActivity extends AppCompatActivity implements CallBackListener{
     EditText mail_edit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class ForgetPassActivity extends AppCompatActivity {
     public void sendClick(View view) throws InterruptedException, ExecutionException
     {
         Post log = new Post();
-
+        log.setListener(this);
         String args[] = new String[2];
 
         args[0] = "http://caloriesdiary.ru/users/forgot_password";  //аргументы для пост запроса
@@ -81,5 +82,10 @@ public class ForgetPassActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void callback() {
+
     }
 }

@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity
                 checkUserParams();
             }
         } catch (Exception e) {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
 
 

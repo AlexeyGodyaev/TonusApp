@@ -12,18 +12,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.caloriesdiary.caloriesdiary.HTTP.Post;
+import com.caloriesdiary.caloriesdiary.Items.CallBackListener;
 import com.caloriesdiary.caloriesdiary.R;
 
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegistrationActivity  extends AppCompatActivity {
+public class RegistrationActivity  extends AppCompatActivity implements CallBackListener {
 
     TextView error;
     EditText name, pass, passAgain, mail;
     SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
 
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
@@ -73,7 +80,7 @@ public class RegistrationActivity  extends AppCompatActivity {
 
                     if (name.getText().toString().length() > 3 && valid(name.getText().toString())) {
 
-                        String args[] = new String[4];
+                        String args[] = new String[5];
                         args[0] = "http://caloriesdiary.ru/users/migrate";
                         args[1] = String.valueOf(sharedPref.getInt("PROFILE_ID", 0));
                         args[2] = name.getText().toString();
@@ -81,13 +88,40 @@ public class RegistrationActivity  extends AppCompatActivity {
                         args[4] = mail.getText().toString();
 
                         Post sendReg = new Post();
+                        sendReg.setListener(this);
                         sendReg.execute(args);
-                        String ans = sendReg.get().toString();
 
                         JSONObject js = sendReg.get();
 
                         js.getInt("status");
                         if (js.getInt("status") == 1) {
+                            try {
+                                File f = new File(getCacheDir(), "Auth");
+                                FileInputStream in = new FileInputStream(f);
+                                ObjectInputStream inObject = new ObjectInputStream(in);
+                                JSONObject json = new JSONObject(inObject.readObject().toString());
+                                inObject.close();
+
+                                json.put("flag","user");
+
+
+                                FileOutputStream out = new FileOutputStream(f);
+                                ObjectOutputStream outObj = new ObjectOutputStream(out);
+                                outObj.writeObject(json.toString());
+                                outObj.flush();
+                                out.getFD().sync();
+                                out.close();
+
+                            } catch (Exception e){
+
+                            }
+
+                            editor = sharedPref.edit();
+                            editor.putString("userName", name.getText().toString());
+                            editor.putString("userMail", mail.getText().toString());
+                            editor.apply();
+
+                            Toast.makeText(this, "Вы зарегистрировались", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -107,7 +141,7 @@ public class RegistrationActivity  extends AppCompatActivity {
         }
         catch(Exception e)
         {
-            Toast.makeText(getApplicationContext(), "Сервис не доступен", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -120,5 +154,10 @@ public class RegistrationActivity  extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void callback() {
+
     }
 }
