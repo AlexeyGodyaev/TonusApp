@@ -320,7 +320,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_profile) {
             onProfileClick();
-        } else if (id == R.id.nav_rar) {
+//        } else if (id == R.id.nav_rar) {
 //            Intent intent = new Intent(getApplicationContext(),ArchiveActivity.class);
 //            startActivity(intent);
         } else if (id == R.id.nav_settings) {

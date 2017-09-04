@@ -9,10 +9,10 @@
         android:title="Настройки"
     android:orderInCategory="2"
     />
-    <item
-        android:title="Архив целей"
-        android:orderInCategory="3"
-       />
+    <!--<item-->
+        <!--android:title="Архив целей"-->
+        <!--android:orderInCategory="3"-->
+       <!--/>-->
     <item
         android:title="О программе"
         android:orderInCategory="4"
