@@ -31,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -821,6 +822,13 @@ public class FoodBuilderActivity extends AppCompatActivity implements CallBackLi
         tabSpec.setContent(R.id.tab2);
         tabHost.addTab(tabSpec);
 
+        TabWidget tabWidget = (TabWidget) findViewById(android.R.id.tabs);
+
+        for(int i=0; i<tabWidget.getChildCount(); i++){
+            final ViewGroup tab = (ViewGroup) tabWidget.getChildAt(i);
+            final TextView tabTextView = (TextView) tab.getChildAt(1); // Magic number
+            tabTextView.setTextColor(Color.WHITE);
+        }
 //        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 //            public void onTabChanged(String tabId) {
 //                Toast.makeText(getBaseContext(), "tabId = " + tabId, Toast.LENGTH_SHORT).show();

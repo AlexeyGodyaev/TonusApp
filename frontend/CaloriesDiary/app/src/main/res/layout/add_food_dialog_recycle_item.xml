@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp">
     <RelativeLayout
@@ -45,6 +47,7 @@
     android:id="@+id/add_food_checkbox"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:theme="@style/MyCheckBox"
     android:layout_marginLeft="5dp"
     android:layout_marginStart="5dp"
     android:text="Ингредиент"/>

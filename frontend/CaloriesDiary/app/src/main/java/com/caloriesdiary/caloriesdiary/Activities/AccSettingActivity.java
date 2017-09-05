@@ -227,6 +227,8 @@ public class AccSettingActivity extends AppCompatActivity implements CallBackLis
         food.delete();
         File auht = new File(getCacheDir(), "Auth");
         auht.delete();
+        File graph = new File(getCacheDir(), "Graph_params.txt");
+        graph.delete();
     }
 
     public void onExitClc(){

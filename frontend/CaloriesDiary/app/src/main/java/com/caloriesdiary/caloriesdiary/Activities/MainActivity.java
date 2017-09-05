@@ -52,7 +52,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , CallBackListener {
@@ -208,76 +210,71 @@ public class MainActivity extends AppCompatActivity
                 JSONObject jsn = new JSONObject(text);
                 JSONArray days = jsn.getJSONArray("days");
 
-                for (int i = 1; i < days.length(); i++) {
-                    if (days.getJSONObject(i).getString("mass").equals("0"))
-                        if (!days.getJSONObject(i - 1).getString("mass").equals("0"))
-                            days.getJSONObject(i).put("mass", days.getJSONObject(i - 1).getString("mass"));
+                if (days != null) {
+                    List<JSONObject> list = new ArrayList<>();
+                    for (int i = 0; i < days.length(); i++) {
+                        list.add(days.getJSONObject(i));
+                    }
+                    Calendar data = Calendar.getInstance();
+                    //data.set(Calendar.YEAR,)
+                    for (int i = 1; i < list.size(); i++) {
+
+                        if (list.get(i).getString("mass").equals("0"))
+                            if (!list.get(i - 1).getString("mass").equals("0"))
+                                list.get(i).put("mass", list.get(i - 1).getString("mass"));
+
+                        if (list.get(i).getString("shoulders").equals("0"))
+                            if (!list.get(i - 1).getString("shoulders").equals("0"))
+                                list.get(i).put("shoulders",list.get(i - 1).getString("shoulders"));
+
+                        if (list.get(i).getString("rHand").equals("0"))
+                            if (!list.get(i - 1).getString("rHand").equals("0"))
+                                list.get(i).put("rHand", list.get(i - 1).getString("rHand"));
+
+                        if (list.get(i).getString("lHand").equals("0"))
+                            if (!list.get(i - 1).getString("lHand").equals("0"))
+                                list.get(i).put("lHand", list.get(i - 1).getString("lHand"));
+
+                        if (list.get(i).getString("chest").equals("0"))
+                            if (!list.get(i - 1).getString("chest").equals("0"))
+                                list.get(i).put("chest", list.get(i - 1).getString("chest"));
+
+                        if (list.get(i).getString("waist").equals("0"))
+                            if (!list.get(i - 1).getString("waist").equals("0"))
+                                list.get(i).put("waist", list.get(i - 1).getString("waist"));
+
+                        if (list.get(i).getString("butt").equals("0"))
+                            if (!list.get(i - 1).getString("butt").equals("0"))
+                                list.get(i).put("butt", list.get(i - 1).getString("butt"));
+
+                        if (list.get(i).getString("lLeg").equals("0"))
+                            if (!list.get(i - 1).getString("lLeg").equals("0"))
+                                list.get(i).put("lLeg", list.get(i - 1).getString("lLeg"));
+
+                        if (list.get(i).getString("rLeg").equals("0"))
+                            if (!list.get(i - 1).getString("rLeg").equals("0"))
+                                list.get(i).put("rLeg", list.get(i - 1).getString("rLeg"));
+
+                        if (list.get(i).getString("calves").equals("0"))
+                            if (!list.get(i - 1).getString("calves").equals("0"))
+                                list.get(i).put("calves", list.get(i - 1).getString("calves"));
+
+                    }
+
+                    days = new JSONArray();
+                    for(int i=0; i<list.size(); i++)
+                        days.put(list.get(i));
+
+                    jsn = new JSONObject();
+                    jsn.put("days", days);
+
+                    FileOutputStream out = new FileOutputStream(f);
+                    ObjectOutputStream outObject = new ObjectOutputStream(out);
+                    outObject.writeObject(jsn.toString());
+                    outObject.flush();
+                    out.getFD().sync();
+                    outObject.close();
                 }
-
-                for (int i = 1; i < days.length(); i++) {
-                    if (days.getJSONObject(i).getString("shoulders").equals("0"))
-                        if (!days.getJSONObject(i - 1).getString("shoulders").equals("0"))
-                            days.getJSONObject(i).put("shoulders", days.getJSONObject(i - 1).getString("shoulders"));
-                }
-
-                for (int i = 1; i < days.length(); i++) {
-                    if (days.getJSONObject(i).getString("rHand").equals("0"))
-                        if (!days.getJSONObject(i - 1).getString("rHand").equals("0"))
-                            days.getJSONObject(i).put("rHand", days.getJSONObject(i - 1).getString("rHand"));
-                }
-
-                for (int i = 1; i < days.length(); i++) {
-                    if (days.getJSONObject(i).getString("lHand").equals("0"))
-                        if (!days.getJSONObject(i - 1).getString("lHand").equals("0"))
-                            days.getJSONObject(i).put("lHand", days.getJSONObject(i - 1).getString("lHand"));
-                }
-
-                for (int i = 1; i < days.length(); i++) {
-                    if (days.getJSONObject(i).getString("chest").equals("0"))
-                        if (!days.getJSONObject(i - 1).getString("chest").equals("0"))
-                            days.getJSONObject(i).put("chest", days.getJSONObject(i - 1).getString("chest"));
-                }
-
-                for (int i = 1; i < days.length(); i++) {
-                    if (days.getJSONObject(i).getString("waist").equals("0"))
-                        if (!days.getJSONObject(i - 1).getString("waist").equals("0"))
-                            days.getJSONObject(i).put("waist", days.getJSONObject(i - 1).getString("waist"));
-                }
-
-                for (int i = 1; i < days.length(); i++) {
-                    if (days.getJSONObject(i).getString("butt").equals("0"))
-                        if (!days.getJSONObject(i - 1).getString("butt").equals("0"))
-                            days.getJSONObject(i).put("butt", days.getJSONObject(i - 1).getString("butt"));
-                }
-
-                for (int i = 1; i < days.length(); i++) {
-                    if (days.getJSONObject(i).getString("lLeg").equals("0"))
-                        if (!days.getJSONObject(i - 1).getString("lLeg").equals("0"))
-                            days.getJSONObject(i).put("lLeg", days.getJSONObject(i - 1).getString("lLeg"));
-                }
-
-                for (int i = 1; i < days.length(); i++) {
-                    if (days.getJSONObject(i).getString("rLeg").equals("0"))
-                        if (!days.getJSONObject(i - 1).getString("rLeg").equals("0"))
-                            days.getJSONObject(i).put("rLeg", days.getJSONObject(i - 1).getString("rLeg"));
-                }
-
-                for (int i = 1; i < days.length(); i++) {
-                    if (days.getJSONObject(i).getString("calves").equals("0"))
-                        if (!days.getJSONObject(i - 1).getString("calves").equals("0"))
-                            days.getJSONObject(i).put("calves", days.getJSONObject(i - 1).getString("calves"));
-                }
-
-                jsn = new JSONObject();
-                jsn.put("days", days);
-
-                FileOutputStream out = new FileOutputStream(f);
-                ObjectOutputStream outObject = new ObjectOutputStream(out);
-                outObject.writeObject(jsn.toString());
-                outObject.flush();
-                out.getFD().sync();
-                outObject.close();
-
             } catch (Exception e) {
                 Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
             }

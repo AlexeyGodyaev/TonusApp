@@ -3,6 +3,7 @@ package com.caloriesdiary.caloriesdiary.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import android.view.ViewManager;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -75,6 +78,10 @@ public class StatActivity extends AppCompatActivity {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+            TabWidget tabs = (TabWidget) findViewById(android.R.id.tabs);
+            tabs.setElevation(getSupportActionBar().getElevation());
+            getSupportActionBar().setElevation(0);
 
             initTabs();
         }
@@ -209,25 +216,26 @@ public class StatActivity extends AppCompatActivity {
                 lp.setOrientation(LinearLayout.VERTICAL);
 
                 try{
-                    massCheck = new CheckBox(getApplicationContext());
+                    massCheck = new CheckBox(new ContextThemeWrapper(StatActivity.this, R.style.MyCheckBox));
                     massCheck.setText("Масса");
-                    eatedCheck = new CheckBox(getApplicationContext());
+                    massCheck.setEnabled(false);
+                    eatedCheck = new CheckBox(new ContextThemeWrapper(StatActivity.this, R.style.MyCheckBox));
                     eatedCheck.setText("Потребленные калории");
-                    bernCheck = new CheckBox(getApplicationContext());
+                    bernCheck = new CheckBox(new ContextThemeWrapper(StatActivity.this, R.style.MyCheckBox));
                     bernCheck.setText("Затраченные калории");
-                    buttCheck = new CheckBox(getApplicationContext());
+                    buttCheck = new CheckBox(new ContextThemeWrapper(StatActivity.this, R.style.MyCheckBox));
                     buttCheck.setText("Ягодицы");
-                    shouldersCheck = new CheckBox(getApplicationContext());
+                    shouldersCheck = new CheckBox(new ContextThemeWrapper(StatActivity.this, R.style.MyCheckBox));
                     shouldersCheck.setText("Плечи");
-                    calvesCheck = new CheckBox(getApplicationContext());
+                    calvesCheck = new CheckBox(new ContextThemeWrapper(StatActivity.this, R.style.MyCheckBox));
                     calvesCheck.setText("Икры");
-                    chestCheck = new CheckBox(getApplicationContext());
+                    chestCheck = new CheckBox(new ContextThemeWrapper(StatActivity.this, R.style.MyCheckBox));
                     chestCheck.setText("Грудь");
-                    waistCheck = new CheckBox(getApplicationContext());
+                    waistCheck = new CheckBox(new ContextThemeWrapper(StatActivity.this, R.style.MyCheckBox));
                     waistCheck.setText("Талия");
-                    handsCheck = new CheckBox(getApplicationContext());
+                    handsCheck = new CheckBox(new ContextThemeWrapper(StatActivity.this, R.style.MyCheckBox));
                     handsCheck.setText("Руки");
-                    legsCheck = new CheckBox(getApplicationContext());
+                    legsCheck = new CheckBox(new ContextThemeWrapper(StatActivity.this, R.style.MyCheckBox));
                     legsCheck.setText("Бедра");
 
                     lp.addView(massCheck, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -379,8 +387,7 @@ public class StatActivity extends AppCompatActivity {
                 mainLayout.removeView(massGraph);
                 mainLayout.removeView(massGraphTxt);
             } else {
-                massGraph.setAlpha(0.5f);
-                massGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
+                massGraph.setBackgroundColor(Color.parseColor("#41A3E4"));
                 massGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                 massGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                 massGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -396,8 +403,7 @@ public class StatActivity extends AppCompatActivity {
                 mainLayout.removeView(eatedCaloriesGraph);
                 mainLayout.removeView(eatedCaloriesGraphTxt);
             } else {
-                eatedCaloriesGraph.setAlpha(0.5f);
-                eatedCaloriesGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
+                eatedCaloriesGraph.setBackgroundColor(Color.parseColor("#41A3E4"));
                 eatedCaloriesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                 eatedCaloriesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                 eatedCaloriesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -413,8 +419,7 @@ public class StatActivity extends AppCompatActivity {
                 mainLayout.removeView(bernCaloriesGraph);
                 mainLayout.removeView(bernCaloriesGraphTxt);
             } else {
-                bernCaloriesGraph.setAlpha(0.5f);
-                bernCaloriesGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
+                bernCaloriesGraph.setBackgroundColor(Color.parseColor("#41A3E4"));
                 bernCaloriesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                 bernCaloriesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                 bernCaloriesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -430,8 +435,7 @@ public class StatActivity extends AppCompatActivity {
                 mainLayout.removeView(shouldersGraph);
                 mainLayout.removeView(shouldersGraphTxt);
             } else {
-                shouldersGraph.setAlpha(0.5f);
-                shouldersGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
+                shouldersGraph.setBackgroundColor(Color.parseColor("#41A3E4"));
                 shouldersGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                 shouldersGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                 shouldersGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -450,14 +454,12 @@ public class StatActivity extends AppCompatActivity {
                 mainLayout.removeView(rHandGraphTxt);
                 mainLayout.removeView(lHandGraphTxt);
             } else {
-                rHandGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
+                rHandGraph.setBackgroundColor(Color.parseColor("#41A3E4"));
                 rHandGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                 rHandGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                 rHandGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
-                rHandGraph.setAlpha(0.5f);
 
-                lHandGraph.setAlpha(0.5f);
-                lHandGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
+                lHandGraph.setBackgroundColor(Color.parseColor("#41A3E4"));
                 lHandGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                 lHandGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                 lHandGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -476,14 +478,12 @@ public class StatActivity extends AppCompatActivity {
                 mainLayout.removeView(lLegGraphTxt);
                 mainLayout.removeView(rLegGraphTxt);
             } else {
-                lLegGraph.setAlpha(0.5f);
-                lLegGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
+                lLegGraph.setBackgroundColor(Color.parseColor("#41A3E4"));
                 lLegGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                 lLegGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                 lLegGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
 
-                rLegGraph.setAlpha(0.5f);
-                rLegGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
+                rLegGraph.setBackgroundColor(Color.parseColor("#41A3E4"));
                 rLegGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                 rLegGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                 rLegGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -498,8 +498,7 @@ public class StatActivity extends AppCompatActivity {
             mainLayout.removeView(calvesGraph);
             mainLayout.removeView(calvesGraphTxt);
         } else {
-            calvesGraph.setAlpha(0.5f);
-            calvesGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
+            calvesGraph.setBackgroundColor(Color.parseColor("#41A3E4"));
             calvesGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
             calvesGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
             calvesGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -515,11 +514,10 @@ public class StatActivity extends AppCompatActivity {
                 mainLayout.removeView(buttGraph);
                 mainLayout.removeView(buttGraphTxt);
             } else {
-                buttGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
+                buttGraph.setBackgroundColor(Color.parseColor("#41A3E4"));
                 buttGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                 buttGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                 buttGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
-                buttGraph.setAlpha(0.5f);
                 s+="Ягодицы, ";
             }
         } catch (Exception e){
@@ -532,8 +530,7 @@ public class StatActivity extends AppCompatActivity {
                 mainLayout.removeView(chestGraph);
                 mainLayout.removeView(chestGraphTxt);
             } else {
-                chestGraph.setAlpha(0.5f);
-                chestGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
+                chestGraph.setBackgroundColor(Color.parseColor("#41A3E4"));
                 chestGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                 chestGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                 chestGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -549,8 +546,7 @@ public class StatActivity extends AppCompatActivity {
                 mainLayout.removeView(waistGraph);
                 mainLayout.removeView(waistGraphTxt);
             } else {
-                waistGraph.setAlpha(0.5f);
-                waistGraph.setBackgroundColor(Color.parseColor("#1ED4B5"));
+                waistGraph.setBackgroundColor(Color.parseColor("#41A3E4"));
                 waistGraph.getGridLabelRenderer().setGridColor(Color.WHITE);
                 waistGraph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
                 waistGraph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
@@ -663,7 +659,6 @@ public class StatActivity extends AppCompatActivity {
         try {
             if (graphDraw != null && graphDraw.getString("mass").equals("true")) {
                 LineGraphSeries<DataPoint> massSeries = new LineGraphSeries<>(massData);
-                massSeries.setThickness(2);
                 StaticLabelsFormatter massLabelsFormatter = new StaticLabelsFormatter(massGraph);
                 massLabelsFormatter.setHorizontalLabels(graphHor);
                 massGraph.getGridLabelRenderer().setLabelFormatter(massLabelsFormatter);
@@ -673,7 +668,6 @@ public class StatActivity extends AppCompatActivity {
 
             if (graphDraw != null && graphDraw.getString("eated").equals("true")) {
                 LineGraphSeries<DataPoint> eatedSeries = new LineGraphSeries<>(eatedData);
-                eatedSeries.setThickness(2);
                 StaticLabelsFormatter eatedLabelsFormatter = new StaticLabelsFormatter(eatedCaloriesGraph);
                 eatedLabelsFormatter.setHorizontalLabels(graphHor);
                 eatedCaloriesGraph.getGridLabelRenderer().setLabelFormatter(eatedLabelsFormatter);
@@ -684,7 +678,6 @@ public class StatActivity extends AppCompatActivity {
             if (graphDraw != null && graphDraw.getString("bern").equals("true")) {
                 LineGraphSeries<DataPoint> bernSeries = new LineGraphSeries<>(bernData);
                 StaticLabelsFormatter bernLabelsFormatter = new StaticLabelsFormatter(bernCaloriesGraph);
-                bernSeries.setThickness(2);
                 bernLabelsFormatter.setHorizontalLabels(graphHor);
                 bernCaloriesGraph.getGridLabelRenderer().setLabelFormatter(bernLabelsFormatter);
                 bernSeries.setColor(Color.WHITE);
@@ -693,7 +686,6 @@ public class StatActivity extends AppCompatActivity {
 
             if (graphDraw != null && graphDraw.getString("shoulders").equals("true")) {
                 LineGraphSeries<DataPoint> shouldersSeries = new LineGraphSeries<>(shouldersData);
-                shouldersSeries.setThickness(2);
                 StaticLabelsFormatter shouldersLabelsFormatter = new StaticLabelsFormatter(shouldersGraph);
                 shouldersLabelsFormatter.setHorizontalLabels(graphHor);
                 shouldersGraph.getGridLabelRenderer().setLabelFormatter(shouldersLabelsFormatter);
@@ -703,7 +695,6 @@ public class StatActivity extends AppCompatActivity {
 
             if (graphDraw != null && graphDraw.getString("hands").equals("true")) {
                 LineGraphSeries<DataPoint> rHandSeries = new LineGraphSeries<>(rHandData);
-                rHandSeries.setThickness(2);
                 StaticLabelsFormatter rHandLabelsFormatter = new StaticLabelsFormatter(rHandGraph);
                 rHandLabelsFormatter.setHorizontalLabels(graphHor);
                 rHandGraph.getGridLabelRenderer().setLabelFormatter(rHandLabelsFormatter);
@@ -711,7 +702,6 @@ public class StatActivity extends AppCompatActivity {
                 rHandGraph.addSeries(rHandSeries);
 
                 LineGraphSeries<DataPoint> lHandSeries = new LineGraphSeries<>(lHandData);
-                lHandSeries.setThickness(2);
                 StaticLabelsFormatter lHandLabelsFormatter = new StaticLabelsFormatter(lHandGraph);
                 lHandLabelsFormatter.setHorizontalLabels(graphHor);
                 lHandGraph.getGridLabelRenderer().setLabelFormatter(lHandLabelsFormatter);
@@ -721,7 +711,6 @@ public class StatActivity extends AppCompatActivity {
 
             if (graphDraw != null && graphDraw.getString("chest").equals("true")) {
                 LineGraphSeries<DataPoint> chestSeries = new LineGraphSeries<>(chestData);
-                chestSeries.setThickness(2);
                 StaticLabelsFormatter chestLabelsFormatter = new StaticLabelsFormatter(chestGraph);
                 chestLabelsFormatter.setHorizontalLabels(graphHor);
                 chestGraph.getGridLabelRenderer().setLabelFormatter(chestLabelsFormatter);
@@ -732,7 +721,6 @@ public class StatActivity extends AppCompatActivity {
             if (graphDraw != null && graphDraw.getString("waist").equals("true")) {
                 LineGraphSeries<DataPoint> waistSeries = new LineGraphSeries<>(waistData);
                 StaticLabelsFormatter waistLabelsFormatter = new StaticLabelsFormatter(waistGraph);
-                waistSeries.setThickness(2);
                 waistLabelsFormatter.setHorizontalLabels(graphHor);
                 waistGraph.getGridLabelRenderer().setLabelFormatter(waistLabelsFormatter);
                 waistSeries.setColor(Color.WHITE);
@@ -741,7 +729,6 @@ public class StatActivity extends AppCompatActivity {
 
             if (graphDraw != null && graphDraw.getString("butt").equals("true")) {
                 LineGraphSeries<DataPoint> buttSeries = new LineGraphSeries<>(buttData);
-                buttSeries.setThickness(2);
                 StaticLabelsFormatter buttLabelsFormatter = new StaticLabelsFormatter(buttGraph);
                 buttLabelsFormatter.setHorizontalLabels(graphHor);
                 buttGraph.getGridLabelRenderer().setLabelFormatter(buttLabelsFormatter);
@@ -752,7 +739,6 @@ public class StatActivity extends AppCompatActivity {
 
             if (graphDraw != null && graphDraw.getString("legs").equals("true")) {
                 LineGraphSeries<DataPoint> rLegSeries = new LineGraphSeries<>(rLegData);
-                rLegSeries.setThickness(2);
                 StaticLabelsFormatter rLegLabelsFormatter = new StaticLabelsFormatter(rLegGraph);
                 rLegLabelsFormatter.setHorizontalLabels(graphHor);
                 rLegGraph.getGridLabelRenderer().setLabelFormatter(rLegLabelsFormatter);
@@ -760,7 +746,6 @@ public class StatActivity extends AppCompatActivity {
                 rLegGraph.addSeries(rLegSeries);
 
                 LineGraphSeries<DataPoint> lLegSeries = new LineGraphSeries<>(lLegData);
-                lLegSeries.setThickness(2);
                 StaticLabelsFormatter lLegLabelsFormatter = new StaticLabelsFormatter(lLegGraph);
                 lLegLabelsFormatter.setHorizontalLabels(graphHor);
                 lLegGraph.getGridLabelRenderer().setLabelFormatter(lLegLabelsFormatter);
@@ -771,7 +756,6 @@ public class StatActivity extends AppCompatActivity {
 
             if (graphDraw != null && graphDraw.getString("calves").equals("true")) {
                 LineGraphSeries<DataPoint> calvesSeries = new LineGraphSeries<>(calvesData);
-                calvesSeries.setThickness(2);
                 StaticLabelsFormatter calvesLabelsFormatter = new StaticLabelsFormatter(calvesGraph);
                 calvesLabelsFormatter.setHorizontalLabels(graphHor);
                 calvesGraph.getGridLabelRenderer().setLabelFormatter(calvesLabelsFormatter);
@@ -1118,6 +1102,14 @@ public class StatActivity extends AppCompatActivity {
 
         tabSpec.setContent(R.id.tab2);
         tabHost.addTab(tabSpec);
+
+        TabWidget tabWidget = (TabWidget) findViewById(android.R.id.tabs);
+
+        for(int i=0; i<tabWidget.getChildCount(); i++){
+            final ViewGroup tab = (ViewGroup) tabWidget.getChildAt(i);
+            final TextView tabTextView = (TextView) tab.getChildAt(1); // Magic number
+            tabTextView.setTextColor(Color.WHITE);
+        }
 
 //        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 //            public void onTabChanged(String tabId) {
