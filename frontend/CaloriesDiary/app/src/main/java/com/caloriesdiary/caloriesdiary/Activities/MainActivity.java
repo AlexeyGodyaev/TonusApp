@@ -216,58 +216,90 @@ public class MainActivity extends AppCompatActivity
                         list.add(days.getJSONObject(i));
                     }
                     Calendar data = Calendar.getInstance();
-                    //data.set(Calendar.YEAR,)
-                    for (int i = 1; i < list.size(); i++) {
+                    String month, day, year;
+                    year = list.get(0).getString("date").substring(0,4);
+                    month = list.get(0).getString("date").substring(5,7);
+                    day = list.get(0).getString("date").substring(8,10);
+                    data.set(Integer.valueOf(year),Integer.valueOf(month)-1,Integer.valueOf(day));
 
-                        if (list.get(i).getString("mass").equals("0"))
-                            if (!list.get(i - 1).getString("mass").equals("0"))
-                                list.get(i).put("mass", list.get(i - 1).getString("mass"));
+//                    days = new JSONArray();
+                    //for (int i = 1; i < list.size(); i++) {
 
-                        if (list.get(i).getString("shoulders").equals("0"))
-                            if (!list.get(i - 1).getString("shoulders").equals("0"))
-                                list.get(i).put("shoulders",list.get(i - 1).getString("shoulders"));
+                    for (int i=0; i<list.size()-1; i++) {
+                        Toast.makeText(this, String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
+                        String dat;
 
-                        if (list.get(i).getString("rHand").equals("0"))
-                            if (!list.get(i - 1).getString("rHand").equals("0"))
-                                list.get(i).put("rHand", list.get(i - 1).getString("rHand"));
+                        data.set(Calendar.DAY_OF_YEAR, data.get(Calendar.DAY_OF_YEAR) + 1);
+                        dat = String.valueOf(data.get(Calendar.YEAR)) + "-";
+                        if (data.get(Calendar.MONTH) < 9)
+                            dat += "0" + String.valueOf(data.get(Calendar.MONTH) + 1) + "-";
+                        else dat += String.valueOf(data.get(Calendar.MONTH) + 1) + "-";
+                        if (data.get(Calendar.DAY_OF_MONTH) < 10)
+                            dat += "0" + String.valueOf(data.get(Calendar.DAY_OF_MONTH));
+                        else dat += String.valueOf(data.get(Calendar.DAY_OF_MONTH));
 
-                        if (list.get(i).getString("lHand").equals("0"))
-                            if (!list.get(i - 1).getString("lHand").equals("0"))
-                                list.get(i).put("lHand", list.get(i - 1).getString("lHand"));
-
-                        if (list.get(i).getString("chest").equals("0"))
-                            if (!list.get(i - 1).getString("chest").equals("0"))
-                                list.get(i).put("chest", list.get(i - 1).getString("chest"));
-
-                        if (list.get(i).getString("waist").equals("0"))
-                            if (!list.get(i - 1).getString("waist").equals("0"))
-                                list.get(i).put("waist", list.get(i - 1).getString("waist"));
-
-                        if (list.get(i).getString("butt").equals("0"))
-                            if (!list.get(i - 1).getString("butt").equals("0"))
-                                list.get(i).put("butt", list.get(i - 1).getString("butt"));
-
-                        if (list.get(i).getString("lLeg").equals("0"))
-                            if (!list.get(i - 1).getString("lLeg").equals("0"))
-                                list.get(i).put("lLeg", list.get(i - 1).getString("lLeg"));
-
-                        if (list.get(i).getString("rLeg").equals("0"))
-                            if (!list.get(i - 1).getString("rLeg").equals("0"))
-                                list.get(i).put("rLeg", list.get(i - 1).getString("rLeg"));
-
-                        if (list.get(i).getString("calves").equals("0"))
-                            if (!list.get(i - 1).getString("calves").equals("0"))
-                                list.get(i).put("calves", list.get(i - 1).getString("calves"));
-
+                        if (!list.get(i + 1).getString("date").equals(dat) && i < list.size()-1) {
+                            jsn = list.get(i);
+                            jsn.put("date", dat);
+                           // days.put(list.get(i));
+                            list.add(i + 1, jsn);
+                            Toast.makeText(this, list.get(i).getString("date"), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
+                    for(int i=1; i<list.size(); i++){
+                            if (list.get(i).getString("mass").equals("0"))
+                                if (!list.get(i - 1).getString("mass").equals("0"))
+                                    list.get(i).put("mass", list.get(i - 1).getString("mass"));
+
+                            if (list.get(i).getString("shoulders").equals("0"))
+                                if (!list.get(i - 1).getString("shoulders").equals("0"))
+                                    list.get(i).put("shoulders", list.get(i - 1).getString("shoulders"));
+
+                            if (list.get(i).getString("rHand").equals("0"))
+                                if (!list.get(i - 1).getString("rHand").equals("0"))
+                                    list.get(i).put("rHand", list.get(i - 1).getString("rHand"));
+
+                            if (list.get(i).getString("lHand").equals("0"))
+                                if (!list.get(i - 1).getString("lHand").equals("0"))
+                                    list.get(i).put("lHand", list.get(i - 1).getString("lHand"));
+
+                            if (list.get(i).getString("chest").equals("0"))
+                                if (!list.get(i - 1).getString("chest").equals("0"))
+                                    list.get(i).put("chest", list.get(i - 1).getString("chest"));
+
+                            if (list.get(i).getString("waist").equals("0"))
+                                if (!list.get(i - 1).getString("waist").equals("0"))
+                                    list.get(i).put("waist", list.get(i - 1).getString("waist"));
+
+                            if (list.get(i).getString("butt").equals("0"))
+                                if (!list.get(i - 1).getString("butt").equals("0"))
+                                    list.get(i).put("butt", list.get(i - 1).getString("butt"));
+
+                            if (list.get(i).getString("lLeg").equals("0"))
+                                if (!list.get(i - 1).getString("lLeg").equals("0"))
+                                    list.get(i).put("lLeg", list.get(i - 1).getString("lLeg"));
+
+                            if (list.get(i).getString("rLeg").equals("0"))
+                                if (!list.get(i - 1).getString("rLeg").equals("0"))
+                                    list.get(i).put("rLeg", list.get(i - 1).getString("rLeg"));
+
+                            if (list.get(i).getString("calves").equals("0"))
+                                if (!list.get(i - 1).getString("calves").equals("0"))
+                                    list.get(i).put("calves", list.get(i - 1).getString("calves"));
+
+                        }
+
+
+
                     days = new JSONArray();
-                    for(int i=0; i<list.size(); i++)
-                        days.put(list.get(i));
+                    for(int j=0; j<list.size(); j++)
+                        days.put(list.get(j));
 
                     jsn = new JSONObject();
                     jsn.put("days", days);
 
+                    //currentTime.setText(jsn.toString());
                     FileOutputStream out = new FileOutputStream(f);
                     ObjectOutputStream outObject = new ObjectOutputStream(out);
                     outObject.writeObject(jsn.toString());
