@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity
                     //for (int i = 1; i < list.size(); i++) {
 
                     for (int i=0; i<list.size()-1; i++) {
-                        Toast.makeText(this, String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(this, String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
                         String dat;
 
                         data.set(Calendar.DAY_OF_YEAR, data.get(Calendar.DAY_OF_YEAR) + 1);
@@ -239,11 +239,13 @@ public class MainActivity extends AppCompatActivity
                         else dat += String.valueOf(data.get(Calendar.DAY_OF_MONTH));
 
                         if (!list.get(i + 1).getString("date").equals(dat) && i < list.size()-1) {
-                            jsn = list.get(i);
+                            jsn = new JSONObject(list.get(i).toString());
                             jsn.put("date", dat);
+                            jsn.put("note","Данные скопированы из предыдущего дня");
                            // days.put(list.get(i));
                             list.add(i + 1, jsn);
-                            Toast.makeText(this, list.get(i).getString("date"), Toast.LENGTH_SHORT).show();
+                            //
+                            // Toast.makeText(this, list.get(i).getString("date"), Toast.LENGTH_SHORT).show();
                         }
                     }
 
