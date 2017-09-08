@@ -4,6 +4,8 @@
     <string name="menu_search">Search</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="about_text">Незаменимый инструмент для тех кто решил серьезно взяться за себя. Блокнот, ежедневники и калькуляторы ушли в прошлое, теперь вам достаточно одного приложения на вашем мобильном телефоне,
+        чтобы не упускать и учитывать влияние каждой мелочи в вашем образе жизни, рационе питания и объеме совершаемых нагрузок.</string>
     <string-array name="activitylist">
         <item>Практически нет</item>
         <item>Легкий (2-3 дня в неделю)</item>
